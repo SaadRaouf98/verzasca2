@@ -36,21 +36,20 @@ export class SelectBenefitTypeModalComponent {
 
   initializeForm(): void {
     this.form = new FormGroup({
-      benefitType: new FormControl('', [Validators.required]),
+      benefitType: new FormControl(null, [Validators.required]),
     });
   }
 
   initializeDropDownList(): void {
-    this.benefitTypesList$ =
-      this.manageSharedService.benefitTypesService.getBenefitTypesList(
-        {
-          pageSize: 20,
-          pageIndex: 0,
-        },
-        undefined,
-        undefined,
-        ['id', 'title']
-      );
+    this.benefitTypesList$ = this.manageSharedService.benefitTypesService.getBenefitTypesList(
+      {
+        pageSize: 20,
+        pageIndex: 0,
+      },
+      undefined,
+      undefined,
+      ['id', 'title']
+    );
   }
 
   onSubmit(): void {

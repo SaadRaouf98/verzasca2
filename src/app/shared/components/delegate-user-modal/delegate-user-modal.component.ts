@@ -37,8 +37,8 @@ export class DelegateUserModalComponent {
 
   initializeForm(): void {
     this.form = new FormGroup({
-      delegatedTo: new FormControl('', [Validators.required]),
-      comment: new FormControl('', []),
+      delegatedTo: new FormControl(null, [Validators.required]),
+      comment: new FormControl(null, []),
     });
   }
 
@@ -60,7 +60,7 @@ export class DelegateUserModalComponent {
       status: 'Succeeded',
       statusCode: ModalStatusCode.Success,
       data: {
-        delegatedToId: delegatedTo.id,
+        delegatedToId: delegatedTo,
         comment,
       },
     });

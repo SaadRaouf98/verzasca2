@@ -156,6 +156,31 @@ export class MeetingsService {
     return this.apiService.get(url);
   }
 
+  buildQueryParams(params: Record<string, any>): string {
+    return Object.entries(params)
+      .filter(([_, value]) => value !== undefined && value !== null)
+      .map(([key, value]) => {
+        const encodedValue =
+          typeof value === 'object'
+            ? encodeURIComponent(JSON.stringify(value))
+            : encodeURIComponent(value);
+        return `${key}=${encodedValue}`;
+      })
+      .join('&');
+  }
+
+  getActiveNewMeetings(query: any): Observable<CalendarDayEvents[]> {
+    const queryString = this.buildQueryParams({
+      Filter: query.Filter,
+      Take: query.Take,
+      RequireTotalCount: query.RequireTotalCount,
+    });
+
+    return this.apiService.get(
+      `/active?${queryString}`
+    );
+  }
+
   getActiveMeetings(
     startDate?: string,
     endDate?: string

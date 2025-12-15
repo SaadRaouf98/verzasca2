@@ -36,7 +36,7 @@ export class SelectRecommendationTypeModalComponent {
 
   initializeForm(): void {
     this.form = new FormGroup({
-      recommendationType: new FormControl('', [Validators.required]),
+      recommendationType: new FormControl(null, [Validators.required]),
     });
   }
 
@@ -63,7 +63,7 @@ export class SelectRecommendationTypeModalComponent {
       status: 'Succeeded',
       statusCode: ModalStatusCode.Success,
       data: {
-        recommendationTypeId: recommendationType.id,
+        recommendationTypeId: recommendationType,
       },
     });
   }
@@ -94,4 +94,3 @@ export class SelectRecommendationTypeModalComponent {
       );
   }
 }
-

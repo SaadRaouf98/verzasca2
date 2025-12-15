@@ -9,10 +9,7 @@
     <div class="row">
       <div class="col-12 mb-3">
         <p class="body-bold text-small mb-2">
-          {{
-            "SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType"
-              | translate
-          }}
+          {{ 'SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType' | translate }}
           <span class="text-danger">*</span>
         </p>
         <app-select
@@ -20,24 +17,18 @@
           [options]="(benefitTypesList$ | async)?.data || []"
           [bindLabel]="'title'"
           [bindValue]="'id'"
-          [placeholder]="
-            'SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType'
-          "
+          [placeholder]="'SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType'"
           [multiple]="false"
           [searchable]="false"
+          [appendTo]="'body'"
         ></app-select>
 
         <div
-          *ngIf="
-            form.get('benefitType')?.invalid && form.get('benefitType')?.touched
-          "
+          *ngIf="form.get('benefitType')?.invalid && form.get('benefitType')?.touched"
           class="text-danger mt-1"
         >
           <small>
-            {{
-              "SharedModule.SelectBenefitTypeModalComponent.benefitTypeRequired"
-                | translate
-            }}
+            {{ 'SharedModule.SelectBenefitTypeModalComponent.benefitTypeRequired' | translate }}
           </small>
         </div>
       </div>

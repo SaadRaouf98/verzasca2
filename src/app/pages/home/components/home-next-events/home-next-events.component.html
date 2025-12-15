@@ -7,7 +7,7 @@
   <div class="col-xxl-8 col-7">
     <!-- upcoming-events.component.html -->
     <div class="upcoming-events">
-      <div class="header mb-2" *ngIf="filteredEvents.length > 0">
+      <div class="header mb-2" *ngIf="events.length > 0">
         <p class="body-bold mb-0">
           {{ 'HomeModule.DashboardPage.nextEvents' | translate }}
         </p>
@@ -20,7 +20,7 @@
       </div>
 
       <div class="list h-100">
-        <ng-container *ngIf="!filteredEvents || filteredEvents.length === 0">
+        <ng-container *ngIf="!events || events.length === 0">
           <div
             class="no-events d-flex flex-column align-items-center justify-content-center w-100 h-100 m-auto"
           >
@@ -32,7 +32,7 @@
             </button> -->
           </div>
         </ng-container>
-        <ng-container *ngFor="let ev of filteredEvents; let i = index">
+        <ng-container *ngFor="let ev of events; let i = index">
           <div class="item" [ngClass]="{ 'neutral-bg': i % 2 === 1 }">
             <button mat-icon-button class="menu-btn">
               <mat-icon>more_vert</mat-icon>

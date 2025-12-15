@@ -310,6 +310,9 @@ mat-icon {
 }
 
 // =============== Tab Styling ===============
+::ng-deep .mat-mdc-tab-header-pagination-controls-enabled .mat-mdc-tab-header-pagination {
+  display: none !important;
+}
 ::ng-deep mat-tab-header,
 ::ng-deep .mat-mdc-tab-list {
   border-radius: 0.75rem;
@@ -338,7 +341,11 @@ mat-icon {
 ::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
   color: #fff;
 }
-
+@media (min-width: 1024px) and (max-width: 1200px) {
+  ::ng-deep .mdc-tab {
+    padding: 0 14px !important;
+  }
+}
 // =============== Accordion & Procedures ===============
 .procedureContainer {
   max-height: 20rem;

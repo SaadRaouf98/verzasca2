@@ -47,58 +47,7 @@ export class HomeComponent {
     year: number;
   };
   // replace this with however you actually fetch or receive the payload
-  public readonly rawData: MeetingGroup[] = [
-    // {
-    //   date: '2025-09-10T00:00:00',
-    //   meetings: [
-    //     {
-    //       id: '12f5ba1d-bba0-4dab-878f-5969cb78e121',
-    //       meetingType: 1,
-    //       title: 'عنوان 1',
-    //       meetingDateTime: '2024-02-16T05:00:00',
-    //       isVirtual: true,
-    //       memberCount: 29,
-    //       containersCount: 0,
-    //       attendanceCount: 1,
-    //       durationInMinutes: 120,
-    //       status: 2,
-    //       committee: {
-    //         id: '74dff495-588c-409e-b7c4-dbd31b9ea9a9',
-    //         title: 'اللجنة التحضيرية',
-    //         titleEn: 'Preparatory Committee',
-    //         committeeSymbol: 'ج',
-    //         date: '2024-03-04T00:02:00',
-    //         admin: null,
-    //       },
-    //     },
-    //   ],
-    // },
-    // {
-    //   date: '2025-09-09T00:00:00',
-    //   meetings: [
-    //     {
-    //       id: '12f5ba1d-bba0-4dab-878f-5969cb78e121',
-    //       meetingType: 1,
-    //       title: 'عنوان 1',
-    //       meetingDateTime: '2024-02-16T05:00:00',
-    //       isVirtual: true,
-    //       memberCount: 29,
-    //       containersCount: 0,
-    //       attendanceCount: 1,
-    //       durationInMinutes: 120,
-    //       status: 2,
-    //       committee: {
-    //         id: '74dff495-588c-409e-b7c4-dbd31b9ea9a9',
-    //         title: 'اللجنة التحضيرية',
-    //         titleEn: 'Preparatory Committee',
-    //         committeeSymbol: 'ج',
-    //         date: '2024-03-04T00:02:00',
-    //         admin: null,
-    //       },
-    //     },
-    //   ],
-    // },
-  ];
+
   currentDayEvents: {
     id: string;
     time: string;
@@ -344,7 +293,6 @@ export class HomeComponent {
     };
 
     this.token = this.authService.getToken();
-    this.getCurrentDayEvents();
     this.getNewsPosts();
   }
 
@@ -359,27 +307,6 @@ export class HomeComponent {
               createdOn: post.createdOn ?? '',
             }))
             .reverse();
-        },
-      });
-  }
-
-  getCurrentDayEvents(): void {
-    const date = new Date();
-    const currentFormattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    this.manageHomeService.meetingsService
-      .getActiveMeetings(currentFormattedDate, currentFormattedDate)
-      .subscribe({
-        next: (res) => {
-          if (res.length > 0) {
-            res[0].meetings.forEach((ele: any) => {
-              this.currentDayEvents.push({
-                id: ele.id,
-                time: ele.meetingDateTime,
-                title: ele.title,
-                status: ele.status,
-              });
-            });
-          }
         },
       });
   }

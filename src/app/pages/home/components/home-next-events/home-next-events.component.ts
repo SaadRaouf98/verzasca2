@@ -6,6 +6,10 @@ import {
   SimpleChanges,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Service } from '@pages/home/service';
+import { MeetingCalenderFormModel } from '@core/models/home/meeting-calender-form.model';
 
 export interface EventItem {
   title: string;
@@ -46,60 +50,28 @@ interface Meeting {
   styleUrls: ['./home-next-events.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeNextEventsComponent implements OnChanges {
-  /** incoming raw data grouped by date */
-  @Input() meetingGroups: MeetingGroup[] = [];
+export class HomeNextEventsComponent {
+  get events(): EventItem[] {
+    return this._internalService.events || null
+  };
 
-  /** mapped events exposed to the template */
-  events: EventItem[] = [];
-  filteredEvents: EventItem[] = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['meetingGroups'] && Array.isArray(this.meetingGroups)) {
-      this.events = this.meetingGroups.flatMap((group) =>
-        group.meetings.map((m) => {
-          const start = new Date(m.meetingDateTime);
-          const end = new Date(start.getTime() + m.durationInMinutes * 60000);
-
-          const pad = (n: number) => n.toString().padStart(2, '0');
-          const hhmm = (d: Date) =>
-            `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-
-          return {
-            title: m.title,
-            startTime: hhmm(start),
-            endTime: hhmm(end),
-            date: new Date(group.date),
-          } as EventItem;
-        })
-      );
-      // By default, show all events
-      this.filteredEvents = [...this.events];
-    }
+  get meetingCalender() :MeetingCalenderFormModel  {
+    return this._internalService.meetingCalender || null;
   }
 
-  onCalendarDateChange(selection: Date | { begin: Date; end: Date }) {
-    let date: Date | undefined;
-
-    if (selection instanceof Date) {
-      date = selection;
-    } else if (selection && 'begin' in selection && selection.begin) {
-      date = selection.begin; // or selection.end, depending on your use case
-    }
-
-    if (date) {
-      this.filteredEvents = this.events.filter((ev) =>
-        this.isSameDay(new Date(ev.date), date!)
-      );
-    }
+  constructor(
+    private datePipe: DatePipe,
+    private _internalService: Service,
+  ) {
+    const today = this.datePipe.transform(new Date(), 'yyyy-mm-dd');
+    this._internalService.setMeetingDateRange(today, today);
+    this._internalService.getActiveMeeting()
   }
 
-  // Helper to compare two dates (ignoring time)
-  isSameDay(a: Date, b: Date): boolean {
-    return (
-      a.getFullYear() === b.getFullYear() &&
-      a.getMonth() === b.getMonth() &&
-      a.getDate() === b.getDate()
-    );
+  onCalendarDateChange(date: Date) {
+    let selectedDate = this.datePipe.transform(date, 'yyyy-mm-dd');
+    this._internalService.setMeetingDateRange(selectedDate, selectedDate);
+    this._internalService.getActiveMeeting()
   }
+
 }

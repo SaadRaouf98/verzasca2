@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { MaterialsModule } from './materials/materials.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -215,6 +215,7 @@ const COMPONENTS: any[] = [
   ],
   providers: [
     CurrencyPipe,
+    DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, // Ensure the locale matches the desired format
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],

@@ -141,7 +141,7 @@ $btn-sizes: (
 }
 
 // Media Query: decrease button font sizes at 1200px and above
-@media (min-width: 1180px) and (max-width: 1500px) {
+@media (min-width: 1024px) and (max-width: 1500px) {
   .button {
     &-sm {
       font-size: calc(#{$font-size-xs} - 2px);

@@ -953,8 +953,7 @@ export class RequestDetailsComponent implements OnInit {
         minWidth: '62.5rem',
         maxWidth: '62.5rem',
         maxHeight: '95vh',
-        height: '95vh',
-        panelClass: ['action-modal', 'float-footer'],
+        panelClass: ['action-modal'],
         disableClose: true,
         data: {
           header: action.title,
@@ -1299,11 +1298,13 @@ export class RequestDetailsComponent implements OnInit {
         error: (err) => {
           this.displayProgressSpinner = false;
 
-          this.toastr.error(
+          const errorMessage =
+            err?.error?.Message ||
             this.translateService.instant(
               'ImportsExportsModule.RequestDetailsComponent.actionFailed'
-            )
-          );
+            );
+
+          this.toastr.error(errorMessage);
         },
       });
   }

@@ -37,6 +37,7 @@
           <span class="text-danger">*</span>
         </p>
         <app-upload-attachment
+          [customFileTypes]="['.pdf']"
           #uploadAttachment
           [multiple]="false"
           [showBtn]="false"

@@ -37,8 +37,8 @@ export class SelectProcessTypeModalComponent {
 
   initializeForm(): void {
     this.form = new FormGroup({
-      committee: new FormControl('', [Validators.required]),
-      changeReason: new FormControl('', []),
+      committee: new FormControl(null, [Validators.required]),
+      changeReason: new FormControl(null, []),
     });
   }
 
@@ -65,7 +65,7 @@ export class SelectProcessTypeModalComponent {
       status: 'Succeeded',
       statusCode: ModalStatusCode.Success,
       data: {
-        committeeId: committee.id,
+        committeeId: committee,
         changeReason,
       },
     });
@@ -96,4 +96,3 @@ export class SelectProcessTypeModalComponent {
       );
   }
 }
-

@@ -1122,13 +1122,19 @@ export class RequestsService {
       }
     } else if (actionType === ActionType.ExportTemplate) {
       formData.append('exportNumber', data.exportNumber);
-      formData.append('Document', data.document, data.document.name);
-      data.normalPagesIndexes.forEach((ele: number) => {
-        formData.append('normalPagesIndexes', ele + '');
-      });
 
-      if (data.noteFile) {
-        formData.append('NoteFile', data.noteFile, data.noteFile.name);
+      if (data.document && data.document instanceof Blob) {
+        formData.append('Document', data.document, data.document.name || 'document.pdf');
+      }
+
+      if (data.normalPagesIndexes && data.normalPagesIndexes.length) {
+        data.normalPagesIndexes.forEach((ele: number) => {
+          formData.append('normalPagesIndexes', ele + '');
+        });
+      }
+
+      if (data.noteFile && data.noteFile instanceof Blob) {
+        formData.append('NoteFile', data.noteFile, data.noteFile.name || 'note.pdf');
       }
 
       if (data.signatures && data.signatures.length) {

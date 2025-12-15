@@ -37,17 +37,16 @@ export class InternalAssignmentUserModalComponent {
 
   initializeForm(): void {
     this.form = new FormGroup({
-      assignedTo: new FormControl('', [Validators.required]),
-      comment: new FormControl('', []),
+      assignedTo: new FormControl(null, [Validators.required]),
+      comment: new FormControl(null, []),
     });
   }
 
   initializeDropDownList(): void {
-    this.usersList$ =
-      this.manageSharedService.usersService.getUsersListToInternalAssignment({
-        pageSize: 20,
-        pageIndex: 0,
-      });
+    this.usersList$ = this.manageSharedService.usersService.getUsersListToInternalAssignment({
+      pageSize: 20,
+      pageIndex: 0,
+    });
   }
 
   onSubmit(): void {

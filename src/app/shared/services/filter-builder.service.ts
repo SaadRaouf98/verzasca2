@@ -11,7 +11,6 @@ export type SortDirection = 'asc' | 'desc';
 export class FilterBuilderService {
   /**
    * Builds a DevExtreme filter from a nested model.
-   * Groups nested object filters by their root key (e.g. foundation.* → OR group).
    */
   buildFilterFromModel(
     model: Record<string, any>,
@@ -19,35 +18,65 @@ export class FilterBuilderService {
   ): any[] | null {
     if (!model) return null;
 
-    const flatModel = this.flattenObject(model);
-    const grouped = this.groupByRoot(flatModel);
     const filters: any[] = [];
 
-    for (const [root, fields] of Object.entries(grouped)) {
+    /* -------------------------------------------------------
+     * 1️⃣ Extract DATE RANGE filters BEFORE flatten
+     * ----------------------------------------------------- */
+    const dateRangeFilters = this.extractDateRanges(model);
+    if (dateRangeFilters.length) {
+      filters.push(...dateRangeFilters);
+    }
+
+    /* -------------------------------------------------------
+     * 2️⃣ Remove date range fields from model
+     * ----------------------------------------------------- */
+    const cleanModel: Record<string, any> = { ...model };
+    for (const key of Object.keys(cleanModel)) {
+      const value = cleanModel[key];
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        'from' in value &&
+        'to' in value
+      ) {
+        delete cleanModel[key];
+      }
+    }
+
+    /* -------------------------------------------------------
+     * 3️⃣ Normal filtering flow
+     * ----------------------------------------------------- */
+    const flatModel = this.flattenObject(cleanModel);
+    const grouped = this.groupByRoot(flatModel);
+
+    for (const [, fields] of Object.entries(grouped)) {
       const groupConditions: any[] = [];
 
       for (const [field, value] of Object.entries(fields)) {
         if (value === null || value === undefined || value === '') continue;
 
-        // Determine operator for this field (or for each value in array)
-        const baseOperation = operationMap?.[field] ?? this.detectDefaultOperation(value);
+        const op =
+          operationMap?.[field] ?? this.detectDefaultOperation(value);
 
         if (Array.isArray(value)) {
-          value.forEach((v, idx) => {
+          value.forEach((v) => {
             if (v === null || v === undefined || v === '') return;
-            const op = operationMap?.[field] ?? this.detectDefaultOperation(v); // ✅ detect per element
             if (groupConditions.length > 0) groupConditions.push('or');
             groupConditions.push([field, op, v]);
           });
         } else {
           if (groupConditions.length > 0) groupConditions.push('or');
-          groupConditions.push([field, baseOperation, value]);
+          groupConditions.push([field, op, value]);
         }
       }
 
       if (groupConditions.length > 0) {
         if (filters.length > 0) filters.push('and');
-        filters.push(groupConditions.length > 1 ? [...groupConditions] : groupConditions[0]);
+        filters.push(
+          groupConditions.length > 1 ? [...groupConditions] : groupConditions[0]
+        );
       }
     }
 
@@ -56,12 +85,10 @@ export class FilterBuilderService {
 
   /**
    * Builds a DevExtreme sort array.
-   * Example input:
-   *   { 'name': 'asc', 'dateCreated': 'desc' }
-   * Output:
-   *   [ { selector: 'name', desc: false }, { selector: 'dateCreated', desc: true } ]
    */
-    buildSortFromModel(sortModel: Record<string, SortDirection | boolean>): any[] | null {
+  buildSortFromModel(
+    sortModel: Record<string, SortDirection | boolean>
+  ): any[] | null {
     if (!sortModel) return null;
 
     const sortArray: { selector: string; desc: boolean }[] = [];
@@ -69,55 +96,94 @@ export class FilterBuilderService {
     for (const [field, direction] of Object.entries(sortModel)) {
       if (direction === null || direction === undefined) continue;
 
-      // Support both "asc"/"desc" strings and boolean (true = desc)
       let desc = false;
       if (typeof direction === 'string') {
         desc = direction.toLowerCase() === 'desc';
       } else if (typeof direction === 'boolean') {
         desc = direction;
       }
+
       sortArray.push({ selector: field, desc });
     }
 
     return sortArray.length > 0 ? sortArray : null;
   }
-  
+
+  /* =======================================================
+   * Helpers
+   * ===================================================== */
+
+  /**
+   * Extracts date range filters from the original model.
+   */
+  private extractDateRanges(model: Record<string, any>): any[] {
+    const filters: any[] = [];
+
+    for (const [key, value] of Object.entries(model)) {
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        'from' in value &&
+        'to' in value
+      ) {
+        filters.push(
+          [key, '>=', value.from],
+          'and',
+          [key, '<=', value.to]
+        );
+      }
+    }
+
+    return filters;
+  }
+
   /**
    * Recursively flattens nested objects.
    */
-  private flattenObject(obj: Record<string, any>, prefix = ''): Record<string, any> {
+  private flattenObject(
+    obj: Record<string, any>,
+    prefix = ''
+  ): Record<string, any> {
     const result: Record<string, any> = {};
+
     for (const [key, value] of Object.entries(obj)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
-      if (value && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+
+      if (
+        value &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        !(value instanceof Date)
+      ) {
         Object.assign(result, this.flattenObject(value, fullKey));
       } else {
         result[fullKey] = value;
       }
     }
+
     return result;
   }
 
   /**
    * Groups flattened keys by their root property.
-   * Example:
-   * { "foundation.id": 1, "foundation.name": "A", "priority.id": 2 }
-   * → { foundation: { ... }, priority: { ... } }
    */
-  private groupByRoot(flatModel: Record<string, any>): Record<string, Record<string, any>> {
+  private groupByRoot(
+    flatModel: Record<string, any>
+  ): Record<string, Record<string, any>> {
     const groups: Record<string, Record<string, any>> = {};
+
     for (const [key, value] of Object.entries(flatModel)) {
       const root = key.split('.')[0];
       if (!groups[root]) groups[root] = {};
       groups[root][key] = value;
     }
+
     return groups;
   }
 
   /**
    * Detects default operator based on value type.
-   * - String that is NOT a GUID → 'contains'
-   * - Everything else → '='
    */
   private detectDefaultOperation(value: any): FilterOperation {
     if (typeof value === 'string' && !this.isGuid(value)) {
