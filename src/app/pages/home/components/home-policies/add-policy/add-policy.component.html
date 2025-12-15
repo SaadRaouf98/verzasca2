@@ -1,0 +1,159 @@
+<div class="d-flex align-items-center mb-3">
+  <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="navigateToTablePage()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+  </svg>
+  <div class="mx-2">
+    <div class="d-flex align-items-center">
+      <span class="body text-small gray-400">{{ 'shared.home' | translate }}</span>
+      <span class="body text-small gray-400 mx-2">/</span>
+      <span class="body text-small gray-400">{{ 'shared.policies' | translate }}</span>
+      <span class="body text-small gray-400 mx-2">/</span>
+      <h2 class="body-bold m-0">
+        <span *ngIf="elementId; else elseBlock">
+          {{ 'shared.editPolicy' | translate }}
+        </span>
+        <ng-template #elseBlock>
+          {{ 'shared.addPolicy' | translate }}
+        </ng-template>
+      </h2>
+    </div>
+  </div>
+</div>
+
+<!-- Dialog Content -->
+<div class="div-card">
+  <div class="grid">
+    <form autocomplete="off" [formGroup]="form">
+      <div class="row">
+        <!-- Title -->
+        <div class="col-12 col-md-4 mb-3">
+          <p class="body mb-2">
+            {{ 'shared.title' | translate }}
+            <span class="text-danger text-small">*</span>
+          </p>
+          <app-input
+            formControlName="title"
+            [placeholder]="'shared.titlePlaceholder'"
+            [showSearchIcon]="false"
+            [showFilterIcon]="false"
+          ></app-input>
+
+          <div
+            *ngIf=" form.get('title')?.errors?.['required'] && isTouched('title')"
+            class="text-danger text-small mt-1"
+          >
+            <small>
+              {{ 'shared.titleRequired' | translate }}
+            </small>
+          </div>
+        </div>
+        <!-- End Title -->
+
+        <!-- Category -->
+        <div class="col-12 col-md-4 mb-3">
+          <p class="body mb-2">
+            {{ 'shared.section' | translate }}
+            <span class="text-danger text-small">*</span>
+          </p>
+          <app-select
+            formControlName="categoryId"
+            [options]="categories"
+            [bindLabel]="'title'"
+            [bindValue]="'id'"
+            [placeholder]="'shared.selectSection' | translate"
+            [multiple]="false"
+            [searchable]="false"
+          >
+          </app-select>
+
+          <div
+            *ngIf="form.get('categoryId')?.errors?.['required'] && isTouched('categoryId')"
+            class="text-danger text-small mt-1"
+          >
+            <small> {{ 'shared.sectionRequired' | translate }} </small>
+          </div>
+        </div>
+        <!-- End Category -->
+
+        <!-- Status -->
+        <div class="col-12 col-md-4 mb-3">
+          <p class="body mb-2">
+            {{ 'shared.status' | translate }}
+            <span class="text-danger text-small">*</span>
+          </p>
+          <app-select
+            formControlName="isActive"
+            [options]="visibleStatus"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            [placeholder]="'shared.selectStatus' | translate"
+            [multiple]="false"
+            [searchable]="false"
+          >
+          </app-select>
+
+          <div
+            *ngIf="form.get('categoryId')?.errors?.['required'] && isTouched('categoryId')"
+            class="text-danger text-small mt-1"
+          >
+            <small> {{ 'shared.statusRequired' | translate }} </small>
+          </div>
+        </div>
+        <!-- End Status -->
+
+        <div class="col-md-6 col-12">
+          <p class="body mb-2">
+            {{ 'shared.content' | translate }}
+            <span class="text-danger text-small">*</span>
+          </p>
+          <app-upload-attachment
+            #uploadPdf
+            [multiple]="false"
+            [showBtn]="false"
+            [split]="false"
+            [customFileTypes]="['.pdf']"
+            [initialFiles]="existingPdfFiles"
+            (fileUploaded)="onFileDropped($event, 'pdf')"
+            (fileRemoved)="onFileRemoved('pdf')"
+            [showViewOption]="true"
+            [backgroundColor]="'#fff'"
+            (viewAttachment)="onViewAttachment($event)"
+          ></app-upload-attachment>
+        </div>
+        <div class="col-md-6 col-12">
+          <p class="body mb-2">
+            {{ 'shared.thumbnail' | translate }}
+            <span class="text-danger text-small">*</span>
+          </p>
+          <app-upload-attachment
+            #uploadImage
+            [multiple]="false"
+            [showBtn]="false"
+            [split]="false"
+            [customFileTypes]="['.png', '.jpg', '.JPEG']"
+            [initialFiles]="existingImageFiles"
+            (fileUploaded)="onFileDropped($event, 'image')"
+            (fileRemoved)="onFileRemoved('image')"
+            [showViewOption]="true"
+            [backgroundColor]="'#fff'"
+            (viewAttachment)="onViewAttachment($event)"
+          ></app-upload-attachment>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Standard Footer -->
+<div class="d-flex justify-content-end align-items-center mt-3">
+  <button
+    class="button button-primary button-lg mx-3"
+    (click)="onSubmit()"
+    [disabled]="!form.valid || disableSubmitBtn"
+  >
+    {{ 'shared.createPolicy' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

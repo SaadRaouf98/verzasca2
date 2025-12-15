@@ -1,0 +1,20 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <span *ngIf="elementId; else elseBlock">
+          {{
+          "ActionsModule.AddBenefitTypePage.editBenefitTypeDetails"
+          | translate
+          }}
+        </span>
+        <ng-template #elseBlock>
+          {{ "shared.addNewBenefitType" | translate }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+
+  <app-title-description-form [formDataObservable]="benefitTypeElement$" [formMode]="formMode" (cancel)="onCancel()"
+    (submit)="onSubmit($event)"></app-title-description-form>
+</section>

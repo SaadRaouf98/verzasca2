@@ -1,0 +1,63 @@
+<div class="grid">
+  <div class="row">
+    <div class="col-12">
+      <div class="info">
+        <div class="row">
+          <div class="col-12">
+            <span class="body">
+              {{
+              "TransactionsModule.TransactionsListComponent.transactionSubject"
+              | translate
+              }}
+              :
+            </span>
+
+            <span class="body-bold">
+              {{ requestDetails?.title || "-" }}
+            </span>
+          </div>
+        </div>
+        <hr class="gold-line" />
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <span class="body">
+              {{ "shared.transactionNum" | translate }}
+              :
+            </span>
+
+            <span class="body-bold">
+              {{
+              requestDetails?.
+              requestContainer?.transactionNumber || "-"
+              }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <span class="body">
+              {{ "shared.priority" | translate }}
+              :
+            </span>
+
+            <span class="body-bold" [style.color]="
+                 requestDetails?.requestContainer?.priority?.id | priorityColor
+                ">
+              {{requestDetails?.requestContainer?.priority?.title}}
+            </span>
+
+          </div>
+          <div class="col-12 col-md-4">
+            <span class="body">
+              {{ "shared.benefitType" | translate }}
+
+
+            </span>
+            <span class="body-bold">
+              {{requestDetails?.requestContainer?.benefitType?.title}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

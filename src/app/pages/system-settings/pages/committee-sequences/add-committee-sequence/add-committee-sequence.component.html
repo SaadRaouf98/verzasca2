@@ -1,0 +1,128 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <ng-container *ngIf="formMode === FormMode.Modify; else viewBlock">
+          <ng-container *ngIf="elementId">
+            {{
+            "SystemSettingsModule.AddCommitteeSequenceComponent.editSequenceDetails"
+            | translate
+            }}
+          </ng-container>
+
+          <ng-container *ngIf="!elementId">
+            {{
+            "SystemSettingsModule.AddCommitteeSequenceComponent.addSequence"
+            | translate
+            }}
+          </ng-container>
+        </ng-container>
+
+        <ng-template #viewBlock>
+          {{
+          "SystemSettingsModule.AddCommitteeSequenceComponent.viewSequenceDetails"
+          | translate
+          }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start title -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }">
+        <div class="label-container">
+          <label for="title">
+            {{ "shared.titleAr" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput name="title" formControlName="title" placeholder="{{ 'shared.titleAr' | translate }}" />
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="!form.get('title')?.errors && isTouched('title')" />
+            <img src="assets/icons/error-input.svg" *ngIf="form.get('title')?.errors && isTouched('title')" />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                form.get('title')?.errors?.['required'] &&
+                isTouched('title')
+              ">
+          {{ "shared.titleRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title-->
+
+      <!-- start  sequenceFormat -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('sequenceFormat')?.errors && isTouched('sequenceFormat'),
+          'mat-form-field-div-success':
+            !form.get('sequenceFormat')?.errors && isTouched('sequenceFormat')
+        }">
+        <div class="label-container">
+          <label for="sequenceFormat">
+            {{ "shared.committeeSequences" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="sequenceFormat" placeholder=" {{ 'shared.committeeSequences' | translate }}"
+            name="sequenceFormat" id="sequenceFormat">
+            <mat-option [value]="CommitteeSequenceFormat.DateNumber">
+              {{
+              "SystemSettingsModule.CommitteeSequencesListComponent.dateNumber"
+              | translate
+              }}
+            </mat-option>
+
+            <mat-option [value]="CommitteeSequenceFormat.YearNumber">
+              {{
+              "SystemSettingsModule.CommitteeSequencesListComponent.yearNumber"
+              | translate
+              }}
+            </mat-option>
+
+            <mat-option [value]="CommitteeSequenceFormat.Number">
+              {{
+              "SystemSettingsModule.CommitteeSequencesListComponent.number"
+              | translate
+              }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+               form.get('sequenceFormat')?.errors?.['required'] &&
+               isTouched('sequenceFormat')
+             ">
+          {{
+          "CommitteesModule.AddCommitteeComponent.committeeSequenceRequired"
+          | translate
+          }}
+        </span>
+      </div>
+      <!-- end sequence -->
+    </div>
+
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button class="cancel-btn" (click)="onCancel()" mat-flat-button color="primary" data-appearance="outline">
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button *ngIf="formMode === FormMode.Modify" class="save-btn" (click)="onSubmit()" mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn">
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

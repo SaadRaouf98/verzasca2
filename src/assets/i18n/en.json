@@ -1,0 +1,1120 @@
+{
+  "I18N": {
+    "MAT_PAGINATOR": {
+      "FIRST_PAGE": "First page",
+      "ITEMS_PER_PAGE": "Elements per page",
+      "LAST_PAGE": "Last page",
+      "NEXT_PAGE": "Next page",
+      "PREVIOUS_PAGE": "Previous page",
+      "OF": "of"
+    }
+  },
+  "shared": {
+    "noData": "No items to display",
+    "selected": "Selected",
+    "studyProposal": "Study Proposal",
+    "dateFrom": "Date From",
+    "dateTo": "Date To",
+    "searchByAddress": "Search by address or number",
+    "addNew": "Add New",
+    "before": "before",
+    "timeCreated": "Time created",
+    "completeFillingFields": "Please fill the missing fields!",
+    "hideAll": "Hide all",
+    "showAll": "View all",
+    "isSigned": "Is signed ?",
+    "fileMustBeUploaded": "A file should be uploaded",
+    "print": "Print",
+    "download": "Download",
+    "fileShouldBePdf": "File should be of type 'pdf'",
+    "fileShouldBeWord": "File should be of type 'word'",
+    "withinBudget": "Within budget",
+    "extrabudgetary": "Without budget",
+    "amountMechanism": "Treatment mechanism",
+    "riyal": "Riyal",
+    "all": "All",
+    "record": "Record",
+    "isRequireAttachNumber": "Requires inclusion of a number ?",
+    "exportedAttachmentTypes": "Attachment types",
+    "addExportedAttachment": "Add attachment type",
+    "addDepartment": "Add department",
+    "or": "Or",
+    "and": "And",
+    "search": "Search",
+    "advancedSearch": "Advanced search",
+    "noResultsFound": "No results found!",
+    "no": "No",
+    "yes": "Yes",
+    "supportedDocuments": "Supported documents",
+    "addDocType": "Add new document type",
+    "generalNumber": "General number",
+    "searchForConsultant": "Search for consultant",
+    "noAttachments": "No attachments",
+    "concernedFoundations": "Concerned foundations",
+    "subFoundation": "Sub foundation",
+    "incomingFoundation": "Incoming foundation",
+    "consultantGroups": "Consultant groups",
+    "addConsultantGroup": "Add consultant group",
+    "addProcessTypeJustification": "Add process type justification",
+    "processTypeJustification": "process type justification",
+    "processTypeJustifications": "process type justifications",
+    "exporting": "Export",
+    "sequenceFormat": "Sequence format",
+    "lastResetDate": "Last reset date",
+    "committeeSequences": "Serial numbers of committee minutes",
+    "attachments": "Attachments",
+    "notifications": "Notifications",
+    "container": "Transaction",
+    "recommendationOutcomes": "Recommendation outcome",
+    "isInitiated": "is Initiated ?",
+    "classification": "Classification level",
+    "noCommitteeMembers": "No members in this committee",
+    "isDefault": "isDefault ?",
+    "default": "Default",
+    "notDefault": "Not Default",
+    "delegateResponsibilities": "Delegate responsibilities",
+    "addCommitteeSignaures": "Add committee signatures",
+    "committeesSignatures": "Committees signatures",
+    "addReferralJustification": "Add referral justification for referring the issue from committee to the Royal",
+    "until": "until",
+    "addReport": "Add report",
+    "isActive": "Is active?",
+    "authorName": "File author",
+    "reports": "Reports",
+    "exportedDate": "Exported date",
+    "canotDeleteExportableDocument": "Exported document can't be deleted.",
+    "chooseExistingTransaction": "Choose existing transaction",
+    "connectionLost": "Please make sure you have a stable internet connection or contact system administrator",
+    "pleaseTryInanotherTime": "Please try again later",
+    "errorHappened": "Error happened",
+    "alert": "Alert",
+    "committeeRequired": "Committee is required.",
+    "add": "Add",
+    "addMember": "Add member",
+    "internal": "Internal",
+    "committee": "Committee",
+    "committeeSymbol": "Process type symbol",
+    "date": "Date",
+    "editContainerDetails": "Edit transaction details",
+    "importSerialNumberIs": "Import serial number is",
+    "exportSerialNumberIs": "Export serial number is",
+    "processDone": "Process done successfully",
+    "meetingManagement": "Meeting management",
+    "addNewRecommendationType": "Add new recommendation type",
+    "recommendationTypes": "Recommendation types",
+    "visible": "Visible",
+    "invisible": "Invisible",
+    "addNewContainerOutcome": "Add new container outcome",
+    "containerOutcomes": "Container outcomes",
+    "to": "for",
+    "viewInternalSectors": "View internal sectors",
+    "addInternalSector": "Add internal sector",
+    "viewInternalFoundations": "View internal foundations",
+    "addInternalFoundation": "Add internal foundation",
+    "addNewMeeting": "Add new meeting",
+    "editMeeting": "Edit meeting details",
+    "meetingTime": "Meeting date",
+    "meetingDurationInMinutes": "Meeting duration in minutes",
+    "numOfAttendences": "number of attendences",
+    "numOfMembers": "number of members",
+    "other": "Other",
+    "inPerson": "In person",
+    "remotely": "Remotely",
+    "meetingType": "Meeting type",
+    "numOfTransactions": "number of transactions",
+    "committeeName": "Committee name",
+    "done": "Done",
+    "content": "Content",
+    "definition": "Definition",
+    "createdBy": "Created by",
+    "createdAt": "Created at",
+    "timeTable": "Time Table",
+    "latestNews": "Latest News",
+    "addLatestNews": "Add new news",
+    "credits": "Credits",
+    "costs": "Costs",
+    "new": "New",
+    "initiated": "Initiated",
+    "inProgress": "In progress",
+    "held": "Hold, Waiting for external statement",
+    "exported": "Exported",
+    "archived": "Archieved",
+    "rejected": "Rejected",
+    "isDone": "Done",
+    "signing": "Signing",
+    "committeeApproval": "Committee Approvals",
+    "closed": "closed",
+    "forceClosed": "closed",
+    "reset": "Reset",
+    "resetBtn": "Reset",
+    "processType": "Selecting process type",
+    "searchForClassifications": "Search for classifications",
+    "classificationRequired": "Classification is required.",
+    "import": "Import",
+    "export": " Export",
+    "deliveryDate": "Delivery date",
+    "searchForRoles": "Search for roles",
+    "searchForTransactionsByTitle": "Search for transactions by title",
+    "addRequestType": "Add document type",
+    "schema": "Workflow schema",
+    "treatmentMechanism": "Processing mechanism",
+    "classificationLevel": "Restriction level",
+    "password": "Password",
+    "active": "Active",
+    "inactive": "Inactive",
+    "restricted": "Restricted",
+    "unrestricted": "Unrestricted",
+    "hijriDatePlaceHolder": "يوم شهر, سنة",
+    "exportToRC": "Exporting to royal court",
+    "exportToEE": "Exporting to external entity",
+    "RC": "Royal court",
+    "EE": "External entity",
+    "selectConsultants": "Selecting consultants",
+    "serialNumberIs": "Serial number is",
+    "approve": "Approve",
+    "note": "Note",
+    "confirm": "Confirm",
+    "transactionType": "Transaction type",
+    "addImport": "Add import",
+    "addExport": "Add export",
+    "sectorRequired": "Sector is required",
+    "foundationRequired": "Foundation is required",
+    "addNewTransaction": "Add new transaction",
+    "status": "Status",
+    "costsRequestedAmount": "Costs requested amount",
+    "creditsRequestedAmount": "Credits requested amount",
+    "costsApprovedAmount": "Costs approved amount",
+    "creditsApprovedAmount": "Credits approved amount",
+    "benefitType": "Benefit type",
+    "SomethingWentWrong": "Something went wrong,Please try again later:)",
+    "folder": "Folder",
+    "searchForUsers": "Search for users",
+    "selectValue": "Select a value",
+    "managePermissions": "Manage permissions",
+    "permissionsSettings": "Permissions settings",
+    "addNewActors": "Add new actor or actors",
+    "actors": "Actors",
+    "viewEmployees": "View employees",
+    "confirmInternalDepartmentDeletion": "Confirm internal department deletion",
+    "deleteInternalDepartmentWarning": "Are you sure you want to remove internal department",
+    "shortDescription": "Short description",
+    "viewInternalDepartments": "View internal departments and divisions",
+    "addInternalDivision": "Add new internal department or division",
+    "ediDepartmentOrDivisionDetails": "Edit department or division details",
+    "departmentOrDivisionManager": "Department or division manager",
+    "departmentOrDivisionManagerRequired": "You should choose a department or division manager",
+    "searchForUser": "Search for user",
+    "name": "name",
+    "viewMembers": "View members",
+    "addNewCommittee": "Add new committee",
+    "divisionName": "Division name",
+    "managementName": "Management name",
+    "internalDepartmentsAndDivisions": "Internal Departments and Divisions",
+    "addNewDepartmentOrDivision": "Add new department Or division",
+    "departmentManagerRequired": "Department Manager is required.",
+    "departmentManager": "Department Manager",
+    "addNewDepartment": "Add new department",
+    "secretariatBranches": "SecretariatBranches",
+    "committees": "Committees",
+    "secretarialStructure": "Secretarial structure",
+    "secretarials": "Secretarials",
+    "addNewSecretarial": "Add new secretarial",
+    "secretary": "Committee Secretary",
+    "secretaryRequired": "You must choose a Committee Secretary",
+    "deletedSuccessfully": "Deleted Successfully!",
+    "dataCreatedSuccessfully": "Created Successfully!",
+    "dataUpdatedSuccessfully": "Updated Successfully!",
+    "addRoles": "Add roles",
+    "phoneNumber": "Mobile number",
+    "email": "Email",
+    "userName": "User name",
+    "users": "Users",
+    "classifications": "Classifications",
+    "workflowTreatments": "Workflow treatments",
+    "stepCategories": "Step categories",
+    "steps": "Steps",
+    "actions": "Actions",
+    "priorities": "Priorities",
+    "foundations": "Foundations",
+    "benefitTypes": "Benefit Types",
+    "sectors": "Sectors",
+    "systemSettings": "System settings",
+    "stepCategory": "Step category",
+    "addNewStep": "Add new step",
+    "addNewClassification": "Add new classification",
+    "addNewAction": "Add new action",
+    "actionType": "Action type",
+    "addNewWorkflowTreatment": "Add new workflow treatment",
+    "addNewStepCategory": "Add new step category",
+    "questionMark": "?",
+    "yesDelete": "Yes, Delete it",
+    "noRowsFound": "No elements found",
+    "addNewPriority": "Add new priority",
+    "addNewFoundation": "Add new foundation",
+    "addNewBenefitType": "Add new benefit type",
+    "addNewSector": "Add new sector",
+    "save": "Save",
+    "titleAr": "Title in Arabic",
+    "title": "Tilte",
+    "titleRequired": "You must enter title",
+    "arabicCharsRequired": "Characters should be in Arabic",
+    "englishCharsRequired": "Characters should be in English",
+    "titleEn": "Title in English",
+    "descriptionAr": "Description in Arabic",
+    "description": "Description",
+    "descriptionEn": "English Description",
+    "delete": "Delete",
+    "edit": "Edit",
+    "options": "Opions",
+    "resetFilters": "Reset filters",
+    "apply": "Apply",
+    "gregorianDateRequired": "Gregorian date is required.",
+    "gregorianPeriodTime": "Gregorian period time",
+    "hijriPeriodTime": "Hijri period time",
+    "hijriDateRequired": "Hijri date is required",
+    "immediately": "Immediately",
+    "veryUrgent": "Very urgent",
+    "urgent": "urgent",
+    "day/month/year": "",
+    "englishDay/month/year": "year/month/day",
+    "filter": "Filter",
+    "mainHeader": "Financial Committee",
+    "logIn": "Sign in",
+    "tryAgain": "Try again later",
+    "records": "Records",
+    "importsExports": "Imports and Exports",
+    "documents": "Documents",
+    "transactions": "Transactions",
+    "facilityStructure": "Facility Structure",
+    "timeAttendance": "Attendence and Departure",
+    "erpSystem": "ERP System",
+    "ocr": "OCR",
+    "webmail": "Webmail",
+    "systemManagement": "System Administration",
+    "main": "Main",
+    "watch": "Watch",
+    "linkWithTransaction": "Link with another transaction",
+    "foundation": "Foundation",
+    "sector": "Sector",
+    "internalSector": "Internal sector",
+    "cancel": "Cancel",
+    "transactionNum": "Transaction number",
+    "transactionTitle": "Transaction title",
+    "requestingFoundation": "Requesting Foundation",
+    "priority": "Priority",
+    "requiredAmount": "Required Amount",
+    "remainingPeriod": "Remaining period for completion",
+    "advisor": "Advisor",
+    "loading": "Loading",
+    "home": "Home",
+    "profile": "My Profile",
+    "pendingRequests": "Pending Requests",
+    "requestTypes": "Request Types",
+    "meetings": "Meetings",
+    "news": "News",
+    "workHoursChart": "Work Hours Chart",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly"
+  },
+  "FooterComponent": {
+    "text": "In the event of any comments or inquiries, we hope to contact the Information Technology Department in the Secretariat of the Finance Committee IT@fc.gov.sa"
+  },
+  "AuthModule": {
+    "LoginPage": {
+      "header": "Welcome",
+      "user": "User name",
+      "userRequired": "User name is required.",
+
+      "passwordRequired": "Password is required.",
+      "rememberMe": "Remember me"
+    },
+    "VerifyOtpPage": {
+      "header": "Enter password",
+      "subHeader": "Mobile number used",
+      "resendCode": "Resend Code",
+      "loginFailed": "Login Failed",
+      "loginFailedMsg1": "There is a problem with your login",
+      "loginFailedMsg2": "Please contact system administrator or try again later."
+    }
+  },
+  "LayoutModule": {
+    "ContainerComponent": {
+      "notes": "Notes",
+      "pending": "Pending"
+    },
+    "NotificationsMenuComponent": {
+      "watchAllNotifications": "Watch all notifications"
+    },
+    "HeaderComponent": {
+      "logout": "Logout"
+    }
+  },
+  "HomeModule": {
+    "DashboardPage": {
+      "services": "Services",
+      "statistics": "Statistics",
+      "timingTable": "Timing Table",
+      "latestNews": "Latest News",
+      "watchAll": "See All",
+      "completedTransactions": "Completed Transactions",
+      "budget": "Budget",
+      "extrabudgetaryFinancing": "Extra Budgetary Financing",
+      "resultsRecommendations": "Results and Recommendations"
+    }
+  },
+  "ManageServicesModule": {
+    "AllServicesPage": {
+      "allServices": "All services",
+      "searchBarPlaceHolder": "Search by service name"
+    }
+  },
+  "SystemManagementModule": {
+    "SystemManagementPage": {
+      "systemStatistics": "System statistics",
+      "workCycle": "Work cycle",
+      "docsTypes": "Documents types",
+      "workflowDesign": "Workflow Design",
+      "usersAndRoles": "Users and Permissions",
+      "app": "تطبيق الأمانة",
+      "documentTypes": "Documents list"
+    }
+  },
+  "ManageDocumentsModule": {
+    "AddDocumentPage": {
+      "documents": "Documents",
+      "addNewDocument": "Add new document",
+      "documentType": "Document type",
+      "documentTypeRequired": "Document type is required",
+      "address": "Address",
+      "transaction": "Transaction",
+      "documentStatusRequired": "Document status is required",
+      "underProcessing": "Under processing",
+      "requestTypeRequired": "Request type is required",
+      "LetterNumberRequestingParty": "Letter numer requesting party",
+      "LetterNumberRequestingPartyRequired": "Letter numer requesting party is required",
+      "paymentType": "Payment type",
+      "paymentTypeRequired": "Payment type is required",
+      "documentNumber": "Document number",
+      "documentNumberRequired": "Document number is required",
+      "paperDocumentNumber": "Paper document number",
+      "paperDocumentNumberRequired": "Paper document number is required",
+      "incomingNumber": "Incoming number",
+      "incomingNumberRequired": "Incoming number is required",
+      "addFile": "Click to add file",
+      "fileRequired": "You have to choose a file",
+      "addNewFile": "Add new file",
+      "addTransaction": "Add transaction",
+      "confirmUnlinkTransaction": "Confirm unlink transaction",
+      "unlinkWarningTransaction": "This matter cannot be reversed. If you want to link the transaction again, you will need to go to link transactions.",
+      "confirmUnlink": "Confirm unlink"
+    },
+    "LinkTransactionComponent": {
+      "searchByTransactionAddress": "Search by transaction name",
+      "placeHolder": "Search by transaction name, number, or sector",
+      "linkTransaction": "Link Transaction"
+    }
+  },
+  "PendingTransactionsModule": {
+    "PendingTransactionsListPage": {
+      "pendingTransactions": "Pending Transactions"
+    },
+    "ModalPendingTransactionsFiltersComponent": {
+      "header": "Filter Transactions",
+      "subHeader": "You can filter tansactions with all their status and dates",
+      "chooseRequestingFoundation": "Choose requesting foundation",
+      "chooseSector": "Choose sector",
+      "chooseAdvisor": "Choose consultant"
+    }
+  },
+  "ActionsModule": {
+    "SectorsListComponent": {
+      "confirmDeletion": "Confirm sector deletion",
+      "deleteSectorWarning": "Are you sure you want to remove sector"
+    },
+    "RecommendationTypesListComponent": {
+      "confirmDeletion": "Confirm recommendation type deletion",
+      "deleteRecommendationTypeWarning": "Are you sure you want to remove recommendation type"
+    },
+    "ContainerOutcomesListComponent": {
+      "confirmDeletion": "Confirm container outcome deletion",
+      "deleteOutcomeWarning": "Are you sure you want to remove container outcome"
+    },
+    "BenefitTypesListComponent": {
+      "confirmDeletion": "Confirm request type deletion",
+      "deleteBenefitTypeWarning": "Are you sure you want to remove request type"
+    },
+    "ReferralJustificationsListComponent": {
+      "title": "Justifications for referring the issue from  the Royal court  to committee",
+      "confirmDeletion": "Confirm referral justification deletion",
+      "deleteReferralJustificationWarning": "Are you sure you want to remove referral justification"
+    },
+    "FoundationsListComponent": {
+      "confirmDeletion": "Confirm foundation deletion",
+      "deleteFoundationWarning": "Are you sure you want to remove foundation"
+    },
+    "PrioritiesListComponent": {
+      "confirmDeletion": "Confirm Priority deletion",
+      "deletePriorityWarning": "Are you sure you want to remove priority"
+    },
+    "StepCategoriesListComponent": {
+      "confirmDeletion": "Confirm step category deletion",
+      "deleteStepCategoryWarning": "Are you sure you want to remove step category"
+    },
+
+    "ActionsListComponent": {
+      "confirmDeletion": "Confirm action deletion",
+      "deleteActionWarning": "Are you sure you want to remove action"
+    },
+    "ClassificationsListComponent": {
+      "confirmDeletion": "Confirm classification deletion",
+      "deleteClassificationWarning": "Are you sure you want to remove classification",
+      "usersCount": "Users count"
+    },
+    "StepsListComponent": {
+      "confirmDeletion": "Confirm step deletion",
+      "deleteStepWarning": "Are you sure you want to remove step"
+    },
+    "AddSectorPage": {
+      "editSectorDetails": "Edit sector details",
+      "viewSectorDetails": "View sector details"
+    },
+    "AddRecommendationTypeComponent": {
+      "editRecommendationTypeDetails": "Edit recommendation type details"
+    },
+    "AddContainerOutcomeComponent": {
+      "editContainerOutcomeDetails": "Edit container outcome details"
+    },
+    "AddBenefitTypePage": {
+      "editBenefitTypeDetails": "Edit benefit type details"
+    },
+    "AddReferralJustificationComponent": {
+      "editDetails": "Edit referral justification details"
+    },
+    "AddFoundationPage": {
+      "editFoundationDetails": "Edit foundation details"
+    },
+    "AddPriorityPage": {
+      "editPriorityDetails": "Edit importance details",
+      "numOfHours": "Number of hours",
+      "numOfHoursRequired": "Number of hours is required."
+    },
+    "AddStepCategoryComponent": {
+      "editStepCategoryDetails": "Edit step category details"
+    },
+    "AddWorkflowTreatmentComponent": {
+      "editWorkflowTreatmentDetails": "Edit workflow treatment details"
+    },
+    "AddActionComponent": {
+      "viewActionDetails": "View action details",
+      "editActionDetails": "Edit action details",
+      "actionTypeRequired": "Action type is required.",
+      "approve": "Approve",
+      "assignment": "Assignment",
+      "delegate": "Delegate",
+      "changeRequest": "Changing request",
+      "redirectingRequest": "Redirecting request",
+      "signature": "Signature",
+      "initiate": "Initiate",
+      "escalation": "Escalation",
+      "conservatism": "Conservatism",
+      "recommendation": "Recommendation",
+      "noting": "Noting",
+      "phoneApproval": "Phone approval",
+      "addActorToClassifiedRequests": "Adding actor to classified requests",
+      "archiving": "Archiving",
+      "close": "Close"
+    },
+    "AddClassificationComponent": {
+      "viewClassificationDetails": "View classification details",
+      "editClassificationDetails": "Edit classification details",
+      "classificationLevelRequired": "Restriction level is required.",
+      "atLeastOneUserRequired": "You should select one user at least!",
+      "passwordValidationError": "Your password must be at least 10 characters long, contains at least 1 letter, 1 number, 1 digit and 1 symbol."
+    },
+    "AddStepComponent": {
+      "viewStepDetails": "View step details",
+      "editStepDetails": "Edit step details"
+    }
+  },
+  "SystemSettingsModule": {
+    "AddExportedAttachmentTypeComponent": {
+      "editDetails": "Edit attachment type details"
+    },
+    "ExportedAttachmentTypesListComponent": {
+      "confirmDeletion": "Confirm attachment type deletion",
+      "deleteAttachmentTypeWarning": "Are you sure you want to remove attachment type"
+    },
+    "SystemSettingsPage": {
+      "referringMatterJustifications": "Justifications for referring the matter"
+    },
+    "ConsultantGroupsListComponent": {
+      "confirmDeletion": "Confirm consultant group deletion",
+      "deleteConsultantGroupWarning": "Are you sure you want to remove consultant group"
+    },
+    "ProcessTypeJustificationsListComponent": {
+      "confirmDeletion": "Confirm process type justification deletion",
+      "deleteJustificationWarning": "Are you sure you want to remove process type justification"
+    },
+    "AddProcessTypeJustificationsComponent": {
+      "editDetails": "Edit process type justification details"
+    },
+
+    "AddCommitteeSignaturesComponent": {
+      "enterTitle": "Enter title for",
+      "insertTitle": "Insert tilte for",
+      "viewDetails": "View committee signatures details",
+      "editDetails": "Edit committee signatures details",
+      "successSignatureDeletion": "Signature has deleted successfully",
+      "failedSignatureDeletion": "Signature couldn't be deleted, Please try again later!",
+      "searchMember": "Search for a member",
+      "memberAlreayExist": "This member does already exist",
+      "noSignaturesDefinedYet": "No signatures have been defined yet."
+    },
+    "CommitteeSequencesListComponent": {
+      "dateNumber": "Serail number with date",
+      "yearNumber": "Serail number with year",
+      "number": "Serail number",
+      "confirmDeletion": "Confirm sequence deletion",
+      "deleteSequenceWarning": "Are you sure you want to remove sequence",
+      "reset": "Restart numbering",
+      "confirmResetting": "Confirm restart numbering",
+      "resetSequenceWarning": "Are you sure you want restart numbering",
+      "resetSuccessfully": "Restart numbering has done successfully",
+      "yesReset": "yes, Reset"
+    },
+    "AddCommitteeSequenceComponent": {
+      "addSequence": "Add serial numbers of committee records",
+      "editSequenceDetails": "Edit serial numbers of committee records",
+      "viewSequenceDetails": "View serial numbers of committee records"
+    }
+  },
+  "UsersModule": {
+    "UsersListComponent": {
+      "searchPlaceHolder": "Search by user name or email or mobile number.",
+      "syncUsers": "Sync users",
+      "syncUsersSuccessfully": "Users have been synced successfully",
+      "syncAttendance": "Sync time attendance",
+      "syncAttendanceSuccessfully": "Time attendance has been synced successfully"
+    }
+  },
+  "SecretarialModule": {
+    "SecretarialsListComponent": {
+      "confirmDeletion": "Confirm secretarial deletion",
+      "deleteSecretarialWarning": "Are you sure you want to remove secretarial",
+      "viewDepartment": "View Deprtments"
+    },
+    "AddSecretarialComponent": {
+      "ediSecretarialDetails": "Edit secretarial details"
+    },
+    "SecretarialStructureComponent": {},
+    "DepartmentsListComponent": {
+      "departments": "Departments",
+      "confirmDeletion": "Confirm department deletion",
+      "deleteDepartmentWarning": "Are you sure you want to remove department"
+    },
+    "AddDepartmentComponent": {
+      "ediDepartmentDetails": "Edit deparment details"
+    },
+    "ViewEmployeesComponent": {
+      "departmentName": "Department name",
+      "employees": "Employees",
+      "addEmployee": "Add employee"
+    }
+  },
+  "CommitteesModule": {
+    "HisExcellencyRelatedDepartmentsListComponent": {
+      "header": "Departments affiliated with His Excellency",
+      "editDepartment": "Edit department details",
+      "viewDepartment": "View department details",
+      "confirmDeletion": "Confirm department deletion",
+      "deleteWarning": "Are you sure you want to remove department"
+    },
+    "CommitteesListComponent": {
+      "confirmDeletion": "Confirm committee deletion",
+      "deleteCommitteeWarning": "Are you sure you want to remove committee"
+    },
+    "AddCommitteeComponent": {
+      "committeeSymbolRequired": "Process type symbol is required.",
+      "ediCommitteeDetails": "Edit committee details"
+    },
+    "ViewMembersComponent": {
+      "members": "Members",
+      "addRelatedDepartment": "Add a department belonging to His Excellency"
+    }
+  },
+  "ActorsModule": {
+    "ActorsListComponent": {
+      "confirmDeletion": "Confirm actor deletion",
+      "deleteActorWarning": "Are you sure you want to remove actor",
+      "users": "Users",
+      "roles": "Roles",
+      "departments": "Departments",
+      "totalUsers": "Total users"
+    },
+    "AddActorComponent": {
+      "viewActorDetails": "View actors details",
+      "ediActorDetails": "Edit actors details",
+      "searchForDepartments": "Search for departments",
+      "atLeastOneItemRequired": "You must choose at least one user or one department or one role."
+    }
+  },
+  "PermissionsSettingsModule": {
+    "RolesListComponent": {
+      "syncRoles": "Sync roles",
+      "totalPermissions": "Total permissions",
+      "syncRolesSuccessfully": "roles have been synced successfully!",
+      "searchPlaceHolder": "Search by role name."
+    },
+    "ManageRolesComponent": {
+      "saveRoles": "Save roles"
+    }
+  },
+  "FilesDocumentsModule": {
+    "DocumentsListComponent": {
+      "filesAndDocuments": "Files Documents",
+      "openFolder": "Open folder",
+      "syncDocuments": "Sync files",
+      "syncFilesDocsSuccessfully": "Files and directories have been synced successfully!",
+      "viewsStyle": "View style",
+      "view": "View",
+      "download": "Download",
+      "timeLastModified": "Time last modified",
+      "subDirectoryCount": "Internal items count"
+    }
+  },
+  "WorkflowsModule": {
+    "WorkflowTreatmentsListComponent": {
+      "confirmDeletion": "Confirm workflow treatment deletion",
+      "deleteWorkflowTreatmentWarning": "Are you sure you want to remove Workflow treatment",
+      "workflowEngine": "Workflow engine"
+    },
+    "WorkflowEngineComponent": {
+      "chooseStep": "Choose step",
+      "chooseStepRequired": "Step is required.",
+      "chooseActor": "Choose actor",
+      "chooseActorRequired": "Actor is required.",
+      "chooseAction": "Choose action",
+      "chooseActionRequired": "You have to choose at least one action.",
+      "selectParentNodeFirst": "Select parent node,first",
+      "atleastOneMainNode": "It must be at least on main node",
+      "selectNodeFirst": "A node must be selected first.",
+      "canotAddMainNodeFromSecondary": "You can't add main node from secondary node.",
+      "allNodesActionsHaveTaken": "All node's actions have been selected",
+      "enterNodeDataFirst": "Please enter node data first.",
+      "nodeDeletedSuccessfully": "Node deleted successfully",
+      "bridgedSuccessfully": "Nodes have bridged successfully",
+      "bridgedFailed": "Bridge has failed!",
+      "cannotDeleteAction": "Can't delete this action as it is used in a branch",
+      "cannotDeleteLink": "Can't delete this link as there is only one link pointing to this node",
+      "linkDeletedSuccessfully": "Link deleted successfully",
+      "linkUpdateSuccess": "Link's actions has been updated successfully",
+      "linkUpdateFailed": "Failure in updating link's actions"
+    },
+    "EditDeleteLinkModalComponent": {
+      "header": "Edit - Delete"
+    }
+  },
+  "TransactionsModule": {
+    "AdvancedSearchModalComponent": {
+      "containerId": "Transaction identifier",
+      "studyOutcome": "Study outcome",
+      "searchContent": "Search content",
+      "operator": "Search operator"
+    },
+
+    "TransactionsListComponent": {
+      "title": "Transaction title",
+      "open": "Opened",
+      "scheduled": "Scheduled for a meeting",
+      "reset": "Workflow reseted",
+      "close": "Closed",
+      "forceClose": "Closed by admin",
+      "searchPlaceHolder": "Search by title or auto number",
+      "confirmDeletion": "Confirm transaction deletion",
+      "deleteSectorWarning": "Are you sure you want to remove transaction",
+      "viewTransactionDetails": "View transaction details",
+      "requiredAmount": "Required Amount",
+      "durationPeriod": "Duration period",
+      "day": "Day",
+      "hour": "Hour",
+      "minute": "Minute",
+      "transactionSubject": "Transaction subject",
+      "transactionStatus": "Transaction status"
+    },
+    "AddTransactionComponent": {
+      "accessibility": "Accessibility",
+      "atLeastOne": "At least one person should be chosen to access the transaction",
+      "searchForFoundations": "Search for foundations",
+      "searchForBenefitTypes": "Search for benefitTypes",
+      "searchForSectors": "Search for sectors",
+      "benefitTypeRequired": "Benefit type is required",
+      "referralJustifications": "Justifications for referring the matter to the committee",
+      "transactionIsRequired": "You must choose a transaction"
+    },
+    "TransactionDetailsComponent": {
+      "transaction": "Transaction",
+      "editAmounts": "Edit amounts",
+      "importsAndExports": "Imports and exports",
+      "relatedTransactions": "Related transactions"
+    },
+    "EditAmountsModalComponent": {
+      "costsRequestedAmountRequired": "Costs requested amount is required.",
+      "creditsRequestedAmountRequired": "Credits requested amount is required.",
+      "costsApprovedAmountRequired": "Costs approved amount is required.",
+      "creditsApprovedAmountRequired": "Credits approved amount is required."
+    },
+
+    "ExportDocumentComponent": {
+      "exportedFoundationRequired": "Must select The destination foundation",
+      "searchForRequests": "Search for imports by title",
+      "importRequired": "Import is required",
+      "exportDocument": "Export document",
+      "editExportDocument": "Edit exported document details",
+      "exportTo": "Export to",
+      "chooseExportWay": "Choose way to export",
+      "chooseExportWayRequired": "You should choose a way to export",
+      "exportedFoundations": "Exported foundations",
+      "none": "None",
+      "mail": "Mail",
+      "email": "Email",
+      "fax": "Fax",
+      "handover": "Handover",
+      "other": "Other",
+      "exportedNumber": "Exported number",
+      "exportedNumberRequired": "Exported number is required.",
+      "documentHijriDate": "Hijri date of the paper document",
+      "documentGregorianDate": "Date of the Gregorian paper document",
+      "addressRequestingPartyLetter": "Address of the requesting party’s letter",
+      "addressRequestingPartyLetterEn": "Title of the requesting party’s letter in English",
+      "requestType": "Request type",
+      "addressRequestingPartyLetterNumber": "Letter number of the requesting party",
+      "documentNumber": "Document number",
+      "paperDocumentNumber": "Paper document number",
+      "exportTransaction": "Export transaction",
+      "physicalNumber": "Physical number",
+      "physicalNumberRequired": "Physical number is required.",
+      "letter": "Letter",
+      "note": "Note",
+      "record": "Record",
+      "exportedSuccessfully": "Document has exported successfully"
+    }
+  },
+  "SharedModule": {
+    "AuditingModalComponent": {
+      "noInitiateForYou": "You don't have any initiate",
+      "noInitiateForUser": "No initiate for this user",
+      "youCanotInitiate": "You can't initiate this transaction",
+      "leaveComment": "Leave a comment"
+    },
+    "UploadCommitteeApprovalFileModalComponent": {
+      "document": "Document",
+      "group": "Group"
+    },
+    "ExportTemplateModalComponent": {
+      "addBarcode": "Add barcode",
+      "addSignatures": "Add signatures",
+      "addInitiate": "Add initiate",
+      "cannotExportWithoutPutSignatures": "Sorry,You can't export transation without putting signatures places",
+      "cannotExportWithoutInitiate": "Sorry,You can't export transation without signning",
+      "uploadForApp": "Upload for App"
+    },
+    "SharedMembersComponent": {
+      "goToDepartments": "Go to the departments affiliated with His Excellency"
+    },
+    "StatementRequestModalComponent": {
+      "chooseAtLeastOneFoundation": "You should choose at least one foundation!"
+    },
+
+    "ProposedStudyDetailsComponent": {
+      "recommendationType": "Recommendation type",
+      "creditsAmountMechanism": "Credits amount mechanism",
+      "costsAmountMechanism": "Costs amount mechanism",
+      "recommendationContent": "Recommendation content"
+    },
+    "StudyProjectModalComponent": {
+      "processTypeJustRequired": "A justification for the treatment mechanism must be chosen",
+      "StudyDocumentKey": "Study Document key",
+      "fileUpload": "Upload Study Document",
+      "createDocumentKey": "Create Study Document",
+      "explainProcessTypeJust": "Clarifying the justification for the treatment mechanism",
+      "outcomeRequired": "The treatment mechanism must be chosen",
+      "proposedStudyOutcome": "Proposed outcome of the study",
+      "proposedStudyOutcomeRequired": "The study document must be chosen",
+      "amountRequired": "You must enter the amount",
+      "recommendationTypeComment": "Explain the justification for the type of recommendation",
+      "editorIsEmpty": "Sorry, study document is empty!"
+    },
+    "ExportToRcModalComponent": {
+      "physicalNumber": "Exported physical number",
+      "physicalNumberRequired": "Exported physical number is required"
+    },
+    "SelectProcessTypeModalComponent": {
+      "selectProcessType": "Select process type",
+      "selectProcessTypeRequired": "Select process type is required",
+      "changeReason": "Change Reason"
+    },
+    "SelectBenefitTypeModalComponent": {
+      "chooseBenefitType": "Choose benefit type",
+      "benefitTypeRequired": "Benefit type is required"
+    },
+    "SelectRecommendationTypeModalComponent": {
+      "chooseRecommendation": "Choose recommendation type",
+      "recommendationRequired": "recommendation type is required"
+    },
+    "SignatureFormatModalComponent": {
+      "isSignatureRequireAttendance": "Does signing require attendance?",
+      "chooseCommitteeSignature": "Choose committee signature",
+      "committeeSignatureRequired": "Committee signature must be chosen"
+    },
+    "AddConsultantGroupComponent": {
+      "editDetails": "Edit consultant groups details."
+    },
+    "ConsultantsAssignmentModalComponent": {
+      "assignmentSelectConsultant": "Assignment (Select consultant)",
+      "selectAtLeastOneConsultant": "Please select at least one consultant",
+      "selectMainConsulant": "Please determine the main consultant",
+      "selectGroupConsultant": "Choose group of consultants",
+      "searchGroupConsultant": "Search for consultants group by title"
+    },
+    "RedirectRequestModalComponent": {
+      "selectFoundationToRedirect": "Choose foundation to redirect request to",
+      "employee": "Employee",
+      "departmentsAndDivisions": "Departments and divisions",
+      "committees": "Committees",
+      "redirectRequest": "Redirect request",
+      "selectEmployee": "Choose employee to redirect request to",
+      "employeeRequired": "You should choose at least one employee!",
+      "selectDepartment": "Select department or division that you want to redirect request to",
+      "departmentRequired": "You should choose at least one department or division!",
+      "selectCommittee": "Choose committee to redirect request to",
+      "committeeRequired": "You should choose at least one committee!"
+    },
+    "ImportsExportsScrollableTableComponent": {
+      "noImportsNoExports": "No imports, No exports"
+    },
+    "RelatedTransactionsScrollableTableComponent": {
+      "noRelatedTransactions": "No related transactions"
+    },
+    "TransactionTimelineScrollableTableComponent": {
+      "noTimeLine": "No time line for the transaction",
+      "days": "Days",
+      "studyDocument": "Study Document",
+      "studyDocumentPlaceholder": "Click to download study document"
+    },
+    "DelegateUserModalComponent": {
+      "chooseDelegatedTo": "Select the delegate",
+      "delegatedToRequired": "The delegate must be chosen"
+    },
+    "DropzoneComponent": {
+      "addFile": "Add file",
+      "deleteFile": "Delete file",
+      "dragFile": "Drag file",
+      "allowedExtensions": "allowed extensions",
+      "megaBytes": "mega bytes"
+    }
+  },
+  "RequestTypesModule": {
+    "RequestTypesListComponent": {
+      "confirmDeletion": "Confirm request type deletion",
+      "deleteRequestTypeWarning": "Are you sure you want to remove request type",
+      "requestType": "Document type",
+      "requestTypes": "Document types",
+      "schemas": "Transaction workflows",
+      "searchForSchemas": "Search for transaction workflows",
+      "schemaRequired": "You should choose a workflow"
+    },
+    "AddRequestTypeComponent": {
+      "viewRequestTypeDetails": "View document type details",
+      "editRequestTypeDetails": "Edit document type details",
+      "docTypeRequired": "Document type is required."
+    }
+  },
+  "ImportsExportsModule": {
+    "ImportsExportsListComponent": {
+      "canotEditImportedDocument": "Can't update imported document unless its status is initiated",
+      "confirmDeletion": "Confirm import document deletion",
+      "searchPlaceHolder": "Search",
+      "deleteImportWarning": "Are you sure you want to remove imported document",
+      "export": "Exports",
+      "import": "Imports",
+      "transactionType": "Transaction type",
+      "title": "Title"
+    },
+    "AddImportComponent": {
+      "tranasction": "Transaction",
+      "requestType": "Document type",
+      "requestTypeRequired": "Document classification is required based on degree of confidentiality.",
+      "searchForRequestTypes": "Search for document types",
+      "physicalHijriDate": "Hijri date of the paper document",
+      "physicalGregorianDate": "Gregorian date of the paper document",
+      "deliveryHijriDate": "Actual Hijri date of delivery",
+      "deliveryGregorianDate": "Actual Gregorian date of delivery",
+      "availabilityHijriDate": "Hijri Date of referral from the Royal",
+      "availabilityGregorianDate": "Gregorian Date of referral from the Royal",
+      "priorityRequired": "You should choose a priority",
+      "physicalNumber": "Foundation letter number",
+      "physicalNumberRequired": "Foundation letter number is required.",
+      "deliveryNumber": "Registration number at the Royal Court",
+      "deliveryNumberRequired": "Registration number at the Royal Court is required.",
+      "costsRequestedAmount": "Required amounts",
+      "creditsRequestedAmount": "Approved amounts",
+      "createdImportSuccessfully": "Import is added successfully",
+      "editImport": "Edit import document",
+      "editedImportSuccessfully": "Import data is updated successfully",
+      "requestingFoundation": "Requesting foundation",
+      "concernedFoundation": "Concerned foundation",
+      "isAddAttachments": "Do you want to add attachments?",
+      "addAttachments": "Add attachments",
+      "saveAndAddAttachments": "Save then add attachments"
+    },
+    "RequestDetailsComponent": {
+      "transationSuccess": "Transaction has been taken successfully",
+      "transationError": "Transaction takeover has been cancelled successfully",
+      "arrivalDate": "Delivery date",
+      "currentAction": "Current action",
+      "exportDetails": "Exported details",
+      "importDetails": "Imported details",
+      "transactionStatus": "Transaction status",
+      "transactionTimeLine": "Transaction time line",
+      "doneSuccessfully": "Action has been done successfully",
+      "actionFailed": "Action has failed!!",
+      "noChosenCommittee": "No committee is chosen!",
+      "proposedStudyDetails": "Proposed study details",
+      "details": "Details",
+      "chronology": "Chronology",
+      "signatureViaTablet": "Sorry, Signing can only be done via Tablet."
+    }
+  },
+  "LatestNewsModule": {
+    "LatestNewsListComponent": {
+      "confirmDeletion": "Confirm news deletion",
+      "deleteLatestNewsWarning": "Are you sure you want to remove news"
+    },
+    "AddLatestNewsComponent": {
+      "editLatestNewsDetails": "Edit news details"
+    }
+  },
+  "ManageMeetingsModule": {
+    "ManageMeetingsListComponent": {
+      "confirmDeletion": "Confirm meeting deletion",
+      "deleteSectorWarning": "Are you sure you want to remove meeting",
+      "searchPlaceHolder": "Search by meeting title",
+      "viewMeetingDetails": "View meeting details"
+    },
+    "AddMeetingComponent": {
+      "meetingClassification": "Meeting types",
+      "meetingClassificationRequired": "You should choose meeing type",
+      "searchForCommittees": "search for committees",
+      "members": "Gentle Members",
+      "attendence": "Attendance",
+      "url": "Meeting url",
+      "meetingNature": "Meeting type",
+      "meetingTimeRequired": "Meeting type is required.",
+      "addedMemberBefore": "You've added this member before.",
+      "nameRequired": "Name is required.",
+      "emailRequired": "Email is required.",
+      "addAttendence": "Add attendant",
+      "nameAndEmailRequired": "Name and emil is required.",
+      "noAttendanceInserted": "You haven't added any attendance yet.",
+      "scheduledRequestContainers": "Scheduled request containers",
+      "noScheduledRequestContainers": "No scheduled requests.",
+      "discussionPoint": "Meeting reason",
+      "discussionPoints": "Meeting reasons",
+      "editMeetingDetails": "Edit meeting details"
+    }
+  },
+  "TimeAttendanceModule": {
+    "TimeAttendanceListComponent": {
+      "inTime": "time attendance",
+      "outTime": "Check-out time",
+      "normalRegular": "Working hours",
+      "normalOverTime": "Over time",
+      "totalWorkTime": "Total working hours",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "custom": "Custom period",
+      "period": "Period",
+      "noDataErrorMsg": "Please contact system administrator as you don't have any data for time attendance."
+    }
+  },
+  "ManageRecordsModule": {
+    "RecordsListComponent": {
+      "followRecords": "Following records",
+      "financialCommitteeRecords": "Financial committee records",
+      "preparatoryCommitteeRecords": "Preparatory committee records",
+      "searchPlaceHolder": "Search in records",
+      "recordNumber": "Record number",
+      "isMembersVisible": "Members Visible",
+      "isSecretRecord": "Secret record",
+      "conservation": "conservation",
+      "phoneExpressed": "Phone expressed",
+      "noOpinion": "No opinion has been expressed yet",
+      "signed": "Signed",
+      "noMembersDefined": "No member has been defined yet"
+    }
+  },
+  "ManageNotesModule": {
+    "NotesListComponent": {
+      "note": "Note",
+      "searchPlaceHolder": "Search in notes",
+      "noteNumber": "Note number",
+      "committee": "Committee",
+      "nonRelatedToContainer": "Non related to a transaction"
+    },
+    "NotesFiltersModalComponent": {
+      "header": "Filter notes",
+      "subHeader": "You can filter notes with all their status and dates"
+    }
+  },
+  "RegularReportsModule": {
+    "RegularReportsListComponent": {
+      "reportsSyncedSuccessfully": "Reports have been synced successfully",
+      "syncReports": "Sync reports",
+      "lastEditor": "last editor",
+      "active": "active",
+      "inactive": "Inactive",
+      "allReports": "All reports"
+    },
+    "AddRegularReportComponent": {
+      "type": "type",
+      "file": "report",
+      "holder": "classification",
+      "holders": "classifications",
+      "boardTypeRequired": "You should choose type",
+      "holderRequired": "You should choose classification",
+      "thumbnailImage": "Thumbnail image",
+      "thumbnailImageRequired": "Thumbnail image is ",
+      "reportFile": "report",
+      "reportFileRequired": "Report is required"
+    }
+  },
+  "NotificationsModule": {
+    "NotificationsListComponent": {
+      "goToSystem": "Go to system"
+    }
+  },
+  "ApplicationSettingsModule": {
+    "ApplicationSettingsComponent": {
+      "notificationPreferences": "Notifications preferences"
+    },
+    "NotificationUsersPreferencesListComponent": {
+      "searchPlaceHolder": "Search by user name"
+    }
+  },
+  "WorkflowDesignModule": {
+    "DocumentTypesListComponent": {
+      "confirmDeletion": "Confirm document type deletion",
+      "deleteDocTypeWarning": "Are you sure you want to remove document type"
+    },
+    "AddDocumentTypeComponent": {
+      "editDetails": "Edit document type details"
+    }
+  },
+  "MyProfileModule": {
+    "MyProfileComponent": {
+      "myNotifications": "My notifications"
+    }
+  }
+}

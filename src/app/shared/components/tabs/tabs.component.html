@@ -1,0 +1,18 @@
+<div class="tabs">
+  <ul class="tabs__header" [ngClass]="headerClass">
+    <li class="cursor-pointer" *ngFor="let tab of tabs"
+        (click)="selectTab(tab)"
+        [class.active]="tab.active"
+        [ngClass]="[
+        'tabs__header-item',
+        tab.headerClass
+      ]"
+    >
+      {{ tab.title }}
+    </li>
+  </ul>
+
+  <div class="tabs__content" *ngIf="activeTab">
+    <ng-container *ngTemplateOutlet="activeTab.template"></ng-container>
+  </div>
+</div>

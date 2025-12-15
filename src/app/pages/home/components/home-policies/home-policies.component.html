@@ -1,0 +1,63 @@
+<div class="grid mt-3 home-section-bg">
+  <div class="row">
+    <div class="col-12 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <svg width="1.2rem" height="1.2rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#policies'"></use>
+        </svg>
+        <span class="body-bold mx-2"> {{ 'shared.policies' | translate }} </span>
+      </div>
+      <a class="link" [routerLink]="'/policies'">
+        {{ 'HomeModule.DashboardPage.showAll' | translate }}
+      </a>
+    </div>
+    <div class="col-12 policy-container">
+      <mat-tab-group
+        class="modal-tabs"
+        [preserveContent]="true"
+        #tabGroup
+        (selectedIndexChange)="onTabIndexChanged($event)"
+      >
+        <mat-tab *ngFor="let category of items; let i = index" [label]="category.title">
+          <div class="tab-content">
+            <div class="row w-100 mx-auto">
+              <ng-container *ngFor="let item of selectedCategoryData">
+                <div class="selectedCategoryCard col-md-3 col-12">
+                  <img
+                    [src]="
+                      (getImageUrl(item.thumbnail?.path) | async) ||
+                      'assets/images/default-policy.png'
+                    "
+                    [alt]="item.title"
+                    class="mb-3"
+                  />
+                  <div class="d-flex align-items-center justify-content-between">
+                    <p class="body mb-0">{{ item.title }}</p>
+                    <div class="d-flex align-items-center">
+                      <svg
+                        class="cursor-pointer mx-2"
+                        width="1.5rem"
+                        height="1rem"
+                        (click)="onViewAttachments(item.file)"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                      </svg>
+                      <svg
+                        class="cursor-pointer"
+                        width="1.5rem"
+                        height="1.5rem"
+                        (click)="getDocument(item.file)"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

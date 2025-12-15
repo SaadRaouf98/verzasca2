@@ -1,0 +1,147 @@
+@use 'src/assets/design-system/colors' as *;
+
+.card {
+  .icon {
+    width: 40px;
+  }
+
+  .label,
+  .or {
+    font-size: 14px;
+  }
+  .desc {
+    font-size: 10px;
+  }
+
+  .desc,
+  .label {
+    color: #2f2b3de5;
+  }
+  .browse {
+    background: #7367f029;
+    color: #7367f0;
+    font-size: 13px !important;
+  }
+  .or {
+    color: #2f2b3d66;
+  }
+}
+
+.upload-area {
+  text-align: center;
+
+  &__header {
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__tooltip-data {
+    font-weight: bold;
+    color: #555;
+  }
+
+  .drop-zoon {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 12px;
+    border-radius: 0.5rem;
+    border: 1px dashed $gray-200;
+    background: $gray-50;
+
+    &__preview-image {
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+  }
+
+  .file-details {
+    margin-top: 1rem;
+
+    &__title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .uploaded-file {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+
+      &__icon-text {
+        font-weight: bold;
+        margin-left: 0.5rem;
+      }
+
+      &__counter {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.file-container {
+  border-radius: 0.5rem;
+  background: rgba(245, 245, 245, 0.7);
+  padding: 0.93556rem 0.75rem;
+}
+::ng-deep .mdc-linear-progress__bar-inner {
+  border-color: $primary-200 !important;
+}
+::ng-deep .mat-mdc-progress-bar .mdc-linear-progress__buffer-bar {
+  background-color: $gray-100;
+}
+// ::ng-deep .mdc-linear-progress__buffer {
+//   padding-left: 2rem;
+// }
+.custom-width {
+  min-width: 11rem;
+}
+
+:host ::ng-deep mat-progress-bar,
+:host ::ng-deep .mdc-linear-progress__buffer,
+:host ::ng-deep .mdc-linear-progress__bar {
+  height: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+:host ::ng-deep mat-progress-bar .mdc-linear-progress__bar-inner {
+  border-top-width: 5px;
+  bottom: 0px;
+  border-radius: 10px;
+}
+
+// Rotating animation for loading icon
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.name {
+  max-width: 75%;
+}
+.img_icon {
+  width: 1.3rem;
+  margin-inline-end: 10px;
+}

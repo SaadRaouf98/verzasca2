@@ -1,0 +1,84 @@
+// Shared styles for modal dialog tabs in detail components
+// Used by: request-details, transaction-details, exportable-document-details
+
+@import './variables.scss';
+
+// =============== Base Modal Tab Styling ===============
+::ng-deep .modal-tabs mat-tab-header {
+  margin-bottom: 1rem;
+}
+
+::ng-deep .modal-tabs mat-tab-header .mat-mdc-tab-labels {
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+  padding: 0;
+  border-bottom: 2px solid transparent;
+  gap: 1.5rem;
+}
+
+::ng-deep .modal-tabs mat-tab-header .custom-tab-label {
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid transparent;
+}
+::ng-deep .modal-tabs mat-tab-header,
+::ng-deep .modal-tabs .mat-mdc-tab-list {
+  border-radius: 0;
+}
+::ng-deep .modal-tabs mat-tab-header .mdc-tab {
+  height: fit-content;
+  padding: 0;
+}
+
+::ng-deep .modal-tabs mat-tab-header .mdc-tab.mdc-tab--active .custom-tab-label,
+::ng-deep .modal-tabs mat-tab-header .mdc-tab:hover .custom-tab-label {
+  border-radius: 0;
+  background: #fff;
+  border-bottom: 2px solid #000;
+  box-shadow: none;
+}
+
+::ng-deep .modal-tabs mat-tab-header .mdc-tab.mdc-tab--active,
+::ng-deep .modal-tabs mat-tab-header .mdc-tab:hover {
+  border-radius: 0;
+  background: #fff;
+  border-bottom: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+::ng-deep .modal-tabs mat-tab-header .mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #000;
+}
+
+::ng-deep .modal-tabs mat-tab-header .mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: $gray-700 !important;
+}
+
+::ng-deep .modal-tabs .mdc-tab__ripple,
+::ng-deep .modal-tabs .mat-mdc-tab-ripple {
+  display: none;
+}
+
+::ng-deep .modal-tabs .mat-mdc-tab {
+  flex-grow: 0 !important;
+}
+
+// =============== Modal Container ===============
+::ng-deep .action-modal .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 0.75rem;
+  background: #fff;
+  overflow: hidden;
+  gap: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: 100%;
+}

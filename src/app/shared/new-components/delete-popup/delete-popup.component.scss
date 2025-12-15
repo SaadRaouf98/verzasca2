@@ -1,0 +1,43 @@
+:host ::ng-deep {
+  ds-status::part(base) {
+    --status-size: 70px;
+    --status-radius: 100%;
+  }
+}
+.popup-container {
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 20px 24px -4px rgba(10, 13, 18, 0.1),
+    0 8px 8px -4px rgba(10, 13, 18, 0.04);
+  padding: 1.25rem;
+}
+.delete-icon {
+  border-radius: 1.75rem;
+  border: 8px solid #fef3f2;
+  background: #fee4e2;
+  width: 3.875rem;
+  height: 3.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gray-700 {
+  color: #5e5e5e;
+}
+.button-error {
+  background-color: #d32f2f !important;
+  border-color: #d32f2f !important;
+}
+::ng-deep html[lang="ar"] .mat-mdc-dialog-content {
+  padding: 0 !important;
+}
+::ng-deep html[lang="ar"] .mdc-dialog__title {
+  padding: 0 !important;
+}
+::ng-deep .mdc-dialog__title::before {
+  display: none !important;
+}
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 1rem;
+  width: 26.5rem;
+}

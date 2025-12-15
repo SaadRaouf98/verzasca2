@@ -1,0 +1,61 @@
+.label-container {
+  margin-bottom: 12px;
+}
+
+.btn-container {
+  display: flex;
+  gap: 2em;
+  margin-top: 2em;
+  justify-content: center;
+}
+
+button {
+  height: 40px !important;
+  padding-right: 3rem !important;
+  padding-left: 3rem !important;
+}
+
+.cancel-btn {
+  border: 2px solid #cd3b0c !important;
+  color: #cd3b0c !important;
+  background-color: #fff !important;
+}
+
+.save-btn:not([disabled]) {
+  background-color: #3db5b5 !important;
+  color: #fff;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 0;
+  }
+
+  .mat-form-field-div {
+    margin-bottom: 10px;
+  }
+
+  .label-container {
+    margin-bottom: 15px;
+  }
+
+  .footer-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 0;
+  }
+
+  h1 {
+    margin: 0 0 15px 0;
+  }
+}
+
+::ng-deep #mat-mdc-slide-toggle-1-label {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0 1em;
+}

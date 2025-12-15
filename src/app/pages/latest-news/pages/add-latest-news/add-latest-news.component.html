@@ -1,0 +1,197 @@
+<div class="d-flex align-items-center mb-3">
+  <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="navigateToTablePage()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+  </svg>
+  <div class="mx-2">
+    <div class="d-flex align-items-center">
+      <span class="body text-small gray-400">{{ 'shared.home' | translate }}</span>
+      <span class="body text-small gray-400 mx-2">/</span>
+      <span class="body text-small gray-400">{{ 'shared.latestNews' | translate }}</span>
+      <span class="body text-small gray-400 mx-2">/</span>
+      <h2 class="body-bold m-0">
+        <span *ngIf="elementId; else elseBlock">
+          {{ 'LatestNewsModule.AddLatestNewsComponent.editLatestNewsDetails' | translate }}
+        </span>
+        <ng-template #elseBlock>
+          {{ 'shared.addLatestNews' | translate }}
+        </ng-template>
+      </h2>
+    </div>
+  </div>
+</div>
+
+<div class="div-card">
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row rest-fields-container">
+      <!-- start title -->
+      <h4>بيانات الخبر</h4>
+      <div
+        class="col-12 col-lg-6 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error': form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success': !form.get('title')?.errors && isTouched('title')
+        }"
+      >
+        <div class="label-container">
+          <label for="title">
+            {{ 'shared.title' | translate }}
+          </label>
+        </div>
+        <!-- <mat-form-field appearance="outline">
+          <input matInput name="title" formControlName="title" />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('title')?.errors && isTouched('title')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('title')?.errors && isTouched('title')"
+            />
+          </div>
+        </mat-form-field> -->
+        <app-input
+          formControlName="title"
+          [placeholder]="'shared.enterNewsTitle'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- end title-->
+      <div class="col-12 col-lg-6 mat-form-field-div d-flex align-items-end">
+        <div class="label-container">
+          <label for="title">
+            {{ 'shared.status' | translate }}
+          </label>
+        </div>
+        <div class="d-flex w-100">
+          <app-select
+            class="w-100"
+            formControlName="isVisible"
+            [options]="visibleStatus"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            [placeholder]="'shared.selectStatus'"
+            [multiple]="false"
+            [searchable]="false"
+          ></app-select>
+          <!-- <p class="label">
+            {{ "shared.status" | translate }}
+          </p>
+
+          <p class="info-data">
+            <mat-slide-toggle name="status" formControlName="isVisible">
+              <ng-container
+                *ngIf="
+                  form.get('isVisible')?.value;
+                  then visible;
+                  else invisible
+                "
+              ></ng-container>
+
+              <ng-template #visible>
+                {{ "shared.visible" | translate }}
+              </ng-template>
+              <ng-template #invisible>
+                {{ "shared.invisible" | translate }}
+              </ng-template>
+            </mat-slide-toggle>
+          </p> -->
+        </div>
+      </div>
+
+      <span
+        class="span-error-message"
+        *ngIf="
+                    form.get('title')?.errors?.['required'] &&
+                    isTouched('title')
+                  "
+      >
+        {{ 'shared.titleRequired' | translate }}
+      </span>
+    </div>
+
+    <div class="row rest-fields-container">
+      <!-- start definition -->
+      <div class="col-6 pt-2 mat-form-field-div">
+        <div class="label-container">
+          <label for="definition">
+            {{ 'shared.definition' | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            [placeholder]="'shared.enterDefinition' | translate"
+            formControlName="definition"
+            name="definition"
+            rows="5"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <!-- end definition -->
+
+      <!-- start definition -->
+      <div class="col-6 pt-2 mat-form-field-div">
+        <div class="label-container">
+          <label for="definition">
+            {{ 'shared.content' | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            [placeholder]="'shared.enterContent' | translate"
+            formControlName="content"
+            name="content"
+            rows="5"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <!-- end content -->
+
+      <div class="col-12 pt-2 mat-form-field-div d-flex align-items-end">
+        <!-- <app-dropzone
+          [fileSize]="4"
+          fileDescriptor="News image."
+          [fileExtensions]="['.png', '.jpg', '.PNG', '.JPEG']"
+          [multiple]="false"
+          [noTitle]="true"
+          (fileId)="getFileNameId($event)"
+          [existedFileUrl]="this.form.get('imageUrl')?.value"
+          [touched]="isDropZoneTouched"
+          [regularExpression]="regularExpression"
+        ></app-dropzone> -->
+        <app-upload-attachment
+          class="w-100"
+          #uploadAttachment
+          [uploadFirst]="true"
+          [backgroundColor]="'#fff'"
+          [customFileTypes]="['.png', '.jpg', '.PNG', '.JPEG']"
+          [multiple]="false"
+          [showBtn]="false"
+          [split]="true"
+          [initialFiles]="newsImageData"
+          (fileUploaded)="onExportFileDropped($event)"
+          (fileRemoved)="onExportFileRemoved($event)"
+          [showViewOption]="true"
+          (viewAttachment)="onViewAttachment($event)"
+        ></app-upload-attachment>
+      </div>
+      <!-- end content-->
+    </div>
+  </form>
+</div>
+
+<div class="d-flex justify-content-end align-items-center mt-3">
+  <button
+    class="button button-primary button-lg mx-3"
+    (click)="onSubmit()"
+    [disabled]="!form.valid || disableSubmitBtn"
+  >
+    {{ 'shared.createNews' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

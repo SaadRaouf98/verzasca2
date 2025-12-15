@@ -1,0 +1,332 @@
+<section>
+  <div class="bg-section">
+    <h3 class="mb-3">
+      {{ 'ImportsExportsModule.RequestDetailsComponent.proposedStudyDetails' | translate }}
+    </h3>
+
+    <div class="row">
+      <div class="col-12 col-lg-4 | single-card">
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'SharedModule.StudyProjectModalComponent.proposedStudyOutcome' | translate }}
+          </p>
+
+          <p class="info-data">
+            <ng-container *ngIf="data?.exportType === ExportedDocumentType.Letter">
+              {{ 'TransactionsModule.ExportDocumentComponent.letter' | translate }}
+            </ng-container>
+
+            <ng-container *ngIf="data?.exportType === ExportedDocumentType.Note">
+              {{ 'TransactionsModule.ExportDocumentComponent.note' | translate }}
+            </ng-container>
+
+            <ng-container *ngIf="data?.exportType === ExportedDocumentType.Record">
+              {{ 'TransactionsModule.ExportDocumentComponent.record' | translate }}
+            </ng-container>
+
+            <ng-container *ngIf="data?.exportNumber"> ({{ data?.exportNumber }}) </ng-container>
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'ManageRecordsModule.RecordDetailsComponent.recordType' | translate }}
+          </p>
+
+          <p class="info-data">
+            <ng-container *ngIf="data?.recordType === RecordType.MeetingRecord">
+              {{ 'shared.meetingRecord' | translate }}
+            </ng-container>
+            <ng-container *ngIf="data?.recordType === RecordType.HandoverRecord">
+              {{ 'shared.handoverRecord' | translate }}
+            </ng-container>
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Note"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">نوع المذكرة</p>
+
+          <p class="info-data">
+            <ng-container *ngIf="data?.noteType === NoteType?.ForInformation">
+              للاطلاع والإحاطة
+            </ng-container>
+            <ng-container *ngIf="data?.noteType === NoteType?.CloseRequest">
+              إقفال قيد
+            </ng-container>
+            <ng-container *ngIf="data?.noteType === NoteType?.RequestStatement">
+              طلب إفادة من جهة خارجية
+            </ng-container>
+            <ng-container *ngIf="data?.noteType === NoteType?.Other">
+              {{ data?.otherNoteType }}
+            </ng-container>
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Letter"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">نوع الخطاب</p>
+
+          <p class="info-data">
+            {{ data?.letterType }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">{{ 'shared.processType' | translate }}</p>
+
+          <p class="info-data">
+            {{ data?.committee?.committeeSymbol || '-' }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'SharedModule.ProposedStudyDetailsComponent.recommendationType' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{
+              lang === 'ar' ? data?.recommendationType?.title : data?.recommendationType?.titleEn
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'SharedModule.StudyProjectModalComponent.recommendationTypeComment' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{ data?.recommendationTypeComment }}
+          </p>
+        </div>
+      </div>
+
+      <ng-container
+        *ngIf="
+          data?.exportType === ExportedDocumentType.Record &&
+          data?.recommendationType?.id !== environment.extendInvestigationId
+        "
+      >
+        <div class="col-12 col-lg-4 | single-card">
+          <div
+            class="d-flex align-items-center justify-content-between | info-content card-content"
+          >
+            <p class="label">
+              {{ 'SharedModule.ProposedStudyDetailsComponent.creditsAmountMechanism' | translate }}
+            </p>
+
+            <p class="info-data">
+              <ng-container
+                *ngIf="data?.creditsAmountMechanism === ApprovedAmountMechanism.WithinBudget"
+              >
+                {{ 'shared.withinBudget' | translate }}
+              </ng-container>
+
+              <ng-container
+                *ngIf="data?.creditsAmountMechanism === ApprovedAmountMechanism.Extrabudgetary"
+              >
+                {{ 'shared.extrabudgetary' | translate }}
+              </ng-container>
+
+              <ng-container *ngIf="data?.creditsAmountMechanism === ApprovedAmountMechanism.Other">
+                {{ 'shared.other' | translate }}
+              </ng-container>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4 | single-card">
+          <div
+            class="d-flex align-items-center justify-content-between | info-content card-content"
+          >
+            <p class="label">
+              {{ 'SharedModule.ProposedStudyDetailsComponent.costsAmountMechanism' | translate }}
+            </p>
+
+            <p class="info-data">
+              <ng-container
+                *ngIf="data?.costsAmountMechanism === ApprovedAmountMechanism.WithinBudget"
+              >
+                {{ 'shared.withinBudget' | translate }}
+              </ng-container>
+
+              <ng-container
+                *ngIf="data?.costsAmountMechanism === ApprovedAmountMechanism.Extrabudgetary"
+              >
+                {{ 'shared.extrabudgetary' | translate }}
+              </ng-container>
+
+              <ng-container *ngIf="data?.costsAmountMechanism === ApprovedAmountMechanism.Other">
+                {{ 'shared.other' | translate }}
+              </ng-container>
+            </p>
+          </div>
+        </div>
+      </ng-container>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'shared.processTypeJustification' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{ formatProcessTypeJustifications(data.processTypeJustifications) }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'SharedModule.StudyProjectModalComponent.explainProcessTypeJust' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{ data?.committeeChangeReason }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="data?.exportType === ExportedDocumentType.Record"
+        class="col-12 col-lg-4 | single-card"
+      >
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'shared.containerOutcome' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{ lang === 'ar' ? data?.outcome?.title : data?.outcome?.titleEn }}
+          </p>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4 | single-card">
+        <div class="d-flex align-items-center justify-content-between | info-content card-content">
+          <p class="label">
+            {{ 'shared.note' | translate }}
+          </p>
+
+          <p class="info-data">
+            {{ data.comment }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Start محتوي التوصية-->
+  <div class="bg-section">
+    <h3 class="mb-3">
+      {{ 'SharedModule.StudyProjectModalComponent.StudyDocumentKey' | translate }}
+    </h3>
+
+    <div class="row mb">
+      <div class="col-12 col-lg-6 pt-2 mat-form-field-div">
+        <mat-form-field
+          appearance="outline"
+          class="d-flex justify-content-between pb-3"
+          [matTooltip]="(data?.recommendation)!.name"
+        >
+          <input
+            matInput
+            name="recommendationFile"
+            [value]="(data?.recommendation)!.name"
+            disabled
+          />
+
+          <a
+            [routerLink]="['/imports-exports/attachments/' + (data?.recommendation)!.id]"
+            [queryParams]="{
+              name: (data?.recommendation)!.name
+            }"
+          >
+            <div
+              class="d-flex justify-content-center align-items-center| file-options"
+              matTooltip="{{ 'shared.watch' | translate }}"
+            >
+              <img src="assets/icons/green-eye.png" class="watch-eye" />
+            </div>
+          </a>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!--END محتوي التوصية-->
+
+  <!--Start Attachments -->
+
+  <div *ngIf="data?.attachments?.length" class="bg-section">
+    <h3 class="mb-4">
+      {{ 'shared.supportedDocuments' | translate }}
+    </h3>
+
+    <div class="row">
+      <div
+        *ngFor="let item of data?.attachments; index as i"
+        class="col-12 col-lg-3 pt-2 mat-form-field-div"
+      >
+        <mat-form-field
+          appearance="outline"
+          class="d-flex justify-content-between"
+          [matTooltip]="item.name"
+        >
+          <input matInput [name]="'attachment' + i" [value]="item.name" disabled />
+          <a
+            [routerLink]="['/imports-exports/attachments/' + item.id]"
+            [queryParams]="{
+              name: item.name
+            }"
+          >
+            <div
+              class="d-flex justify-content-center align-items-center cursor-pointer | file-options"
+              matTooltip="{{ 'shared.watch' | translate }}"
+            >
+              <img src="assets/icons/green-eye.png" class="watch-eye" />
+            </div>
+          </a>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <!--END Attachments-->
+</section>

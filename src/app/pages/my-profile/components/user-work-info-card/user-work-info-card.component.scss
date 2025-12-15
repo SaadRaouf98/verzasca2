@@ -1,0 +1,43 @@
+@use 'src/assets/design-system/colors' as *;
+.profileCard {
+  border-radius: 1.25rem;
+  border: 2px solid $rose-300;
+  background: $rose-500;
+  padding: 1.25rem;
+  color: #fff;
+
+  .row {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .col-md-6 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .child-flex {
+    border-radius: 1rem;
+    background: rgba(181, 160, 125, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+
+  .child {
+    border-radius: 1rem;
+    background: rgba(181, 160, 125, 0.2);
+    padding: 1rem;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.timeBox {
+  border-radius: 0.5rem;
+  background: $gray-50;
+  padding: 1.25rem;
+}

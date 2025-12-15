@@ -1,0 +1,12 @@
+.fullscreen-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-dialog-content-div {
+  transition: all 0.3s ease-in-out;
+}

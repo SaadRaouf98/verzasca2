@@ -1,0 +1,34 @@
+<form [formGroup]="form">
+  <div class="col-12">
+    <div *ngIf="hasLabel" class="label-container">
+      <label>{{ "shared.hijriPeriodTime" | translate }}</label>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-date-range-input (click)="picker.open()" [rangePicker]="picker">
+        <input
+          id="hijri-start"
+          matStartDate
+          formControlName="fromDate"
+          [placeholder]="'shared.fromDate' | translate"
+          #fromDate
+        />
+        <input
+          id="hijri-end"
+          matEndDate
+          formControlName="toDate"
+          [placeholder]="'shared.toDate' | translate"
+          (dateChange)="onDateChanges($event)"
+          #toDate
+        />
+      </mat-date-range-input>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <img
+        src="assets/icons/calendar.svg"
+        (click)="picker.open()"
+        class="calendar-icon"
+        alt="Click to open calendar."
+        matSuffix
+      />
+    </mat-form-field>
+  </div>
+</form>

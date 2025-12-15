@@ -1,0 +1,18 @@
+<ng-select
+  [formControl]="userFromControl"
+  [placeholder]="placeholder | translate"
+  appInputSanitizer
+  [bindLabel]="'name'"
+  [compareWith]="compareFn"
+  class="form-control"
+  [multiple]="multiple"
+  (search)="searchOnUsers($event)"
+  (change)="onSelectionChange($event)"
+  (blur)="onBlur()"
+  (clear)="onClearUsers()"
+  (remove)="onRemoveSingleUser($event)"
+>
+  <ng-option *ngFor="let user of usersList" [value]="user">
+    {{ user.name }}
+  </ng-option>
+</ng-select>

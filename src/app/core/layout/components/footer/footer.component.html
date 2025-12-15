@@ -1,0 +1,13 @@
+<footer class="footer" [ngClass]="{ 'from-login': isFromLogin }">
+  <img *ngIf="!isFromLogin" width="176" src="assets/images/Logo-white.svg" />
+  <!-- <svg width="1rem" height="1rem">
+    <use
+      [attr.xlink:href]="'assets/icons/sprite.svg#' + (isFromLogin ? 'info-dark' : 'info')"
+    ></use>
+  </svg> -->
+  <span class="body-bold text-small mx-2">
+    {{ 'FooterComponent.text' | translate }}
+    <!-- <a class="color-007AFF text-decoration-underline" href="mailto:IT@fc.gov.sa">IT@fc.gov.sa</a> -->
+  </span>
+  <a class="link text-small" href="waem@fc.gov.sa">waem@fc.gov.sa</a>
+</footer>

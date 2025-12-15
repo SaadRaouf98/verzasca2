@@ -1,0 +1,163 @@
+@use "src/assets/design-system/colors" as *;
+:host {
+  display: block;
+  font-family: var(--font-family, Arial, sans-serif);
+  --theme-color1: #20545f;
+  --theme-color1-dark: #163f47;
+  --theme-color-light: #d9e5e8;
+}
+
+.filter-bar {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.filter-bar input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  transition: border-color 0.3s;
+}
+.filter-bar input:focus {
+  border-color: var(--theme-color1);
+  outline: none;
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container thead {
+  background-color: var(--theme-color-light);
+  color: #333;
+}
+
+.table-container th,
+.table-container td {
+  padding: 12px;
+  text-align: left;
+}
+
+.table-container th {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: $rose-500;
+  cursor: pointer;
+  user-select: none;
+  height: 3.125rem;
+  padding: 0.375rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: stretch;
+  border-bottom: 1px solid $rose-100;
+  border-left: 1px solid $rose-100;
+  background: $rose-50;
+  text-align: justify;
+}
+
+.table-container tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.table-container tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: var(--theme-color1);
+  transition: transform 0.3s;
+}
+.expand-btn:hover {
+  transform: scale(1.1);
+}
+.expand-btn:focus {
+  outline: none;
+}
+
+.button {
+  border: none;
+  background: var(--theme-color1);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.button:hover {
+  background: var(--theme-color1-dark);
+}
+.button:focus {
+  outline: none;
+}
+
+.pagination-controls {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pagination-controls button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s, color 0.3s;
+}
+.pagination-controls button:focus {
+  outline: none;
+}
+.pagination-controls button.active {
+  background: var(--theme-color1);
+  color: #fff;
+  cursor: default;
+}
+.pagination-controls button:not(.active):hover {
+  background: var(--theme-color-light);
+}
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-controls select {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.pagination-controls select:focus {
+  outline: none;
+  border-color: var(--theme-color1);
+}
+
+@media (max-width: 600px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  table,
+  .pagination-controls {
+    font-size: 0.875rem;
+  }
+}

@@ -1,0 +1,445 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <span *ngIf="elementId; else elseBlock">
+          {{
+            "CommitteesModule.AddCommitteeComponent.ediCommitteeDetails"
+              | translate
+          }}
+        </span>
+        <ng-template #elseBlock>
+          {{ "shared.addNewCommittee" | translate }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start title -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }"
+      >
+        <div class="label-container">
+          <label for="title">
+            {{ "shared.titleAr" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="title"
+            formControlName="title"
+            placeholder="{{ 'shared.titleAr' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('title')?.errors && isTouched('title')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('title')?.errors && isTouched('title')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                  form.get('title')?.errors?.['required'] &&
+                  isTouched('title')
+                "
+        >
+          {{ "shared.titleRequired" | translate }}
+        </span>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('title')?.errors?.['pattern'] &&
+                isTouched('title')
+              "
+        >
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title-->
+
+      <!-- start title en-->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('titleEn')?.errors && isTouched('titleEn'),
+          'mat-form-field-div-success':
+            !form.get('titleEn')?.errors && isTouched('titleEn')
+        }"
+      >
+        <div class="label-container">
+          <label for="titleEn">
+            {{ "shared.titleEn" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="titleEn"
+            formControlName="titleEn"
+            placeholder="{{ 'shared.titleEn' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('titleEn')?.errors && isTouched('titleEn')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('titleEn')?.errors && isTouched('titleEn')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('titleEn')?.errors?.['required'] &&
+                isTouched('titleEn')
+              "
+        >
+          {{ "shared.titleRequired" | translate }}
+        </span>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('titleEn')?.errors?.['pattern'] &&
+                isTouched('titleEn')
+              "
+        >
+          {{ "shared.englishCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title en-->
+    </div>
+
+    <div class="row mb">
+      <!-- start descriptionAr -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('description')?.errors && isTouched('description'),
+          'mat-form-field-div-success':
+            !form.get('description')?.errors && isTouched('description')
+        }"
+      >
+        <div class="label-container">
+          <label for="descriptionAr">
+            {{ "shared.descriptionAr" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="description"
+            name="descriptionAr"
+            placeholder="{{ 'shared.descriptionAr' | translate }}"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+        <span
+          class="span-error-message"
+          *ngIf="
+              form.get('description')?.errors?.['pattern'] &&
+              isTouched('description')
+            "
+        >
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end descriptionAr -->
+
+      <!-- start description en-->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('descriptionEn')?.errors && isTouched('descriptionEn'),
+          'mat-form-field-div-success':
+            !form.get('descriptionEn')?.errors && isTouched('descriptionEn')
+        }"
+      >
+        <div class="label-container">
+          <label for="descriptionEn">
+            {{ "shared.descriptionEn" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="descriptionEn"
+            name="descriptionEn"
+            placeholder="{{ 'shared.descriptionEn' | translate }}"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('descriptionEn')?.errors?.['pattern'] &&
+                isTouched('descriptionEn')
+              "
+        >
+          {{ "shared.englishCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end description en-->
+    </div>
+
+    <div class="row mb">
+      <!-- start committeeSymbol -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('committeeSymbol')?.errors && isTouched('committeeSymbol'),
+          'mat-form-field-div-success':
+            !form.get('committeeSymbol')?.errors && isTouched('committeeSymbol')
+        }"
+      >
+        <div class="label-container">
+          <label for="committeeSymbol">
+            {{ "shared.committeeSymbol" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="committeeSymbol"
+            formControlName="committeeSymbol"
+            placeholder="{{ 'shared.committeeSymbol' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="
+                !form.get('committeeSymbol')?.errors &&
+                isTouched('committeeSymbol')
+              "
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="
+                form.get('committeeSymbol')?.errors &&
+                isTouched('committeeSymbol')
+              "
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                  form.get('committeeSymbol')?.errors?.['required'] &&
+                  isTouched('committeeSymbol')
+                "
+        >
+          {{
+            "CommitteesModule.AddCommitteeComponent.committeeSymbolRequired"
+              | translate
+          }}
+        </span>
+      </div>
+      <!-- end committeeSymbol-->
+
+      <!-- start committee sequence -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('committeeSequenceId')?.errors &&
+            isTouched('committeeSequenceId'),
+          'mat-form-field-div-success':
+            !form.get('committeeSequenceId')?.errors &&
+            isTouched('committeeSequenceId')
+        }"
+      >
+        <div class="label-container">
+          <label for="committeeSequenceId">
+            {{ "shared.committeeSequences" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-select
+            formControlName="committeeSequenceId"
+            placeholder=" {{ 'shared.committeeSequences' | translate }}"
+            name="committeeSequenceId"
+            id="committeeSequenceId"
+          >
+            <mat-option
+              *ngFor="let sequence of sequencesList"
+              [value]="sequence.id"
+            >
+              {{ sequence.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                 form.get('committeeSequenceId')?.errors?.['required'] &&
+                 isTouched('committeeSequenceId')
+               "
+        >
+          {{
+            "CommitteesModule.AddCommitteeComponent.committeeSequenceRequired"
+              | translate
+          }}
+        </span>
+      </div>
+      <!-- end committee sequence-->
+    </div>
+
+    <div class="row mb">
+      <!-- start recordCompletionTimeInHours -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('recordCompletionTimeInHours')?.errors &&
+            isTouched('recordCompletionTimeInHours'),
+          'mat-form-field-div-success':
+            !form.get('recordCompletionTimeInHours')?.errors &&
+            isTouched('recordCompletionTimeInHours')
+        }"
+      >
+        <div class="label-container">
+          <label for="recordCompletionTimeInHours"> وقت إنجار المحضر </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="recordCompletionTimeInHours"
+            formControlName="recordCompletionTimeInHours"
+            placeholder="وقت انجار المحضر"
+            type="number"
+            min="1"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="
+                !form.get('recordCompletionTimeInHours')?.errors &&
+                isTouched('recordCompletionTimeInHours')
+              "
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="
+                form.get('recordCompletionTimeInHours')?.errors &&
+                isTouched('recordCompletionTimeInHours')
+              "
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                  form.get('recordCompletionTimeInHours')?.errors?.['required'] &&
+                  isTouched('recordCompletionTimeInHours')
+                "
+        >
+          يجب إدخال وقت إنجاز المحضر
+        </span>
+      </div>
+      <!-- end committeeSymbol-->
+      <!-- start RecordPhoneApprovalsLimit -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('recordPhoneApprovalsLimit')?.errors &&
+            isTouched('recordPhoneApprovalsLimit'),
+          'mat-form-field-div-success':
+            !form.get('recordCompletionTimeInHours')?.errors &&
+            isTouched('recordPhoneApprovalsLimit')
+        }"
+      >
+        <div class="label-container">
+          <label for="recordPhoneApprovalsLimit"> عدد الموافقات الهاتفية </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="recordPhoneApprovalsLimit"
+            formControlName="recordPhoneApprovalsLimit"
+            placeholder="عدد الموافقات الهاتفية"
+            type="number"
+            min="1"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="
+                !form.get('recordPhoneApprovalsLimit')?.errors &&
+                isTouched('recordPhoneApprovalsLimit')
+              "
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="
+                form.get('recordPhoneApprovalsLimit')?.errors &&
+                isTouched('recordPhoneApprovalsLimit')
+              "
+            />
+          </div>
+        </mat-form-field>
+        <p class="text-xs text-muted mt-1 fs-200">اتركه فارغًا ليكون غير محدود</p>
+
+        <!--        <span-->
+        <!--          class="span-error-message"-->
+        <!--          *ngIf="-->
+        <!--                  form.get('recordPhoneApprovalsLimit')?.errors?.['required'] &&-->
+        <!--                  isTouched('recordPhoneApprovalsLimit')-->
+        <!--                "-->
+        <!--        >-->
+        <!--          يجب إدخال وقت إنجاز المحضر-->
+        <!--        </span>-->
+      </div>
+      <!-- end RecordPhoneApprovalsLimit-->
+    </div>
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button
+          class="cancel-btn"
+          (click)="onCancel()"
+          mat-flat-button
+          color="primary"
+          data-appearance="outline"
+        >
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button
+          class="save-btn"
+          (click)="onSubmit()"
+          mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn"
+        >
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

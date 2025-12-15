@@ -1,0 +1,54 @@
+<div class="row gx-3">
+  <div class="col-xxl-4 col-5">
+    <div class="home-calendar">
+      <app-inline-calendar (selectionChange)="onCalendarDateChange($event)"></app-inline-calendar>
+    </div>
+  </div>
+  <div class="col-xxl-8 col-7">
+    <!-- upcoming-events.component.html -->
+    <div class="upcoming-events">
+      <div class="header mb-2" *ngIf="filteredEvents.length > 0">
+        <p class="body-bold mb-0">
+          {{ 'HomeModule.DashboardPage.nextEvents' | translate }}
+        </p>
+        <button class="add-btn text-white" [routerLink]="'/manage-meetings/add'">
+          <i class="hgi hgi-stroke hgi-add-square fs-20"></i>
+          <span class="mx-1 body-bold text-small">{{
+            'HomeModule.DashboardPage.addNew' | translate
+          }}</span>
+        </button>
+      </div>
+
+      <div class="list h-100">
+        <ng-container *ngIf="!filteredEvents || filteredEvents.length === 0">
+          <div
+            class="no-events d-flex flex-column align-items-center justify-content-center w-100 h-100 m-auto"
+          >
+            <img class="m-0" src="assets/images/homeNoData.png" alt="No events" />
+            <p class="body">{{ 'shared.noEvents' | translate }}</p>
+            <!-- <button class="add-btn text-white" [routerLink]="'/manage-meetings/add'">
+              <i class="hgi hgi-stroke hgi-add-square fs-20"></i>
+              {{ 'HomeModule.DashboardPage.addNew' | translate }}
+            </button> -->
+          </div>
+        </ng-container>
+        <ng-container *ngFor="let ev of filteredEvents; let i = index">
+          <div class="item" [ngClass]="{ 'neutral-bg': i % 2 === 1 }">
+            <button mat-icon-button class="menu-btn">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <div class="details">
+              <div class="body-bold mb-3 title">{{ ev.title }}</div>
+              <div class="meta">
+                <i class="hgi hgi-stroke hgi-calendar-03"></i>
+                <span class="text-small">{{ ev.date | date : 'd MMM yyyy' }}</span>
+                <i class="hgi hgi-stroke hgi-clock-01"></i>
+                <span class="text-small">{{ ev.startTime }}–{{ ev.endTime }}</span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

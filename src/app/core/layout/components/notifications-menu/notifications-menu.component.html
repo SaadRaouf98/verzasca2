@@ -1,0 +1,59 @@
+<button
+  mat-icon-button
+  matBadgeEmpty
+  matBadgeColor="accent"
+  [matMenuTriggerFor]="notificationsMenu"
+  (mouseenter)="onNotificationsMenuMouseEntered()"
+  (click)="removeIconBadge()"
+  matBadge="1"
+>
+  <!-- matBadge="{{ noOfAllUnreadNotifications }}" -->
+  <img
+    src="../../../../../assets/icons/bell-notification.svg"
+    alt="notification icon opens on clicked."
+    width="20"
+  />
+</button>
+<mat-menu #notificationsMenu="matMenu" class="notifications-menu-width">
+  <div class="cart-menu ps-0 pb-0">
+    <h3 class="first-p mb-1">
+      {{ "shared.notifications" | translate }}
+      <span *ngIf="!isLoading">({{ noOfAllUnreadNotifications }})</span>
+    </h3>
+    <div [class.minHeight]="!isLoading">
+      <div
+        *ngFor="let notification of notifiations"
+        class="notification-item"
+        [class.notification-seen]="notification.seen"
+        (click)="onGoToDetails(notification)"
+      >
+        <div class="d-flex" style="gap: 15px; justify-content: space-between">
+          <img src="../../../../../assets/icons/alarm.png" class="alarm-img" />
+          <span class="title">
+            {{ lang === "ar" ? notification.title : notification.titleEn }}
+          </span>
+
+          <p
+            class="text-gray-500 | message"
+            [innerHTML]="
+              lang === 'ar'
+                ? notification.message.replaceAll('\\n', '\<br/>')
+                : notification.message.replaceAll('\\n', '\<br/>')
+            "
+          ></p>
+        </div>
+
+        <p class="ltr | date">
+          <span>{{ notification.date | date : "dd/MM/yyyy" }}</span>
+          <span>{{ notification.date | date : "hh:mm a" }}</span>
+        </p>
+      </div>
+    </div>
+    <button mat-menu-item routerLink="/notifications" class="watch-all">
+      {{
+        "LayoutModule.NotificationsMenuComponent.watchAllNotifications"
+          | translate
+      }}
+    </button>
+  </div>
+</mat-menu>

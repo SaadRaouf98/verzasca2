@@ -1,0 +1,12 @@
+<div class="custom-toast-wrapper" [ngClass]="'toast-' + type">
+  <svg width="1.5rem" height="1.5rem">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#toastr-' + type"></use>
+  </svg>
+  <div class="toast-content">
+    <p class="toast-title body-bold text-small mb-1" *ngIf="title">{{ title }}</p>
+    <p class="toast-message body text-small mb-0">{{ message }}</p>
+  </div>
+  <!-- <button class="toast-close" (click)="onClose()">
+    <span>&times;</span>
+  </button> -->
+</div>

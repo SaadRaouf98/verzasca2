@@ -1,0 +1,139 @@
+<div class="table-responsive">
+  <table style="border-spacing: 0 10px !important">
+    <thead>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let element of requestActions; let i = index"
+        style="background-color: #fff"
+      >
+        <!--!element.isSuccess-->
+        <td class="first-td">
+          <!--!element.isSuccess-->
+          <img
+            src="assets/icons/blue-circle.png"
+            style="display: block; margin: auto"
+          />
+        </td>
+
+        <td class="second-td">
+          <div class="fs-400 d-flex flex-column" style="margin-top: 1em">
+            <p class="operator-name">{{ element.user?.name }}</p>
+            <p class="operation-description">
+              {{ lang === "ar" ? element.title : element.titleEn }}
+            </p>
+          </div>
+
+          <p class="fs-300 fw-regular comment">
+            {{ element.comment }}
+          </p>
+
+          <p class="fs-300 fw-regular green-color | transaction-days"></p>
+        </td>
+
+        <td
+          *ngIf="element.consultants.length; else emptyTDBlock"
+          class="consultants-td"
+        >
+          <mat-chip-option
+            *ngFor="let consultant of element.consultants"
+            selectable="false"
+            class="consultant-chip"
+          >
+            {{ consultant.name }}</mat-chip-option
+          >
+        </td>
+         <td>
+           <span *ngIf="element.durationInMinutes" class="d-flex flex-row-reverse gap-1">
+              <p class="white-space-no-wrap">{{element.durationInMinutes | minutesToReadableTime}}</p>
+           </span>
+
+         </td>
+        <ng-template #emptyTDBlock><td class="empty-td"></td></ng-template>
+
+        <td class="last-td">
+          <div class="last-td-container">
+            <p class="date">
+              <span class="black-colored">{{
+                element.date | date : "dd/MM/yyyy"
+              }}</span>
+              <br />
+
+              <span>{{ formatHijriDate(element.hijriDate) }}</span>
+
+              <br />
+              <span> {{ getTime(element.date) }} </span>
+            </p>
+
+            <div class="options-container">
+              <ng-container *ngIf="element.studyingFile">
+                <a
+                  [routerLink]="[
+                    '/imports-exports/attachments/' + element.studyingFile.id
+                  ]"
+                  [queryParams]="{
+                    name: element.studyingFile.name
+                  }"
+                >
+                  <div
+                    [matTooltip]="'مشاهدة الملف ' + getFileType(element)"
+                    class="option-item left-white-border"
+                  >
+                    <img src="assets/icons/white-eye.svg" />
+                  </div>
+                </a>
+
+                <div
+                  (click)="onDownloadFile(element.studyingFile!)"
+                  [matTooltip]="'تحميل الملف ' + getFileType(element)"
+                  class="option-item"
+                  [class.left-white-border]="element.attachments.length"
+                >
+                  <img src="assets/icons/white-download.png" />
+                </div>
+              </ng-container>
+
+              <div
+                *ngIf="element.attachments.length"
+                (click)="onViewAttachments(element.attachments)"
+                matTooltip="{{ 'shared.attachments' | translate }}"
+                class="option-item"
+                [class.left-white-border]="element.hasCommitteeApprovals"
+              >
+                <img src="assets/icons/attach-document.png" />
+              </div>
+
+              <div
+                *ngIf="element.hasCommitteeApprovals"
+                (click)="
+                  onViewCommitteeApprovals(element.id, element.requestId)
+                "
+                matTooltip="موافقات أعضاء اللجنة"
+                class="option-item"
+              >
+                <img
+                  src="assets/icons/person-checkmark.png"
+                  style="width: 20px"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p
+    *ngIf="requestActions && requestActions.length === 0"
+    class="no-rows-warning-msg"
+  >
+    {{
+      "SharedModule.TransactionTimelineScrollableTableComponent.noTimeLine"
+        | translate
+    }}
+  </p>
+</div>

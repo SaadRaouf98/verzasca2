@@ -1,0 +1,85 @@
+<div class="wrapper">
+  <app-header [isLoggedIn]="false"></app-header>
+
+  <div class="verify-otp-page">
+    <div class="card">
+      <ng-container *ngIf="!failedLogin">
+        <div class="card-header">
+          <img
+            src="assets/icons/phone.png"
+            class="phone-img"
+            alt="Mobile Device."
+          />
+          <h1 class="fs-900 fw-bold text-slate-900">
+            {{ 'AuthModule.VerifyOtpPage.header' | translate }}
+          </h1>
+          <p class="fs-400 fw-bold text-slate-700">
+            {{ 'AuthModule.VerifyOtpPage.subHeader' | translate }}:
+            <span class="ltr | phone-number"> {{ phoneNumber }} </span>
+          </p>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="input-wrapper">
+              <ng-otp-input
+                [formCtrl]="otp"
+                [config]="{
+                  length: otpLength, allowNumbersOnly: true
+                }"
+              ></ng-otp-input>
+            </div>
+            <button
+              [disabled]="form.invalid || disableLoginBtn"
+              type="submit"
+              class="bg-primary text-white login-btn"
+            >
+              {{ 'shared.logIn' | translate }}
+            </button>
+
+            <button
+              [disabled]="disableSendCodeBtn"
+              type="button"
+              (click)="resendCode()"
+              class="text-primary bg-white resend-btn"
+            >
+              {{ 'AuthModule.VerifyOtpPage.resendCode' | translate }}
+            </button>
+          </form>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="failedLogin">
+        <div class="card-header">
+          <img
+            src="assets/icons/error.png"
+            class="phone-img"
+            alt="Login failed!"
+          />
+          <h1 class="fs-900 fw-bold text-slate-900">
+            {{ 'AuthModule.VerifyOtpPage.loginFailed' | translate }}
+          </h1>
+
+          <div class="msg-container">
+            <p class="fs-400 fw-bold text-slate-700">
+              {{ 'AuthModule.VerifyOtpPage.loginFailedMsg1' | translate }}
+            </p>
+            <p class="fs-400 fw-bold text-slate-700">
+              {{ 'AuthModule.VerifyOtpPage.loginFailedMsg2' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="card-body">
+          <button
+            type="button"
+            class="bg-primary text-white login-btn try-btn"
+            (click)="tryLoginAgain()"
+          >
+            {{ 'shared.tryAgain' | translate }}
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

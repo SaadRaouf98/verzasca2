@@ -1,0 +1,1922 @@
+<div #table class="table-container table-responsive sticky-table">
+  <!-- Show table always (headers visible even when no data) -->
+  <ng-container *ngIf="!isLoading">
+    <table
+      #tableSort="matSort"
+      (matSortChange)="sortChange($event)"
+      [dataSource]="dataSource"
+      class=" {{ className }}"
+      mat-table
+      matSort
+      [multiTemplateDataRows]="true"
+    >
+      <!-- *ngIf="dataSource.filteredData?.length! > 0" -->
+      <ng-container
+        *ngFor="let column of columns; let i = index; let last = last; let secondLast = penultimate"
+      >
+        <!-- Add a check to ensure 'columnsConfig' and 'columnsConfig[i]' are defined before using them -->
+        <ng-container *ngIf="columnsConfig && columnsConfig[i]">
+          <ng-container [matColumnDef]="column" [stickyEnd]="!!columnsConfig[i].stickyEnd!">
+            <ng-container *ngIf="!columnsConfig[i].notSortable">
+              <th
+                *matHeaderCellDef
+                [ngClass]="{
+                  'text-end': columnsConfig[i].type === 'actions',
+                }"
+                mat-header-cell
+              >
+                <!-- mat-sort-header -->
+                <ng-container
+                  *ngIf="
+                    columnsConfig[i].type !== 'checkbox' ||
+                    (this.columnsConfig[i]?.type! == 'actions' &&
+                      this.columnsConfig[i]?.actions?.length === 0)
+                  "
+                >
+                  <div
+                    *ngIf="
+                      !(
+                        this.columnsConfig[i].type == 'actions' &&
+                        this.columnsConfig[i].actions.length === 0
+                      )
+                    "
+                    class="d-flex align-items-center justify-content-center"
+                  >
+                    <div *ngIf="columnsConfig[i].iconLabel" class="">
+                      <svg width="1rem" height="1rem">
+                        <use
+                          [attr.xlink:href]="
+                            'assets/icons/sprite.svg#' + columnsConfig[i].iconLabel
+                          "
+                        ></use>
+                      </svg>
+                    </div>
+                    <div
+                      *ngIf="columnsConfig[i].label"
+                      class="mx-1 fc-{{ columnsConfig[i].fontColor }}"
+                    >
+                      {{ columnsConfig[i].label | translate }}
+                    </div>
+                    <div
+                      *ngIf="columnsConfig[i].hasFilter"
+                      class="d-flex justify-content-center align-items-center cursor-pointer"
+                      style="min-width: fit-content"
+                    >
+                      <span
+                        #statusMenuTrigger="matMenuTrigger"
+                        (click)="$event.stopPropagation()"
+                        [matMenuTriggerFor]="filterMenu"
+                        [matMenuTriggerRestoreFocus]="false"
+                        [ngClass]="columnsConfig[i].type"
+                      >
+                        <svg width="12" height="12" *ngIf="!getSlectedFilterskey(column)">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#tableFilter'"></use>
+                        </svg>
+                        <svg width="12" height="12" *ngIf="getSlectedFilterskey(column)">
+                          <use
+                            [attr.xlink:href]="'assets/icons/sprite.svg#tableFilter-filled'"
+                          ></use>
+                        </svg>
+                      </span>
+                      <mat-menu
+                        #filterMenu="matMenu"
+                        [ngClass]="columnsConfig[i].menuClass"
+                        class="text-center menu-same-width customPosition"
+                        matMenuPositionX="center"
+                        matMenuPositionY="center"
+                      >
+                        <!-- Static "All" Option -->
+                        <!-- last: isLastColumnMenu(i) -->
+                        <span class="body text-small" [ngClass]="columnsConfig[i].menuClass">
+                          <button
+                            mat-menu-item
+                            class="text-small p-1"
+                            (click)="onFilterSelect(columns[i], { id: '' })"
+                          >
+                            <mat-radio-button
+                              (click)="
+                                $event.stopPropagation(); onFilterSelect(columns[i], { id: '' })
+                              "
+                              class="mr-2"
+                              disableRipple
+                            ></mat-radio-button>
+                            {{ 'shared.all' | translate }}
+                          </button>
+                        </span>
+
+                        <!-- Dynamic Filter Options -->
+                        <span
+                          class="body text-small"
+                          [ngClass]="{
+                            last: isLastColumnMenu(i)
+                          }"
+                          *ngFor="let item of columnsConfig[i].menuData"
+                        >
+                          <button
+                            mat-menu-item
+                            class="text-small p-1"
+                            (click)="onFilterSelect(columns[i], item)"
+                          >
+                            <mat-radio-button
+                              [checked]="selectedOption === item.id"
+                              (click)="$event.stopPropagation(); onFilterSelect(columns[i], item)"
+                              class="mr-2"
+                              disableRipple
+                            ></mat-radio-button>
+                            {{ getMenuItemLabel(item) | translate }}
+                          </button>
+                        </span>
+                      </mat-menu>
+                    </div>
+                    <ds-sla
+                      *ngIf="columnsConfig[i].slaMax"
+                      [canvasScale]="'40'"
+                      [innerLineWidth]="'3'"
+                      [maxValue]="columnsConfig[i].slaMax"
+                      [outerLineColor]="'limegreen'"
+                      [outerLineWidth]="'3'"
+                      [value]="columnsConfig[i].slaValue"
+                      class="table-header-sla my-1"
+                    ></ds-sla>
+                  </div>
+                </ng-container>
+
+                <mat-checkbox
+                  *ngIf="columnsConfig[i].type == 'checkbox'"
+                  class="checkbox"
+                  [color]="primary"
+                  (change)="masterToggle()"
+                  [checked]="isAllSelected()"
+                  [indeterminate]="isSomeSelected() && !isAllSelected()"
+                >
+                </mat-checkbox>
+              </th>
+            </ng-container>
+            <ng-container *ngIf="columnsConfig[i].notSortable">
+              <th
+                *matHeaderCellDef
+                [ngClass]="{
+                  'text-end': columnsConfig[i].type === 'actions'
+                }"
+                mat-header-cell
+              >
+                <div class="d-flex align-items-center">
+                  <div class="mx-1">
+                    {{ columnsConfig[i].label | translate }}
+                  </div>
+                  <ds-sla
+                    *ngIf="columnsConfig[i].slaMax"
+                    [canvasScale]="'50'"
+                    [innerLineWidth]="'3'"
+                    [maxValue]="columnsConfig[i].slaMax"
+                    [outerLineColor]="'limegreen'"
+                    [outerLineWidth]="'3'"
+                    [value]="columnsConfig[i].slaValue"
+                    class="table-header-sla my-1"
+                  ></ds-sla>
+                </div>
+              </th>
+            </ng-container>
+            <td
+              *matCellDef="let element; let j = index"
+              mat-cell
+              [class.percent-gauge-chart-wrapper]="columnsConfig[i].type == 'chart'"
+            >
+              <ng-container [ngSwitch]="columnsConfig[i].type">
+                <!--            <a target="_blank"-->
+                <!--               routerLink="/inbox" [queryParams]="{ id: element[column] }"-->
+                <!--               class="fc-black text-decoration-underline fw-medium" [ngClass]="columnsConfig[i].type" *ngSwitchCase="'link'">-->
+                <!--              {{ element[column] }}-->
+                <!--            </a>-->
+
+                <span *ngSwitchCase="'textWithDetails'" [ngClass]="columnsConfig[i].type">
+                  <p class="body-bold mb-1">{{ element[column] }}</p>
+                  <span *ngIf="isSubTitleString(i)" class="body text-small gray-700">
+                    {{ element[columnsConfig[i].subTitle] }}
+                  </span>
+
+                  <div
+                    *ngIf="isSubTitleArray(i)"
+                    class="d-flex justify-content-center custom-direction"
+                  >
+                    <span
+                      *ngFor="let subtitle of columnsConfig[i].subTitle"
+                      class="body text-small gray-700 me-1"
+                    >
+                      {{ element[subtitle] }}
+                    </span>
+                  </div>
+                </span>
+
+                <span *ngSwitchCase="'arrOfItems'" [ngClass]="columnsConfig[i].type">
+                  <!-- <p class="body-bold mb-1">{{ element[column] }}</p> -->
+                  <div *ngIf="element[column].length > 0">
+                    <!-- [matTooltip]="formatExportFoundations(element[column])" -->
+                    <div class="tooltip-hovered-content" class="body-bold text-small">
+                      {{ element[column][0][columnsConfig[i].subTitle] }}
+                    </div>
+                  </div>
+
+                  <!-- <span [matTooltip]="
+                  formatExportFoundations(element.foundations)
+                                " class="tooltip-hovered-content">
+                              {{
+                              element.foundations[0]?.title
+                              }}
+                            </span> -->
+                </span>
+
+                <span
+                  *ngSwitchCase="'link'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black text-decoration-underline fw-medium"
+                >
+                  {{ element[column] }}
+                </span>
+
+                <span
+                  *ngSwitchCase="'linkWithIcon'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black fw-medium d-flex align-items-center gap-2 linkWithIcon"
+                >
+                  <ds-icon class="fs-20 fc-black" icon="{{ columnsConfig[i].icon }}"></ds-icon>
+                  <span class="fs-13 fc-coral text-decoration-underline">{{
+                    element[column]
+                  }}</span>
+                </span>
+                <span
+                  *ngSwitchCase="'underLineWithIcon'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black text-decoration-underline fw-medium"
+                >
+                  <ds-icon
+                    class="fs-20 fc-black"
+                    icon="{{ columnsConfig[i].icon }}"
+                    (mouseenter)="showTargetedElement($event, element, i, column)"
+                    (mouseleave)="hideTargetedElement()"
+                  ></ds-icon>
+                  <span
+                    class="fs-13 fc-coral px-1 text-decoration-underline"
+                    (mouseenter)="showTargetedElement($event, element, i, column)"
+                    (mouseleave)="hideTargetedElement()"
+                    >{{ element[column] }}</span
+                  >
+                </span>
+                <a
+                  (click)="$event.stopPropagation(); columnsConfig[i].onClick(element)"
+                  *ngSwitchCase="'routerWithIcon'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black text-decoration-underline fw-medium cursor-pointer"
+                >
+                  <ds-icon class="fs-20 fc-black" icon=" {{ columnsConfig[i].icon }}"></ds-icon>
+                  <span class="fs-13 fc-coral px-1 text-decoration-underline">{{
+                    element[column]
+                  }}</span>
+                </a>
+                <mat-checkbox
+                  *ngSwitchCase="'checkbox'"
+                  (change)="onChange($event, element)"
+                  [checked]="checkIsSelected(element.id)"
+                  class="checkbox"
+                  disabled="{{ columnsConfig[i].disabled }}"
+                >
+                </mat-checkbox>
+                <mat-radio-button *ngSwitchCase="'radio'"> </mat-radio-button>
+                <span
+                  *ngSwitchCase="'ServiceDetails'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="cursor-pointer"
+                >
+                  {{ element[column] }}
+                </span>
+                <span
+                  *ngSwitchCase="'dateOnly'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center gap-2 text-nowrap"
+                >
+                  <span class="sfi sfi-calendar-o fc-coral fs-18"></span>
+                  <!-- {{ element[column] | date : "MMM d, y" }} -->
+                  {{ element[column] | date : 'd MMMM y' : undefined : 'ar' }}
+                </span>
+                <span
+                  *ngSwitchCase="'Search'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center"
+                >
+                  <app-input
+                    [formControl]="ctrl"
+                    [placeholder]="'Search for item '"
+                    [showLabel]="false"
+                    class=""
+                    className="no-padding "
+                    prefix="sfi-search fs-16"
+                    type="text"
+                  >
+                  </app-input>
+                </span>
+                <span
+                  *ngSwitchCase="'Number'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center"
+                >
+                  <app-input
+                    [formControl]="ctrl"
+                    [placeholder]="'number'"
+                    [showLabel]="false"
+                    class=""
+                    className="no-padding"
+                    type="text"
+                  >
+                  </app-input>
+                </span>
+                <span
+                  *ngSwitchCase="'dateFromTo'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center"
+                >
+                  <span class="sfi sfi-clock fc-coral"></span>
+                  <span class="mx-2">
+                    {{ element?.date.from }}
+                    <ng-container *ngIf="element?.date.to"> : {{ element?.date.to }} </ng-container>
+                  </span>
+                </span>
+
+                <span
+                  *ngSwitchCase="'dateTime'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center gap-1 flex-wrap body flex-row-reverse"
+                >
+                  {{ element[column] | date : 'dd/MM/yyyy' }}
+
+                  <svg width="1rem" height="1rem" class="mx-1">
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#clock'"></use>
+                  </svg>
+
+                  {{ element[column] | date : 'hh:mm a' }}
+                </span>
+
+                <span
+                  *ngSwitchCase="'singleTimeOnly'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center gap-1 flex-wrap"
+                >
+                  {{ element[column] | date : 'h:mm a' }}
+                </span>
+                <!--dir="ltr" and text-left for English text on ar page  -->
+                <span
+                  *ngSwitchCase="'timeOnly'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center gap-1 flex-wrap text-nowrap text-left"
+                  dir="ltr"
+                >
+                  <!--  -->
+                  {{ mapText(columnsConfig[i].firstVal, element[column]) | date : 'h:mm a' }}
+                  <ng-container *ngIf="mapText(columnsConfig[i].secondVal, element[column])">
+                    -
+                    {{ mapText(columnsConfig[i].secondVal, element[column]) | date : 'h:mm a' }}
+                  </ng-container>
+                </span>
+
+                <span
+                  *ngSwitchCase="'multipleRows'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center gap-1 flex-wrap"
+                >
+                  <!--  -->
+                  <div *ngIf="!element[column].monthlyFineEscalation">
+                    {{ element[column].fixedFineValue }}
+                    {{ 'global.SAR' | translate }}
+                  </div>
+
+                  <div *ngIf="element[column].monthlyFineEscalation">
+                    <br />
+                    {{ element[column].firstTimeFine }}
+                    {{ 'global.SAR' | translate }} <br /><br />
+                    {{ element[column].secondTimeFine }}
+                    {{ 'global.SAR' | translate }} <br /><br />
+                    {{ element[column].thirdTimeFine }}
+                    {{ 'global.SAR' | translate }} <br /><br />
+                  </div>
+                </span>
+
+                <div
+                  *ngSwitchCase="'sla'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-inline-flex align-items-center"
+                >
+                  <!--              <app-sla [value]="element?.SLA.value" [maxValue]="element?.SLA.max" [canvasScale]="38" -->
+                  <!--                class="font-9 fw-medium" [outerLineColor]="getSlaColor(element?.SLA.value, element?.SLA.max)">-->
+                  <!--              </app-sla>-->
+
+                  <ds-sla
+                    [attr.outerLineColor]="getSlaColor(element?.SLA.value, element?.SLA.max)"
+                    [canvasScale]="'55'"
+                    [innerLineWidth]="'3'"
+                    [maxValue]="element?.SLA?.max"
+                    [outerLineWidth]="'3'"
+                    [value]="element?.SLA?.value"
+                  ></ds-sla>
+                </div>
+                <div *ngSwitchCase="'slaProgress'">
+                  <!--              <mat-sp-->
+
+                  <ds-sla
+                    *ngIf="element[column]?.percentage >= 0; else negativeSLA"
+                    [canvasScale]="'55'"
+                    [customValue]="element[column]?.percentage + '%'"
+                    [innerLineWidth]="'3'"
+                    [maxValue]="'100'"
+                    [outerLineColor]="getSlaColor(element[column]?.percentage, 100)"
+                    [outerLineWidth]="'3'"
+                    [value]="element[column]?.percentage"
+                  ></ds-sla>
+
+                  <ng-template #negativeSLA>Not started</ng-template>
+                </div>
+                <div
+                  *ngSwitchCase="'Priority'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ element[column] }}"
+                >
+                  {{ element[column] }}
+                </div>
+
+                <div
+                  *ngSwitchCase="'serviceStatus'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ element[column] }}"
+                >
+                  <span
+                    [ngClass]="element[column] == 'FALSE' ? 'green' : 'red'"
+                    class="dot-status"
+                  ></span>
+                </div>
+
+                <div
+                  *ngSwitchCase="'image'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="img-card table-img"
+                >
+                  <img
+                    [src]="element?.image"
+                    alt=""
+                    onerror="this.onerror=null;this.src='assets/images/user.svg';"
+                  />
+                </div>
+
+                <div
+                  *ngSwitchCase="'employee'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center gap-2 text-nowrap"
+                >
+                  <ds-avatar
+                    [image]="'https://igateapp.stc.com.sa'+element[column]?.['imageUrl']"
+                    size="x-small"
+                  >
+                  </ds-avatar>
+                  <span>{{ (element[column]?.['name']) }}</span>
+                </div>
+
+                <div
+                  *ngSwitchCase="'progress_group'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex gap-1"
+                >
+                  <ng-container *ngFor="let item of element[column]">
+                    <div class="progress-container default-progress medium radius-0">
+                      <div
+                        [style.width.%]="item.value"
+                        class="progress-bar bg-color-{{ item.color }}"
+                      ></div>
+                    </div>
+                  </ng-container>
+                </div>
+                <div *ngSwitchCase="'input'" [ngClass]="columnsConfig[i].type" class="">
+                  <app-input
+                    (input)="inputCellChanged.emit({element,column,i})"
+                    [(ngModel)]="element[column]"
+                    [min]="0"
+                    [placeholder]="element[column]"
+                    class="w-100"
+                    className=" no-padding w-100"
+                    type="number"
+                    value="{{ element[column] }}"
+                  >
+                  </app-input>
+                </div>
+                <div *ngSwitchCase="'autoComplete'">
+                  <app-autocomplete
+                    (valueSelected)="
+                      autoCompleteValueSelected.emit({
+                        value: $event,
+                        element: element
+                      })
+                    "
+                    [config]="columnsConfig[i].config"
+                    [loading]="false"
+                    [placeholder]="'Search by employee name or email or ID'"
+                    className="autocompleteSupport"
+                  >
+                  </app-autocomplete>
+                </div>
+                <!-- <div class="" [ngClass]="columnsConfig[i].type" *ngSwitchCase="'select'">
+                                  <app-ss-select className="primary-form bordered-input w-100" [showLabel]="false"
+                                    label="{{columnsConfig[i].label}}">
+                                  </app-ss-select>
+                                </div> -->
+
+                <div *ngSwitchCase="'select'" [ngClass]="columnsConfig[i].type" class="">
+                  <app-select
+                    (selectedValue)="selectValueSelected.emit($event)"
+                    [(ngModel)]="element[column]"
+                    [isSearchable]="columnsConfig[i].config?.isSearchable"
+                    [key]="
+                      translateService.getDefaultLang() == 'ar'
+                        ? columnsConfig[i].config?.key.ar
+                        : columnsConfig[i].config?.key.en
+                    "
+                    [label]="columnsConfig[i].label"
+                    [options]="columnsConfig[i].config?.options"
+                    [postKey]="columnsConfig[i].config?.postKey"
+                    [showLabel]="false"
+                    className="no-padding w-100"
+                  >
+                  </app-select>
+                </div>
+
+                <div
+                  *ngSwitchCase="'status'"
+                  [ngClass]="'New' + columnsConfig[i].type"
+                  class="d-flex align-items-center gap-2"
+                >
+                  <ds-status
+                    *ngIf="element[column]"
+                    [status]="element[column]?.status"
+                    class="fs-12"
+                  >
+                    {{ element[column]?.title | translate }}
+                  </ds-status>
+                  <span
+                    (click)="$event.stopPropagation()"
+                    *ngIf="element[column]?.reason"
+                    [matMenuTriggerFor]="reasonMenu"
+                    [ngClass]="columnsConfig[i].type"
+                    class="{{ columnsConfig[i].type }} fc-red underline cursor-pointer"
+                  >
+                    Show reason
+                  </span>
+                  <mat-menu #reasonMenu="matMenu" class="p-4 text-center">
+                    <span class="fs-14">
+                      {{ element[column]?.reason }}
+                    </span>
+                  </mat-menu>
+                </div>
+                <div *ngSwitchCase="'toggle'" [ngClass]="columnsConfig[i].type">
+                  <mat-slide-toggle
+                    (change)="toggleValueChange($event, element)"
+                    [checked]="element[column] == 1"
+                    [disabled]="element[column].disabled || false"
+                  ></mat-slide-toggle>
+                </div>
+                <div *ngSwitchCase="'customSwitcher'" [ngClass]="columnsConfig[i].type">
+                  <mat-slide-toggle
+                    [disabled]="columnsConfig[i].disabled || false"
+                    [checked]="element[column] == 1"
+                    name="isActive"
+                    (change)="toggleValueChange($event, element)"
+                    class="custom-slide-toggle"
+                  >
+                    <!-- <ng-container  *ngIf="element[column] == 1"></ng-container> -->
+                    <span
+                      [ngClass]="columnsConfig[i].type"
+                      class="switcher_span"
+                      [style.color]="
+                        element[column]
+                          ? columnsConfig[i]?.colorCode?.trueColor
+                          : columnsConfig[i]?.colorCode?.falseColor
+                      "
+                      >{{
+                        element[column]
+                          ? columnsConfig[i].title.trueText
+                          : columnsConfig[i].title.falseText
+                      }}</span
+                    >
+                    <!-- <ng-template #Yes>
+            {{ 'RegularReportsModule.RegularReportsListComponent.active' | translate }}
+          </ng-template>
+          <ng-template #No>
+            {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
+          </ng-template> -->
+                  </mat-slide-toggle>
+                </div>
+
+                <div *ngSwitchCase="'customToggle'" [ngClass]="columnsConfig[i].type">
+                  <mat-slide-toggle
+                    (change)="toggleValueChange($event, element)"
+                    [checked]="element[column] == 7"
+                    [disabled]="element[column] != 1"
+                  ></mat-slide-toggle>
+                </div>
+                <div
+                  *ngSwitchCase="'meetingStatus'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }}"
+                >
+                  <span
+                    *ngIf="element[column].label == 'Finished'"
+                    class=" {{ element[column].label }} status  "
+                  >
+                    {{ element[column].label }}
+                  </span>
+                  <div
+                    *ngIf="element[column].label != 'Finished'"
+                    class="d-flex align-items-center gap-2"
+                  >
+                    <div
+                      class="Finished d-flex flex-column align-items-center justify-content-center py-1 fc-black"
+                    >
+                      <span class="fs-11 fw-medium mb-1"> {{ element[column].hours }}</span>
+                      <span class="fs-10 fw-light">HRS</span>
+                    </div>
+                    <div
+                      class="Finished d-flex flex-column align-items-center justify-content-center py-1 fc-black"
+                    >
+                      <span class="fs-11 fw-medium mb-1"> {{ element[column].min }}</span>
+                      <span class="fs-10 fw-light">MINS</span>
+                    </div>
+                    <div
+                      class="Finished d-flex flex-column align-items-center justify-content-center py-1 fc-black"
+                    >
+                      <span class="fs-11 fw-medium mb-1"> {{ element[column].sec }}</span>
+                      <span class="fs-10 fw-light">SECS</span>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  *ngSwitchCase="'number'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }} {{ element[column] ? 'underline' : '' }}"
+                >
+                  {{ element[column] ? element[column] : 0 }}
+                </span>
+
+                <span
+                  *ngSwitchCase="'currency'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }}"
+                >
+                  {{
+                    element[column]
+                      ? parseInt(element[column]).toFixed(2) +
+                        (columnsConfig[i].currency | translate)
+                      : '-'
+                  }}
+                </span>
+                <span
+                  *ngSwitchCase="'active'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }}"
+                >
+                  <ds-icon
+                    [ngClass]="element[column] ? 'fc-green' : 'fc-gray'"
+                    icon="check-circle-f fs-30"
+                  ></ds-icon>
+                </span>
+                <div
+                  *ngSwitchCase="'sync'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }} d-flex align-items-center gap-2"
+                >
+                  <svg
+                    fill="none"
+                    height="19"
+                    viewBox="0 0 18 19"
+                    width="18"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14.25 13.2604C13.9425 13.2604 13.6875 12.9913 13.6875 12.6667V5.14583C13.6875 4.59958 13.2675 4.15625 12.75 4.15625H8.625C8.3175 4.15625 8.0625 3.88708 8.0625 3.5625C8.0625 3.23792 8.3175 2.96875 8.625 2.96875H12.75C13.89 2.96875 14.8125 3.9425 14.8125 5.14583V12.6667C14.8125 12.9913 14.5575 13.2604 14.25 13.2604Z"
+                      fill="#FF375E"
+                    />
+                    <path
+                      d="M10.5 6.13549C10.3725 6.13549 10.245 6.088 10.14 6.00092L7.88999 4.02175C7.76249 3.91092 7.6875 3.74465 7.6875 3.56257C7.6875 3.38048 7.76249 3.22214 7.88999 3.10339L10.14 1.12422C10.38 0.910471 10.7325 0.950084 10.935 1.20342C11.1375 1.45675 11.1 1.82883 10.86 2.04258L9.12751 3.56257L10.86 5.08255C11.1 5.29631 11.13 5.66839 10.935 5.92172C10.8225 6.06422 10.6575 6.13549 10.5 6.13549Z"
+                      fill="#FF375E"
+                    />
+                    <path
+                      d="M14.25 18.0105C12.6975 18.0105 11.4375 16.6805 11.4375 15.0417C11.4375 13.403 12.6975 12.073 14.25 12.073C15.8025 12.073 17.0625 13.403 17.0625 15.0417C17.0625 16.6805 15.8025 18.0105 14.25 18.0105ZM14.25 13.2605C13.32 13.2605 12.5625 14.0601 12.5625 15.0417C12.5625 16.0234 13.32 16.823 14.25 16.823C15.18 16.823 15.9375 16.0234 15.9375 15.0417C15.9375 14.0601 15.18 13.2605 14.25 13.2605Z"
+                      fill="#FF375E"
+                    />
+                    <path
+                      d="M9.375 16.0312H5.25C4.11 16.0312 3.1875 15.0574 3.1875 13.8541V6.33325C3.1875 6.00867 3.4425 5.7395 3.75 5.7395C4.0575 5.7395 4.3125 6.00867 4.3125 6.33325V13.8541C4.3125 14.4003 4.7325 14.8437 5.25 14.8437H9.375C9.6825 14.8437 9.9375 15.1128 9.9375 15.4374C9.9375 15.762 9.6825 16.0312 9.375 16.0312Z"
+                      fill="#FF375E"
+                    />
+                    <path
+                      d="M7.4997 18.0104C7.3422 18.0104 7.17721 17.9391 7.06471 17.7966C6.86221 17.5433 6.89969 17.1712 7.13969 16.9574L8.87219 15.4375L7.13969 13.9175C6.89969 13.7037 6.86971 13.3316 7.06471 13.0783C7.26721 12.825 7.61971 12.7933 7.85971 12.9991L10.1097 14.9783C10.2372 15.0891 10.3122 15.2554 10.3122 15.4375C10.3122 15.6195 10.2372 15.7779 10.1097 15.8966L7.85971 17.8758C7.75471 17.9629 7.6272 18.0104 7.4997 18.0104Z"
+                      fill="#FF375E"
+                    />
+                    <path
+                      d="M3.75 6.927C2.1975 6.927 0.9375 5.597 0.9375 3.95825C0.9375 2.3195 2.1975 0.989502 3.75 0.989502C5.3025 0.989502 6.5625 2.3195 6.5625 3.95825C6.5625 5.597 5.3025 6.927 3.75 6.927ZM3.75 2.177C2.82 2.177 2.0625 2.97659 2.0625 3.95825C2.0625 4.93992 2.82 5.7395 3.75 5.7395C4.68 5.7395 5.4375 4.93992 5.4375 3.95825C5.4375 2.97659 4.68 2.177 3.75 2.177Z"
+                      fill="#FF375E"
+                    />
+                  </svg>
+                  {{ element[column] }}
+                </div>
+
+                <ng-container *ngSwitchCase="'clickable'">
+                  <span
+                    #statusMenuTrigger="matMenuTrigger"
+                    (click)="$event.stopPropagation()"
+                    *ngIf="element?.[column]"
+                    [matMenuTriggerFor]="descMenu"
+                    [ngClass]="columnsConfig[i].type"
+                    class="{{ columnsConfig[i].type }} fc-coral underline cursor-pointer"
+                  >
+                    {{ columnsConfig[i].clickableText | translate }}
+                  </span>
+                  <mat-menu #descMenu="matMenu" class="p-4 text-center">
+                    <span class="fs-14">
+                      {{ element[column] }}
+                    </span>
+                  </mat-menu>
+                </ng-container>
+
+                <span
+                  #statusMenuTrigger="matMenuTrigger"
+                  (click)="$event.stopPropagation()"
+                  *ngSwitchCase="'translatedClickable'"
+                  [matMenuTriggerFor]="descMenuTranslated"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }} fc-coral underline cursor-pointer"
+                >
+                  {{ columnsConfig[i].clickableText | translate }}
+                  <!-- {{ 'global.view' | translate}} -->
+                </span>
+
+                <mat-menu #descMenuTranslated="matMenu" class="p-4 text-center">
+                  <span class="fs-14">
+                    {{
+                      columnsConfig[i].arKey
+                        ? translateService.currentLang == 'ar'
+                          ? mapText(columnsConfig[i].arKey, element[column])
+                          : mapText(columnsConfig[i].enKey, element[column])
+                        : element[column]
+                        ? element[column]
+                        : '-'
+                    }}
+                  </span>
+                </mat-menu>
+
+                <span
+                  #statusMenuTrigger="matMenuTrigger"
+                  (click)="$event.stopPropagation()"
+                  *ngSwitchCase="'conditionalClickable'"
+                  [matMenuTriggerFor]="descConditionalMenu"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }} fc-coral underline cursor-pointer"
+                >
+                  <span *ngIf="element[column] && element[column] != 'null'">{{
+                    columnsConfig[i].clickableText | translate
+                  }}</span>
+                  <!-- {{ 'global.view' | translate}} -->
+                </span>
+
+                <mat-menu #descConditionalMenu="matMenu" class="p-4 text-center">
+                  <span class="fs-14">
+                    {{ element[column] }}
+                  </span>
+                </mat-menu>
+
+                <span
+                  (click)="$event.stopPropagation()"
+                  *ngSwitchCase="'dropdown'"
+                  [matMenuTriggerFor]="dropdownMenu"
+                  [ngClass]="columnsConfig[i].type"
+                  class="{{ columnsConfig[i].type }}   cursor-pointer"
+                >
+                  {{
+                    columnsConfig[i].arKey
+                      ? translateService.currentLang == 'ar'
+                        ? mapText(columnsConfig[i].arKey, element[column])
+                        : mapText(columnsConfig[i].enKey, element[column])
+                      : element[column]
+                      ? element[column]
+                      : '-'
+                  }}
+                  <!-- <span *ngFor="let item of  element[column]">
+                                      {{item.id}}
+                                    </span> -->
+
+                  <ds-icon class="fc-black fw-medium" icon="arrow"></ds-icon>
+                </span>
+
+                <mat-menu #dropdownMenu="matMenu" class="p-4 text-center">
+                  <ng-container *ngSwitchCase="'dropdown'">
+                    <span class="fs-12 fc-black" mat-menu-item>
+                      <!-- {{translateService.currentLang == 'ar' ? item.groupNameAr : item.groupNameEn}} -->
+                      {{
+                        columnsConfig[i].arKey
+                          ? translateService.currentLang == 'ar'
+                            ? mapText(columnsConfig[i].arKey, element[column])
+                            : mapText(columnsConfig[i].enKey, element[column])
+                          : element[column]
+                          ? element[column]
+                          : '-'
+                      }}
+                    </span>
+                  </ng-container>
+                </mat-menu>
+
+                <span *ngSwitchCase="'formatNumber'" [ngClass]="columnsConfig[i].type">
+                  {{ element[column] }}
+                </span>
+
+                <div
+                  *ngSwitchCase="'group'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="text-nowrap d-flex align-items-center"
+                >
+                  <app-repeated-list
+                    [config]="columnsConfig[i]"
+                    [listOfItems]="element[column] ? element[column] : []"
+                    type="categories"
+                  ></app-repeated-list>
+                </div>
+
+                <div
+                  *ngSwitchCase="'company'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center justify-content-center"
+                >
+                  <span class="img-card circled-img">
+                    <img
+                      [src]="element?.image"
+                      alt=""
+                      onerror="this.onerror=null;this.src='assets/images/user.svg';"
+                    />
+                  </span>
+                  <span class="mx-1"></span>
+                  <span class="full-name">{{ element[column] }}</span>
+                </div>
+
+                <span
+                  *ngSwitchCase="'translated'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="text-nowrap"
+                >
+                  {{ element[column] }}
+                </span>
+                <span *ngSwitchCase="'title'" [ngClass]="columnsConfig[i].type" class="text-nowrap">
+                  {{ element[column]?.title }}
+                </span>
+
+                <span
+                  *ngSwitchCase="'hasItem'"
+                  [ngClass]="{
+                    hasItem: element[column]?.hasItem
+                  }"
+                  class="text-nowrap"
+                >
+                  {{ element[column]?.title }}
+                </span>
+                <span *ngSwitchCase="'maxWidth'" [ngClass]="columnsConfig[i].type">
+                  {{ element[column]?.title }}
+                </span>
+
+                <span *ngSwitchCase="'progress'" [ngClass]="columnsConfig[i].type">
+                  <div class="Progress">
+                    <div class="progress-container default-progress">
+                      <div
+                        [style.width.%]="(element[column].consumed! / element[column].total!) * 100"
+                        class="progress-bar"
+                      ></div>
+                    </div>
+                    <div class="Progress__footer">
+                      <div></div>
+                      <div>
+                        <span class="fs-12">
+                          <span>{{ element[column].consumed }}</span>
+                          <span>/</span>
+                          <span class="fc-silver">{{ element[column].total }}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+
+                <div
+                  *ngSwitchCase="'subsidiary'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <img
+                    [alt]="element[column]?.title"
+                    src="assets/subsidiaries/ids/{{ element[column]?.id }}.png"
+                  />
+                  <!--              <span class="full-name">{{element[column]}}</span>-->
+                </div>
+
+                <span
+                  *ngSwitchCase="'priorityColors'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="text-nowrap body-bold"
+                  [style.color]="element[column]?.id | priorityColor"
+                >
+                  {{
+                    columnsConfig[i].arKey
+                      ? translateService.currentLang == 'ar'
+                        ? mapText(columnsConfig[i].arKey, element[column])
+                        : mapText(columnsConfig[i].enKey, element[column])
+                      : element[column]
+                      ? element[column]
+                      : '-'
+                  }}
+                </span>
+
+                <span
+                  *ngSwitchCase="'proposalEnum'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black fw-medium"
+                >
+                  <span *ngIf="element.exportType === ExportedDocumentType.Letter">
+                    {{ 'TransactionsModule.ExportDocumentComponent.letter' | translate }}
+                  </span>
+                  <span *ngIf="element.exportType === ExportedDocumentType.Note">
+                    {{ 'TransactionsModule.ExportDocumentComponent.note' | translate }}
+                  </span>
+                  <span *ngIf="element.exportType === ExportedDocumentType.Record">
+                    {{ 'TransactionsModule.ExportDocumentComponent.record' | translate }}
+                  </span>
+                </span>
+
+                <span
+                  *ngSwitchCase="'ExportedDocumentTypeEnum'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black fw-medium"
+                >
+                  <span *ngIf="element.documentType === ExportedDocumentType.Letter">
+                    {{ 'TransactionsModule.ExportDocumentComponent.letter' | translate }}
+                  </span>
+                  <span *ngIf="element.documentType === ExportedDocumentType.Note">
+                    {{ 'TransactionsModule.ExportDocumentComponent.note' | translate }}
+                  </span>
+                  <span *ngIf="element.documentType === ExportedDocumentType.Record">
+                    {{ 'TransactionsModule.ExportDocumentComponent.record' | translate }}
+                  </span>
+
+                  <span *ngIf="element.documentType === ExportedDocumentType.Other">
+                    {{ element.otherDocumentType?.title }}
+                  </span>
+                </span>
+
+                <span
+                  *ngSwitchCase="'RequestContainerStatus'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="fc-black fw-medium"
+                >
+                  <ng-container *ngIf="element.containerStatus === RequestContainerStatus.Open">
+                    {{ 'TransactionsModule.TransactionsListComponent.open' | translate }}
+                  </ng-container>
+
+                  <ng-container *ngIf="element.containerStatus === RequestContainerStatus.Held">
+                    {{ 'shared.held' | translate }}
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="element.containerStatus === RequestContainerStatus.Scheduled"
+                  >
+                    {{ 'TransactionsModule.TransactionsListComponent.scheduled' | translate }}
+                  </ng-container>
+                  <ng-container *ngIf="element.containerStatus === RequestContainerStatus.Reset">
+                    {{ 'TransactionsModule.TransactionsListComponent.reset' | translate }}
+                  </ng-container>
+                  <ng-container *ngIf="element.containerStatus === RequestContainerStatus.Close">
+                    {{ 'TransactionsModule.TransactionsListComponent.close' | translate }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="element.containerStatus === RequestContainerStatus.ForceClose"
+                  >
+                    {{ 'TransactionsModule.TransactionsListComponent.forceClose' | translate }}
+                  </ng-container>
+                  <a
+                    *ngIf="!element.isRestricted"
+                    [routerLink]="['/transactions/' + element.id]"
+                    class="mat-td-link"
+                  ></a>
+                </span>
+
+                <div
+                  *ngSwitchCase="'statusIcon'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <svg *ngIf="element.isExportDocument === true" width="1.5rem" height="1.5rem">
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#redEnvelope'"></use>
+                  </svg>
+                  <svg *ngIf="!element.isExportDocument" width="1.25rem" height="1.25rem">
+                    <use
+                      [attr.xlink:href]="'assets/icons/sprite.svg#status-' + element.status"
+                    ></use>
+                  </svg>
+                </div>
+
+                <div
+                  *ngSwitchCase="'Service'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <svg
+                    fill="none"
+                    height="35"
+                    viewBox="0 0 34 35"
+                    width="34"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      fill="#FF375E"
+                      fill-opacity="0.1"
+                      height="33.5"
+                      rx="4"
+                      width="33.5"
+                      y="0.75"
+                    />
+                    <path
+                      d="M24.213 17.0338H22.1448L21.4532 15.1884C21.2221 14.5845 20.649 14.1622 19.9761 14.1592H13.5315C12.8586 14.1622 12.2847 14.5838 12.0582 15.1771L12.0544 15.1876L11.3628 17.033H9.29312C9.05532 17.033 8.86328 17.2258 8.86328 17.4629V19.1845C8.86328 19.4223 9.05607 19.6143 9.29312 19.6143H10.2076L9.69896 20.378C9.53242 20.6233 9.4334 20.9263 9.4334 21.2519C9.4334 21.2527 9.4334 21.2527 9.4334 21.2534V26.0702C9.4334 26.308 9.62619 26.5 9.86324 26.5H12.1595C12.3973 26.5 12.5893 26.3072 12.5893 26.0702V24.7791H20.91V26.0702C20.91 26.308 21.1028 26.5 21.3399 26.5H23.6361C23.8739 26.5 24.066 26.3072 24.066 26.0702V21.2519C24.066 21.2512 24.066 21.2512 24.066 21.2504C24.066 20.9248 23.9669 20.6218 23.7974 20.3705L23.8011 20.3757L23.2925 19.6121H24.207C24.4448 19.6121 24.6368 19.4193 24.6368 19.1822V17.4606C24.6361 17.2258 24.4478 17.036 24.2145 17.0315L24.213 17.0338ZM12.8654 15.4915C12.9711 15.2176 13.2314 15.0271 13.5368 15.0264H19.9798C20.2852 15.0271 20.5455 15.2184 20.649 15.487L20.6505 15.4922L21.8747 18.7569H11.6359L12.8654 15.4915ZM23.2138 23.9202H10.2983V21.2542C10.2983 21.2534 10.2983 21.2534 10.2983 21.2527C10.2983 21.1049 10.3433 20.9676 10.4199 20.8536L10.4184 20.8558L11.245 19.6151H22.2618L23.0885 20.8558C23.1635 20.9668 23.2085 21.1049 23.2085 21.2519C23.2085 21.2527 23.2085 21.2527 23.2085 21.2534L23.2138 23.9202ZM9.72896 17.895H11.0357L10.7132 18.7561H9.72071L9.72896 17.895ZM11.7379 25.6411H10.2983V24.7799H11.7334L11.7379 25.6411ZM23.2153 25.6411H21.775V24.7799H23.21L23.2153 25.6411ZM23.7869 18.7546H22.7899L22.4674 17.8935H23.7831L23.7869 18.7546ZM12.1632 20.4762C11.2915 20.4762 10.5856 21.1829 10.5856 22.0538C10.5856 22.9248 11.2923 23.6314 12.1632 23.6314C13.0349 23.6314 13.7408 22.9248 13.7408 22.0538C13.7408 21.1821 13.0342 20.4762 12.1632 20.4762V20.4762ZM12.1632 22.7725C11.7671 22.7725 11.4461 22.4514 11.4461 22.0553C11.4461 21.6592 11.7671 21.3382 12.1632 21.3382C12.5593 21.3382 12.8804 21.6592 12.8804 22.0553C12.8804 22.4514 12.5593 22.7725 12.1632 22.7725V22.7725ZM21.3444 20.4762C20.4727 20.4762 19.7668 21.1829 19.7668 22.0538C19.7668 22.9248 20.4735 23.6314 21.3444 23.6314C22.2161 23.6314 22.922 22.9248 22.922 22.0538C22.922 21.1821 22.2153 20.4762 21.3444 20.4762ZM21.3444 22.7725C20.9483 22.7725 20.6272 22.4514 20.6272 22.0553C20.6272 21.6592 20.9483 21.3382 21.3444 21.3382C21.7405 21.3382 22.0615 21.6592 22.0615 22.0553C22.0615 22.4514 21.7405 22.7725 21.3444 22.7725ZM19.0489 21.0509H14.4579C14.2201 21.0509 14.0274 21.2437 14.0274 21.4815C14.0274 21.7193 14.2201 21.912 14.4579 21.912H19.0489C19.2867 21.912 19.4795 21.7193 19.4795 21.4815C19.4795 21.2437 19.2867 21.0509 19.0489 21.0509ZM19.0489 22.1986H14.4579C14.2201 22.1986 14.0274 22.3914 14.0274 22.6292C14.0274 22.867 14.2201 23.0598 14.4579 23.0598H19.0489C19.2867 23.0598 19.4795 22.867 19.4795 22.6292C19.4795 22.3914 19.2867 22.1986 19.0489 22.1986ZM15.2321 12.5703C15.1541 12.6484 15.1061 12.7556 15.1061 12.8742C15.1061 13.112 15.2989 13.304 15.5359 13.304C15.6544 13.304 15.7625 13.256 15.8397 13.178C16.0738 12.9439 16.3971 12.7991 16.7542 12.7991C17.1113 12.7991 17.4346 12.9439 17.6686 13.178C17.7466 13.256 17.8539 13.304 17.9724 13.304C18.2102 13.304 18.4023 13.1112 18.4023 12.8742C18.4023 12.7556 18.3543 12.6476 18.2762 12.5703C17.8862 12.181 17.3483 11.9395 16.7534 11.9395C16.1586 11.9395 15.6199 12.1803 15.2306 12.5703H15.2321ZM19.1877 12.0865C19.1884 12.0865 19.1884 12.0865 19.1892 12.0865C19.427 12.0865 19.619 11.8937 19.619 11.6567C19.619 11.5374 19.5703 11.4294 19.4915 11.3513C18.7909 10.6507 17.8224 10.2171 16.7527 10.2171C15.683 10.2171 14.7145 10.6507 14.0139 11.3513C13.9358 11.4294 13.8878 11.5366 13.8878 11.6552C13.8878 11.893 14.0806 12.085 14.3177 12.085C14.4362 12.085 14.5442 12.037 14.6215 11.959C15.1668 11.4136 15.92 11.0768 16.7519 11.0768C17.5838 11.0768 18.337 11.4136 18.8824 11.959C18.9604 12.037 19.0677 12.0857 19.1869 12.0857H19.1877V12.0865ZM13.4062 10.743C14.2637 9.88704 15.4467 9.35818 16.7542 9.35818C18.0617 9.35818 19.2447 9.88704 20.1021 10.743C20.1801 10.821 20.2874 10.869 20.4059 10.869C20.6437 10.869 20.8358 10.6762 20.8358 10.4392C20.8358 10.3206 20.7878 10.2126 20.7098 10.1353C19.6963 9.12488 18.298 8.5 16.7534 8.5C15.2089 8.5 13.8106 9.12488 12.7971 10.1353C12.7191 10.2134 12.6711 10.3206 12.6711 10.4392C12.6711 10.677 12.8639 10.869 13.1009 10.869C13.2194 10.869 13.3275 10.821 13.4047 10.743H13.4062Z"
+                      fill="#FF375E"
+                    />
+                  </svg>
+
+                  <span class="fs-12 fw-normal fc-black">{{ element?.Service.name }}</span>
+                </div>
+                <div
+                  *ngSwitchCase="'Color'"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <span
+                    [ngClass]="columnsConfig[i].type"
+                    [style.background]="
+                      element[column]?.colorCode ? element[column]?.colorCode : element[column]
+                    "
+                  ></span>
+                  {{ element[column].title }}
+                </div>
+
+                <div
+                  *ngSwitchCase="'booleanText'"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <span
+                    [ngClass]="columnsConfig[i].type"
+                    [style.color]="
+                      element[column]
+                        ? columnsConfig[i].colorCode.falseColor
+                        : columnsConfig[i].colorCode.trueColor
+                    "
+                    >{{
+                      element[column]
+                        ? columnsConfig[i].title.falseText
+                        : columnsConfig[i].title.trueText
+                    }}</span
+                  >
+                </div>
+
+                <div
+                  *ngSwitchCase="'booleanIcon'"
+                  class="d-flex align-items-center gap-2 justify-content-center"
+                >
+                  <img
+                    [src]="
+                      element[column]
+                        ? columnsConfig[i].imgSrc.trueVal
+                        : columnsConfig[i].imgSrc.falseVal
+                    "
+                  />
+                </div>
+
+                <div
+                  *ngSwitchCase="'colorBg'"
+                  [style.background]="'rgba(var(--rgb-' + element[column]?.colorName + '), 0.1)'"
+                  class="d-flex align-items-center gap-2 Colorbg p-2 justify-content-center"
+                >
+                  <span class="bc-{{ element[column]?.colorName }}"></span>
+                  {{ element[column].title }}
+                </div>
+                <div
+                  *ngSwitchCase="'assigned'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="delegate d-flex align-items-center justify-content-center"
+                >
+                  <div class="img-card x-small circled-img">
+                    <img
+                      [src]="element?.AssignedTo.image"
+                      alt=""
+                      onerror="this.onerror=null;this.src='assets/images/user.svg';"
+                    />
+                  </div>
+                  <span class="mx-1"></span>
+                  <span class="fs-12 fc-black">{{ element?.AssignedTo.name }}</span>
+                  <!--
+                                    <span class="sfi sfi-close fc-coral"></span>
+                                   -->
+                </div>
+
+                <div
+                  *ngSwitchCase="'importOrExport'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="d-flex align-items-center justify-content-center"
+                >
+                  <svg class="mx-1" width="1.25rem" height="1.25rem">
+                    <use
+                      [attr.xlink:href]="
+                        'assets/icons/sprite.svg#' +
+                        (element.isExportDocument ? 'green-export' : 'red-import')
+                      "
+                    ></use>
+                  </svg>
+                  <span
+                    class="body-bold"
+                    [style.color]="element.isExportDocument ? '#4CAF50' : '#D32F2F'"
+                  >
+                    {{ (element.isExportDocument ? 'shared.export' : 'shared.import') | translate }}
+                  </span>
+                </div>
+
+                <span *ngSwitchCase="'coloredText'" [style.color]="element[column]?.['color']">{{
+                  element[column]?.['title']
+                }}</span>
+                <div
+                  *ngSwitchCase="'survey'"
+                  [style.color]="element[column]?.['color']"
+                  class="d-flex align-items-center gap-1 text-nowrap justify-content-center"
+                >
+                  <span
+                    class="fs-20 sfi sfi-emoji-{{(element[column]?.['title']['en'].toLowerCase()) }}"
+                  ></span>
+                  {{ element[column]?.['title'] }}
+                </div>
+
+                <div
+                  *ngSwitchCase="'Satisfaction'"
+                  [ngClass]="columnsConfig[i].type"
+                  class="delegate d-flex gap-2 align-items-center"
+                >
+                  <!--
+                                          <ds-icon icon="star-f" class="fc-dark-gray"></ds-icon>
+                                    -->
+
+                  <span class="fs-12 fc-black">{{ element[column].percentage }}%</span>
+                  <ds-status class="auto-status" size="small" status="{{ element[column].status }}">
+                    <span class="fs-10"> {{ element[column].percentageTrend }}% </span>
+                    <ds-icon
+                      *ngIf="element[column].trendStatus == 'up'"
+                      class="fs-13 mx-1 growthIcon"
+                      icon="up-growth"
+                    >
+                    </ds-icon>
+                    <ds-icon
+                      *ngIf="element[column].trendStatus != 'up'"
+                      class="fs-13 mx-1 downIcon"
+                      icon="down-growth"
+                    >
+                    </ds-icon>
+                  </ds-status>
+                </div>
+
+                <ng-container *ngSwitchCase="'actions'">
+                  <div class="d-flex justify-content-center gap-2 actionIcons">
+                    <ng-container *ngFor="let action of columnsConfig[i]?.actions">
+                      <ds-button
+                        (click)="$event.stopPropagation(); action?.onClick(element)"
+                        *ngIf="action?.action === Actions.OPENLINK"
+                        icon
+                        size="small"
+                      >
+                        <svg width="1rem" height="1rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#openLink'"></use>
+                        </svg>
+                      </ds-button>
+                    </ng-container>
+                  </div>
+                  <div
+                    class="d-flex justify-content-center gap-2 actionIcons"
+                    *ngIf="
+                      !element.isRestricted || hasOpenLinkAction(columnsConfig[i]?.actions);
+                      else restrictedActions
+                    "
+                  >
+                    <ng-container *ngIf="columnsConfig[i]?.actions?.length <= 6">
+                      <ng-container *ngFor="let action of columnsConfig[i]?.actions">
+                        <ds-button
+                          (click)="$event.stopPropagation(); allocate(element)"
+                          *ngIf="action.viewMode === Actions.ALLOCATE"
+                          shape="outline"
+                          size="small"
+                        >
+                          <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                            {{ action?.actionName | translate }}
+                          </span>
+                        </ds-button>
+
+                        <ds-button
+                          (click)="$event.stopPropagation(); action?.onClick(element)"
+                          *ngIf="action === Actions.ALLOCATE"
+                          icon
+                          size="small"
+                        >
+                          <ds-icon class="fs-15" icon="pen"></ds-icon>
+                        </ds-button>
+
+                        <ng-container
+                          *ngIf="action.viewMode != Actions.VIEW || action.viewMode != Actions.COPY"
+                        >
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="
+                              action?.action === Actions.VIEW &&
+                              (!action?.isHidden || element[action.isHidden])
+                            "
+                            icon
+                            size="small"
+                          >
+                            <svg width="1rem" height="1rem">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                            </svg>
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="
+                              action?.action === 'customImage' &&
+                              (!action?.isHidden || element[action.isHidden])
+                            "
+                            icon
+                            size="small"
+                          >
+                            <img [src]="action?.imgSrc" alt="custom image" class="cursor-pointer" />
+                          </ds-button>
+
+                          <!-- (click)="$event.stopPropagation(); action?.onClick(element)" -->
+
+                          <div
+                            (click)="
+                              $event.stopPropagation();
+                              toggleRowExpansion(element);
+                              cdr.markForCheck()
+                            "
+                            *ngIf="
+                              action?.action === 'expandRow' &&
+                              (!action?.isHidden || element[action.isHidden])
+                            "
+                            icon
+                            size="small"
+                            class="table-arrow"
+                            [style.transform]="
+                              isRowExpanded(element) ? 'rotate(180deg)' : 'rotate(0deg)'
+                            "
+                          >
+                            <svg width="10" height="5">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#table-arrow'"></use>
+                            </svg>
+                          </div>
+
+                          <button
+                            class="action_customhover"
+                            [class.focused]="SelectedID == element.id"
+                            (mouseenter)="
+                              customHoverShow.emit({ event: $event, element, i, column })
+                            "
+                            (mouseleave)="customHoverHide.emit()"
+                            *ngIf="action?.action === Actions.CUSTOMHOVER && !action?.isHidden"
+                            icon
+                            size="small"
+                          >
+                            <img
+                              *ngIf="!element.isRestricted"
+                              [src]="
+                                SelectedID != element.id
+                                  ? 'assets/icons/question-mark.svg'
+                                  : 'assets/icons/question-mark-on-hover.svg'
+                              "
+                              alt="View details"
+                              class="cursor-pointer"
+                            />
+                          </button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.COPY && !action?.isHidden"
+                            icon
+                            size="small"
+                          >
+                            <ds-icon class="fs-15" icon="files-copy"></ds-icon>
+                          </ds-button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.EDIT && !action?.isHidden"
+                            icon
+                            size="small"
+                          >
+                            <svg width="1rem" height="1rem">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#edit'"></use>
+                            </svg>
+                            <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.ADDATTACHMENT && !action?.isHidden"
+                            icon
+                            size="small"
+                          >
+                            <svg width="1rem" height="1rem">
+                              <use [attr.xlink:href]="'assets/icons/add-attachment.svg'"></use>
+                            </svg>
+                            <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
+                          </ds-button>
+
+                          <!-- <ng-container *ngIf="element?.classification?.level == ClassificationLevel.Restricted">
+                <div *ngxPermissionsOnly="[PermissionsObj.UpdateRequestContainerAccessibility]"
+                  class="d-flex align-items-center | edit-container" (click)="onOpenAccessibility(element)">
+                  <span class="cursor-pointer" matTooltip="{{
+                          'TransactionsModule.AddTransactionComponent.accessibility'
+                            | translate
+                        }}">
+                    <mat-icon>accessibility</mat-icon>
+                  </span>
+                </div>
+              </ng-container> -->
+                          <!-- } -->
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.DELETE && !action?.isHidden"
+                            icon
+                            size="small"
+                          >
+                            <svg
+                              width="1rem"
+                              height="1rem"
+                              *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
+                            >
+                              <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
+                            </svg>
+                          </ds-button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="
+                              action?.action === Actions.DELETEPENDING &&
+                              !action?.isHidden &&
+                              element?.contractStatus?.id == 1
+                            "
+                            icon
+                            size="small"
+                          >
+                            <svg
+                              width="1rem"
+                              height="1rem"
+                              *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
+                            >
+                              <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
+                            </svg>
+                          </ds-button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.CHART"
+                            color="transparent"
+                            size="small"
+                          >
+                            <ds-icon class="fc-coral fs-15" icon="chart-o"></ds-icon>
+                          </ds-button>
+
+                          <ng-container
+                            *ngIf="element.hasOwnProperty('canTakeAction'); else noCanTakeAction"
+                          >
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              size="small"
+                              *ngIf="
+                                action?.action === Actions.APPROVE && element.canTakeAction == true
+                              "
+                            >
+                              <span class="fs-12">
+                                {{ 'global.approve' | translate }}
+                              </span>
+                            </ds-button>
+                            <ds-button
+                              shape="outline"
+                              color="dark-gray"
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              size="small"
+                              *ngIf="
+                                action?.action === Actions.REJECT && element.canTakeAction == true
+                              "
+                              shape="outline"
+                            >
+                              <span class="fs-12">
+                                {{ 'global.reject' | translate }}
+                              </span>
+                            </ds-button>
+                          </ng-container>
+                          <ng-template #noCanTakeAction>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              size="small"
+                              *ngIf="action?.action === Actions.APPROVE"
+                            >
+                              <span class="fs-12">
+                                {{ 'global.approve' | translate }}
+                              </span>
+                            </ds-button>
+                            <ds-button
+                              shape="outline"
+                              color="dark-gray"
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              size="small"
+                              *ngIf="action?.action === Actions.REJECT"
+                              shape="outline"
+                            >
+                              <span class="fs-12">
+                                {{ 'global.reject' | translate }}
+                              </span>
+                            </ds-button>
+                          </ng-template>
+
+                          <ds-button
+                            *ngIf="action?.action === Actions.DETAILS"
+                            shape="text"
+                            size="small"
+                          >
+                            <span class="fs-12 underline"> View Details </span>
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.START && element?.isFinalize"
+                            size="small"
+                          >
+                            <span class="fs-12">
+                              {{ action?.actionName | translate }}
+                            </span>
+                            <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.PREPARE"
+                            color="light-gray"
+                            size="small"
+                          >
+                            <span class="fs-12 fc-black">
+                              {{ action?.actionName | translate }}
+                            </span>
+                            <ds-icon class="fs-12 fc-black" icon="settings" slot="prefix"></ds-icon>
+                          </ds-button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.START && element?.isFinalize"
+                            size="small"
+                          >
+                            <span class="fs-12">
+                              {{ action?.actionName | translate }}
+                            </span>
+                            <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
+                          </ds-button>
+
+                          <!-- <ds-button [color]="action?.actionColor" size="small"
+                                                    *ngIf="action?.action === 'customAction'"
+                                                      (click)="$event.stopPropagation();action?.onClick(element)" shape="{{action?.actionShape}}" [class]="action?.actionColor"
+                                                      ></ds-button> -->
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.CUSTOMACTION"
+                            [class]="action?.actionColor"
+                            [color]="action?.actionColor"
+                            shape="{{ action?.actionShape }}"
+                            size="small"
+                          >
+                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                              {{ action?.actionName | translate }}
+                            </span>
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="
+                              action?.action === Actions.CUSTOMACTIONMANAGE &&
+                              (element.contractStatus.id == 7 || element.contractStatus.id == 1)
+                            "
+                            [class]="action?.actionColor"
+                            [color]="action?.actionColor"
+                            shape="{{ action?.actionShape }}"
+                            size="small"
+                          >
+                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                              {{ action?.actionName | translate }}
+                            </span>
+                          </ds-button>
+
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="
+                              action?.action === Actions.CUSTOMACTIONEXTEND &&
+                              element.contractStatus.id == 7
+                            "
+                            [class]="action?.actionColor"
+                            [color]="action?.actionColor"
+                            shape="{{ action?.actionShape }}"
+                            size="small"
+                          >
+                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                              {{ action?.actionName | translate }}
+                            </span>
+                          </ds-button>
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action?.action === Actions.CUSTOMACTIONDETAILS"
+                            [class]="action?.actionColor"
+                            [color]="action?.actionColor"
+                            shape="{{ action?.actionShape }}"
+                            size="small"
+                          >
+                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                              {{ action?.actionName | translate }}
+                            </span>
+                          </ds-button>
+                          <ds-status
+                            *ngIf="action?.action === Actions.STATUS"
+                            [status]="action?.Status.status"
+                            class="fs-12 statusAction w-100"
+                          >
+                            <span class="fc-black">
+                              {{ action?.Status.title | translate }}
+                            </span>
+                          </ds-status>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="columnsConfig[i]?.actions?.length > 6">
+                      <ds-button
+                        #statusMenuTrigger="matMenuTrigger"
+                        (click)="$event.stopPropagation()"
+                        *ngIf="columnsConfig[i]?.actions?.length > 1"
+                        [matMenuTriggerFor]="statusMenu"
+                        class="dots"
+                        shape="text"
+                        size="small"
+                      >
+                        <ds-icon class="fs-20 fc-dark-gray" icon="dots"></ds-icon>
+                      </ds-button>
+
+                      <mat-menu #statusMenu="matMenu">
+                        <button
+                          (click)="action?.onClick(element)"
+                          *ngFor="let action of columnsConfig[i]?.actions"
+                          mat-menu-item
+                        >
+                          <span class="fs-12 fc-black">{{ action?.actionName | translate }} </span>
+                        </button>
+                      </mat-menu>
+                    </ng-container>
+                  </div>
+
+                  <ng-template #restrictedActions>
+                    <div class="d-flex justify-content-center actionIcons">
+                      <svg
+                        width="1rem"
+                        height="1rem"
+                        class="scale-1"
+                        *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#restricted'"></use>
+                      </svg>
+                      <ng-container *ngFor="let action of columnsConfig[i]?.actions">
+                        <ds-button
+                          class="accessibility-icon"
+                          (click)="$event.stopPropagation(); action?.onClick(element)"
+                          *ngIf="
+                            action?.action === Actions.ACCESSIBILITY &&
+                            element.classification &&
+                            element.classification?.level == action.classificationLevel
+                          "
+                          icon
+                          size="small"
+                          matTooltip=" {{
+                            'TransactionsModule.AddTransactionComponent.accessibility' | translate
+                          }}"
+                          matTooltipPosition="below"
+                        >
+                          <ng-container *ngxPermissionsOnly="[PermissionsObj[action.Permission]]">
+                            <svg width="1rem" height="1rem">
+                              <use [attr.xlink:href]="'assets/icons/accessibility.svg'"></use>
+                            </svg>
+                            <!-- {{action?.action.ClassificationLevel}} -->
+                          </ng-container>
+                          <!-- {{action.Permission}} -->
+                          <!-- {{PermissionsObj[action.permission]}} -->
+                        </ds-button>
+                      </ng-container>
+                    </div>
+                  </ng-template>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'actionsMenu'">
+                  <div class="d-flex justify-content-center gap-2">
+                    <span
+                      #statusMenuTrigger="matMenuTrigger"
+                      (click)="$event.stopPropagation()"
+                      *ngIf="columnsConfig[i]?.actions?.length > 1"
+                      [matMenuTriggerFor]="statusMenu"
+                      class="dots"
+                      shape="text"
+                      size="small"
+                    >
+                      <svg width="1.5rem" height="1.5rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#menu-dots'"></use>
+                      </svg>
+                    </span>
+
+                    <mat-menu #statusMenu="matMenu">
+                      <button
+                        (click)="action?.onClick(element)"
+                        *ngFor="let action of columnsConfig[i]?.actions"
+                        mat-menu-item
+                      >
+                        <span class="d-flex align-items-center">
+                          <svg width="1rem" height="1rem">
+                            <use
+                              [attr.xlink:href]="'assets/icons/sprite.svg#' + action?.icon"
+                            ></use>
+                          </svg>
+                          <span
+                            class="body mx-2"
+                            [ngClass]="action?.action === Actions.DELETE ? 'redColor' : ''"
+                            >{{ action?.actionName | translate }}</span
+                          >
+                        </span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'specs'">
+                  <span
+                    #statusMenuTrigger="matMenuTrigger"
+                    (click)="$event.stopPropagation()"
+                    *ngIf="element?.[column]"
+                    [matMenuTriggerFor]="specsMenu"
+                    [ngClass]="columnsConfig[i].type"
+                    class="{{ columnsConfig[i].type }} fc-coral underline cursor-pointer"
+                  >
+                    {{ columnsConfig[i].clickableText | translate }}
+                  </span>
+
+                  <mat-menu #specsMenu="matMenu" class="p-4 text-center">
+                    <span class="fs-14">
+                      {{ element[column] }}
+                    </span>
+                  </mat-menu>
+                </ng-container>
+
+                <span
+                  *ngSwitchCase="'chart'"
+                  [ngClass]="element.statusClass"
+                  class="text-nowrap percent-gauge-chart-container"
+                  matTooltip=" {{
+                    columnsConfig[i].arKey
+                      ? translateService.currentLang == 'ar'
+                        ? mapText(columnsConfig[i].arKey, element[column])
+                        : mapText(columnsConfig[i].enKey, element[column])
+                      : element[column]
+                      ? element[column]
+                      : '-'
+                  }}"
+                  matTooltipPosition="below"
+                >
+                  <percent-gauge-chart
+                    [status]="element.containerStatus"
+                    (statusChange)="onStatusChange($event, element)"
+                    [color]="mapText(columnsConfig[i].color, element[column])"
+                    [value]="mapText(columnsConfig[i].arKey, element[column])"
+                  ></percent-gauge-chart>
+                  {{
+                    element.statusClass == 'hasTime'
+                      ? ' أيام متبقية'
+                      : element.statusClass == 'complete'
+                      ? 'تم الانتهاء '
+                      : 'أيام تاخير'
+                  }}
+                </span>
+                <span
+                  *ngSwitchDefault
+                  [ngClass]="columnsConfig[i].type"
+                  class="text-nowrap"
+                  [matTooltip]="
+                    getFullText(
+                      columnsConfig[i].arKey
+                        ? translateService.currentLang == 'ar'
+                          ? mapText(columnsConfig[i].arKey, element[column])
+                          : mapText(columnsConfig[i].enKey, element[column])
+                        : element[column]
+                    )
+                  "
+                  matTooltipPosition="above"
+                >
+                  {{
+                    truncateText(
+                      columnsConfig[i].arKey
+                        ? translateService.currentLang == 'ar'
+                          ? mapText(columnsConfig[i].arKey, element[column])
+                          : mapText(columnsConfig[i].enKey, element[column])
+                        : element[column],
+                      90
+                    )
+                  }}
+                </span>
+              </ng-container>
+            </td>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Column definition for expandedDetail -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columns.length">
+          <div
+            class="example-element-detail"
+            [@detailExpand]="isRowExpanded(element) ? 'expanded' : 'collapsed'"
+          >
+            <div class="row expanded-box">
+              <ng-container *ngFor="let member of element.members; let i = index">
+                <div class="col-md-3 col-6">
+                  <ng-container *ngIf="member.action; else NoActionBlock">
+                    <div
+                      class="d-flex align-items-center justify-content-center mb-1"
+                      *ngIf="member.action.type === ExportableDocumentActionType.Sign"
+                    >
+                      <svg width="1.25rem" height="1.25rem" class="m-0">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
+                      </svg>
+                      <p class="approved caption mx-1 mb-0">
+                        {{ 'shared.isSigned' | translate }}
+                      </p>
+                    </div>
+
+                    <div
+                      class="d-flex align-items-center justify-content-center mb-1"
+                      *ngIf="member.action.type === ExportableDocumentActionType.Conservatism"
+                    >
+                      <svg width="1.25rem" height="1.25rem" class="m-0">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
+                      </svg>
+                      <p class="rejected caption mx-1 mb-0">
+                        {{ 'shared.conservatism' | translate }}
+                      </p>
+                    </div>
+
+                    <div
+                      class="d-flex align-items-center justify-content-center mb-1"
+                      *ngIf="member.action.type === ExportableDocumentActionType.OpinionRefrain"
+                    >
+                      <svg width="1.25rem" height="1.25rem" class="m-0">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                      </svg>
+                      <p class="noAnswer caption mx-1 mb-0">
+                        {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                      </p>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                      <svg
+                        width="1rem"
+                        height="1rem"
+                        *ngIf="member.action.comment"
+                        class="mx-1 mt-0"
+                        (click)="showComment(member.action.comment)"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
+                      </svg>
+                      <p class="caption-bold mb-0">{{ member.name }}</p>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #NoActionBlock>
+                    <ng-container *ngIf="element && element.isExported; else NoOpinionExpressed">
+                      <div class="d-flex align-items-center justify-content-center mb-1">
+                        <svg width="1.25rem" height="1.25rem" class="m-0">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                        </svg>
+                        <p *ngIf="member.isOnVacation" class="noAnswer caption mx-1 mb-0">
+                          {{ 'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate }}
+                        </p>
+                        <p *ngIf="!member.isOnVacation" class="noAnswer caption mx-1 mb-0">
+                          {{
+                            'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet' | translate
+                          }}
+                        </p>
+                      </div>
+                      <p class="caption-bold mb-0">{{ member.name }}</p>
+                    </ng-container>
+                    <ng-template #NoOpinionExpressed>
+                      <div class="d-flex align-items-center justify-content-center mb-1">
+                        <svg width="1.25rem" height="1.25rem" class="m-0">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                        </svg>
+                        <p class="noAnswer caption mx-1 mb-0">
+                          {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                        </p>
+                      </div>
+                      <p class="caption-bold mb-0">{{ member.name }}</p>
+                    </ng-template>
+                  </ng-template>
+                </div>
+
+                <div class="w-100" *ngIf="(i + 1) % 4 === 0 && i + 1 < element.members.length">
+                  <hr class="member-line" />
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="columns; sticky: true" mat-header-row></tr>
+
+      <tr
+        (click)="handleRowClick(row)"
+        *matRowDef="let row; columns: columns"
+        [ngClass]="{
+          'selected-row': row?.fastTrackSeen === false,
+          'cursor-pointer': hasViewAction || hasExpandableRows(),
+          'example-expanded-row': isRowExpanded(row)
+        }"
+        mat-row
+        role="button"
+      ></tr>
+
+      <!-- Expandable detail row - renders for all rows, animation handles visibility -->
+      <tr
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+        [class.example-expanded-row]="isRowExpanded(row)"
+        mat-row
+      ></tr>
+    </table>
+  </ng-container>
+
+  <!-- Skeleton Table (when loading) -->
+
+  <!-- // NO DATA -->
+  <div
+    class="d-flex justify-content-center p-2 align-items-center flex-column"
+    *ngIf="!isLoading && dataSource.filteredData?.length == 0"
+  >
+    <img
+      class="w-25 mb-3 mt-3"
+      src="../assets/images/Illustration_found.svg"
+      alt="under construction"
+    />
+    <div class="body-bold noData">
+      {{ 'shared.noData' | translate }}
+    </div>
+  </div>
+  <!-- Skeleton rows while loading -->
+  <ng-container *ngIf="isLoading" class="skeleton-cont">
+    <tr class="skeleton-row" *ngFor="let row of skeletonArray">
+      <td *ngFor="let col of columns">
+        <div class="skeleton-cell"></div>
+      </td>
+    </tr>
+  </ng-container>
+</div>
+<ng-container *ngIf="dataSource.filteredData?.length">
+  <mat-paginator
+    class="table-pagination"
+    dir="rtl"
+    style-paginator
+    #paginator
+    (page)="pageChanged($event)"
+    *ngIf="hasPaginator"
+    [length]="totalElements"
+    [pageIndex]="currentPage"
+    [pageSizeOptions]="[20, 50, 100]"
+    [showTotalPages]="8"
+    [pageSize]="pageSize"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+
+  <!-- <div class="custom-paginator" *ngIf="totalElements > 0">
+      <ng-container *ngFor="let page of getCustomPages()">
+        <span
+          *ngIf="page !== '...'; else ellipsis"
+          [class.active]="page === currentPage + 1"
+          (click)="goToPage(+page - 1)"
+        >
+          {{ page }}
+        </span>
+        <ng-template #ellipsis>
+          <span class="ellipsis">...</span>
+        </ng-template>
+      </ng-container>
+    </div> -->
+</ng-container>

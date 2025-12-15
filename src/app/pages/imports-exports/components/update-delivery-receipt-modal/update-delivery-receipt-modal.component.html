@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">تعديل تاريخ التسليم</h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start deliveryDate -->
+      <div
+        class="col-12 col-lg-4 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('deliveryDate')?.errors && isTouched('deliveryDate'),
+          'mat-form-field-div-success':
+            !form.get('deliveryDate')?.errors && isTouched('deliveryDate')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="deliveryDate"
+            [placeholder]="'shared.day/month/year' | translate"
+            (click)="picker.open()"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                      form.get('deliveryDate')?.errors?.['required'] &&
+                        isTouched('deliveryDate')
+                  "
+        >
+          يجب اختيار تاريخ التسليم
+        </span>
+      </div>
+      <!-- end deliveryDate-->
+    </div>
+  </form>
+</div>
+
+<div class="modal-actions">
+  <!--start Submit button-->
+
+  <div class="d-flex justify-content-end save-btn-container">
+    <button class="back-btn" (click)="onCancel()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      (click)="onSubmit()"
+      mat-flat-button
+      [disabled]="form.invalid"
+    >
+      {{ "shared.save" | translate }}
+    </button>
+  </div>
+
+  <!--end Submit button-->
+</div>

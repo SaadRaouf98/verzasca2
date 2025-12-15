@@ -1,0 +1,73 @@
+#close-icon {
+  padding: 0;
+}
+#header-icon {
+  display: block;
+  margin: auto;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 1em;
+  color: #000;
+}
+
+div[mat-dialog-contents] {
+  padding: 0 24px 9px;
+}
+
+.content-text {
+  padding: 1rem;
+  color: #6d7885;
+  text-align: justify;
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.btnLarge,
+.btnMd {
+  width: 30%;
+}
+.btnSmall {
+  width: 25%;
+}
+
+.delete-btn {
+  background-color: #cd3b0c !important;
+}
+@media screen and (max-width: 991px) {
+  .btnSmall {
+    width: 40%;
+  }
+  .btnLarge,
+  .btnMd {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .btnMd {
+    width: 55%;
+  }
+}
+@media screen and (max-width: 330px) {
+  .btnSmall {
+    width: 37%;
+  }
+}
+
+@media (max-width: 992px) {
+  .content-text {
+    text-align: center;
+    line-height: 2rem;
+  }
+}
+.confirm-btn {
+  color: #fff !important;
+}

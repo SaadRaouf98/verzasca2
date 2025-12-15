@@ -1,0 +1,83 @@
+<div mat-dialog-title class="modal-header">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="dismiss-btn"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" />
+  </button>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+                        'mat-form-field-div-error':
+                        form.get('actions')?.errors && isTouched('actions'),
+                        'mat-form-field-div-success':
+                        !form.get('actions')?.errors && isTouched('actions'),
+                }"
+      >
+        <div class="label-container">
+          <label for="actions">
+            {{
+              "WorkflowsModule.WorkflowEngineComponent.chooseAction" | translate
+            }}
+          </label>
+        </div>
+
+        <ng-select
+          formControlName="actions"
+          placeholder=" {{
+            'WorkflowsModule.WorkflowEngineComponent.chooseAction' | translate
+          }}"
+          class="form-control"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [compareWith]="compareFn"
+          [multiple]="true"
+        >
+          <ng-option *ngFor="let action of actionsList" [value]="action">
+            {{ lang === "ar" ? action.title : action.titleEn }}
+          </ng-option>
+        </ng-select>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                          form.get('actions')?.errors?.['required'] &&
+                          isTouched('actions')
+                        "
+        >
+          {{
+            "WorkflowsModule.WorkflowEngineComponent.chooseActionRequired"
+              | translate
+          }}
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="justify-content-end">
+  <button
+    (click)="onSubmit()"
+    [disabled]="form.invalid"
+    class="bg-primary | save-btn btnMd"
+    mat-flat-button
+  >
+    {{ "shared.save" | translate }}
+  </button>
+
+  <button
+    (click)="onCancel()"
+    class="btnSmall"
+    mat-flat-button
+    data-appearance="outline"
+    id="cancel-btn"
+  >
+    {{ "shared.cancel" | translate }}
+  </button>
+</div>

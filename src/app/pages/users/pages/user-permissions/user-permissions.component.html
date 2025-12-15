@@ -1,0 +1,665 @@
+<div class="row justify-content-between align-items-center component-header">
+  <div class="col-12 col-lg-7 d-flex align-items-center | heading">
+    <a class="cursor-pointer" (click)="onNavigateBack()">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+
+    <h2 class="component-header_title">
+      {{ "shared.managePermissions" | translate }}
+      <span>({{ userData && userData.name }})</span>
+    </h2>
+  </div>
+
+  <div
+    class="col-12 col-lg-5 d-flex justify-content-end align-items-center button-group-gap"
+  >
+    <button class="cancel-btn" (click)="onNavigateBack()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      [disabled]="disableSubmitBtn"
+      (click)="onSubmit()"
+      mat-flat-button
+    >
+      حفظ التعديلات
+    </button>
+  </div>
+</div>
+
+<section>
+  <div class="table-responsive mb-2">
+    <table
+      mat-table
+      [dataSource]="transactionsPermissionsSource"
+      multiTemplateDataRows
+    >
+      <ng-container matColumnDef="icon">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          (click)="onToggleTableExpandation(0)"
+        >
+          <img
+            [src]="
+              'assets/icons/' +
+              (tablesExpandation.transactionsPermissions
+                ? 'white-arrow-up.png'
+                : 'white-arrow-down.png')
+            "
+            class="arrow-img"
+          />
+        </th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>صلاحيات معاملات</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef>عرض</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[0].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[0].checked"
+              [name]="element.pages[0].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="create">
+        <th mat-header-cell *matHeaderCellDef>إنشاء</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[1].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[1].checked"
+              [name]="element.pages[1].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef>تعديل</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[2].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[2].checked"
+              [name]="element.pages[2].id"
+              [disabled]="element.pages[2].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>حذف</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[3].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[3].checked"
+              [name]="element.pages[3].id"
+              [disabled]="element.pages[3].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="other-options">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex | custom-permissions-container">
+            <p *ngIf="element.pages[4]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[4].checked"
+                [name]="element.pages[4]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[4].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[5]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[5].checked"
+                [name]="element.pages[5]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[5].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[6]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[6].checked"
+                [name]="element.pages[6]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[6].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[7]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[7].checked"
+                [name]="element.pages[7]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[7].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[8]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[8].checked"
+                [name]="element.pages[8]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[8].name
+              }}</span>
+            </p>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'icon',
+          'name',
+          'view',
+          'create',
+          'update',
+          'delete',
+          'other-options'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let element;
+          columns: [
+            'icon',
+            'name',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'other-options'
+          ]
+        "
+        [class.hide-rows]="!tablesExpandation.transactionsPermissions"
+      ></tr>
+    </table>
+  </div>
+
+  <div class="table-responsive mb-2">
+    <table
+      mat-table
+      [dataSource]="systemPermissionsSource"
+      multiTemplateDataRows
+    >
+      <ng-container matColumnDef="icon">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          (click)="onToggleTableExpandation(1)"
+        >
+          <img
+            [src]="
+              'assets/icons/' +
+              (tablesExpandation.systemPermissions
+                ? 'white-arrow-up.png'
+                : 'white-arrow-down.png')
+            "
+            class="arrow-img"
+          />
+        </th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>صلاحيات النظام</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef>عرض</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[0].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[0].checked"
+              [name]="element.pages[0].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="create">
+        <th mat-header-cell *matHeaderCellDef>إنشاء</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[1].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[1].checked"
+              [name]="element.pages[1].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef>تعديل</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[2].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[2].checked"
+              [name]="element.pages[2].id"
+              [disabled]="element.pages[2].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>حذف</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[3].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[3].checked"
+              [name]="element.pages[3].id"
+              [disabled]="element.pages[3].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="other-options">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex | custom-permissions-container">
+            <p *ngIf="element.pages[4]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[4].checked"
+                [name]="element.pages[4]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[4].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[5]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[5].checked"
+                [name]="element.pages[5]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[5].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[6]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[6].checked"
+                [name]="element.pages[6]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[6].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[7]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[7].checked"
+                [name]="element.pages[7]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[7].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[8]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[8].checked"
+                [name]="element.pages[8]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[8].name
+              }}</span>
+            </p>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'icon',
+          'name',
+          'view',
+          'create',
+          'update',
+          'delete',
+          'other-options'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let element;
+          columns: [
+            'icon',
+            'name',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'other-options'
+          ]
+        "
+        [class.hide-rows]="!tablesExpandation.systemPermissions"
+      ></tr>
+    </table>
+  </div>
+
+  <div class="table-responsive mb-2">
+    <table
+      mat-table
+      [dataSource]="usersPermissionsSource"
+      multiTemplateDataRows
+    >
+      <ng-container matColumnDef="icon">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          (click)="onToggleTableExpandation(2)"
+        >
+          <img
+            [src]="
+              'assets/icons/' +
+              (tablesExpandation.usersPermissions
+                ? 'white-arrow-up.png'
+                : 'white-arrow-down.png')
+            "
+            class="arrow-img"
+          />
+        </th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>صلاحيات المستخدمين</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef>عرض</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[0].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[0].checked"
+              [name]="element.pages[0].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="create">
+        <th mat-header-cell *matHeaderCellDef>إنشاء</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[1].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[1].checked"
+              [name]="element.pages[1].id"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef>تعديل</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[2].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[2].checked"
+              [name]="element.pages[2].id"
+              [disabled]="element.pages[2].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>حذف</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.pages[3].id; else NotApplicable">
+            <mat-checkbox
+              [(ngModel)]="element.pages[3].checked"
+              [name]="element.pages[3].id"
+              [disabled]="element.pages[3].id === ''"
+            >
+            </mat-checkbox>
+          </ng-container>
+
+          <ng-template #NotApplicable>--</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="other-options">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex | custom-permissions-container">
+            <p *ngIf="element.pages[4]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[4].checked"
+                [name]="element.pages[4]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[4].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[5]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[5].checked"
+                [name]="element.pages[5]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[5].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[6]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[6].checked"
+                [name]="element.pages[6]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[6].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[7]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[7].checked"
+                [name]="element.pages[7]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[7].name
+              }}</span>
+            </p>
+
+            <p *ngIf="element.pages[8]">
+              <mat-checkbox
+                [(ngModel)]="element.pages[8].checked"
+                [name]="element.pages[8]?.id"
+              >
+              </mat-checkbox>
+              <span class="custom-option-title">{{
+                element.pages[8].name
+              }}</span>
+            </p>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'icon',
+          'name',
+          'view',
+          'create',
+          'update',
+          'delete',
+          'other-options'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let element;
+          columns: [
+            'icon',
+            'name',
+            'view',
+            'create',
+            'update',
+            'delete',
+            'other-options'
+          ]
+        "
+        [class.hide-rows]="!tablesExpandation.usersPermissions"
+      ></tr>
+    </table>
+  </div>
+
+  <div
+    class="col-12 d-flex justify-content-end align-items-center button-group-gap padding-left"
+  >
+    <button class="cancel-btn" (click)="onNavigateBack()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      [disabled]="disableSubmitBtn"
+      (click)="onSubmit()"
+      mat-flat-button
+    >
+      حفظ التعديلات
+    </button>
+  </div>
+</section>
+
+<!-- <section>
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a routerLink="../">
+        <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'" />
+      </a>
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{ "shared.managePermissions" | translate }}
+      </h1>
+    </div>
+  </div>
+
+  <div class="row | mb">
+    <div class="col-12">
+      <h2>{{ userData && userData.name }}</h2>
+    </div>
+  </div>
+
+  <div class="tree-grid">
+    <mat-tree *ngFor="let chunk of dataSources; let i = index" [dataSource]="chunk" [treeControl]="treeControls[i]">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+        <button mat-icon-button disabled></button>
+        <mat-checkbox class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node) || node.checked"
+          (change)="todoLeafItemSelectionToggle(node, i)">{{ node.name }}
+        </mat-checkbox>
+      </mat-tree-node>
+
+      <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{
+            treeControls[i].isExpanded(node) ? "expand_more" : "chevron_right"
+            }}
+          </mat-icon>
+        </button>
+        <mat-checkbox [checked]="descendantsAllSelected(node, i) || node.checked"
+          [indeterminate]="descendantsPartiallySelected(node, i)" (change)="todoItemSelectionToggle(node, i)">{{
+          node.name }}
+        </mat-checkbox>
+      </mat-tree-node>
+    </mat-tree>
+  </div>
+
+  <div class="d-flex justify-content-center mt-s | submit-btn-container">
+    <button mat-fab extended class="d-flex align-items-center fw-bold fs-500 | submit-btn"
+      [class.bg-primary]="!disableSubmitBtn" [disabled]="disableSubmitBtn" (click)="onSubmit()">
+      {{
+      "PermissionsSettingsModule.ManageRolesComponent.saveRoles" | translate
+      }}
+    </button>
+  </div>
+</section> -->

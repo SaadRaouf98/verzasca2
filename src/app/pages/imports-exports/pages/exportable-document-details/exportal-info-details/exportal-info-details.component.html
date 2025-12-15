@@ -1,0 +1,357 @@
+<div class="grid">
+  <div class="row">
+    <div class="col-12">
+      <app-exportal-basic-info [requestDetails]="requestDetails"></app-exportal-basic-info>
+      <mat-accordion [multi]="true">
+        <mat-expansion-panel
+          *ngIf="!isBasicInfoEmpty"
+          [expanded]="true"
+          (opened)="basicInfoState = true"
+          (closed)="basicInfoState = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="body-bold">
+                {{ 'ImportsExportsModule.RequestDetailsComponent.basicInfo' | translate }}</span
+              >
+            </mat-panel-title>
+            <mat-panel-description>
+              <svg
+                width="1.5rem"
+                height="1.5rem"
+                [style.transform]="basicInfoState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                style="transition: transform 0.3s"
+              >
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+              </svg>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <hr class="line mt-0" />
+          <div class="row">
+            <div class="col-12">
+              <p class="body gray-700 mb-2">
+                {{ 'TransactionsModule.TransactionsListComponent.transactionSubject' | translate }}
+              </p>
+
+              <span class="body-bold mb-3 d-flex">
+                {{ requestDetails?.request?.title || '-' }}
+              </span>
+            </div>
+            <hr class="line mt-0" />
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.transactionNum' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.request?.autoNumber || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.sector' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.request?.sector?.title || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'TransactionsModule.ExportDocumentComponent.requestType' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.request?.requestType?.title || '-' }}
+              </span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.incomingFoundation' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.request?.foundation?.title || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.concernedFoundations' | translate }}
+              </p>
+
+              <span class="body-bold">
+                <span *ngFor="let foundation of requestDetails?.request?.concernedFoundations">{{
+                  foundation?.title
+                }}</span>
+                <span *ngIf="requestDetails?.request?.concernedFoundations?.length == 0">-</span>
+              </span>
+            </div>
+            <div class="col-12 col-md-4 mb-3">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.subFoundation' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.request?.subFoundation?.title || '-' }}
+              </span>
+            </div>
+            <!-- <hr class="line" /> -->
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel
+          [expanded]="true"
+          (opened)="importDataState = true"
+          (closed)="importDataState = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="body-bold d-flex align-items-center">
+                {{ 'shared.documentData' | translate }}
+              </span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <svg
+                width="1.5rem"
+                height="1.5rem"
+                [style.transform]="importDataState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                style="transition: transform 0.3s"
+              >
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+              </svg>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <hr class="line mt-0" />
+          <div class="row">
+            <div class="col-12">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.transactionTitle' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.title || '-' }}
+              </span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.generalNumber' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.autoNumber || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.exportNumber' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.exportNumber || '-' }}
+                <span class="body-bold">
+                  {{
+                    exportedDocumentTypeTranslationMap[requestDetails?.documentType] ||
+                      'shared.unknown' | translate
+                  }}</span
+                >
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.exportStatus' | translate }}
+              </p>
+              <span class="body-bold green-500">
+                {{
+                  ExportedDocumentStatusTranslationMap[requestDetails?.status] || '-' | translate
+                }}
+              </span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'ImportsExportsModule.RequestDetailsComponent.recordNumber' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.deliveryNumber || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{
+                  'ManageDocumentsModule.AddDocumentPage.LetterNumberRequestingParty' | translate
+                }}
+              </p>
+
+              <span class="body-bold">
+                {{ requestDetails?.physicalNumber || '-' }}
+              </span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.sourceTo' | translate }}
+              </p>
+
+              <span class="body-bold">
+                <span class="d-flex mt-2" *ngFor="let foundation of requestDetails?.foundations">
+                  {{ foundation?.title }}</span
+                >
+                <span *ngIf="requestDetails?.foundations.length == 0">
+                  {{ foundation?.title }}</span
+                >
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'TransactionsModule.ExportDocumentComponent.documentGregorianDate' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.document?.createdOn | date : 'dd/MM/yyyy' || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.exportedDate' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.exportedDate | date : 'dd/MM/yyyy' || '-' }}
+              </span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.classification' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.classification?.title || '-' }}
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'TransactionsModule.AddTransactionComponent.accessibility' | translate }}
+              </p>
+              <span class="body-bold">
+                <span class="d-flex mt-2" *ngFor="let user of requestDetails?.users">
+                  {{ user?.name || '-' }}
+                </span>
+                <span class="d-flex mt-2" *ngIf="requestDetails?.users?.length == 0"> - </span>
+              </span>
+            </div>
+            <div class="col-12 col-md-4">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.attachmentText' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.attachmentDescription || '-' }}
+              </span>
+            </div>
+            <hr class="line" />
+            <div class="col-12">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.theNote' | translate }}
+              </p>
+              <span class="body-bold">
+                {{ requestDetails?.description || '-' }}
+              </span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel
+          [expanded]="true"
+          (opened)="costState = true"
+          (closed)="costState = false"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="body-bold">
+                {{ 'ImportsExportsModule.RequestDetailsComponent.cost' | translate }}</span
+              >
+            </mat-panel-title>
+            <mat-panel-description>
+              <svg
+                width="1.5rem"
+                height="1.5rem"
+                [style.transform]="costState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                style="transition: transform 0.3s"
+              >
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+              </svg>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <hr class="line mt-0" />
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <p class="body-bold mb-2">
+                {{ 'ImportsExportsModule.AddImportComponent.costsRequestedAmount' | translate }}
+              </p>
+              <div class="d-flex align-items-center">
+                <div class="flex-2">
+                  <p class="body gray-700 mb-2">
+                    {{ 'shared.totalCosts' | translate }}
+                  </p>
+                  <span class="body-bold d-flex align-items-center">
+                    {{ (requestDetails?.costsRequestedAmount | number : '1.0-0') || '0' }}
+                    <svg width="1.4rem" height="1.4rem" class="mx-2">
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                    </svg>
+                  </span>
+                </div>
+                <div class="flex-2">
+                  <p class="body gray-700 mb-2">
+                    {{ 'shared.totalAllocations' | translate }}
+                  </p>
+                  <span class="body-bold d-flex align-items-center">
+                    {{ (requestDetails?.creditsRequestedAmount | number : '1.0-0') || '0' }}
+                    <svg width="1.4rem" height="1.4rem" class="mx-2">
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <p class="body-bold mb-2">
+                {{ 'ImportsExportsModule.AddImportComponent.creditsRequestedAmount' | translate }}
+              </p>
+              <div class="d-flex align-items-center">
+                <div class="flex-2">
+                  <p class="body gray-700 mb-2">
+                    {{ 'shared.totalCosts' | translate }}
+                  </p>
+                  <span class="body-bold d-flex align-items-center">
+                    {{ (requestDetails?.costsApprovedAmount | number : '1.0-0') || '0' }}
+                    <svg width="1.4rem" height="1.4rem" class="mx-2">
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                    </svg>
+                  </span>
+                </div>
+                <div class="flex-2">
+                  <p class="body gray-700 mb-2">
+                    {{ 'shared.totalAllocations' | translate }}
+                  </p>
+                  <span class="body-bold d-flex align-items-center">
+                    {{ (requestDetails?.creditsApprovedAmount | number : '1.0-0') || '0' }}
+                    <svg width="1.4rem" height="1.4rem" class="mx-2">
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

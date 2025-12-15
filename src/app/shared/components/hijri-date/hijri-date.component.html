@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <input
+      #hijriDateInput
+      matInput
+      [matDatepicker]="picker"
+      formControlName="date"
+      [placeholder]="'shared.hijriDatePlaceHolder' | translate"
+      (click)="picker.open()"
+      [max]="maxDate"
+    />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <span
+    class="span-error-message"
+    *ngIf="isFieldRequired && isTouched('date') && !form.get('date')?.value"
+  >
+    {{ "shared.hijriDateRequired" | translate }}
+  </span>
+</form>

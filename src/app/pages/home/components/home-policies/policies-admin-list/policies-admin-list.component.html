@@ -1,0 +1,43 @@
+<section>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">{{ 'shared.home' | translate }}</span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ 'shared.policies' | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngxPermissionsOnly="[PermissionsObj.CreateRegulatoryDocuments]" class="d-flex">
+      <button class="button button-primary button-md" [routerLink]="['/policies-admin/add']">
+        <svg width="1.5rem" height="1.5rem">
+          <use [attr.xlink:href]="'assets/icons/add-square.svg'"></use>
+        </svg>
+        {{ 'shared.addNewBtn' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="table-bg">
+    <app-table-list
+      [columnsConfig]="columnsConfig"
+      [columns]="columns"
+      [isLoading]="isLoading"
+      [rows]="dataSource"
+      [hasPaginator]="false"
+      (toggleChanged)="toggleValueChange($event)"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [totalElements]="length"
+      (pageChange)="onPaginationChange($event)"
+      class="new-primary-table"
+    >
+    </app-table-list>
+  </div>
+</section>

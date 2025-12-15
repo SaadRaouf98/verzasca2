@@ -1,0 +1,49 @@
+<form class="row row-cols-sm-auto">
+  <div class="col-12" style="width: 100%">
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="dp"
+        [(ngModel)]="date"
+        [maxDate]="maxDate"
+        [disabled]="disabled"
+        (ngModelChange)="onDateChange($event)"
+        ngbDatepicker
+        #d="ngbDatepicker"
+      />
+
+      <button
+        (click)="d.toggle()"
+        mat-icon-button=""
+        type="button"
+        mat-ripple-loader-class-name="mat-mdc-button-ripple"
+        class="mdc-icon-button mat-mdc-icon-button mat-unthemed mat-mdc-button-base"
+        mat-ripple-loader-centered=""
+        ng-reflect-disabled="false"
+        aria-haspopup="dialog"
+        aria-label="Open calendar"
+        tabindex="0"
+      >
+        <span
+          class="mat-mdc-button-persistent-ripple mdc-icon-button__ripple"
+        ></span
+        ><svg
+          viewBox="0 0 24 24"
+          width="24px"
+          height="24px"
+          fill="currentColor"
+          focusable="false"
+          aria-hidden="true"
+          class="mat-datepicker-toggle-default-icon ng-star-inserted"
+        >
+          <path
+            d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+          ></path></svg
+        ><span class="mat-mdc-focus-indicator"></span
+        ><span class="mat-mdc-button-touch-target"></span
+        ><span class="mat-ripple mat-mdc-button-ripple"></span>
+      </button>
+    </div>
+  </div>
+</form>

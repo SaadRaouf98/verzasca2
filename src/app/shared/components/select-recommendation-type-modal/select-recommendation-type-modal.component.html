@@ -1,0 +1,48 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{
+            "SharedModule.SelectRecommendationTypeModalComponent.chooseRecommendation"
+              | translate
+          }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="recommendationType"
+          [options]="(recommendationTypesList$ | async)?.data || []"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="
+            'SharedModule.SelectRecommendationTypeModalComponent.chooseRecommendation'
+          "
+          [multiple]="false"
+          [searchable]="false"
+          [appendTo]="'body'"
+        ></app-select>
+
+        <div
+          *ngIf="
+            form.get('recommendationType')?.invalid &&
+            form.get('recommendationType')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              "SharedModule.SelectRecommendationTypeModalComponent.recommendationRequired"
+                | translate
+            }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

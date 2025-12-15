@@ -1,0 +1,40 @@
+.close-icon-container {
+  border-bottom: 1px solid #f1f1f1;
+  #close-icon {
+    padding: 0;
+    z-index: 100;
+  }
+}
+
+.modal-header {
+  position: relative;
+  top: -2em;
+  display: flex;
+  flex-direction: row-reverse;
+
+  h2 {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 2.8em;
+  min-height: 300px;
+  max-height: 500px;
+  overflow: scroll;
+}
+
+.label-container {
+  margin-bottom: 12px;
+}
+
+.no-rows-warning-msg {
+  margin-top: 1em !important;
+}

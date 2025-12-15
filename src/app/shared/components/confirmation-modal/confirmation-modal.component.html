@@ -1,0 +1,70 @@
+<div mat-dialog-title class="modal-header">
+  <button id="close-icon" (click)="cancel()" class="dismiss-btn" mat-icon-button>
+    <img src="assets/icons/close-ico.svg" />
+  </button>
+  <p>
+    <img [src]="data.headerIconSrc" [alt]="data.headerTranslationRef | translate" id="header-icon" />
+  </p>
+  <h2 class="fs-600 fw-bold">{{ data.headerTranslationRef | translate }}</h2>
+</div>
+<div mat-dialog-contents>
+  <p *ngIf="data.content" class="fw-regular fs-400 | content-text">
+    {{ data.content }}
+  </p>
+</div>
+
+<div mat-dialog-actions class="justify-content-end">
+  <ng-container *ngIf="data.hasActionButtons">
+    <button [class.delete-btn]="data.hasDeleteBtn" (click)="confirm()" [disabled]="isLoading"
+      class="bg-primary | confirm-btn btnMd" mat-flat-button>
+      {{ data.confirmBtnTranslationRef || "" | translate }}
+    </button>
+
+    <button (click)="cancel()" class="btnSmall" mat-flat-button data-appearance="outline" id="cancel-btn">
+      {{ "shared.cancel" | translate }}
+    </button>
+  </ng-container>
+
+  <button *ngIf="!data.hasActionButtons" (click)="cancel()" class="btnLarge" mat-flat-button>
+    {{ "shared.done" | translate }}
+  </button>
+</div>
+
+
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-between mb-3" mat-dialog-title>
+    <span class="delete-icon">
+      <svg width="2rem" height="2rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#popup-delete'"></use>
+      </svg>
+    </span>
+    <svg width="1.5rem" height="1.5rem" matDialogClose>
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#popup-close'"></use>
+    </svg>
+  </div>
+  <mat-dialog-content>
+    <p class="body-bold">sdf</p>
+
+    <p class="body gray-700">sdf</p>
+
+    <div class="d-flex align-items-center justify-content-center gap-3 w-100">
+      <button class="button button-primary button-lg button-error">
+
+        >
+        <span class="px-4 fs-12">
+          <ng-container>
+            {{ "shared.deactivate" | translate }}
+          </ng-container>
+          <ng-template #deleteText>
+            {{ "shared.deletePopup" | translate }}
+          </ng-template>
+        </span>
+      </button>
+      <button matDialogClose class="button button-secondary button-lg">
+        <span class="px-4 fs-12">
+          {{ "shared.cancel" | translate }}
+        </span>
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

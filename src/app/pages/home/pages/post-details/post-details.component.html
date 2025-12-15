@@ -1,0 +1,67 @@
+<div class="d-flex align-items-center | component-header heading">
+  <a class="cursor-pointer" (click)="onNavigateBack()">
+    <img
+      src="assets/icons/right-arrow.png"
+      alt="Navigation back."
+      class="arrow-icon"
+      [class.rotate-arrow]="lang === 'en'"
+    />
+  </a>
+
+  <h2 class="component-header_title">تفاصيل الخبر</h2>
+</div>
+
+<section>
+  <div class="row mb-4">
+    <div class="col-12 col-lg-8">
+      <div class="data-card bg-light-blue">
+        <div class="row">
+          <div class="col-12">
+            <div class="post-title">
+              <p class="label">
+                {{ "shared.title" | translate }}
+              </p>
+
+              <p class="title-color">
+                {{ postDetails?.title }}
+              </p>
+            </div>
+          </div>
+          <hr class="divider" />
+          <div class="left-gray-border">
+            <p class="label">
+              {{ "shared.definition" | translate }}
+            </p>
+            <p class="info-data">
+              {{ postDetails?.definition }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <p
+              [innerHTML]="postDetails?.content"
+              style="line-height: 2.2rem"
+            ></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="row col-lg-4">
+      <img
+        [src]="
+          this.apiUrl +
+          '/api/v1/newsposts/images/' +
+          postDetails?.imagePath +
+          '?access_token=' +
+          token
+        "
+        class="post-image"
+      />
+    </aside>
+  </div>
+</section>

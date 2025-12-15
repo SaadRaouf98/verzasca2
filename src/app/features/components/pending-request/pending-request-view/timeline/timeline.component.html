@@ -1,0 +1,92 @@
+<div class="timeLine-container">
+  <ng-container
+    *ngFor="
+      let card of flattenedCards | slice : 0 : visibleCardCount;
+      let i = index;
+      trackBy: trackByCard
+    "
+  >
+    <div
+      *ngIf="
+        i === 0 ||
+        card.date !== flattenedCards[i - 1]?.date ||
+        card.hijriDate !== flattenedCards[i - 1]?.hijriDate
+      "
+      class="d-flex align-items-center mb-2"
+    >
+      <svg width="1rem" height="1rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#calender-sm'"></use>
+      </svg>
+      <span class="body-bold text-small dateText mx-2">
+        {{ card.date }} | {{ formatHijriDate(card.hijriDate) }}
+      </span>
+    </div>
+    <div class="record-card" [class.mb-4]="i === visibleCardCount - 1">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <p class="body text-small mb-0">
+          {{ lang === 'ar' ? card.item.title : card.item.titleEn }}
+        </p>
+        <span class="body text-small" *ngIf="card.item.durationInMinutes">
+          {{ card.item.durationInMinutes | minutesToReadableTime }}
+        </span>
+      </div>
+      <p class="body-bold text-small mb-2">{{ card.item.user.name }}</p>
+      <div class="d-flex align-items-center mb-2" *ngIf="card.item.comment">
+        <svg width="1rem" height="1rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#timeline-comment'"></use>
+        </svg>
+        <p class="body-bold text-small comment mx-2 mb-0 w-100">{{ card.item.comment }}</p>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <svg width="1rem" height="1rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#clock'"></use>
+          </svg>
+          <span class="body text-small mx-2" dir="ltr">
+            {{ getTime(card.item.date) }}
+          </span>
+        </div>
+        <div class="d-flex align-items-center">
+          <svg
+            (click)="onGoToViewAttachments(card.item.studyingFile!)"
+            *ngIf="card.item.studyingFile"
+            class="cursor-pointer mx-1 scale-2"
+            width="1rem"
+            height="1rem"
+          >
+            <use
+              style="pointer-events: none"
+              [attr.xlink:href]="'assets/icons/sprite.svg#view'"
+            ></use>
+          </svg>
+          <svg
+            *ngIf="card.item.studyingFile"
+            class="cursor-pointer scale-2"
+            width="1.5rem"
+            height="1.5rem"
+            (click)="onDownloadFile(card.item.studyingFile!)"
+          >
+            <use
+              style="pointer-events: none"
+              [attr.xlink:href]="'assets/icons/sprite.svg#download'"
+            ></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<button
+  *ngIf="flattenedCards.length > visibleCardCount"
+  class="button button-ghost button-xl w-100"
+  (click)="showMoreCards()"
+>
+  {{ 'shared.showMore' | translate }}
+  <svg class="mx-2" width="1.5rem" height="1.5rem">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#showMore'"></use>
+  </svg>
+</button>
+
+<p *ngIf="requestActions && requestActions.length === 0" class="no-rows-warning-msg">
+  {{ 'SharedModule.TransactionTimelineScrollableTableComponent.noTimeLine' | translate }}
+</p>

@@ -1,0 +1,273 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <ng-container *ngIf="formMode === FormMode.Modify; else viewBlock">
+          <span *ngIf="elementId; else elseBlock">
+            {{
+            "SystemSettingsModule.AddCommitteeSignaturesComponent.editDetails"
+            | translate
+            }}
+          </span>
+          <ng-template #elseBlock>
+            {{ "shared.addCommitteeSignaures" | translate }}
+          </ng-template>
+        </ng-container>
+        <ng-template #viewBlock>
+          {{
+          "SystemSettingsModule.AddCommitteeSignaturesComponent.viewDetails"
+          | translate
+          }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start title -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }">
+        <div class="label-container">
+          <label for="title">
+            {{ "shared.title" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput name="title" formControlName="title" placeholder="{{ 'shared.title' | translate }}" />
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="!form.get('title')?.errors && isTouched('title')" />
+            <img src="assets/icons/error-input.svg" *ngIf="form.get('title')?.errors && isTouched('title')" />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                  form.get('title')?.errors?.['required'] &&
+                  isTouched('title')
+                ">
+          {{ "shared.titleRequired" | translate }}
+        </span>
+
+        <span class="span-error-message" *ngIf="
+                form.get('title')?.errors?.['pattern'] &&
+                isTouched('title')
+              ">
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- End title-->
+
+      <!-- Start Committee -->
+      <div *ngIf="!elementId; else ViewCommitteeBlock" class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('committee')?.errors && isTouched('committee'),
+          'mat-form-field-div-success':
+            !form.get('committee')?.errors && isTouched('committee')
+        }">
+        <div class="label-container">
+          <label for="committee">
+            {{ "shared.committee" | translate }}
+          </label>
+        </div>
+
+        <ng-select formControlName="committee" placeholder="{{
+            'ManageMeetingsModule.AddMeetingComponent.searchForCommittees'
+              | translate
+          }}" [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [compareWith]="compareFn" class="form-control"
+          (search)="searchOnCommittees($event)" (change)="onCommitteeSelected()">
+          <ng-option *ngFor="let organization of (organizationUnitsList$ | async)?.data" [value]="organization">
+            {{ lang === "ar" ? organization.title : organization.titleEn }}
+          </ng-option>
+        </ng-select>
+
+        <span class="span-error-message" *ngIf="
+        form.get('committee')?.errors?.['required'] &&
+                isTouched('committee')
+      ">
+          {{ "shared.committeeRequired" | translate }}
+        </span>
+      </div>
+      <ng-template #ViewCommitteeBlock>
+        <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div">
+          <div class="label-container">
+            <label for="status">
+              {{ "shared.committee" | translate }}
+            </label>
+          </div>
+
+          <div class="card">
+            {{ this.form.get("committee")?.value?.title }}
+          </div>
+        </div>
+      </ng-template>
+      <!-- End Committee -->
+    </div>
+
+    <div class="row mb">
+      <!-- Start status -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div">
+        <div class="label-container">
+          <label for="status">
+            {{ "shared.status" | translate }}
+          </label>
+        </div>
+
+        <div class="card">
+          <mat-radio-group formControlName="status" aria-label="Select an option" id="status">
+            <mat-radio-button [value]="SignatureStatus.Active">
+              {{
+              "RegularReportsModule.RegularReportsListComponent.active"
+              | translate
+              }}
+            </mat-radio-button>
+            <mat-radio-button [value]="SignatureStatus.Inactive">
+              {{
+              "RegularReportsModule.RegularReportsListComponent.inactive"
+              | translate
+              }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <!-- End status -->
+
+      <!-- Start description -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('description')?.errors && isTouched('description'),
+          'mat-form-field-div-success':
+            !form.get('description')?.errors && isTouched('description')
+        }">
+        <div class="label-container">
+          <label for="description">
+            {{ "shared.description" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="description" name="descriptionAr"
+            placeholder="{{ 'shared.description' | translate }}" rows="4"></textarea>
+        </mat-form-field>
+        <span class="span-error-message" *ngIf="
+              form.get('description')?.errors?.['pattern'] &&
+              isTouched('description')
+            ">
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- End description -->
+    </div>
+
+    <div class="row mb" *ngIf="elementId">
+      <!-- start addMember -->
+      <div class="col-12 col-md-6 col-lg-4 pt-2">
+        <div class="label-container">
+          <label for="addMember">
+            {{ "shared.addMember" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input type="text" placeholder="{{
+              'SystemSettingsModule.AddCommitteeSignaturesComponent.searchMember'
+                | translate
+            }}" matInput [formControl]="memberControl" [matAutocomplete]="auto" (keyup)="detectFieldChange()"
+            id="addMember" />
+          <img src="assets/icons/search-ico.svg" alt="Search for user" class="icon" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayItems">
+            <mat-option *ngFor="let option of membersDropDown" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-3 | add-btn-container">
+        <button mat-fab extended type="button" (click)="onAddMember()"
+          class="d-flex align-items-center fw-bold | add-btn" matTooltip="{{ 'shared.addMember' | translate }}">
+          <mat-icon class="d-flex align-items-center">
+            <img src="assets/icons/plus-light.png" />
+          </mat-icon>
+          <!--  {{ "shared.addMember" | translate }} -->
+        </button>
+      </div>
+      <!-- End addMember-->
+    </div>
+
+    <!-- Start Drag and Drop First version-->
+    <div class="playground-container">
+      <div class="grid-container" *ngIf="layout.length">
+        <ktd-grid [cols]="cols" [rowHeight]="rowHeight" [layout]="layout" [compactType]="compactType"
+          [preventCollision]="preventCollision" [scrollableParent]="autoScroll ? document : null" scrollSpeed="4"
+          (dragStarted)="onDragStarted($event)" (resizeStarted)="onResizeStarted($event)"
+          (dragEnded)="onDragEnded($event)" (resizeEnded)="onResizeEnded($event)"
+          (layoutUpdated)="onLayoutUpdated($event)">
+          <ktd-grid-item *ngFor="let item of layout; trackBy: trackById" [id]="item.id" [transition]="currentTransition"
+            [dragStartThreshold]="dragStartThreshold" [draggable]="!disableDrag" [resizable]="!disableResize">
+            <div class="grid-item-content">
+              <p *ngIf="getMemberTitleById(item.id); else elseBlock" class="member-title">
+                {{ getMemberTitleById(item.id) }}
+                <span (click)="onOpenTitleModal(item.id)">
+                  <mat-icon>edit</mat-icon>
+                </span>
+              </p>
+
+              <ng-template #elseBlock>
+                <span (click)="onOpenTitleModal(item.id)">
+                  {{
+                  "SystemSettingsModule.AddCommitteeSignaturesComponent.enterTitle"
+                  | translate
+                  }}
+                  <mat-icon>edit</mat-icon></span>
+              </ng-template>
+
+              <p class="member-name">
+                {{ getMemberNameById(item.id) }}
+              </p>
+            </div>
+            <div class="grid-item-remove-handle" *ngIf="!disableRemove" (mousedown)="stopEventPropagation($event)"
+              (click)="removeItem(item.id)"></div>
+          </ktd-grid-item>
+        </ktd-grid>
+      </div>
+      <p *ngIf="
+          organizationUnitMembers.length &&
+          !isLoading &&
+          form.get('committee')?.value &&
+          layout.length === 0
+        " class="no-rows-warning-msg">
+        {{
+        "SystemSettingsModule.AddCommitteeSignaturesComponent.noSignaturesDefinedYet"
+        | translate
+        }}
+      </p>
+
+      <p *ngIf="
+          !organizationUnitMembers.length &&
+          !isLoading &&
+          form.get('committee')?.value
+        " class="no-rows-warning-msg">
+        {{ "shared.noCommitteeMembers" | translate }}
+      </p>
+    </div>
+    <!-- End Drag and Drop First version-->
+
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button class="cancel-btn" (click)="onCancel()" mat-flat-button color="primary" data-appearance="outline">
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button *ngIf="formMode === FormMode.Modify" class="save-btn" (click)="onSubmit()" mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn">
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

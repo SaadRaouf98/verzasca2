@@ -1,0 +1,61 @@
+@use 'src/assets/design-system/colors' as *;
+.link-transaction-modal {
+  border-radius: 0.75rem;
+  background: #fff;
+  ::ng-deep .mdc-dialog__content {
+    padding: 0;
+  }
+  ::ng-deep .mdc-dialog__actions {
+    padding-bottom: 0;
+  }
+}
+::ng-deep .filters-dialog-panel::before {
+  left: 230px;
+}
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 8px !important;
+  overflow: hidden;
+  padding: 0.75rem;
+  // padding: 0 !important;
+}
+::ng-deep .mdc-dialog__title::before {
+  display: none;
+}
+.content-container {
+  max-height: 26rem;
+  min-height: 26rem;
+}
+
+.transaction-card {
+  border-radius: 0.75rem;
+  background: $gray-50;
+  padding: 1rem;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+  position: relative;
+}
+.line {
+  opacity: 0.5;
+  color: $gray-300;
+  margin: 0.5rem 0;
+  height: 0.0625rem;
+}
+::ng-deep .mdc-checkbox {
+  padding: 5px !important;
+  bottom: 5px;
+}
+.transaction-card ::ng-deep .mat-mdc-checkbox .mdc-checkbox__ripple {
+  display: none;
+}
+::ng-deep .mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: #007aff !important;
+  border: #007aff !important;
+}
+.gold {
+  border: 1px solid $secondary-200;
+  background: $secondary-50;
+}
+.custom-border ::ng-deep input {
+  border-color: #addefa;
+  height: 42px;
+}

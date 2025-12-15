@@ -1,0 +1,264 @@
+@import '../../../../../assets/scss/variables';
+
+body.light-theme mat-sidenav {
+  background: $white-color;
+  border-radius: 0 0 0 0.75rem !important;
+  border-bottom: 1px solid $color-primary-200 !important;
+  border-left: 1px solid $color-primary-200 !important;
+  background: #fff;
+  box-shadow: 8px 8px 24px 0 rgba(255, 255, 255, 0.12);
+}
+
+body.dark-theme mat-sidenav {
+  background: $color-primary-border-default; // or your dark color
+  border-radius: var(--Radius-radius-lg, 0.75rem) 0 0 var(--Radius-radius-lg, 0.75rem) !important;
+  border-bottom: 1px solid var(--Primary-Border-Lighter, #5bbdf6);
+  border-left: 1px solid var(--Primary-Border-Lighter, #5bbdf6) !important;
+}
+.side-nav-container {
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  app-header {
+    position: sticky;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 11111111;
+  }
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 200ms ease;
+  }
+  mat-sidenav {
+    /* hide any overflow on the drawer itself */
+    //overflow: hidden !important;
+    overflow: visible;
+    transition: all 0.3s ease;
+  }
+  .menu-arrow-action {
+    position: absolute;
+    left: -5px;
+    top: 67px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  mat-sidenav .mat-drawer-inner-container {
+    /* hide the scrollable area that shows the line/scrollbar */
+    //overflow: hidden !important;
+
+    /* also hide the native scrollbar if any peek through */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  &.isCollapse {
+    mat-sidenav-content.mat-sidenav-content {
+      margin-right: 95px !important;
+    }
+    .nav-container-list {
+      width: 44px;
+      margin: auto;
+      .add-new {
+        img {
+          width: 21px;
+          height: 21px;
+        }
+        .add-new-content {
+          display: none;
+        }
+        i {
+          display: none;
+        }
+      }
+    }
+    app-nav-item {
+      p {
+        display: none;
+      }
+    }
+  }
+  .nav-container-list {
+    // overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+    }
+    ul:first-child {
+      align-self: flex-start;
+    }
+
+    ul:last-child {
+      margin-top: auto; // pushes last ul to the bottom
+      align-self: flex-end;
+    }
+  }
+
+  mat-sidenav .mat-drawer-inner-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  mat-sidenav-container {
+    flex: 1;
+  }
+
+  mat-sidenav {
+    //background-color: #fff;
+
+    width: 150px;
+    padding-inline: 12px;
+  }
+
+  mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    margin-right: 200px !important;
+    margin-left: 0 !important;
+
+    &.isCollapse {
+      margin-right: 95px !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  img {
+    margin: auto;
+  }
+
+  // p {
+  //   text-align: center;
+  // }
+
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    //margin-top: 24px;
+    .add-new {
+      button {
+        background-color: $color-primary-300;
+        color: $white-color;
+        width: 100%;
+        border-radius: 8px;
+      }
+
+      width: 100%;
+      list-style: none;
+
+      &:hover {
+        background-color: unset;
+      }
+    }
+  }
+
+  .nav-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: 1332px) {
+      & {
+        gap: 13px;
+      }
+    }
+
+    .active,
+    li:has(> a.active) {
+      font-weight: $fw-bold;
+      background: $color-warning-surface-default-active;
+      color: #fff;
+      border-radius: 0.5rem;
+    }
+    li:hover {
+      background: #7e7e7e66;
+    }
+    // Dark theme override
+    body.light-theme & {
+      .active,
+      li:has(> a.active) {
+        background: $color-primary-surface-default; // your primary 500 color for dark mode
+        color: #fff !important;
+        p,
+        svg {
+          color: #fff !important;
+          fill: #fff !important;
+          stroke: #fff !important;
+        }
+      }
+      li:hover {
+        background: #7e7e7e66;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: $gray-900-color;
+    }
+  }
+
+  .number-container {
+    position: relative;
+
+    .number,
+    .holding-number {
+      position: absolute;
+      color: #fff;
+      border-radius: 100%;
+      padding: 1px 5px;
+      right: -3px;
+      bottom: 4px;
+      aspect-ratio: 1 / 1;
+      min-width: 22px;
+      display: flex;
+      place-content: center;
+      align-items: center;
+      font-size: 12px;
+      line-height: 13px;
+      font-weight: 400;
+    }
+
+    .number {
+      background: #dc2626;
+    }
+
+    .holding-number {
+      background: #f97316;
+      right: 0;
+      bottom: 6px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .nav-container {
+      margin-top: 0;
+    }
+
+    .nav-list {
+      margin-top: 0;
+    }
+  }
+
+  mat-sidenav-content {
+    background-color: #fff;
+    //margin-right: 134px !important;
+  }
+}
+.light-icon {
+  position: absolute;
+  left: 0.5rem;
+}
+.dark-icon {
+  position: absolute;
+  right: 0.5rem;
+}

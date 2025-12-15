@@ -1,0 +1,33 @@
+<div class="popup-container">
+  <div class="d-flex  mb-3" mat-dialog-title>
+    <span class="delete-icon">
+      <svg width="1.2rem" height="1.2rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#restricted'"></use>
+                      </svg>
+    </span>
+    <!-- <svg width="1.5rem" height="1.5rem" matDialogClose>
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#popup-close'"></use>
+    </svg> -->
+  </div>
+  <mat-dialog-content>
+    <p class="body-bold" style="color: #000;">{{ data.title | translate }}</p>
+
+    <p class="body gray-700">{{ data.message | translate }}</p>
+
+    <div class="d-flex align-items-center justify-content-center gap-3 w-100">
+      <button class="button button-primary button-lg "  (click)="action()"
+        >
+        <span class="px-4 fs-12">
+
+          <ng-container >
+          {{ "unauthorized.ok" | translate }}
+          </ng-container>
+      
+           
+        </span>
+      
+      </button>
+     
+    </div>
+  </mat-dialog-content>
+</div>

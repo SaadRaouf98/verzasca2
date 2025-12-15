@@ -1,0 +1,405 @@
+<div
+  class="row justify-content-between align-items-center component-header mb-4 width-100"
+>
+  <div class="col-12 col-sm-6 d-flex align-items-center | heading">
+    <a class="cursor-pointer" (click)="onNavigateBack()">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+    <h1 class="fs-600 text-gray-900 fw-bold">
+      {{
+        directoryName
+          ? directoryName
+          : ("FilesDocumentsModule.DocumentsListComponent.filesAndDocuments"
+            | translate)
+      }}
+    </h1>
+  </div>
+
+  <div
+    *ngxPermissionsOnly="[PermissionsObj.SynchronizationDocumentsLibrary]"
+    class="col-12 col-sm-6 d-flex justify-content-end align-items-center button-group-gap component-header_actions"
+  >
+    <button mat-raised-button (click)="onSyncDocumentsLibrary()">
+      <mat-icon class="d-flex align-items-center">
+        <img src="assets/icons/sync.png" class="sync-icon" />
+      </mat-icon>
+      {{
+        "FilesDocumentsModule.DocumentsListComponent.syncDocuments" | translate
+      }}
+    </button>
+  </div>
+</div>
+
+<div class="mb width-100 | table-actions">
+  <div class="icons-container">
+    <a
+      (click)="onChangeListView('grid')"
+      [class.active-background]="listView === 'grid'"
+    >
+      <img
+        src="assets/icons/grid_view.png"
+        class="view-icon"
+        alt="Click to change data view to be a cards view."
+      />
+    </a>
+
+    <a
+      (click)="onChangeListView('table')"
+      class="view-icon"
+      [class.active-background]="listView === 'table'"
+    >
+      <img
+        src="assets/icons/list_view.png"
+        alt="Click to change data view to be a table view."
+      />
+    </a>
+  </div>
+</div>
+
+<ng-container *ngIf="listView === 'grid'; else tableBlock">
+  <div
+    *ngIf="!isLoading"
+    class="row flex-wrap justify-content-between | width-100 padding"
+  >
+    <div
+      class="col-12 d-flex align-items-center grid-item-container"
+      [class.cursor-pointer]="document.isDirectory"
+      (click)="onOpenDirectory(document)"
+      *ngFor="let document of documentsSource.data"
+    >
+      <div class="icon-div">
+        <ng-container *ngIf="document.isDirectory; else elseBlock">
+          <img src="assets/icons/folder.png" />
+        </ng-container>
+        <ng-template #elseBlock>
+          <img
+            [src]="getFileImageSrc(document.contentType)"
+            alt="File image."
+          />
+        </ng-template>
+      </div>
+
+      <div
+        class="d-flex justify-content-between flex-laptop-wrap"
+        style="flex-grow: 1"
+      >
+        <p
+          class="fw-regular fs-400"
+          [class.cursor-pointer]="document.isDirectory"
+        >
+          {{ document.name }}
+        </p>
+
+        <div
+          *ngIf="!document.isDirectory"
+          class="d-flex justify-content-between | buttons-container"
+        >
+          <button
+            (click)="onViewFile(document)"
+            matTooltip="{{ 'shared.watch' | translate }}"
+          >
+            <img src="assets/icons/visibility_file.png" alt="View file." />
+          </button>
+          <button
+            (click)="onDownloadFile(document)"
+            matTooltip="{{ 'shared.download' | translate }}"
+          >
+            <img src="assets/icons/download_file.png" alt="Download file." />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="documentsSource.data.length === 0 && !isLoading">
+    <p class="text-center | single-info">
+      {{ "shared.noRowsFound" | translate }}
+    </p>
+  </ng-container>
+
+  <ng-container *ngIf="isLoading">
+    <p class="text-center | single-info">
+      {{ "shared.loading" | translate }} ...
+    </p>
+  </ng-container>
+</ng-container>
+
+<ng-template #tableBlock>
+  <!--Start table-->
+  <div class="width-100 | padding table-responsive">
+    <table
+      mat-table
+      [dataSource]="documentsSource"
+      matSort
+      multiTemplateDataRows
+      (matSortChange)="
+        onSortColumn({ active: $event.active, direction: $event.direction })
+      "
+      [matSortActive]="sortData.sortBy"
+      [matSortDirection]="sortData.sortType"
+    >
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOpenDirectory(element)"
+        >
+          <ng-container *ngIf="element.isDirectory; else elseBlock">
+            <img src="assets/icons/folder.png" />
+          </ng-container>
+          <ng-template #elseBlock>
+            <img
+              [src]="getFileImageSrc(element.contentType)"
+              alt="File image."
+            />
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.name" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="view_hide_element(element)"
+        >
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="timeCreated">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.timeCreated" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOpenDirectory(element)"
+          class="ltr"
+        >
+          {{ element.timeCreated | date : "dd/MM/yyyy hh:mm a" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="timeLastModified">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{
+            "FilesDocumentsModule.DocumentsListComponent.timeLastModified"
+              | translate
+          }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOpenDirectory(element)"
+          class="ltr"
+        >
+          {{ element.timeLastModified | date : "dd/MM/yyyy hh:mm a" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="authorName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.authorName" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOpenDirectory(element)"
+        >
+          {{ element.authorName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="subDirectoryCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{
+            "FilesDocumentsModule.DocumentsListComponent.subDirectoryCount"
+              | translate
+          }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          (click)="onOpenDirectory(element)"
+        >
+          {{ element.subDirectoryCount }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngIf="!element.isDirectory"
+            class="d-flex justify-content-between | buttons-container"
+          >
+            <button
+              (click)="onViewFile(element)"
+              matTooltip="{{ 'shared.watch' | translate }}"
+            >
+              <img src="assets/icons/visibility_file.png" alt="View file." />
+            </button>
+            <button
+              (click)="onDownloadFile(element)"
+              matTooltip="{{ 'shared.download' | translate }}"
+            >
+              <img src="assets/icons/download_file.png" alt="Download file." />
+            </button>
+          </div>
+
+          <div
+            *ngIf="element.isDirectory && isSmallDeviceWidthForTable()"
+            class="d-flex align-items-center"
+          >
+            <button
+              mat-fab
+              extended
+              [matMenuTriggerFor]="optionsMenu"
+              class="d-flex align-items-center | options-btn"
+            >
+              {{ "shared.options" | translate }}
+
+              <mat-icon class="d-flex align-items-center">
+                <img
+                  src="assets/icons/white-arrow-down.png"
+                  alt="Press to select an option."
+                />
+              </mat-icon>
+            </button>
+            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn">
+              <button mat-menu-item (click)="onOpenDirectory(element)">
+                {{
+                  "FilesDocumentsModule.DocumentsListComponent.openFolder"
+                    | translate
+                }}
+              </button>
+            </mat-menu>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [attr.colspan]="return_displayed_columns().length"
+        >
+          <div
+            class="example-element-detail"
+            [@detailExpand]="
+              check_view_element(element) ? 'expanded' : 'collapsed'
+            "
+          >
+            <div class="example-element-description">
+              <ul class="detail-element">
+                <li>
+                  <p>
+                    {{ "shared.timeCreated" | translate }}
+                  </p>
+                  <span class="ltr">{{
+                    element.timeCreated | date : "dd/MM/yyyy hh:mm a"
+                  }}</span>
+                </li>
+                <li>
+                  <p>
+                    {{
+                      "FilesDocumentsModule.DocumentsListComponent.timeLastModified"
+                        | translate
+                    }}
+                  </p>
+                  <span class="ltr">{{
+                    element.timeLastModified | date : "dd/MM/yyyy hh:mm a"
+                  }}</span>
+                </li>
+
+                <li>
+                  <p>
+                    {{ "shared.authorName" | translate }}
+                  </p>
+                  <span>{{ element.authorName }}</span>
+                </li>
+
+                <li>
+                  <p>
+                    {{
+                      "FilesDocumentsModule.DocumentsListComponent.subDirectoryCount"
+                        | translate
+                    }}
+                  </p>
+                  <span>{{ element.subDirectoryCount }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: return_displayed_columns()"
+        class="example-element-row"
+        [ngClass]="{
+          hide: isLoading,
+          'bg-hover': element.isDirectory,
+          pointer: element.isDirectory
+        }"
+      ></tr>
+
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+      ></tr>
+
+      <ng-container matColumnDef="noData">
+        <td mat-footer-cell *matFooterCellDef colspan="8">
+          <p class="text-center">{{ "shared.noRowsFound" | translate }}</p>
+        </td>
+      </ng-container>
+
+      <!--start loading -->
+      <ng-container matColumnDef="loading">
+        <td mat-footer-cell *matFooterCellDef colspan="8">
+          <p class="text-center">{{ "shared.loading" | translate }} ...</p>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['loading']"
+        [ngClass]="{ hide: !isLoading }"
+      ></tr>
+      <!--end loading -->
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['noData']"
+        [ngClass]="{ hide: isLoading || documentsSource.data.length != 0 }"
+      ></tr>
+    </table>
+  </div>
+
+  <!--End table-->
+</ng-template>
+
+<div class="d-flex mt-1 justify-content-end">
+  <mat-paginator
+    [length]="length"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[20, 30, 40, 50]"
+    (page)="pageEvent = $event; onPaginationChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

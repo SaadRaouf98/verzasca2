@@ -1,0 +1,27 @@
+<div
+  class="signature-box"
+  #draggable
+  ngDraggable
+  ngResizable
+  [rzHandles]="'ne,sw,se,s,w,n,e'"
+  (endOffset)="onMoveEnd($event)"
+  (rzStop)="onResizeStop($event)"
+  [style.left]="left + 'px'"
+  [style.top]="top + 'px'"
+  [style.height]="height + 'px'"
+  [style.width]="width + 'px'"
+  style="
+    font-weight: 900;
+    background-color: rgba(210, 210, 210, 0.6);
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: move;
+    position: absolute;
+    width: 100%;
+  "
+>
+  <span class="delete-icon" (click)="onDeleteBox()">x</span>
+  <img [src]="barcodeImageSrc" style="width: 100%; height: 100%" />
+</div>

@@ -1,0 +1,19 @@
+<div
+  class="progress-container"
+  [ngStyle]="{
+    background: backgroundColor,
+    'border-radius': borderRadius + 'px'
+  }"
+>
+  <div
+    *ngFor="let div of divsProgress"
+    class="progress-bar text-black fw-bold"
+    [ngStyle]="{
+      width: div.percentage + '%',
+      background: div.foregroundColor,
+      'transition-duration': transitionDuration + 's'
+    }"
+  >
+    {{ div.count >0 ? div.count : ''}}
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<div class="link-transaction-modal">
+  <div class="grid">
+    <div mat-dialog-title class="row mb-2">
+      <div class="col-12">
+        <p class="body-bold mb-2">
+          {{ 'shared.linkWithTransaction' | translate }}
+        </p>
+        <p class="body text-small mb-2">
+          {{ 'shared.youWillLink' | translate }} :
+          <span class="body-bold secondary-500">{{
+            (this.data.year + '').substring(2, 4) +
+              (this.data.transactionNo | transactionNumberFormatter)
+          }}</span>
+          {{ 'shared.title' | translate }} :
+          <span class="body-bold">{{ this.data.title }} </span>
+        </p>
+      </div>
+    </div>
+    <div class="row gx-2 mb-2">
+      <div class="col-9">
+        <app-input
+          [formControl]="searchKeywordControl"
+          [placeholder]="'shared.searchByAddress'"
+          [showSearchIcon]="true"
+          [showFilterIcon]="false"
+          class="custom-border"
+        ></app-input>
+      </div>
+      <div class="col-3">
+        <button
+          class="button button-primary button-md w-100"
+          (click)="onSearchClick()"
+          [disabled]="!searchKeywordControl.value || !searchKeywordControl.value.trim()"
+        >
+          {{ 'shared.search' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <mat-dialog-content class="content-container">
+      <div *ngIf="!isLoading; else loadingResultsBlock" class="ps-2">
+        <ng-container *ngFor="let item of searchedResults; let odd = odd">
+          <div class="transaction-card" [class.gold]="item.checked">
+            <div>
+              <mat-checkbox
+                [checked]="item.checked"
+                (change)="item.checked = $event.checked"
+                [disableRipple]="true"
+              >
+              </mat-checkbox>
+              <span class="body gray-700 text-small">{{ 'shared.title' | translate }} : </span>
+              <span class="body-bold text-small"> {{ item.title | summary }}</span>
+            </div>
+            <hr class="line" />
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <span class="body gray-700 text-small">{{ 'shared.sector' | translate }} : </span>
+                <span class="body-bold text-small">{{ item.sector.title }}</span>
+              </div>
+              <div>
+                <span class="body gray-700 text-small"
+                  >{{ 'ManageDocumentsModule.AddDocumentPage.incomingNumber' | translate }}
+                  :
+                </span>
+                <span class="body-bold text-small">
+                  {{ item.importNumber }}
+                </span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="body gray-700 text-small"
+                  >{{
+                    'TransactionsModule.TransactionsListComponent.transactionStatus' | translate
+                  }}
+                  :
+                </span>
+                <svg class="mx-1" width="1.25rem" height="1.25rem">
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#status-' + item.status"></use>
+                </svg>
+              </div>
+            </div>
+            <hr class="line" />
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex">
+                <span class="body gray-700 text-small">{{ 'shared.advisor' | translate }} : </span>
+                <div class="d-flex flex-column mx-1">
+                  <span *ngFor="let consultant of item.consultants" class="body-bold text-small">
+                    {{ (consultant.name && consultant.name.trim()) || '-' }}
+                  </span>
+                  <!-- Show dash if no consultants exist -->
+                  <span
+                    *ngIf="!item.consultants || item.consultants.length === 0"
+                    class="body-bold text-small"
+                  >
+                    -
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-1 d-flex justify-content-end align-items-center">
+            <div
+              class="check-btn-container"
+              [class.check-btn-container-checked]="item.checked"
+              (click)="onSelect(item, !item.checked)"
+            >
+              <img src="assets/icons/check-mark.svg" />
+            </div>
+          </div> -->
+        </ng-container>
+      </div>
+
+      <ng-template #loadingResultsBlock>
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style="width: 100%; margin-top: 9%"
+        >
+          <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
+      </ng-template>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+      <div class="col-12">
+        <button
+          class="button button-primary button-lg w-100 mb-2"
+          (click)="linkTransaction()"
+          [disabled]="!hasUserChosenRequest() || disableSubmitBtn"
+        >
+          {{ 'shared.linkWithTransaction' | translate }}
+          <svg width="1.5rem" height="0.8rem" class="mx-2">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#linkBtn'"></use>
+          </svg>
+        </button>
+
+        <button class="button button-ghost button-lg w-100" (click)="onCancel()">
+          {{ 'shared.cancel' | translate }}
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

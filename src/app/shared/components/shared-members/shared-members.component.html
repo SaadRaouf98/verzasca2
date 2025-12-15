@@ -1,0 +1,297 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 d-flex align-items-center | heading">
+      <a (click)="navigateToTablePage()" class="cursor-pointer">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="fs-800 text-gray-900 fw-bold |">
+        <!--{{ header | translate }} :-->
+        <span>{{ lang === "ar" ? data.title : data.titleEn }}</span>
+      </h1>
+    </div>
+  </div>
+
+  <div class="row | mb">
+    <div class="col-12">
+      <h2>{{ subHeader | translate }}</h2>
+    </div>
+  </div>
+
+  <!--Start new table-->
+  <table class="table table--shaded">
+    <thead class="table__head">
+      <tr class="table__row header-grid">
+        <td class="UserTable__name table__cell table__cell--no-wrap">
+          {{ "shared.name" | translate }}
+        </td>
+        <td class="table__cell d-none d-md-inline-block"></td>
+        <td
+          class="UserTable__name table__cell table__cell--no-wrap d-none d-md-inline-block"
+        >
+          {{ "shared.name" | translate }}
+        </td>
+        <td class="table__cell d-none d-md-inline-block"></td>
+      </tr>
+    </thead>
+
+    <tbody class="table__body">
+      <tr class="table__row" class="body-grid">
+        <ng-container
+          *ngFor="let emp of membersArrayControls; let i = index; let odd = odd"
+        >
+          <ng-container *ngIf="!odd">
+            <td class="UserTable__name table__cell table__cell--no-wrap">
+              <mat-form-field appearance="outline">
+                <input
+                  type="text"
+                  placeholder="{{ 'shared.searchForUser' | translate }}"
+                  matInput
+                  [formControl]="emp"
+                  [matAutocomplete]="auto"
+                  (keyup)="detectFieldChange(emp)"
+                />
+                <img
+                  src="assets/icons/search-ico.svg"
+                  alt="Search for user"
+                  class="icon"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  [displayWith]="displayItems"
+                >
+                  <mat-option
+                    *ngFor="let option of usersFilteredList$ | async"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </td>
+
+            <td class="table__cell table__cell--actions">
+              <a
+                *ngIf="emp.value"
+                (click)="onDeleteMember(emp)"
+                class="cursor-pointer"
+              >
+                <mat-icon class="delete-icon">delete</mat-icon>
+              </a>
+
+              <a
+                *ngIf="canAddInnerDepartments && emp.value"
+                (click)="onAddInnerDepartment(emp)"
+                class="cursor-pointer"
+                matTooltip="{{
+                  'CommitteesModule.ViewMembersComponent.addRelatedDepartment'
+                    | translate
+                }}"
+              >
+                <mat-icon>add_to_queue</mat-icon>
+              </a>
+
+              <img
+                *ngIf="canAddInnerDepartments && emp.value"
+                src="assets/icons/eye-opened.png"
+                class="eye-opened"
+                matTooltip="{{
+                  'SharedModule.SharedMembersComponent.goToDepartments'
+                    | translate
+                }}"
+                [routerLink]="emp.value.id + '/departments'"
+                [queryParams]="{ memberName: emp.value.name }"
+              />
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="odd">
+            <td class="UserTable__name table__cell table__cell--no-wrap">
+              <mat-form-field appearance="outline">
+                <input
+                  type="text"
+                  placeholder="{{ 'shared.searchForUser' | translate }}"
+                  matInput
+                  [formControl]="emp"
+                  [matAutocomplete]="auto"
+                  (keyup)="detectFieldChange(emp)"
+                />
+                <img
+                  src="assets/icons/search-ico.svg"
+                  alt="Search for user"
+                  class="icon"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  [displayWith]="displayItems"
+                >
+                  <mat-option
+                    *ngFor="let option of usersFilteredList$ | async"
+                    [value]="option"
+                  >
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </td>
+
+            <td class="table__cell table__cell--actions">
+              <a
+                *ngIf="emp.value"
+                (click)="onDeleteMember(emp)"
+                class="cursor-pointer"
+              >
+                <mat-icon class="delete-icon">delete</mat-icon>
+              </a>
+
+              <a
+                *ngIf="canAddInnerDepartments && emp.value"
+                (click)="onAddInnerDepartment(emp)"
+                class="cursor-pointer"
+                matTooltip="{{
+                  'CommitteesModule.ViewMembersComponent.addRelatedDepartment'
+                    | translate
+                }}"
+              >
+                <mat-icon>add_to_queue</mat-icon>
+              </a>
+              <img
+                *ngIf="canAddInnerDepartments && emp.value"
+                src="assets/icons/eye-opened.png"
+                class="eye-opened"
+                matTooltip="{{
+                  'SharedModule.SharedMembersComponent.goToDepartments'
+                    | translate
+                }}"
+                [routerLink]="emp.value.id + '/departments'"
+                [queryParams]="{ memberName: emp.value.name }"
+              />
+            </td>
+          </ng-container>
+        </ng-container>
+        <!--<ng-container *ngFor="let emp of membersArrayEvenControls">
+          <td class="UserTable__name table__cell table__cell--no-wrap">
+            <mat-form-field appearance="outline">
+              <input
+                type="text"
+                placeholder="{{ 'shared.searchForUser' | translate }}"
+                matInput
+                [formControl]="emp"
+                [matAutocomplete]="auto"
+                (keyup)="detectFieldChange(emp)"
+              />
+              <img
+                src="assets/icons/search-ico.svg"
+                alt="Search for user"
+                class="icon"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayItems"
+              >
+                <mat-option
+                  *ngFor="let option of usersFilteredList$ | async"
+                  [value]="option"
+                >
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </td>
+          xxxx
+          <td class="table__cell table__cell--actions">
+            <a (click)="onDeleteMember(emp)" class="cursor-pointer">
+              <mat-icon class="delete-icon">delete</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+
+
+        <ng-container
+          *ngFor="let emp of membersArrayOddControls; let i = index"
+        >
+          <td class="UserTable__name table__cell table__cell--no-wrap">
+            <mat-form-field appearance="outline">
+              <input
+                type="text"
+                placeholder="{{ 'shared.searchForUser' | translate }}"
+                matInput
+                [formControl]="emp"
+                [matAutocomplete]="auto"
+                (keyup)="detectFieldChange(emp)"
+              />
+              <img
+                src="assets/icons/search-ico.svg"
+                alt="Search for user"
+                class="icon"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayItems"
+              >
+                <mat-option
+                  *ngFor="let option of usersFilteredList$ | async"
+                  [value]="option"
+                >
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </td>
+          yyyy
+          <td class="table__cell table__cell--actions">
+            <a (click)="onDeleteMember(emp)" class="cursor-pointer">
+              <mat-icon class="delete-icon">delete</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+        -->
+      </tr>
+    </tbody>
+  </table>
+  <div class="col-12 col-md-6 d-flex">
+    <button
+      mat-fab
+      extended
+      type="button"
+      (click)="addRow()"
+      class="d-flex align-items-center fw-bold | add-btn"
+    >
+      <mat-icon class="d-flex align-items-center">
+        <img src="assets/icons/plus-light.png" />
+      </mat-icon>
+      {{ buttonLabel | translate }}
+    </button>
+  </div>
+
+  <!--start button actions -->
+
+  <div class="row | footer-container">
+    <div class="col-6 d-none d-sm-block"></div>
+    <div class="col-6 | btn-container">
+      <button
+        class="cancel-btn"
+        (click)="onCancel()"
+        mat-flat-button
+        color="primary"
+        data-appearance="outline"
+      >
+        {{ "shared.cancel" | translate }}
+      </button>
+      <button
+        class="save-btn"
+        (click)="onSubmit()"
+        mat-flat-button
+        [disabled]="!form.valid || disableSubmitBtn"
+      >
+        {{ "shared.save" | translate }}
+      </button>
+    </div>
+  </div>
+  <!--End button actions-->
+  <!--End new table-->
+</section>

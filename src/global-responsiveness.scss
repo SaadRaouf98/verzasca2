@@ -1,0 +1,102 @@
+.ng-placeholder,
+.mat-mdc-select-placeholder,
+input,
+label {
+  font-size: 14px !important;
+
+  @media (min-width: 1332px) {
+    & {
+      font-size: 14px !important;
+    }
+  }
+}
+
+.filters-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.6em;
+  margin-bottom: 0.4em;
+
+  @media (min-width: 1332px) {
+    & {
+      padding: 0.7em;
+    }
+  }
+
+  form .row,
+  form .row > div {
+    @media (max-width: 1332px) {
+      & {
+        padding: 0 5px;
+      }
+    }
+  }
+
+  .special-calendar-flex {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .special-flex {
+    @media (max-width: 1332px) {
+      & {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  /* padding: 0.6em !important;
+  margin-bottom: 0.4em !important;
+
+  @media (min-width: 1332px) {
+    & {
+      padding: 0.7em;
+      margin-bottom: 1em;
+    }
+  }
+
+  div {
+    @media (max-width: 1332px) {
+      & {
+        padding: 0.1em;
+      }
+    }
+  } */
+}
+
+.mat-mdc-text-field-wrapper {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  @media (min-width: 1332px) {
+    & {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  font-size: 14px !important;
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1rem !important;
+    }
+  }
+}
+
+.mat-mdc-form-field-infix {
+  @media (max-width: 1332px) {
+    & {
+      min-height: 32px;
+    }
+  }
+}
+
+@media (max-width: 1332px) {
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+}

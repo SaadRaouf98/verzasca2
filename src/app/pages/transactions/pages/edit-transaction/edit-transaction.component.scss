@@ -1,0 +1,7 @@
+@use 'src/assets/design-system/colors' as *;
+.card {
+  border-radius: 0.75rem;
+  border: 1px solid $gray-100;
+  background: #fff;
+  padding: 1rem;
+}

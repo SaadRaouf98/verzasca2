@@ -1,0 +1,69 @@
+@import "../../../../assets/scss/variables.scss";
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: none;
+    color: var($main-darker-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s;
+
+    i {
+      font-size: 1rem;
+    }
+    &:hover {
+      filter: brightness(90%);
+    }
+  }
+
+  &__title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  &__count {
+    font-weight: normal;
+    color: #666;
+    margin-left: 0.5rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #ddd;
+    }
+
+    &.primary {
+      background: #00c4a7;
+      color: #fff;
+      &:hover {
+        background: #00b397;
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{
+          "UsersModule.UsersListComponent.updateMainDepartmentFor" | translate
+        }}
+        ({{ form.get("userName")?.value }})
+      </h1>
+    </div>
+  </div>
+
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('department')?.errors && isTouched('department'),
+          'mat-form-field-div-success':
+            !form.get('department')?.errors && isTouched('department')
+        }"
+      >
+        <div class="label-container">
+          <label for="department">
+            {{ "UsersModule.UsersListComponent.mainDepartment" | translate }}
+          </label>
+        </div>
+        <ng-select
+          formControlName="department"
+          placeholder="{{
+            'ActorsModule.AddActorComponent.searchForDepartments' | translate
+          }}"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [compareWith]="compareFn"
+          class="form-control"
+        >
+          <ng-option
+            *ngFor="let department of departments"
+            [value]="department"
+          >
+            {{ lang === "ar" ? department.title : department.titleEn }}
+          </ng-option>
+        </ng-select>
+
+        <span
+          class="span-error-message"
+          *ngIf="form.get('department')?.errors && isTouched('department')"
+        >
+          {{
+            "UsersModule.UsersListComponent.mainDepartmentMustSelected"
+              | translate
+          }}
+        </span>
+      </div>
+    </div>
+
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button
+          class="cancel-btn"
+          (click)="onCancel()"
+          mat-flat-button
+          color="primary"
+          data-appearance="outline"
+        >
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button
+          class="save-btn"
+          (click)="onSubmit()"
+          mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn"
+        >
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

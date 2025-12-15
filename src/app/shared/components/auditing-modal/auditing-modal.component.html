@@ -1,0 +1,184 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold">
+    {{ data.header }}
+
+    <!-- For the progress type indicators -->
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Statement">
+      {{ 'actions.auditing.statementRequest' | translate }}
+    </ng-container>
+
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Recommendation">
+      {{ 'actions.auditing.studyProposal' | translate }}
+    </ng-container>
+  </span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<!-- <div mat-dialog-title class="modal-header"></div> -->
+
+<div class="custom-modal-body" mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <mat-tab-group
+      class="modal-tabs"
+      [preserveContent]="true"
+      [selectedIndex]="selectedTabIndex"
+      (selectedTabChange)="onSelectedTabChange($event)"
+      #tabGroup
+    >
+      <mat-tab formGroupName="uploadFileTab">
+        <ng-template mat-tab-label>
+          <!-- For tab labels -->
+          <div class="custom-tab-label" [class.no-border]="isUploadTabValid()">
+            <svg *ngIf="isUploadTabValid()" width="1rem" height="1rem" class="ms-1">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#green-circle'"></use>
+            </svg>
+            <span [class.green-500]="isUploadTabValid()">{{
+              'actions.auditing.uploadFileTab' | translate
+            }}</span>
+          </div>
+        </ng-template>
+        <div class="download-container mb-2">
+          <div class="d-flex align-items-center">
+            <svg width="1.5rem" height="1.5rem" class="ms-2">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+            </svg>
+            <span class="body-bold"> {{ this.data.studyingFile?.name }}</span>
+          </div>
+
+          <svg
+            class="cursor-pointer"
+            width="1.5rem"
+            height="1.5rem"
+            (click)="onDownloadOriginalUploadedFile()"
+            matTooltip="{{ 'shared.download' | translate }}"
+          >
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+          </svg>
+        </div>
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'shared.notes' | translate }}
+            </p>
+
+            <textarea
+              class="form-control w-100"
+              rows="3"
+              placeholder="{{ 'shared.note' | translate }}"
+              formControlName="comment"
+              id="comment"
+            ></textarea>
+          </div>
+          <div class="col-12">
+            <p class="body-bold text-small mb-2">
+              {{ 'attachment.desc' | translate }}
+            </p>
+            <app-upload-attachment
+              #uploadAttachment
+              [customFileTypes]="['.doc', '.docx']"
+              [multiple]="false"
+              [showBtn]="false"
+              (fileUploaded)="onFileDropped($event)"
+            ></app-upload-attachment>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab formGroupName="editorTab">
+        <ng-template mat-tab-label>
+          <!-- For tab labels -->
+          <div class="custom-tab-label" [class.no-border]="isEditorTabValid()">
+            <svg *ngIf="isEditorTabValid()" width="1rem" height="1rem" class="ms-1">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#green-circle'"></use>
+            </svg>
+            <span [class.green-500]="isEditorTabValid()">{{
+              'actions.auditing.textEditorTab' | translate
+            }}</span>
+          </div>
+        </ng-template>
+        <div class="row mb-2">
+          <div class="col-12 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'shared.notes' | translate }}
+            </p>
+
+            <textarea
+              class="form-control w-100"
+              rows="3"
+              placeholder="{{ 'shared.note' | translate }}"
+              formControlName="comment"
+              id="comment"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row | padding">
+          <div class="col-12 rtl">
+            <app-editor
+              [editorFileId]="editorFileId"
+              (editorLoaded)="setEditorHasLoaded()"
+            ></app-editor>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <!-- Navigation Buttons -->
+    <div class="d-flex mt-3">
+      <span
+        [class]="selectedTabIndex === 0 ? 'grey-700' : 'cursor-pointer'"
+        (click)="selectedTabIndex > 0 && goToPreviousTab()"
+        class="d-flex align-items-center"
+      >
+        <span [class]="selectedTabIndex === 0 ? 'grey-700' : 'primary-200'">{{
+          'shared.previous' | translate
+        }}</span>
+        <svg width="1.5rem" height="1.5rem" class="">
+          <use
+            [attr.xlink:href]="
+              selectedTabIndex === 0
+                ? 'assets/icons/sprite.svg#prev-grey'
+                : 'assets/icons/sprite.svg#prev-blue'
+            "
+          ></use>
+        </svg>
+      </span>
+
+      <span
+        [class]="selectedTabIndex === 1 ? 'gray-700' : 'cursor-pointer'"
+        (click)="selectedTabIndex < 1 && goToNextTab()"
+        class="d-flex align-items-center mx-2"
+      >
+        <svg width="1.5rem" height="1.5rem" class="ms-1">
+          <use
+            [attr.xlink:href]="
+              selectedTabIndex === 1
+                ? 'assets/icons/sprite.svg#next-grey'
+                : 'assets/icons/sprite.svg#next-blue'
+            "
+          ></use>
+        </svg>
+        <span [class]="selectedTabIndex === 1 ? 'gray-700' : 'primary-200'">{{
+          'shared.next' | translate
+        }}</span>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button
+    class="button button-primary button-lg"
+    style="flex: 0 0 69%"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || disableSubmitBtn"
+  >
+    {{ 'shared.approveBtn' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

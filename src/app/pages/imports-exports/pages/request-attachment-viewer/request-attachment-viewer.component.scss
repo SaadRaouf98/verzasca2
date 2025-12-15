@@ -1,0 +1,50 @@
+.heading {
+  margin-top: 0.8em;
+  margin-bottom: 8px;
+  padding: 1px 2px;
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1.3rem;
+      margin-top: 0.5em;
+      margin-bottom: 10px;
+      padding: 4px;
+    }
+  }
+
+  #file-title {
+    font-size: 1rem;
+    margin-bottom: 0;
+
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+section {
+  height: 100vh;
+  position: relative;
+
+  .print-icon,
+  .download-icon {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    cursor: pointer;
+    //display: none;
+  }
+
+  .download-icon {
+    left: 60px;
+  }
+
+  .up {
+    top: -34px;
+  }
+}
+
+img {
+  margin: auto;
+}

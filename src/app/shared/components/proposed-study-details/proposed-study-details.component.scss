@@ -1,0 +1,59 @@
+@import "../../../../assets/scss/variables.scss";
+
+section {
+  margin: 0;
+}
+
+.bg-section {
+  padding: 1em;
+  border-radius: 14px;
+  color: #545961;
+  background-color: #fff;
+  margin-bottom: 1em;
+}
+
+.single-card {
+  margin-bottom: 1.5em;
+  min-width: 275px;
+
+  /* .info-content {
+    padding: 1.5em 1.5em;
+    gap: 1.2em;
+  } */
+
+  .card-content {
+    background: #fff;
+    color: #545961;
+    min-height: 44px;
+    display: flex;
+    border: 2px solid #eaecf0;
+    border-radius: 10px;
+    padding: 5px 12px;
+    gap: 8px;
+    font-size: 14px;
+
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1rem;
+      }
+    }
+
+    .label {
+      /*       font-size: $fs-300;
+ */
+      font-weight: $fw-regular;
+      color: #111827;
+      margin-bottom: 0;
+    }
+
+    .info-data {
+      color: #545961;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.watch-eye {
+  cursor: pointer;
+  pointer-events: all !important;
+}

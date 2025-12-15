@@ -1,0 +1,95 @@
+<div class="card-container">
+  <div class="card item-card">
+    <app-page-header
+      [showBack]="true"
+      backIcon="fa fa-chevron-left"
+      [title]="'معاملات قيد الانتظار\n' + '\n'"
+      [count]="303"
+      [actions]="[
+        {
+          id: 'create',
+          label: 'Create Project',
+          icon: 'fa fa-plus',
+          primary: true
+        },
+        { id: 'export', label: 'Export', icon: 'fa fa-download' }
+      ]"
+      (back)="onBack()"
+      (action)="onHeaderAction($event)"
+    ></app-page-header>
+  </div>
+  <div class="card item-card mt-3">
+    <app-upload-attachment
+      [multiple]="true"
+      (fileUploaded)="log($event)"
+    ></app-upload-attachment>
+  </div>
+  <div class="card item-card">
+    <app-table
+      [columns]="cols"
+      [items]="items"
+      [filterMode]="'client'"
+      [pageSizeOptions]="[10, 20, 30, 40, 50]"
+      [total]="total"
+      [pageSize]="pageSize"
+      [currentPage]="currentPage"
+      [sortKey]="sortKey"
+      [sortDirection]="sortDirection"
+      [filterText]="filterText"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (sortChange)="onSortChange($event)"
+      (filter)="onFilter($event)"
+      [showActions]="true"
+    >
+      <ng-template appTableCell="name" let-user>
+        <strong>{{ user.name }}</strong>
+      </ng-template>
+      <ng-template appTableCell="email" let-user>
+        <a [href]="'mailto:' + user.email">{{ user.email }}</a>
+      </ng-template>
+      <ng-template appRowDetail let-user>
+        <pre>{{ user | json }}</pre>
+      </ng-template>
+    </app-table>
+  </div>
+  <ng-container
+    *appShowWhenNoData="
+      checkedItems;
+      noImage: 'assets/images/under-construction/building-blocks.png';
+      text: 'No items selected'
+    "
+  >
+    <div *ngFor="let item of checkedItems" class="card item-card mt-3">
+      <!-- your section markup -->
+      {{ item.name }}
+      {{ item.cssClass }}
+      {{ item.allowSearch }}
+      {{ item.name }}
+    </div>
+  </ng-container>
+
+  <div class="card item-card mt-3">
+    <h2>Shared Form</h2>
+    <app-form [fields]="fields" (submitted)="onSubmit($event)"> </app-form>
+    <app-date-picker-range></app-date-picker-range>
+  </div>
+
+  <app-pdf-viewer
+    [previewType]="'iframe'"
+    [src]="'https://www.aeee.in/wp-content/uploads/2020/08/Sample-pdf.pdf'"
+  ></app-pdf-viewer>
+
+  <hr />
+
+  <hr />
+
+  <div class="card item-card">
+    <app-page-filter
+      [filters]="filters"
+      [syncQueryParams]="true"
+      (apply)="onFilterApply($event)"
+      (reset)="onFilterReset()"
+    ></app-page-filter>
+  </div>
+</div>

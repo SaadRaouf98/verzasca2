@@ -1,0 +1,37 @@
+pdf-viewer {
+  ::ng-deep ::-webkit-scrollbar-thumb,
+  ::ng-deep ::-webkit-scrollbar-thumb:horizontal {
+    background-color: #c4d7ed !important;
+  }
+}
+
+//////////////////////////////////////  Second tab   ////////////////////////////////////////////
+.original-study-document-container {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 0;
+
+  .download-icon {
+    cursor: pointer;
+  }
+}
+
+.page {
+  border: "1px solid black";
+}
+
+.canvasWrapper {
+  border: 1px solid black;
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+.thumbnails {
+  .page {
+    max-width: 25%;
+  }
+}
+
+///
+///

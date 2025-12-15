@@ -1,0 +1,98 @@
+<div class="row mt-3 mb-2">
+  <div class="col-12 col-lg-4">
+    <div class="search-container">
+      <input
+        [formControl]="searchKeywordControl"
+        type="text"
+        [placeholder]="'TransactionsModule.TransactionsListComponent.searchPlaceHolder' | translate"
+      />
+      <img src="assets/icons/search_.png" alt="Search by title." class="icon search-icon" />
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table mat-table [dataSource]="scheduledRequestContainersSource" matSort multiTemplateDataRows>
+    <ng-container matColumnDef="checked">
+      <th mat-header-cell *matHeaderCellDef>
+        <!-- <mat-checkbox
+          *ngIf="length > 0"
+          (change)="onSelect($event)"
+          [(ngModel)]="checkAllRequestConainers"
+        ></mat-checkbox> -->
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <mat-checkbox
+          [(ngModel)]="element.isDiscussed"
+          name="checked-{{ i }}"
+          (change)="onSelect($event, element)"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="transactionNumber">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.transactionNumber">
+          {{ element.transactionNumber || '-' }}
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>
+        {{ 'shared.title' | translate }}
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.title }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="example-element-row"
+      [ngClass]="{ hide: isLoading }"
+    ></tr>
+
+    <ng-container matColumnDef="noData">
+      <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+        <p class="no-rows-warning-msg">
+          {{ isScheduled ? 'لا توجد معاملات مجدولة' : 'لا توجد معاملات' }}
+        </p>
+      </td>
+    </ng-container>
+
+    <!--start loading -->
+    <ng-container matColumnDef="loading">
+      <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
+        <p class="text-center">{{ 'shared.loading' | translate }} ...</p>
+      </td>
+    </ng-container>
+
+    <tr mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: !isLoading }"></tr>
+    <!--end loading -->
+
+    <tr
+      mat-footer-row
+      *matFooterRowDef="['noData']"
+      [ngClass]="{
+        hide: isLoading || scheduledRequestContainersSource.data.length != 0
+      }"
+    ></tr>
+  </table>
+</div>
+
+<div class="d-flex justify-content-end paginateMobile">
+  <mat-paginator
+    [length]="length"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[20, 30, 40, 50]"
+    (page)="pageEvent = $event; onPaginationChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

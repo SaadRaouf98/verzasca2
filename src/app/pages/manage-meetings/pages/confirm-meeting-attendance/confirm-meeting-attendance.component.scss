@@ -1,0 +1,102 @@
+@import ".././../../../../assets/scss/variables.scss";
+
+a {
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+.right-white-border {
+  border-right: 1px solid #fff;
+}
+
+.left-gray-border {
+  border-left: 1px solid #e6e8ed;
+}
+
+#main-btns-container {
+  gap: 1em;
+}
+
+.title-color {
+  color: #111827;
+}
+
+.meeting-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.save-btn {
+  height: 45px;
+}
+
+.buttons-card {
+  display: flex;
+  background: #fff;
+  align-items: center;
+  border-radius: 10px;
+
+  .item {
+    cursor: pointer;
+    padding: 0.5em 0.7em;
+    border: 1px solid #f0f2f5;
+
+    @media (min-width: 1332px) {
+      padding: 0.7em 0.9em;
+    }
+  }
+}
+
+.bg-green {
+  border: 1px solid #40b674;
+  background-color: #eef8f2;
+}
+
+.component-header {
+  max-width: 100%;
+}
+
+aside {
+  .url-password-padding {
+    padding: 0 0.3em;
+  }
+}
+
+.url-card,
+.password-card {
+  background-color: #ecf2f7;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3em;
+  border-radius: 9px;
+}
+
+.attendances-table,
+.members-table,
+.request-containers-table {
+  width: 100%;
+
+  td {
+    color: #4b5563;
+    font-size: 14px;
+
+    @media (min-width: 1332px) {
+      font-size: 1rem;
+    }
+  }
+}
+
+.discussion-point {
+  color: #4b5563 !important;
+}
+
+.members-table,
+.request-containers-table {
+  .checked-column {
+    width: 14%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,608 @@
+<div class="row justify-content-between align-items-center" *ngIf="!isLoading">
+  <div class="col-12 d-flex flex-column mb-3">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2 d-flex align-items-end">
+        <span class="body gray-400 text-small">{{ 'shared.allRecords' | translate }}</span>
+        <span class="body gray-400 mx-2 text-small">/</span>
+        <p class="body-bold mb-0">
+          {{ 'ManageRecordsModule.RecordDetailsComponent.record' | translate }}
+
+          {{ 'shared.number' | translate }}
+
+          {{ recordDetails && recordDetails.exportNumber }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="col-12 col-lg-7 d-flex justify-content-end align-items-center button-group-gap component-header_actions"
+  >
+    <ng-container *ngIf="recordDetails && recordDetails.noteFile">
+      <div
+        class="cursor-pointer d-flex align-items-center"
+        (click)="onViewNoteFile()"
+        matTooltip="{{ 'ManageRecordsModule.RecordDetailsComponent.recordAttach' | translate }}"
+      >
+        <svg width="1rem" height="1rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+        </svg>
+        <span class="caption mx-1">{{
+          'ManageRecordsModule.RecordDetailsComponent.recordAttach' | translate
+        }}</span>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<section *ngIf="!isLoading; else elseBlock">
+  <div class="grid">
+    <div class="row">
+      <div class="col-12 col-md-9">
+        <!--Start 2 tabs filters -->
+        <mat-tab-group
+          animationDuration="400ms"
+          (selectedTabChange)="onTabClicked($event)"
+          mat-align-tabs="start"
+          [(selectedIndex)]="selectedTabIndex"
+        >
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 0
+                      ? 'assets/icons/sprite.svg#record-fill'
+                      : 'assets/icons/sprite.svg#record'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2"> {{ 'shared.record' | translate }}</span>
+            </ng-template>
+            <iframe
+              [src]="recordFile.pdfSrc"
+              style="width: 100%; height: 100%; min-height: 100vh"
+            ></iframe>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 0
+                      ? 'assets/icons/sprite.svg#record-details-fill'
+                      : 'assets/icons/sprite.svg#record-details'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2"> {{ 'shared.recordDetails' | translate }}</span>
+            </ng-template>
+            <div class="grid">
+              <div class="row">
+                <div class="col-12">
+                  <mat-accordion [multi]="true">
+                    <mat-expansion-panel
+                      [expanded]="true"
+                      (opened)="detailsState = true"
+                      (closed)="detailsState = false"
+                    >
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <span class="body-bold"> {{ 'shared.details' | translate }}</span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          <svg
+                            width="1.5rem"
+                            height="1.5rem"
+                            [style.transform]="detailsState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                            style="transition: transform 0.3s"
+                          >
+                            <use
+                              [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"
+                            ></use>
+                          </svg>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <hr class="line mt-0" />
+                      <div class="row">
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.incomingFoundation' | translate }}
+                          </p>
+
+                          <span class="body-bold">
+                            {{
+                              recordDetails?.foundation
+                                ? lang === 'ar'
+                                  ? recordDetails.foundation.title
+                                  : recordDetails.foundation.titleEn
+                                : '-'
+                            }}
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.benefitType' | translate }}
+                          </p>
+
+                          <span class="body-bold">
+                            {{
+                              recordDetails?.requestType
+                                ? lang === 'ar'
+                                  ? recordDetails.requestType.title
+                                  : recordDetails.requestType.titleEn
+                                : '-'
+                            }}
+                          </span>
+                        </div>
+                        <!-- <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ "shared.basicLine" | translate }}
+                          </p>
+
+                          <span class="body-bold"></span>
+                        </div> -->
+                      </div>
+                      <!-- <hr class="line" />
+                      <div class="row">
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ "shared.impactIfApproved" | translate }}
+                          </p>
+
+                          <span class="body-bold"></span>
+                        </div>
+                      </div> -->
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel
+                      [expanded]="true"
+                      (opened)="dateState = true"
+                      (closed)="dateState = false"
+                    >
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <span class="body-bold"> {{ 'shared.dateRecordState' | translate }}</span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          <svg
+                            width="1.5rem"
+                            height="1.5rem"
+                            [style.transform]="detailsState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                            style="transition: transform 0.3s"
+                          >
+                            <use
+                              [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"
+                            ></use>
+                          </svg>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <hr class="line mt-0" />
+                      <div class="row">
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{
+                              'ManageRecordsModule.RecordDetailsComponent.recordUploadDate'
+                                | translate
+                            }}
+                          </p>
+
+                          <span class="body-bold">
+                            {{
+                              (recordDetails && recordDetails.date | date : 'dd/MM/yyyy hh:mm a') ||
+                                '-'
+                            }}
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{
+                              'ManageRecordsModule.RecordDetailsComponent.daysNumber' | translate
+                            }}
+                          </p>
+
+                          <span class="body-bold">
+                            {{ (recordDetails && recordDetails.approvalDays) || '-' }}
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{
+                              'ManageRecordsModule.RecordDetailsComponent.recordType' | translate
+                            }}
+                          </p>
+
+                          <span class="body-bold">
+                            <ng-container
+                              *ngIf="
+                                recordDetails &&
+                                recordDetails.recordType === RecordType.MeetingRecord
+                              "
+                            >
+                              {{ 'shared.meetingRecord' | translate }}
+                            </ng-container>
+
+                            <ng-container
+                              *ngIf="
+                                recordDetails &&
+                                recordDetails.recordType === RecordType.HandoverRecord
+                              "
+                            >
+                              {{ 'shared.handoverRecord' | translate }}
+                            </ng-container>
+                          </span>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel
+                      [expanded]="true"
+                      *ngIf="recordDetails && !recordDetails?.isExtendRequest"
+                      (opened)="costState = true"
+                      (closed)="costState = false"
+                    >
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <span class="body-bold">
+                            {{ 'ImportsExportsModule.RequestDetailsComponent.cost' | translate }}
+                            (
+                            {{
+                              'ImportsExportsModule.AddImportComponent.costsRequestedAmount'
+                                | translate
+                            }})
+                          </span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          <svg
+                            width="1.5rem"
+                            height="1.5rem"
+                            [style.transform]="costState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                            style="transition: transform 0.3s"
+                          >
+                            <use
+                              [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"
+                            ></use>
+                          </svg>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <hr class="line mt-0" />
+                      <div class="row">
+                        <div class="col-12 col-md-8">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.totalCosts' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            {{ (recordDetails.costsRequestedAmount | number : '1.0-0') || '0' }}
+                            <svg width="1.4rem" height="1.4rem" class="mx-2">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.totalAllocations' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            {{ (recordDetails.creditsRequestedAmount | number : '1.0-0') || '0' }}
+                            <svg width="1.4rem" height="1.4rem" class="mx-2">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel
+                      [expanded]="true"
+                      class="custom-panel"
+                      *ngIf="recordDetails && !recordDetails?.isExtendRequest"
+                      (opened)="costApprovedState = true"
+                      (closed)="costApprovedState = false"
+                    >
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <span class="body-bold">
+                            {{ 'ImportsExportsModule.RequestDetailsComponent.cost' | translate }}
+                            (
+                            {{
+                              'ImportsExportsModule.AddImportComponent.creditsRequestedAmount'
+                                | translate
+                            }})
+                          </span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          <svg
+                            width="1.5rem"
+                            height="1.5rem"
+                            [style.transform]="
+                              costApprovedState ? 'rotate(0deg)' : 'rotate(180deg)'
+                            "
+                            style="transition: transform 0.3s"
+                          >
+                            <use
+                              [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow-green'"
+                            ></use>
+                          </svg>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <hr class="line mt-0 green-line" />
+                      <div class="row">
+                        <div class="col-12 col-md-8 mb-2">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.totalCosts' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            {{ (recordDetails.costsApprovedAmount | number : '1.0-0') || '0' }}
+                            <svg width="1.4rem" height="1.4rem" class="mx-2">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.amountMechanism' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            <ng-container
+                              *ngIf="
+                                recordDetails && recordDetails.costsAmountMechanism;
+                                else NoCostsAmountMechanismBlock
+                              "
+                            >
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.costsAmountMechanism ===
+                                  ApprovedAmountMechanism.WithinBudget
+                                "
+                              >
+                                {{ 'shared.withinBudget' | translate }}
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.costsAmountMechanism ===
+                                  ApprovedAmountMechanism.Extrabudgetary
+                                "
+                              >
+                                {{ 'shared.extrabudgetary' | translate }}
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.costsAmountMechanism ===
+                                  ApprovedAmountMechanism.Other
+                                "
+                              >
+                                {{ 'shared.other' | translate }}
+                              </ng-container>
+                            </ng-container>
+
+                            <ng-template #NoCostsAmountMechanismBlock>-</ng-template>
+                          </span>
+                        </div>
+
+                        <div class="col-12 col-md-8">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.totalAllocations' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            {{ (recordDetails.creditsApprovedAmount | number : '1.0-0') || '0' }}
+                            <svg width="1.4rem" height="1.4rem" class="mx-2">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <p class="body gray-700 mb-2">
+                            {{ 'shared.amountMechanism' | translate }}
+                          </p>
+                          <span class="body-bold d-flex align-items-center">
+                            <ng-container
+                              *ngIf="
+                                recordDetails && recordDetails.creditsAmountMechanism;
+                                else NoCreditsAmountMechanismBlock
+                              "
+                            >
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.creditsAmountMechanism ===
+                                  ApprovedAmountMechanism.WithinBudget
+                                "
+                              >
+                                {{ 'shared.withinBudget' | translate }}
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.creditsAmountMechanism ===
+                                  ApprovedAmountMechanism.Extrabudgetary
+                                "
+                              >
+                                {{ 'shared.extrabudgetary' | translate }}
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  recordDetails.creditsAmountMechanism ===
+                                  ApprovedAmountMechanism.Other
+                                "
+                              >
+                                {{ 'shared.other' | translate }}
+                              </ng-container>
+                            </ng-container>
+                            <ng-template #NoCreditsAmountMechanismBlock>-</ng-template>
+                          </span>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+        <!--End 2 tabs filters-->
+      </div>
+
+      <div class="col-12 col-md-3">
+        <mat-accordion>
+          <mat-expansion-panel (opened)="signaturesState = true" (closed)="signaturesState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold">
+                  {{ 'ManageRecordsModule.RecordDetailsComponent.signatures' | translate }}</span
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="signaturesState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <div *ngFor="let element of membersSource.data" class="single-approval-card mb-2">
+                <div class="d-flex justify-content-between">
+                  <p class="body-bold mb-2">{{ element.name }}</p>
+                  <ng-container *ngIf="element.action">
+                    <svg
+                      class="cursor-pointer"
+                      width="1.25rem"
+                      height="1.25rem"
+                      *ngxPermissionsOnly="[PermissionsObj.RemoveRecordMemberAction]"
+                      (click)="onDeleteAction(element)"
+                    >
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#delete-sm'"></use>
+                    </svg>
+                  </ng-container>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-2">
+                  <div>
+                    <div *ngIf="element.action; else NoActionBlock">
+                      <div
+                        class="d-flex align-items-center"
+                        *ngIf="element.action.type === ExportableDocumentActionType.Sign"
+                      >
+                        <svg width="1.25rem" height="1.25rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
+                        </svg>
+                        <span class="approved body-bold text-small mx-2">
+                          {{ 'shared.isSigned' | translate }}
+                        </span>
+                      </div>
+
+                      <div
+                        class="d-flex align-items-center"
+                        *ngIf="element.action.type === ExportableDocumentActionType.Conservatism"
+                      >
+                        <svg width="1.25rem" height="1.25rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
+                        </svg>
+                        <span class="rejected body-bold text-small mx-2">
+                          {{ 'shared.conservatism' | translate }}</span
+                        >
+                      </div>
+
+                      <div
+                        class="d-flex align-items-center"
+                        *ngIf="element.action.type === ExportableDocumentActionType.OpinionRefrain"
+                      >
+                        <svg width="1.25rem" height="1.25rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                        </svg>
+                        <span class="noAnswer body-bold text-small mx-2">
+                          {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <ng-template #NoActionBlock>
+                      <ng-container
+                        *ngIf="recordDetails && recordDetails.isExported; else NoOpinionExpressed"
+                      >
+                        <div class="d-flex align-items-center">
+                          <svg width="1.25rem" height="1.25rem">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                          </svg>
+                          <span
+                            *ngIf="element.isOnVacation"
+                            class="noAnswer body-bold text-small mx-2"
+                          >
+                            {{ 'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate }}
+                          </span>
+                          <span
+                            *ngIf="!element.isOnVacation"
+                            class="noAnswer body-bold text-small mx-2"
+                          >
+                            {{
+                              'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet'
+                                | translate
+                            }}
+                          </span>
+                        </div>
+                      </ng-container>
+                      <ng-template #NoOpinionExpressed>
+                        <div class="d-flex align-items-center">
+                          <svg width="1.25rem" height="1.25rem">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                          </svg>
+                          <span class="noAnswer body-bold text-small mx-2">
+                            {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                          </span>
+                        </div>
+                      </ng-template>
+                    </ng-template>
+                    <div
+                      class="d-flex align-items-center mt-2"
+                      *ngIf="element.action && element.action.comment"
+                    >
+                      <svg width="1rem" height="1rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
+                      </svg>
+                      <span class="comment body-bold text-small mx-2">
+                        {{ element.action.comment }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="recordDetails.allowPhoneAction">
+                    <div *ngxPermissionsOnly="[PermissionsObj.CommitteePhoneApprovals]">
+                      <button
+                        class="button button-secondary button-sm"
+                        (click)="onTakeActionViaPhone(element)"
+                      >
+                        <span>
+                          {{
+                            'ManageRecordsModule.RecordDetailsComponent.editThroughPhone'
+                              | translate
+                          }}
+                        </span>
+                        <svg width="1rem" height="1rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#approvalCall'"></use>
+                        </svg>
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #elseBlock>
+  <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 89vh">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</ng-template>

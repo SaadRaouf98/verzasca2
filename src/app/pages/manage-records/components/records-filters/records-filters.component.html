@@ -1,0 +1,59 @@
+<div class="form_container">
+  <form autocomplete="off" [formGroup]="filtersForm">
+    <div class="row">
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="priorityId"
+          [options]="prioritiesList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.priorities'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="classificationId"
+          [options]="classificationsList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.classifications'"
+          [multiple]="false"
+          [searchable]="false"
+          [appendTo]="'body'"
+        ></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="isInitiated"
+          [options]="isInitiatedOptions"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.isInitiated'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0" *ngIf="viewMode !== 'activeRecords'">
+        <app-select
+          formControlName="isExported"
+          [options]="isExportedOptions"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'ManageRecordsModule.RecordsListComponent.recordStatus'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 mt-2 p-0">
+    <button (click)="reset()" class="button button-lg button-secondary w-100">
+      {{ 'shared.resetBtn' | translate }}
+    </button>
+  </div>
+</div>

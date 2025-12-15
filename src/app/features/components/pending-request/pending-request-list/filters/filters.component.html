@@ -1,0 +1,35 @@
+<div class="grid">
+  <div class="row">
+    <div class="col-12 col-md-11">
+      <form [formGroup]="filtersForm">
+        <div class="row g-2">
+          <div class="col-12 d-flex input-container">
+            <app-input
+              formControlName="searchKeyword"
+              [placeholder]="'shared.searchByAddress'"
+              [showSearchIcon]="true"
+              [showFilterIcon]="true"
+              [clicked]="clicked"
+              (filterIconClick)="openFiltersDialog($event)"
+            ></app-input>
+
+            <button
+              class="button button-md button-secondary mx-2"
+              [disabled]="!hasActiveFilters"
+              (click)="reset()"
+            >
+              {{ 'shared.resetBtn' | translate }}
+              <svg width="1rem" height="1rem">
+                <use
+                  [attr.xlink:href]="
+                    'assets/icons/sprite.svg#' + (!hasActiveFilters ? 'reset-disabled' : 'reset')
+                  "
+                ></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

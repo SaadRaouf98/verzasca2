@@ -1,0 +1,18 @@
+<div class="d-flex align-items-center | heading">
+  <a class="cursor-pointer" (click)="onNavigateBack()">
+    <img
+      src="assets/icons/right-arrow.png"
+      alt="Navigation back."
+      class="arrow-icon"
+    />
+  </a>
+
+  <div>
+    <p id="file-title">{{ recordFile.name }}</p>
+  </div>
+</div>
+
+<iframe
+  [src]="recordFile.pdfSrc"
+  style="width: 99%; height: 100vh; display: block; margin: auto"
+></iframe>

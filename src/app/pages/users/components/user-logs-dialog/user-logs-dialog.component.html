@@ -1,0 +1,88 @@
+<div mat-dialog-title class="modal-header">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="dismiss-btn"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" class="close-icon" />
+  </button>
+</div>
+<mat-dialog-content>
+  <div >
+    <div class="container-fluid" dir="rtl">
+      <div class="card">
+        <div class="card-header">
+
+          <div class="search-container">
+            <input
+              type="search"
+              class="search-input"
+              placeholder="البحث حسب معلومات الجهاز أو التاريخ أو المعرف أو معلومات التطبيق..."
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearch()"
+            />
+            <span class="search-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+          </div>
+        </div>
+        <div class="card-content">
+          <table class="activity-table">
+            <thead>
+            <tr>
+<!--              <th class="">معرّف</th>-->
+              <th class="">التاريخ</th>
+              <th class="">الفئة</th>
+              <th class="">الإجراء</th>
+              <th class="">عنوان IP</th>
+              <th class="">معلومات التطبيق</th>
+              <th class="">معلومات الجهاز</th>
+              <th class="">معلومات إضافية</th>
+
+            </tr>
+            </thead>
+            <tbody *ngIf="filteredData.length > 0 && !loader ">
+            <tr *ngFor="let log of filteredData">
+<!--              <td class="">{{ log.id }}</td>-->
+              <td class="white-space-no-wrap">{{ log.date | date : "dd/MM/yyyy hh:mm a"}}</td>
+              <!-- Lookup the enum name by value -->
+              <td class="">
+                {{ categoryLabels[log.category] }}
+              </td>
+              <td class="">
+                {{ actionLabels[log.action] }}
+              </td>
+              <td class="">{{ log.ipAddress || '—' }}</td>
+              <td class="">{{ log.appInfo || '—' }}</td>
+              <td class="app-info-item" [matTooltip]="log.deviceInfo"
+                >{{ log.deviceInfo | summary : 55}}
+                <mat-icon  class="cursor-pointer copy-btn" (cdkCopyToClipboardCopied)="onCopied()"
+                            [cdkCopyToClipboard]="log.deviceInfo">content_copy</mat-icon>
+              </td>
+              <td>{{log.extraData}}</td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="filteredData.length == 0 && !loader">
+            <tr>
+              <td colspan="7" class="">
+                <div class="no-data-message">
+                  <p>لا يوجد بيانات</p>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">إغلاق</button>
+</mat-dialog-actions>

@@ -1,0 +1,64 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'shared.foundations' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="foundations"
+          [options]="(foundationsList$ | async)?.data || []"
+          [bindLabel]="this.translateService.currentLang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'TransactionsModule.AddTransactionComponent.searchForFoundations'"
+          [multiple]="true"
+          [searchable]="false"
+          [showSelected]="true"
+        ></app-select>
+
+        <div
+          *ngIf="form.get('foundations')?.invalid && form.get('foundations')?.touched"
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              'SharedModule.StatementRequestModalComponent.chooseAtLeastOneFoundation' | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'SharedModule.UploadCommitteeApprovalFileModalComponent.document' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-upload-attachment
+          #uploadAttachment
+          [multiple]="false"
+          [showBtn]="false"
+          (fileUploaded)="onFileDropped($event)"
+        ></app-upload-attachment>
+      </div>
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ 'shared.note' | translate }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ 'shared.note' | translate }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

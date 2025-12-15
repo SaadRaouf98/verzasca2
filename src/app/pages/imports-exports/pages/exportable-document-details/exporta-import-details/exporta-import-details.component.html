@@ -1,0 +1,265 @@
+<div class="grid">
+  <app-exportal-basic-info [requestDetails]="requestContainerDetails"></app-exportal-basic-info>
+  <div class="row mt-3">
+    <div class="col-md-5 col-12">
+      <ng-container *ngFor="let element of data">
+        <div
+          class="transaction-card cursor-pointer"
+          [class.active]="activeCardId === element.id"
+          (click)="onCardClick(element)"
+        >
+          <div>
+            <span class="body gray-700 text-small">{{ 'shared.title' | translate }} : </span>
+            <span class="body-bold">{{ element.title }}</span>
+          </div>
+          <hr class="line" />
+          <div class="d-flex align-items-center row">
+            <div class="d-flex nowrap col-md-6 col-12">
+              <span class="body gray-700 text-small">{{ 'shared.type' | translate }} : </span>
+              <span class="body-bold d-flex nowrap">
+                <img
+                  style="margin-inline-end: 5px"
+                  [src]="
+                    element.isExportDocument
+                      ? 'assets/icons/file-export.svg'
+                      : 'assets/icons/file-import.svg'
+                  "
+                />
+                {{
+                  element.isExportDocument
+                    ? ('shared.export' | translate)
+                    : ('shared.import' | translate)
+                }}
+              </span>
+            </div>
+            <div class="col-md-6 col-12">
+              <span class="body gray-700 text-small"
+                >{{ 'shared.categorization' | translate }} :
+              </span>
+              <span class="body-bold">{{ element.requestType?.title || '-' }}</span>
+            </div>
+          </div>
+          <hr class="line" />
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <span class="body gray-700 text-small">{{ 'shared.date' | translate }} : </span>
+              <span class="body-bold" [style.color]="element.priority?.id | priorityColor">
+                {{ element.date | date : 'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-md-7 col-12">
+      <div class="transaction-card" *ngIf="details?.isExportDocument && details">
+        <div class="row">
+          <div class="col-12">
+            <!-- <app-pdf-viewer [previewType]="'iframe'" [src]="exportableDocument.pdfSrc"></app-pdf-viewer> -->
+            <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+          </div>
+          <div class="col-12 mt-3">
+            <button
+              (click)="onViewElement()"
+              class="button button-ghost button-md d-flex align-items-center w-100 bg-custom"
+            >
+              {{ 'shared.goToExport' | translate }}
+              <svg width="1.5rem" height="1.5rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#goToTransaction'"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="transaction-card" *ngIf="!details?.isExportDocument && details">
+        <span class="body-bold mt-5 d-block">
+          {{ 'ImportsExportsModule.RequestDetailsComponent.importData' | translate }}
+        </span>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.transactionTitle' | translate }}
+            </p>
+            <span class="body-bold text-small">
+              {{ details?.title }}
+            </span>
+          </div>
+        </div>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'ManageDocumentsModule.AddDocumentPage.incomingNumber' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{ details?.importNumber || '-' }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.priority' | translate }}
+            </p>
+
+            <span
+              class="body-bold text-small"
+              [ngStyle]="{
+                color: details?.priority?.id | priorityColor
+              }"
+            >
+              {{
+                lang === 'ar'
+                  ? details && details?.priority?.title
+                  : details && details?.priority?.titleEn
+              }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'ManageDocumentsModule.AddDocumentPage.incomingStatus' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{ getRequestStatusTranslation(details?.status!) | translate }}
+            </span>
+          </div>
+        </div>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'ImportsExportsModule.RequestDetailsComponent.recordNumber' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{ details?.deliveryNumber || '-' }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'ManageDocumentsModule.AddDocumentPage.LetterNumberRequestingParty' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{ details?.physicalNumber || '-' }}
+            </span>
+          </div>
+        </div>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.incomingFoundation' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{
+                lang === 'ar'
+                  ? details?.foundation?.title || '-'
+                  : details?.foundation?.titleEn || '-'
+              }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.concernedFoundations' | translate }}
+            </p>
+            <span class="body-bold text-small" *ngIf="details?.concernedFoundations.length == 0">
+              -
+            </span>
+            <div class="consultant" *ngFor="let item of details?.concernedFoundations">
+              <span class="body-bold text-small">{{ item?.title }}</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'ManageDocumentsModule.AddDocumentPage.documentType' | translate }}
+            </p>
+            <span class="body-bold text-small">
+              {{ lang === 'ar' ? details?.requestType?.title : details?.requestType?.titleEn }}
+            </span>
+          </div>
+        </div>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.importDate' | translate }}
+            </p>
+
+            <span class="body-bold text-small">
+              {{ (details?.deliveryDate | date : 'dd/MM/yyyy') || '-' }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.noDebtDate' | translate }}
+            </p>
+            <span class="body-bold text-small">
+              {{ (details?.availabilityDate | date : 'dd/MM/yyyy') || '-' }}
+            </span>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.treatmentMechanism' | translate }}
+            </p>
+            <span class="body-bold text-small">
+              {{ details?.committee?.committeeSymbol }}
+            </span>
+          </div>
+        </div>
+        <hr class="line" />
+        <div class="row">
+          <div class="col-12 col-md-4 offset-md-4">
+            <p class="body gray-700 text-small mb-2">{{ 'shared.consultants' | translate }}</p>
+            <span class="body-bold text-small" *ngIf="details?.consultants?.length == 0">
+              {{ 'shared.noConsultants' | translate }}
+            </span>
+            <div class="consultant" *ngFor="let consultant of details?.consultants">
+              <span class="body-bold text-small">{{ consultant?.name }}</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <p class="body gray-700 text-small mb-2">
+              {{ 'shared.subFoundation' | translate }}
+            </p>
+            <span class="body-bold text-small">
+              {{
+                lang === 'ar'
+                  ? details?.subFoundation?.title || '-'
+                  : details?.subFoundation?.titleEn || '-'
+              }}
+            </span>
+          </div>
+
+          <div class="col-12 mt-3">
+            <button
+              (click)="onViewElement()"
+              class="button button-ghost button-md d-flex align-items-center w-100 bg-custom"
+            >
+              {{ 'shared.goToImport' | translate }}
+              <svg width="1.5rem" height="1.5rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#goToTransaction'"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="d-flex justify-content-center p-2 align-items-center flex-column"
+      *ngIf="data?.length == 0"
+    >
+      <img
+        class="w-25 mb-3"
+        src="../assets/images/Illustration_found.svg"
+        alt="under construction"
+      />
+      <div class="body-bold noData">
+        {{ 'shared.noData' | translate }}
+      </div>
+    </div>
+  </div>
+</div>

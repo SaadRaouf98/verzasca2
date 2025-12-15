@@ -1,0 +1,59 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{
+            "SharedModule.DelegateUserModalComponent.chooseDelegatedTo"
+              | translate
+          }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="assignedTo"
+          [options]="(usersList$ | async)?.data || []"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="
+            'SharedModule.DelegateUserModalComponent.chooseDelegatedTo'
+          "
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+
+        <div
+          *ngIf="
+            form.get('assignedTo')?.invalid && form.get('assignedTo')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              "SharedModule.DelegateUserModalComponent.delegatedToRequired"
+                | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ data.textAreaLabel }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ data.textAreaLabel }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

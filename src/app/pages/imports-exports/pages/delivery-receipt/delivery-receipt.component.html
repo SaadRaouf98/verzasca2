@@ -1,0 +1,206 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6 d-flex align-items-center | heading">
+      <a class="cursor-pointer" routerLink="/imports-exports">
+        <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'" />
+      </a>
+
+      <h2 class="component-header_title">بيانات التسليم</h2>
+    </div>
+
+    <div
+      class="col-12 col-sm-6 d-flex justify-content-end align-items-center button-group-gap component-header_actions">
+      <!-- <button mat-raised-button (click)="onDownload()">
+        <mat-icon>cloud_download</mat-icon>
+
+        {{ "shared.download" | translate }}
+      </button> -->
+
+      <div class="buttons-card">
+        <span *ngIf="currentStep === 2" class="item" (click)="onPrint()" matTooltip="{{ 'shared.print' | translate }}">
+          <mat-icon>print</mat-icon>
+        </span>
+
+        <!--  <button mat-raised-button (click)="onPrint()">
+        <mat-icon>print</mat-icon>
+        {{ "shared.print" | translate }}
+      </button> -->
+      </div>
+    </div>
+  </div>
+
+  <div id="steps-container">
+    <div class="step" [class.active]="currentStep === 1">
+      <span class="step-number" [class.step-number-done]="currentStep !== 1">1</span>
+      <span class="step-title" [class.step-title-done]="currentStep !== 1">بيانات ابتدائية</span>
+    </div>
+
+    <hr [class.hr-done]="currentStep === 2" />
+
+    <div class="step" [class.active]="currentStep === 2">
+      <span class="step-number">2</span>
+      <span class="step-title">الطباعة</span>
+    </div>
+  </div>
+
+  <div class="div-card">
+    <ng-container *ngIf="currentStep === 1">
+      <!--Start table-->
+      <div class="table-responsive">
+        <table mat-table [dataSource]="deliveryReceiptBasicRowsSource" multiTemplateDataRows>
+          <ng-container matColumnDef="rowNumber">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = dataIndex">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="autoNumber">
+            <th mat-header-cell *matHeaderCellDef>رقم الصادر</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.autoNumber }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "shared.exportedDate" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <p>{{ element.hijriExportedDate }}ھ-</p>
+              <p>{{ element.exportedDate | date : "yyyy/MM/dd" }}م</p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "shared.exportedType" | translate }}
+            </th>
+
+            <td mat-cell *matCellDef="let element">
+              <p *ngIf="
+                  element.attachmentType &&
+                    element.attachmentType !==
+                      DeliveryReceiptAttachmentType.Other;
+                  else OtherAttachmentTypeBlock
+                ">
+                <span *ngIf="
+                    element.attachmentType ===
+                    DeliveryReceiptAttachmentType.Original
+                  ">
+                  {{ "DeliveryReceiptAttachmentType.original" | translate }}
+                </span>
+                <span *ngIf="
+                    element.attachmentType ===
+                    DeliveryReceiptAttachmentType.Copy
+                  ">
+                  {{ "DeliveryReceiptAttachmentType.copy" | translate }}
+                </span>
+                <span *ngIf="
+                    element.attachmentType === DeliveryReceiptAttachmentType.USB
+                  ">
+                  {{ "DeliveryReceiptAttachmentType.USB" | translate }}
+                </span>
+              </p>
+
+              <ng-template #OtherAttachmentTypeBlock>
+                <p>{{ element.otherAttachmentType }}</p>
+              </ng-template>
+
+              <p>
+                <span *ngIf="element.documentType === ExportedDocumentType.Letter">
+                  {{
+                  "TransactionsModule.ExportDocumentComponent.letter"
+                  | translate
+                  }}
+                </span>
+                <span *ngIf="element.documentType === ExportedDocumentType.Note">
+                  {{
+                  "TransactionsModule.ExportDocumentComponent.note"
+                  | translate
+                  }}
+                </span>
+                <span *ngIf="element.documentType === ExportedDocumentType.Record">
+                  {{
+                  "TransactionsModule.ExportDocumentComponent.record"
+                  | translate
+                  }}
+                </span>
+              </p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="attachments">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "shared.attachments" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.attachments }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="foundation">
+            <th mat-header-cell *matHeaderCellDef>الجهة الرئيسية</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.foundation?.title }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="subFoundation">
+            <th mat-header-cell *matHeaderCellDef>الجهة الثانوية</th>
+            <td mat-cell *matCellDef="let element">
+              <p>
+                {{
+                element.subFoundation?.title || element.foundationDescription
+                }}
+              </p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-button (click)="onEditRow(element)">
+                <mat-icon class="d-flex align-items-center"> edit </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: return_displayed_columns()" [ngClass]="{ hide: isLoading }"></tr>
+        </table>
+      </div>
+      <!--End table-->
+
+      <div class="d-flex justify-content-end">
+        <button class="save-btn" (click)="onEditDetails()" mat-flat-button>
+          {{ "shared.next" | translate }}
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="currentStep === 2">
+      <section class="receipt-section" style="">
+        <div class="row">
+          <div class="col-12">
+            <div id="receipt" [innerHTML]="htmlStr"></div>
+          </div>
+          <div class="row rest-fields-container save-btn-container">
+            <div class="d-flex justify-content-between">
+              <button class="back-btn" (click)="currentStep = 1" mat-flat-button>
+                {{ "shared.back" | translate }}
+              </button>
+
+              <span *ngIf="currentStep === 2" class="cursor-pointer" (click)="onPrint()"
+                matTooltip="{{ 'shared.print' | translate }}">
+                <mat-icon>print</mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</section>

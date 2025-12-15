@@ -1,0 +1,146 @@
+@import "../../../../assets/scss/variables.scss";
+
+table {
+  /* margin-top: -10px;*/
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #c4d7ed;
+  }
+}
+
+p {
+  font-size: 14px !important;
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1rem !important;
+    }
+  }
+}
+
+.first-td {
+  width: 5%;
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.second-td {
+  width: 27%;
+}
+
+.consultants-td,
+.empty-td {
+  width: 50%;
+  padding: 5px;
+
+  @media (min-width: 1332px) {
+    & {
+      width: 55%;
+    }
+  }
+}
+
+.operator-name,
+.operation-description,
+.transaction-days {
+  margin-bottom: 0.5em;
+}
+
+.operator-name {
+  color: #222325;
+  gap: 1em;
+  font-weight: bold;
+}
+
+.operation-description {
+  color: #37a0a0;
+}
+
+@media (max-width: 768px) {
+  .first-td {
+    width: 13%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .first-td {
+    width: 13%;
+  }
+}
+
+.comment {
+  color: #545961;
+}
+
+.consultant-chip {
+  margin: 0 0.2em;
+  pointer-events: none;
+  background-color: #f0f2f5 !important;
+}
+
+.last-td {
+  width: 23%;
+
+  @media (min-width: 1332px) {
+    & {
+      width: 19%;
+    }
+  }
+
+  .last-td-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 0;
+    margin: 0 5px;
+    padding-left: 5px;
+    @media (min-width: 1332px) {
+      & {
+        /* gap: 10px; */
+        padding-left: 7px;
+        padding-top: 2px;
+      }
+    }
+
+    .date {
+      direction: ltr;
+      text-align: center;
+      color: #6d7885;
+      margin-bottom: 4px;
+      white-space: nowrap;
+
+      .black-colored {
+        color: #726b6b;
+      }
+    }
+    .options-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #3db5b5;
+      border-radius: 8px;
+      margin-bottom: 5px;
+
+      @media (max-width: 1332px) {
+        & {
+          margin-bottom: 7px;
+        }
+      }
+
+      .option-item {
+        cursor: pointer;
+        padding: 5px;
+
+        img {
+          min-width: 16px;
+          max-width: 16px;
+          height: auto;
+        }
+      }
+
+      .option-item.left-white-border {
+        border-left: 1px solid white;
+      }
+    }
+  }
+}

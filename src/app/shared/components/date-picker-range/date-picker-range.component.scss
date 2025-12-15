@@ -1,0 +1,63 @@
+.mat-calendar{
+    border: 1px solid #eee !important;
+    box-shadow: 0 0.1875rem 0.75rem 0 rgba(47, 43, 61, 0.14);
+    background-color: white !important;
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before,.mat-mdc-form-field-subscript-wrapper{
+    display: none ;
+}
+
+.mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix {
+    width: 200px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0;
+}
+.mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix mat-label{
+    display: none;
+}
+
+.mat-mdc-form-field-type-mat-date-range-input .mat-mdc-form-field-infix{
+    pointer-events: none;
+}
+.mat-mdc-form-field-icon-prefix, [dir=rtl] .mat-mdc-form-field-icon-suffix{
+    top: -8px;
+    left: -8px;
+}
+mat-form-field{
+    height: 22px;
+}
+.mat-date-range-input-container {
+line-height: 28px;
+}
+
+
+ .mdc-text-field--filled.mdc-text-field--focused {
+    display: none;
+    outline: none;
+    box-shadow: none;
+  }
+
+
+// .mat-date-range-input-wrapper,
+// .mat-date-range-input-end-wrapper{
+//     display: none;
+// }
+
+
+.mat-calendar-controls{
+  margin:   2% calc(4.7142857143% - 16px) !important
+}
+.mat-calendar-content{
+    background-color: white !important;
+}
+.mat-calendar-body-label{
+    padding-top: 6% !important;
+    padding-bottom: 6% !important;
+}
+.mat-calendar-table{
+    margin-top: 5px !important;
+}
+.mat-calendar-table-header-divider{
+    padding: 0 !important;
+}

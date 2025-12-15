@@ -1,0 +1,17 @@
+<ng-select
+  [formControl]="subFoundationFormControl"
+  [placeholder]="placeholder | translate"
+  appInputSanitizer
+  [bindLabel]="'name'"
+  [compareWith]="compareFn"
+  class="form-control"
+  (search)="searchOnFoundations($event)"
+  (change)="onSelectionChange($event)"
+  (blur)="onBlur()"
+  (clear)="onClearFoundations()"
+  (remove)="onRemoveSingleFoundation($event)"
+>
+  <ng-option *ngFor="let founation of foundationsList" [value]="founation">
+    {{ founation.title }}
+  </ng-option>
+</ng-select>

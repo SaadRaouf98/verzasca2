@@ -1,0 +1,253 @@
+<div class="row justify-content-between align-items-center" *ngIf="!isLoading">
+  <div class="col-12 col-lg-5 mb-3 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">{{ 'shared.transactions' | translate }}</span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ 'TransactionsModule.TransactionDetailsComponent.transaction' | translate }}
+            ({{ requestContainerDetails?.transactionNumber! || '-' }})
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-12 col-lg-6 d-flex align-items-center justify-content-lg-end" id="main-btns-container">
+    <div class="btn-card" (click)="onAddImport()">
+      <img src="assets/icons/green-envelope.png" />
+      <span> {{ "shared.addImport" | translate }}</span>
+    </div>
+
+    <div class="btn-card" (click)="onAddExport()">
+      <img src="assets/icons/red-envelope.png" />
+      <span> {{ "shared.addExport" | translate }}</span>
+    </div>
+
+    <div class="buttons-card">
+      <span *ngxPermissionsOnly="[PermissionsObj.UpdateRequestContainer]" class="item" (click)="onEditElement()"
+        matTooltip="{{ 'shared.edit' | translate }}">
+        <img src="assets/icons/edit_square.png" />
+      </span>
+
+      <span *ngxPermissionsOnly="[
+          PermissionsObj.UpdateRequestContainerAccessibility
+        ]" class="item" (click)="onOpenAccessibility()" matTooltip="{{
+          'TransactionsModule.AddTransactionComponent.accessibility' | translate
+        }}">
+        <img src="assets/icons/group.png" />
+      </span>
+
+      <span *ngxPermissionsOnly="[PermissionsObj.DeleteRequestContainer]" class="item" (click)="onDeleteElement()"
+        matTooltip="{{ 'shared.delete' | translate }}">
+        <img src="assets/icons/delete-square.png" />
+      </span>
+    </div>
+  </div> -->
+</div>
+
+<section *ngIf="!isLoading; else elseBlock">
+  <!------------------- Start TimeLine ---------------------------->
+  <app-time-line [data]="requestContainerTimeLine"></app-time-line>
+  <!------------------- End TimeLine ---------------------------->
+  <div class="grid">
+    <div class="row">
+      <div class="col-12 col-md-9">
+        <mat-tab-group
+          animationDuration="400ms"
+          (selectedTabChange)="onTabClicked($event)"
+          mat-align-tabs="start"
+        >
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 0
+                      ? 'assets/icons/sprite.svg#details-tab-fill'
+                      : 'assets/icons/sprite.svg#details-tab'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2"> {{ 'shared.details' | translate }}</span>
+            </ng-template>
+            <!--Start container details -->
+            <app-transaction-details-panel
+              [requestContainerDetails]="requestContainerDetails"
+            ></app-transaction-details-panel>
+            <!-- End container details -->
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 1
+                      ? 'assets/icons/sprite.svg#import-tab-fill'
+                      : 'assets/icons/sprite.svg#import-tab'
+                  "
+                ></use>
+              </svg>
+
+              <span class="body-bold mx-2">
+                {{
+                  'TransactionsModule.TransactionDetailsComponent.importsAndExports' | translate
+                }}</span
+              >
+            </ng-template>
+            <section *ngIf="!tabsLoading.tab2; else elseTab2Block">
+              <app-transaction-details-import-export
+                [data]="importsExports"
+                [requestContainerDetails]="requestContainerDetails"
+              >
+              </app-transaction-details-import-export>
+              <!-- <app-related-requests-scrollable-table [data]="importsExports" [elementId]="elementId"
+                (requestId)="onCardClick($event)" [requestContainerDetails]="requestContainerDetails"
+                [pageType]="'transaction'">
+              </app-related-requests-scrollable-table> -->
+            </section>
+
+            <ng-template #elseTab2Block>
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="width: 100%; height: 50vh"
+              >
+                <mat-spinner [diameter]="50"></mat-spinner>
+              </div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 2
+                      ? 'assets/icons/sprite.svg#transaction-tab-fill'
+                      : 'assets/icons/sprite.svg#transaction-tab'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2">
+                {{
+                  'TransactionsModule.TransactionDetailsComponent.relatedTransactions' | translate
+                }}</span
+              >
+            </ng-template>
+            <section *ngIf="!tabsLoading.tab3; else elseTab3Block">
+              <app-related-containers-scrollable-table
+                [data]="relatedContainers"
+                [elementId]="elementId"
+                (requestId)="onChangeUrlOfRequestId($event)"
+                [requestContainerDetails]="requestContainerDetails"
+              ></app-related-containers-scrollable-table>
+            </section>
+            <ng-template #elseTab3Block>
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="width: 100%; height: 50vh"
+              >
+                <mat-spinner [diameter]="50"></mat-spinner>
+              </div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div class="col-12 col-md-3">
+        <mat-accordion>
+          <!-- <mat-expansion-panel
+            [expanded]="true"
+            (opened)="panelProcedureState = true"
+            (closed)="panelProcedureState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold">
+                  {{ 'ImportsExportsModule.RequestDetailsComponent.procedures' | translate }}</span
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="panelProcedureState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="procedureContainer">
+              <div
+                (click)="onSelectDelete()"
+                class="cursor-pointer d-flex mb-3 d-flex align-items-center"
+              >
+                <svg width="1.5rem" height="1.5rem" style="transition: transform 0.3s">
+                  <use
+                    [attr.xlink:href]="
+                      selectedForDelete
+                        ? 'assets/icons/sprite.svg#active-radio'
+                        : 'assets/icons/sprite.svg#inactive-radio'
+                    "
+                  ></use>
+                </svg>
+                <span class="body mx-2">حذف المعاملة</span>
+              </div>
+            </div>
+            <button
+              class="button button-primary button-xl w-100"
+              [disabled]="!selectedForDelete"
+              (click)="deleteItem()"
+            >
+              {{ 'ImportsExportsModule.RequestDetailsComponent.procedureApproved' | translate }}
+            </button>
+          </mat-expansion-panel> -->
+          <mat-expansion-panel
+            (opened)="panelTimelineState = true"
+            (closed)="panelTimelineState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold d-flex align-items-center">
+                  {{ 'ImportsExportsModule.RequestDetailsComponent.times' | translate }}
+                  <span class="sort_btn" (click)="onToggleSort(); $event.stopPropagation()">
+                    <svg
+                      width="1.25rem"
+                      height="1.25rem"
+                      *ngIf="panelTimelineState"
+                      [style.transform]="sortAsc ? 'rotate(0deg)' : 'rotate(180deg)'"
+                      class=" "
+                    >
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#sorting'"></use>
+                    </svg>
+                  </span>
+                </span>
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="panelTimelineState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-timeline [data]="requestActions"></app-timeline>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #elseBlock>
+  <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 89vh">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</ng-template>

@@ -1,0 +1,70 @@
+@use 'src/assets/design-system/colors' as *;
+.fit-width {
+  min-width: fit-content;
+}
+.svg-arrows {
+  height: 59px;
+  display: flex;
+  align-items: center;
+  background: $gray-50;
+  padding: 6px;
+  justify-content: center;
+}
+.timeline-steps {
+  border-radius: 0.75rem;
+  background: $gray-50;
+  .timeline-step {
+    display: flex;
+    position: relative;
+    min-width: fit-content;
+    height: 5.125rem;
+    margin-left: 0.75rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    align-self: stretch;
+    border-radius: 0.75rem;
+    .timeline-step svg {
+      margin-right: 0.75rem;
+    }
+    &.red-color {
+      color: $orange-500 !important;
+    }
+
+    .h6 {
+      @media (max-width: 1332px) {
+        & {
+          font-size: 14px;
+        }
+      }
+    }
+
+    // New styles for the green line
+  }
+}
+@media (min-width: 768px) {
+  .timeline-steps .timeline-content {
+    width: fit-content;
+    min-width: max-content;
+  }
+
+  .timeline-scroll-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .rotate {
+    transform: scale(-1);
+  }
+
+  .timeline-steps-scroll {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    flex: 1;
+    align-items: center;
+  }
+}

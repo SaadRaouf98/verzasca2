@@ -1,0 +1,26 @@
+<div class="card mt-4" *ngIf="chartOptions">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <app-select
+      [(ngModel)]="selectedPeriod"
+      (ngModelChange)="updateChartPeriod($event)"
+      [options]="periodOptions"
+      bindLabel="label"
+      bindValue="value"
+      [placeholder]="'shared.select'"
+      [multiple]="false"
+      [searchable]="false"
+    >
+    </app-select>
+  </div>
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [dataLabels]="chartOptions.dataLabels"
+    [plotOptions]="chartOptions.plotOptions"
+    [yaxis]="chartOptions.yaxis"
+    [xaxis]="chartOptions.xaxis"
+    [legend]="chartOptions.legend"
+    [colors]="chartOptions.colors"
+    [grid]="chartOptions.grid"
+  ></apx-chart>
+</div>

@@ -1,0 +1,61 @@
+
+.page-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      color: #333;
+    }
+
+    input, select {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    &.page-filter__daterange {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+
+      input {
+        width: 100px;
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+}

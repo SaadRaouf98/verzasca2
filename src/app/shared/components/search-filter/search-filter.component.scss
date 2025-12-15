@@ -1,0 +1,47 @@
+.search-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    i.icon-filter {
+      font-size: 1.4rem;
+      /* replace with your actual icon font or SVG */
+    }
+  }
+
+  .input-wrapper {
+    position: relative;
+    flex: 1;
+
+    input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      padding-inline-end: 2rem;  /* space for clear button */
+      border: 1px solid #72bef8;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      outline: none;
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(114, 190, 248, 0.4);
+      }
+    }
+
+    .clear-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      /* RTL: place at start of input */
+      right: 0.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<div class="form-control ">
+	<div   *ngIf="!campaignOne.get('start')?.value && !campaignOne.get('end')?.value" class="place-holder position-absolute">{{placeholder}}</div>
+	<mat-form-field class="example-form-field w-100">
+		<mat-label>{{placeholder}}</mat-label>
+		<mat-date-range-input
+		  [formGroup]="campaignOne"
+		  [rangePicker]="campaignOnePicker"
+		  [comparisonStart]="campaignTwo.value.start"
+		  [comparisonEnd]="campaignTwo.value.end">
+		  <input matStartDate placeholder="Start date" formControlName="start">
+		  <input matEndDate placeholder="End date" formControlName="end">
+		</mat-date-range-input>
+		<mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+		<mat-datepicker-toggle matIconSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+		<mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+	  </mat-form-field>
+	  
+</div>

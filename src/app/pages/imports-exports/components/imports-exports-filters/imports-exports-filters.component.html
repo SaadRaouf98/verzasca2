@@ -1,0 +1,79 @@
+<div class="grid">
+  <form autocomplete="off" [formGroup]="filtersForm">
+    <div class="row">
+
+      <div class="col-12 mb-3 p-0" *ngIf="!filtersData?.isExportDocument">
+        <app-select formControlName="requestType" [options]="(documentTypesSearchService.documentTypesList$ | async
+            )?.data" [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [bindValue]="'id'"
+          [placeholder]="'shared.importType'" [multiple]="false" [searchable]="true"
+          (searchChange)="documentTypesSearchService.searchOnDocumentTypes($event)"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0" *ngIf="filtersData?.isExportDocument">
+        <app-select formControlName="documentType" [options]="documentTypeOptions" [bindLabel]="'title'"
+          [bindValue]="'id'" [placeholder]="'shared.exportedType'" [multiple]="false" [searchable]="false"></app-select>
+      </div>
+
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="foundation" [options]="(foundationsSearchService.foundationsList$ | async
+            )?.data" [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [bindValue]="'id'"
+          [placeholder]="'shared.foundation'" [multiple]="false" [searchable]="true"
+          (searchChange)="foundationsSearchService.searchOnFoundations($event)"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="priority" [options]="prioritiesList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [bindValue]="'id'" [placeholder]="'shared.priority'"
+          [multiple]="false" [searchable]="false"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="committee" [options]="organizationUnitsList" [bindLabel]="'committeeSymbol'"
+          [bindValue]="'id'" [placeholder]="'shared.processType'" [multiple]="false" [searchable]="false"></app-select>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker [formControlName]="'fromDate'" [placeholder]="'shared.dateFrom' | translate" [range]="false"
+          (gregorianDateChange)="fromDateToDateSearchService.onGregorianDateChanges2(filtersForm, { fromDate: $event.gregorianDate, toDate: filtersForm.get('toDate')?.value })"></app-date-picker>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker [formControlName]="'toDate'" [placeholder]="'shared.dateTo' | translate" [range]="false"
+          (gregorianDateChange)="fromDateToDateSearchService.onGregorianDateChanges2(filtersForm, { fromDate: filtersForm.get('fromDate')?.value, toDate: $event.gregorianDate })"></app-date-picker>
+      </div>
+
+
+      <div class="col-12 col-md-6 mb-3  p-0">
+        <app-date-picker-hijri [formControlName]="'hijriFromDate'" [placeholder]="'shared.dateFrom' | translate"
+          [range]="false"
+          (hijriDateChange)="fromDateToDateSearchService.onHijriDateChanges2(filtersForm, { fromDate: $event.hijriDate, toDate: filtersForm.get('hijriToDate')?.value })"></app-date-picker-hijri>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker-hijri [formControlName]="'hijriToDate'" [placeholder]="'shared.dateTo' | translate"
+          [range]="false"
+          (hijriDateChange)="fromDateToDateSearchService.onHijriDateChanges2(filtersForm, { fromDate: filtersForm.get('hijriFromDate')?.value, toDate: $event.hijriDate })"></app-date-picker-hijri>
+      </div>
+
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="consultant" [options]="(usersSearchService.usersList$ | async
+            )?.data" [bindLabel]="'name'" [bindValue]="'id'" [placeholder]="'shared.specialist'" [multiple]="false"
+          [searchable]="true" (searchChange)="usersSearchService.searchOnUsers($event)"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="status" [options]="allRequestStatus" [bindLabel]="'name' | translate"
+          [bindValue]="'id'" [placeholder]="'shared.status'" [multiple]="false" [searchable]="false"></app-select>
+      </div>
+
+
+    </div>
+  </form>
+  <div class="col-12 mt-2 ">
+    <button (click)="reset()" class="button button-lg button-secondary w-100">
+      {{ "shared.resetBtn" | translate }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+/** search */
+.search-container {
+  height: 100%;
+  border-radius: 2px;
+  border: 2px solid #dee1e7;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 767px) {
+    width: 100% !important;
+  }
+
+  input {
+    opacity: 0.8;
+    border: 0;
+    outline: none;
+    background: none;
+    width: 100%;
+    padding: 0 7px;
+  }
+
+  img {
+    padding: 0 5px;
+  }
+}

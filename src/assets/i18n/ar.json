@@ -1,0 +1,1618 @@
+{
+  "I18N": {
+    "MAT_PAGINATOR": {
+      "FIRST_PAGE": "الصفحة الاولى",
+      "ITEMS_PER_PAGE": "عدد العناصر بالصفحة",
+      "LAST_PAGE": "اخر صفحة",
+      "NEXT_PAGE": "الصفحة التالية",
+      "PREVIOUS_PAGE": "الصفحة السابقة",
+      "OF": "من"
+    }
+  },
+  "DeliveryReceiptAttachmentType": {
+    "original": "أصل",
+    "copy": "صورة",
+    "USB": "فلاش",
+    "other": "أخرى"
+  },
+  "attachment": {
+    "title": "إضافة مرفق",
+    "desc": "حدد الملفات التي تريدها وقم بتحميلها",
+    "select": "اختر ملفًا أو اسحبه وأفلِته هنا",
+    "format": "formats, up to 50MB",
+    "upload": "تصفح الملفات",
+    "loading": "جاري التحميل",
+    "loaded": "اكتمل التحميل",
+    "uploadFiles": "رفع الملفات"
+  },
+  "actions": {
+    "auditing": {
+      "statementRequest": "طلب إفادة",
+      "studyProposal": "مقترح دراسة",
+      "uploadFileTab": "من خلال رفع ملف",
+      "textEditorTab": "من خلال محرر النصوص"
+    },
+    "study": {
+      "basicData": "البيانات الأولية",
+      "creditsAndCosts": "الاعتمادات والتكاليف",
+      "docs": "المستندات",
+      "studyDocument": "مستند الدراسة",
+      "additionalNote": "ملاحظة اضافية",
+      "noteType": {
+        "label": "نوع المذكرة",
+        "placeholder": " قم باختيار نوع المذكرة",
+        "required": "يجب اختيار نوع المذكرة",
+        "forInformation": "للاطلاع والإحاطة",
+        "closeRequest": "إقفال قيد",
+        "requestStatement": "طلب إفادة من جهة خارجية",
+        "other": "أخرى",
+        "otherRequired": "يجب كتابة نوع المذكرة"
+      },
+      "letterType": {
+        "label": "نوع الخطاب",
+        "placeholder": " قم باختيار نوع الخطاب",
+        "required": "يجب اختيار نوع الخطاب"
+      },
+      "extend": "مدة تمديد الدراسة ",
+      "costs": "ادخل مبلغ التكاليف",
+      "credits": "ادخل مبلغ الاعتماد",
+      "mechanism": "آلية التدابير",
+      "creditMeasure": "تدبير الاعتمادات",
+      "costMeasures": "تدابير التكاليف",
+      "selectMechanismPlaceholder": "قم باختيار آلية التدبير",
+      "supportingDocuments": "المستندات الداعمه",
+      "selectDocs": "حدد الملفات التي تريدها وقم بتحميلها",
+      "studyDocuments": "مستندات الدراسة"
+    }
+  },
+  "dialogs": {
+    "rescheduleMeeting": {
+      "title": "هل أنت متأكد من إجراء الجدولة للاجتماع؟",
+      "description": " سيتم ادراج الاجراء داخل جدوله الاجتماعات.",
+      "confirmBtn": "نعم، تاكيد",
+      "confirm": "تم تاكيد جدولة الاجتماع"
+    },
+    "resignMeeting": {
+      "title": "هل أنت متأكد من إجراء رفع للتوقيع؟",
+      "description": " سيتم ادراج رفع للتوقيع   .",
+      "confirm": "تم تاكيد رفع التوقيع"
+    },
+    "exportModel": {
+      "firstData": "البيانات الاولية",
+      "document": "المستند"
+    }
+  },
+  "shared": {
+    "success": "تم بنجاح",
+    "error": "حدث خطأ",
+    "warning": "تحذير",
+    "stats": "الاحصائيات",
+    "from": "من",
+    "To": "إلى",
+    "thumbnail": " الغلاف",
+    "createPolicy": " انشاء اللائحة",
+    "total": "الإجمالي",
+    "profile": "الملف الشخصي",
+    "noEvents": "لا توجد مناسبات حالية\nيمكنك بدء إضافة اجتماع",
+    "conservatism": "تحفظ",
+    "select": "قم بالاختيار ",
+    "attachmentsText": "نص المرفقات",
+    "addImportInTransaction": "إضافة وارد داخل المعاملة",
+    "exportNumber": "رقم الصادر",
+    "addExportFile": "اضافة ملف الصادر",
+    "ExportFile": " ملف الصادر",
+    "addAttachments": "اضافة مرفقات",
+    "saveExport": "حفظ الصادر",
+    "saveReport": "حفظ التقرير",
+    "goToTransaction": "الذهاب الي المعاملة",
+    "goToImport": "الذهاب الي الوارد",
+    "goToExport": "الذهاب الي الصادر",
+    "errorLoadingFile": "حدث خطأ أثناء تحميل الملف",
+    "noFileAvailable": "لا يوجد ملف متاح للعرض",
+    "unsupportedFileType": " نوع الملف غير مدعوم للعرض",
+    "attachmentText": "نص الارفاق",
+    "approveBtn": "تاكيد",
+    "categorization": "التصنيف",
+    "actionNumber": "رقم الاجراء",
+    "right": "مناسب",
+    "category": "الفئة",
+    "wrong": "غير مناسب",
+    "theNote": "الملاحظة",
+    "fileDeletedSuccessfully": "تم حذف الملف بنجاح",
+    "fileAddedSuccessfully": "تم رفع الملف بنجاح",
+    "deletePopup": "نعم, احذف",
+    "deactivate": "نعم, تاكيد",
+    "viewFile": "عرض الملف",
+    "deleteTitle": "هل أنت متأكد من حذف هذا العنصر؟",
+    "deleteMessage": "هل أنت متأكد أنك تريد حذف هذه العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+    "renameFile": "إعادة تسمية الملف",
+    "deleteFile": "حذف الملف",
+    "OpinionRefrain": "الامتناع عن إبداء الرأي",
+    "importDate": "تاريخ التوريد الفعلي",
+    "noDebtDate": "تاريخ الاحالة من الديوان",
+    "showMore": "عرض اكثر",
+    "noData": "لا يوجد بيانات متاحة",
+    "noConsultants": "لا يوجد مستشارين",
+    "selected": "اختيارات",
+    "consultant": "المستشار المسئول",
+    "studyProposal": "مقترح الدراسة",
+    "dateFrom": "الفترة من",
+    "dateTo": "الفترة الي",
+    "nextStep": "الخطوة الحالية",
+    "step": "الخطوة",
+    "specialist": "المختص",
+    "deleteAllSteps": "حذف جميع الخطوات",
+    "executor": "القائم بالإجراء",
+    "searchByAddress": "البحث بالعنوان أو الرقم",
+    "addNewBtn": "إضافة جديد",
+    "addEditPolicies": "اضافة تعديل اللوائح والسياسات ",
+    "before": "السابق",
+    "exportedType": "نوع الصادر",
+    "importType": "نوع الوارد",
+    "year": "السنة",
+    "month": "الشهر",
+    "months": {
+      "1": "يناير",
+      "2": "فبراير",
+      "3": "مارس",
+      "4": "إبريل",
+      "5": "مايو",
+      "6": "يونيو",
+      "7": "يوليو",
+      "8": "أغسطس",
+      "9": "سبتمبر",
+      "10": "أكتوبر",
+      "11": "نوفمبر",
+      "12": "ديسمبر"
+    },
+    "type": "النوع",
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "previousWeek": "الاسبوع السابق",
+    "nextWeek": "الاسبوع التالي",
+    "monthly": "شهري",
+    "weekly": "أسبوعي",
+    "toDate": "إلى تاريخ",
+    "fromDate": "من تاريخ",
+    "copy": "نسخ",
+    "viewNote": "عرض ملحوظة",
+    "readAll": "قراءة الكل",
+    "deleteAll": "حذف الكل",
+    "printBarcode": "طباعة الباركود",
+    "printBarcodeWithoutBackground": "طباعة الباركود بدون خلفية",
+    "details": "التفاصيل",
+    "dateRecordState": "التواريخ والتوقيتات",
+    "meetingRecord": "محضر اجتماع",
+    "handoverRecord": "محضر تمرير",
+    "file": "الملف",
+    "saveAndFinish": "حفظ وانهاء",
+    "notes": "ملاحظات",
+    "back": "رجوع",
+    "saveAndNext": "حفظ / التالي",
+    "next": "التالي",
+    "previous": "السابق",
+    "cancelSearch": "الغاء البحث",
+    "uploadFileOrUseEditor": "-من فضلك-  قم برفع ملف أو استخدم محرر النصوص",
+    "fileShouldBeWordOrPdf": "يجب أن يكون الملف من نوع word  أو  pdf",
+    "number": "رقم",
+    "waitUntilFileIsLoaded": "انتظر حتى يتم تحميل الملف",
+    "timeCreated": "تاريخ الإنشاء",
+    "completeFillingFields": "من فضلك، أكمل بقية الحقول",
+    "hideAll": "إخفاء الكل",
+    "showAll": "إظهار الكل",
+    "isSigned": "تم التوقيع",
+    "fileMustBeUploaded": "يجب رفع ملف",
+    "print": "طباعة",
+    "NoOpinionYet": "لم يتم ابداء الرأي حتي الان",
+    "download": "تحميل",
+    "fileShouldBePdf": "يجب أن يكون الملف من نوع pdf",
+    "fileShouldBeWord": "يجب أن يكون الملف من نوع word",
+    "withinBudget": "من داخل الميزانية",
+    "extrabudgetary": "من خارج الميزانية",
+    "amountMechanism": "آلية التدبير",
+    "riyal": "ريال",
+    "all": "الكل",
+    "editorNotLoaded": "يجب تحميل ملف أو الكتابة في محرر النصوص",
+    "record": "المحضر",
+    "showSigns": "عرض كل التوقيعات",
+    "hideSigns": "اخفاء كل التوقيعات",
+    "recordDetails": "تفاصيل المحضر",
+    "isRequireAttachNumber": "يتطلب إدراج رقم ؟",
+    "exportedAttachmentTypes": "أنواع المرفقات",
+    "addExportedAttachment": "إضافة نوع مرفق",
+    "addDepartment": "إضافة قسم",
+    "or": "أو",
+    "and": "و",
+    "search": "بحث",
+    "addNewFolder": "إضافة مجلد جديد",
+    "addFolder": "إضافة مجلد ",
+    "advancedSearch": "بحث متقدم",
+    "noResultsFound": "لا توجد نتائج",
+    "no": "لا",
+    "yes": "نعم",
+    "supportedDocuments": "الملفات الداعمة",
+    "addDoc": "إضافة وثيقة جديدة",
+    "addDocType": "إضافة نوع وثيقة جديدة",
+    "generalNumber": "الرقم العام",
+    "privateNumber": "الرقم الخاص",
+    "searchForConsultant": "البحث عن مستشار",
+    "noAttachments": "لا توجد مرفقات",
+    "viewDetails": "عرض التفاصيل",
+    "concernedFoundations": "الجهات المعنية",
+    "subFoundation": "الجهة الفرعية",
+    "incomingFoundation": "الجهة الوارد منها",
+    "incomingFoundationPlaceholder": "قم باختيار الجهة",
+    "consultantGroups": "مجموعات المستشارين",
+    "consultants": "المستشارين",
+    "addConsultantGroup": "إضافة مجموعة مستشارين",
+    "addProcessTypeJustification": "إضافة مبرر آلية معالجة",
+    "processTypeJustifications": "مبررات آلية المعالجة",
+    "processTypeJustification": "مبرر آلية المعالجة",
+    "processTypeJustificationReason": "توضيح مبرر آلية المعالجة",
+    "exporting": "تصدير",
+    "sequenceFormat": "الصيغة",
+    "lastResetDate": "تاريخ إعادة الترتيب",
+    "committeeSequences": "تسلسل أرقام محاضر اللجان",
+    "attachments": "المرفقات",
+    "notifications": "الإشعارات",
+    "container": "المعاملة",
+    "hijriDates": "التواريخ الهجري",
+    "georgianDates": "التواريخ الميلادي",
+    "isInitiated": "تم التركين",
+    "initiatedSigned": "التركين",
+    "basicImportData": "بيانات الوارد الاساسية",
+    "classification": "درجة السرية",
+    "classificationPlaceholder": "قم باختيار درجة السرية",
+    "noCommitteeMembers": "لا يوجد أعضاء في هذه اللجنة",
+    "isDefault": "افتراضي ؟",
+    "default": "افتراضي",
+    "notDefault": "غير افتراضي",
+    "delegateResponsibilities": "تفويض المسؤوليات",
+    "addCommitteeSignaures": "إضافة توقيعات اللجنة",
+    "committeesSignatures": "توقيعات اللجان",
+    "addReferralJustification": "إضافة مبرر إحالة موضوع من الديوان إلى اللجنة",
+    "until": "حتى",
+    "addReport": "إضافة تقرير",
+    "editReport": "تعديل تقرير",
+    "deleteReport": "حذف التقرير",
+    "deleteFolder": "حذف المجلد",
+    "deleteSubFolder": "حذف المجلد الفرعي",
+    "moveReport": "نقل التقرير",
+    "mainREport": "المجلد الرئيسي",
+    "isActive": "نشط ؟",
+    "authorName": "منشئ الملف",
+    "reports": "التقارير",
+    "exportedDate": "تاريخ الصادر",
+    "canotDeleteExportableDocument": "لا يمكن حذف صادر",
+    "connectionLost": "-من فضلك-  تأكد من اتصالك بالإنترنت أو تواصل مع مسؤول الشبكة.",
+    "pleaseTryInanotherTime": "-من فضلك-  كرر المحاولة مرة أخرى في وقت لاحق",
+    "errorHappened": "حدث خطأ",
+    "alert": "تنبيه",
+    "committeeRequired": "لا بد من اختيار لجنة",
+    "folderRequired": "لا بد من اختيار مجلد",
+    "add": "إضافة",
+    "addMember": "إضافة عضو",
+    "internal": "داخلي",
+    "committee": "لجنة",
+    "date": "التاريخ",
+    "editExportDetails": "تعديل بيانات الصادر",
+    "editContainerDetails": "تعديل بيانات المعاملة",
+    "importSerialNumberIs": "الرقم المتسلسل للوارد هو",
+    "exportSerialNumberIs": "الرقم المتسلسل للصادر هو",
+    "processDone": "تمت العملية بنجاح",
+    "serialNumberIs": "الرقم المتسلسل هو",
+    "committeeSymbol": "رمز آلية المعالجة",
+    "searchForTransactionsByTitle": "البحث عن المعاملات بالعنوان",
+    "chooseExistingTransaction": "اختيار معاملة حالية",
+    "meetingManagement": "إدارة الاجتماعات",
+    "addNewRecommendationType": "إضافة نوع توصية جديدة",
+    "recommendationTypes": "أنواع التوصيات",
+    "visible": "نشط",
+    "invisible": "غير نشط",
+    "addNewContainerOutcome": "إضافة نتيجة معاملة جديدة",
+    "recommendationOutcomes": "نتائج التوصيات",
+    "chooseRecommendationOutcome": "قم باختيار النتائج",
+    "containerOutcome": "نتيجة المعاملة",
+    "containerRecommendation": "نتيجة التوصيات",
+    "to": "ل",
+    "viewInternalSectors": "عرض القطاعات الداخلية",
+    "addInternalSector": "إضافة قطاع داخلي",
+    "viewInternalFoundations": "عرض الجهات الداخلية",
+    "addInternalFoundation": "إضافة جهة داخلية",
+    "addNewMeeting": "إضافة اجتماع جديد",
+    "editMeeting": "تعديل بيانات الاجتماع",
+    "meetingTime": "موعد الاجتماع",
+    "meetingDurationInMinutes": "مدة الاجتماع بالدقائق",
+    "numOfAttendences": "عدد الحضور",
+    "numOfMembers": "عدد الأعضاء",
+    "other": "أخرى",
+    "inPerson": "حضوري",
+    "remotely": "عن بعد",
+    "meetingType": "نوع الاجتماع",
+    "numOfTransactions": "عدد المعاملات",
+    "committeeName": "اسم اللجنة",
+    "done": "حسنا",
+    "definition": "الملخص",
+    "createdBy": "انشيء بواسطة",
+    "by": "بواسطة",
+    "createdAt": "انشيء في تاريخ",
+    "timeTable": "الجدول الزمني",
+    "addEditNews": "اضافة تعديل الاخبار",
+    "createNews": "انشاء الخبر",
+    "latestNews": "آخر الأخبار",
+    "allNews": "كل الاخبار",
+    "signOut": "تسجيل الخروج",
+    "addLatestNews": "إضافة خبر جديد",
+    "credits": "اعتمادات",
+    "theCredits": "الاعتمادات",
+    "costs": "تكاليف",
+    "theCosts": "التكاليف",
+    "new": "جديدة",
+    "initiated": "تحت الإنشاء",
+    "inProgress": "تحت الإجراء",
+    "held": "معلقة في انتظار إفادة خارجية",
+    "exported": "تم التصدير",
+    "archived": "مؤرشف",
+    "rejected": "مرفوضة",
+    "isDone": "تم الانتهاء منها",
+    "signing": "قيد التوقيع",
+    "committeeApproval": "العرض على اللجنة",
+    "closed": "مغلق",
+    "forceClosed": "إغلاق عن طريق الادمن",
+    "reset": "معادة",
+    "resetBtn": "إعادة تعيين",
+    "processType": "آلية المعالجة",
+    "chooseProcessType": "قم باختيار آلية المعالجة",
+    "processTypePlaceholder": "قم باختيار نوع الطلب",
+    "searchForClassifications": "البحث عن درجات السرية",
+    "classificationRequired": "يجب اختيار درجة سرية",
+    "import": "وارد",
+    "export": "صادر",
+    "deliveryDate": "تاريخ التوريد",
+    "searchForRoles": "البحث عن أدوار",
+    "addRequestType": "إضافة نوع وثيقة",
+    "schema": "دورة حياة المعاملة",
+    "treatmentMechanism": "آلية المعالجة",
+    "classificationLevel": "درجةالتقيد",
+
+    "enterNewsTitle": "ادخل عنوان الخبر",
+    "selectStatus": "قم باختيار الحالة",
+    "enterContent": "ادخل المحتوي",
+    "content": " المحتوي",
+    "enterDefinition": "ادخل الملخص",
+
+    "password": "كلمة المرور",
+    "active": "فعال",
+    "updatedSuccessfully": "تم تحديث البيانات بنجاح !",
+    "updateFailed": "فشل تحديث البيانات، -من فضلك-  قم بالمحاولة لاحقا",
+    "inactive": "غير فعال",
+    "restricted": "مقيد",
+    "unrestricted": "غير مقيد",
+    "hijriDateRequired": "يجب إدخال التاريخ الهجري",
+    "gregorianDateRequired": "يجب إدخال التاريخ الميلادي",
+    "numberOnly": "يجب إدخال أرقام فقط",
+    "hijriDatePlaceHolder": "يوم شهر, سنة",
+    "exportToRC": "تصدير إلى الديوان",
+    "exportToEE": "تصدير لجهة خارجية",
+    "RC": "الديوان",
+    "EE": "جهة خارجية",
+    "selectConsultants": "تحديد المستشارين",
+    "approve": "تعميد",
+    "resetImport": "إعادة ضبط الوارد",
+    "resetImportBtn": "إعادة ضبط",
+    "note": "ملاحظة",
+    "extraNotes": "ملاحظات اضافية",
+    "confirm": "تأكيد",
+    "yourNotes": "ملاحظاتك",
+    "confirmMsg": "يمكنك الرجوع إلى الصفحة السابقة للتعديل قبل تأكيد العملية",
+    "transactionType": "نوع الوثيقة",
+    "addImport": "إضافة وارد",
+    "addExport": "إضافة صادر",
+    "sectorRequired": "يجب اختيار القطاع",
+    "foundationRequired": "يجب اختيار الجهة",
+    "addNewTransaction": "إضافة معاملة جديدة",
+    "newTransaction": "معاملة جديدة",
+    "addToTransaction": "إضافة الي معاملة",
+    "addFile": "إضافة مستند",
+    "status": "الحالة",
+    "statusRequired": "يجب اختيار الحالة",
+    "costsRequestedAmount": "المبالغ المطلوبة تكاليف",
+    "creditsRequestedAmount": "المبالغ المطلوبة اعتمادات",
+    "costsApprovedAmount": "المبالغ المعتمدة تكاليف",
+    "creditsApprovedAmount": "المبالغ المعتمدة اعتمادات",
+    "benefitType": "نوع الطلب",
+    "benefitTypePlaceholder": "قم باختيار نوع الطلب",
+    "basicLine": "خط الاساس",
+    "impactIfApproved": "الاثر في حال الاعتماد ",
+    "SomethingWentWrong": "حدث خطأ ما، -من فضلك-  قم بالمحاولة لاحقا",
+    "folder": "Folder",
+    "searchForUsers": "البحث عن مستخدمين",
+    "selectValue": "اختيار العنصر",
+    "managePermissions": "إدارة الصلاحيات",
+    "permissionsSettings": "اعدادات الصلاحيات",
+    "addNewActors": "إضافة متفاعل أو متفاعلون جدد",
+    "actors": "المتفاعلون",
+    "viewEmployees": "عرض الموظفين",
+    "confirmInternalDepartmentDeletion": "تأكيد حذف الإدارة الداخلية",
+    "deleteInternalDepartmentWarning": "هل أنت متأكد من إزالة إدارة",
+    "shortDescription": "وصف مختصر",
+    "viewInternalDepartments": "عرض الإدارات والأقسام الداخلية",
+    "addInternalDivision": "إضافة إدارة أو قسم داخلي",
+    "ediDepartmentOrDivisionDetails": "تعديل بيانات الإدارة أو القسم",
+    "departmentOrDivisionManager": "مدير الإدارة أو القسم",
+    "departmentOrDivisionManagerRequired": "يجب اختيار مدير الإدارة أو القسم",
+    "searchForUser": "البحث عن مستخدم",
+    "name": "الاسم",
+    "viewMembers": "عرض الأعضاء",
+    "addNewCommittee": "إضافة لجنة جديدة",
+    "divisionName": "اسم القسم",
+    "section": "القسم",
+    "managementName": "اسم الإدارة",
+    "internalDepartmentsAndDivisions": "الأقسام والإدارات الداخلية",
+    "addNewDepartmentOrDivision": "إضافة إدارة أو قسم",
+    "departmentManagerRequired": "يجب اختيار مدير الإدارة",
+    "departmentManager": "مدير الإدارة",
+    "addNewDepartment": "إضافة إدارة جديدة",
+    "secretariatBranches": "فروع الأمانة",
+    "committees": "اللجان",
+    "secretarialStructure": "هيكلة الأمانة",
+    "secretarials": "الأمانات",
+    "addNewSecretarial": "إضافة أمانة جديدة",
+    "secretary": "سعادة الأمين",
+    "secretaryRequired": "يجب اختيار سعادة الأمين",
+    "deletedSuccessfully": "تم حذف البيانات بنجاح !",
+    "dataCreatedSuccessfully": "تم حفظ البيانات بنجاح !",
+    "dataUpdatedSuccessfully": "تم حفظ البيانات بنجاح !",
+    "reportMovedSuccessfully": "تم نقل التقرير بنجاح !",
+    "addRoles": "إضافة أدوار",
+    "phoneNumber": "رقم الجوال",
+    "phone": "الجوال",
+    "email": "البريد الالكتروني",
+    "userName": "اسم المستخدم",
+    "users": "المستخدمين",
+    "classifications": "درجات السرية",
+    "workflowTreatments": "دورات حياة المعاملة",
+    "stepCategories": "تصنيف الخطوات",
+    "steps": "الخطوات",
+    "actions": "الإجراءات",
+    "action": "الإجراء",
+    "priorities": "الأهمية",
+    "prioritiesPlaceholder": "قم باختيار الأهمية",
+    "foundations": "الجهات",
+    "benefitTypes": "أنواع الطلبات",
+    "sectors": "القطاعات",
+    "systemSettings": "إعدادات النظام",
+    "stepCategory": "تصنيف الخطوة",
+    "addNewStep": "إضافة خطوة جديدة",
+    "addNewClassification": "إضافة درجة سرية جديدة",
+    "addNewAction": "إضافة إجراء جديد",
+    "actionType": "نوع الإجراء",
+    "addNewWorkflowTreatment": "إضافة دورة حياة معاملة",
+    "addNewStepCategory": "إضافة تصنيف خطوة جديد",
+    "questionMark": "؟",
+    "yesDelete": "نعم أريد إزالته",
+    "noRowsFound": "لا توجد عناصر في الصفحة",
+    "addNewPriority": "إضافة أهمية جديدة",
+    "addNewFoundation": "إضافة جهة جديدة",
+    "addNewBenefitType": "إضافة نوع طلب جديد",
+    "addNewSector": "إضافة قطاع جديد",
+    "save": "حفظ",
+    "saveTransaction": "حفظ المعاملة",
+    "saveImport": "حفظ الوارد",
+    "titleAr": "العنوان بالعربية",
+    "title": "العنوان",
+    "titlePlaceholder": "أدخل العنوان",
+    "titleRequired": "يجب إدخال العنوان",
+    "arabicCharsRequired": "يجب أن تكون الحروف عربية",
+    "englishCharsRequired": "يجب أن تكون الحروف انجليزية",
+    "titleEn": "العنوان بالانجليزية",
+    "descriptionAr": "الوصف بالعربية",
+    "comment": "التعليق",
+    "description": "الوصف",
+    "descriptionPlaceholder": "اكتب الوصف",
+    "descriptionEn": "الوصف بالانجليزية",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "options": "خيارات",
+    "option": "خيار",
+    "resetFilters": "إعادة تعيين التصفية",
+    "apply": "تطبيق",
+    "gregorianPeriodTime": "الفترة الزمنية الميلادية",
+    "hijriPeriodTime": "الفترة الزمنية الهجرية",
+    "immediately": "حالا",
+    "veryUrgent": "عاجل جدا",
+    "urgent": "عاجل",
+    "day/month/year": "يوم / شهر / سنة",
+    "englishDay/month/year": "سنة / شهر / يوم",
+    "filter": "تصفية",
+    "mainHeader": "أمانة اللجنة المالية بالديوان الملكي",
+    "logIn": "تسجيل الدخول",
+    "tryAgain": "المحاولة مرة أخرى",
+    "records": "المحاضر",
+    "allRecords": "كل المحاضر",
+    "activeRecords": "المحاضر النشطة",
+    "importsExports": "الصادر و الوارد",
+    "documents": "مستندات",
+    "transactions": "المعاملات",
+    "affiliatedEntity": "الجهة التابعة",
+    "requestedAmount": "المبلغ المطلوب",
+    "approvedAmount": "المبلغ المعتمد",
+    "recommendationResults": " التوصيات والنتائج",
+    "budget": "الميزانية ( الاعتمادات والتكاليف )",
+    "systematicTools": "الأدوات النظامية",
+    "priorityTransactions": "المعاملات من ناحية الاهمية",
+    "transactionsRequired": "يجب اختيار معاملة",
+    "files": "مستندات",
+    "signaturesNum": "عدد التوقيعات ",
+    "reservationsNum": "عدد التحفظ",
+    "objectionsNum": "عدد الامتناع",
+    "handOverAndMeetingRecords": "المحاضر التمرير والإجتماع",
+    "activeAndInactiveRecords": "المحاضر النشطة والغير نشطة",
+    "facilityStructure": "هيكل المنشأة",
+    "timeAttendance": "الحضور والانصراف",
+    "launchDoc": "اطلاق المستند",
+    "addNews": "اضافة خبر",
+    "addPolicy": "اضافة لوائح وسياسات",
+    "editPolicy": "تعديل لوائح وسياسات",
+    "selectSection": "قم باختيار القسم",
+    "sectionRequired": "يجب اختيار القسم",
+    "addPolicyDesc": "قم بادخال البيانات في الاسفل لاضافة لائحة جديدة",
+    "erpSystem": "ERP System",
+    "ocr": " اداة استخراج النص  (OCR)",
+    "webmail": "Webmail",
+    "systemManagement": "إدارة النظام",
+    "main": "الرئيسية",
+    "watch": "مشاهدة",
+    "linkWithTransaction": "ربط المعاملة",
+    "youWillLink": "انت تربط معاملة رقم ",
+    "foundation": "الجهة",
+    "sector": "القطاع",
+    "internalSector": "القطاع الداخلي",
+    "cancel": "إلغاء",
+    "transactionNum": "رقم المعاملة",
+    "transactionTitle": "عنوان الوثيقة",
+    "requestingFoundation": "الجهة الطالبة",
+    "priority": "الأهمية",
+    "requiredAmount": "المبلغ المطلوب",
+    "remainingPeriod": "المدة المتبقية للانهاء",
+    "advisor": "المستشار المسؤول",
+    "loading": "جارى التحميل",
+    "totalCosts": "اجمالي التكاليف",
+    "totalAllocations": "اجمالي الاعتمادات",
+    "exportStatus": "حالة التصدير",
+    "documentData": "بيانات الوثيقه",
+    "sourceTo": "الجهة المصدر اليها",
+    "home": "الرئيسية",
+    "pendingRequests": "معاملات قيد الانتظار",
+    "requestTypes": "أنواع الطلبات",
+    "meetings": "الاجتماعات",
+    "news": "الأخبار",
+    "workHoursChart": "مخطط ساعات العمل",
+    "yearly": "سنوي",
+    "policies": "اللوائح والسياسات"
+  },
+  "FooterComponent": {
+    "text": "في حال وجود أي ملاحظات او استفسارات نأمل التواصل مع إدارة منصة وائم في مكتب المواءمة المالية"
+  },
+  "AuthModule": {
+    "LoginPage": {
+      "header": "مرحبا بك",
+      "user": "اسم المستخدم",
+      "userRequired": "يجب ادخال اسم المستخدم",
+      "passwordRequired": "يجب ادخال كلمة المرور",
+      "rememberMe": "تذكرني"
+    },
+    "VerifyOtpPage": {
+      "header": "أدخل كلمة المرور المؤقتة",
+      "subHeader": "رقم الجوال المستخدم",
+      "resendCode": "إعادة ارسال الرمز",
+      "loginFailed": "فشل تسجيل الدخول",
+      "loginFailedMsg1": "يوجد مشكلة في تسجيل الدخول الخاص بك",
+      "loginFailedMsg2": "برجاء التواصل مع مسئول النظام أو المحاولة مرة أخري"
+    }
+  },
+  "LayoutModule": {
+    "ContainerComponent": {
+      "pending": "قيد الانتظار",
+      "notes": "مستندات"
+    },
+    "NotificationsMenuComponent": {
+      "watchAllNotifications": "مشاهدة كل الإشعارات"
+    },
+    "HeaderComponent": {
+      "logout": "تسجيل الخروج"
+    }
+  },
+  "HomeModule": {
+    "DashboardPage": {
+      "services": "الخدمات",
+      "statistics": "الإحصائيات",
+      "timingTable": "الجدول الزمني",
+      "latestNews": "أخر الأخبار",
+      "watchAll": "مشاهدة الكل",
+      "completedTransactions": "المعاملات المنجزة",
+      "budget": "الميزانية",
+      "extrabudgetaryFinancing": "التمويل من خارج الميزانية",
+      "resultsRecommendations": "النتائج والتوصيات",
+      "news": "الأخبار",
+      "showAll": "عرض الكل",
+      "readMore": "اقرأ المزيد",
+      "nextEvents": "المناسبات القادمة",
+      "addNew": "إضافة جديد",
+      "transactionsCount": "عدد المعاملات",
+      "notesCount": "عدد المذكرات",
+      "lettersCount": "عدد الخطابات",
+      "completed": "منجزة",
+      "latestNew": "احدث الاخبار",
+      "inProgress": "تحت الإجراء",
+      "scheduled": "مجدولة",
+      "activeRecords": "المحاضر النشطة",
+      "inactiveRecords": "المحاضر الغير نشطة",
+      "handoverRecords": "محاضر التمرير",
+      "meetingRecords": "محاضر الاجتماع",
+      "activeInactiveStats": "إحصائيات المحاضر النشطة وغير النشطة",
+      "handoverMeetingStats": "إحصائيات محاضر التمرير والاجتماع"
+    },
+    "policy": {
+      "administrative": "السياسات واللوائح الإدارية",
+      "financial": "السياسات واللوائح المالية",
+      "legal": "السياسات واللوائح القانونية",
+      "technical": "السياسات واللوائح التقنية"
+    }
+  },
+  "ManageServicesModule": {
+    "AllServicesPage": {
+      "allServices": "كل الخدمات",
+      "searchBarPlaceHolder": "ابحث باسم الخدمة"
+    }
+  },
+  "SystemManagementModule": {
+    "SystemManagementPage": {
+      "systemStatistics": "احصائيات النظام",
+      "workCycle": "دورة العمل",
+      "docsTypes": "أنواع الوثائق",
+      "docsTypesRequired": "أنواع الوثائق مطلوبة",
+      "workflowDesign": "تصميم دورة العمل",
+      "usersAndRoles": "المستخدمين والصلاحيات",
+      "app": "تطبيق الأمانة",
+      "documentTypes": "قائمة الوثائق"
+    }
+  },
+  "ManageDocumentsModule": {
+    "AddDocumentPage": {
+      "documents": "الوثائق",
+      "addNewDocument": "إضافة وثيقة جديدة",
+      "documentType": "تصنيف الوثيقة",
+      "documentTypeRequired": "تصنيف الوثيقة مطلوب",
+      "address": "خطاب",
+      "transaction": "معاملة",
+      "documentStatusRequired": "حالة الوثيقة مطلوبة",
+      "underProcessing": "تحت الإجراء",
+      "requestTypeRequired": "نوع الطلب مطلوب",
+      "LetterNumberRequestingParty": "رقم خطاب الجهة الطالبة",
+      "LetterNumberRequestingPartyRequired": "يجب إدخال رقم الخطاب",
+      "paymentType": "نوع المبلغ",
+      "paymentTypeRequired": "نوع المبلغ مطلوب",
+      "documentNumber": "رقم الوثيقة",
+      "documentNumberRequired": "رقم الوثيقة مطلوبة",
+      "paperDocumentNumber": "رقم الوثيقة الورقي",
+      "paperDocumentNumberRequired": "رقم الوثيقة الورقي مطلوب",
+      "incomingNumber": "رقم الوارد",
+      "incomingStatus": "حالة الوارد",
+      "incomingNumberRequired": "رقم الوارد مطلوب",
+      "addFile": "اضغط لإضافة ملف",
+      "fileRequired": "يجب اختيار ملف",
+      "addNewFile": "إضافة ملف جديد",
+      "addTransaction": "إضافة المعاملة",
+      "confirmUnlinkTransaction": "تأكيد فك ربط المعاملة",
+      "unlinkWarningTransaction": "هذا الأمر لايمكن الرجوع فيه اذا اردت ربط المعاملة من جديد سوف تحتاج الي الذهاب لربط المعاملات",
+      "confirmUnlink": "تأكيد فك الربط"
+    },
+    "LinkTransactionComponent": {
+      "searchByTransactionAddress": "بحث عن طريق عنوان المعاملة",
+      "placeHolder": "بحث بعنوان المعاملة أو الرقم العام أو الرقم الخاص ",
+      "linkTransaction": "ربط ماتم تحديده"
+    }
+  },
+  "PendingTransactionsModule": {
+    "PendingTransactionsListPage": {
+      "pendingTransactions": "معاملات قيد الانتظار"
+    },
+    "ModalPendingTransactionsFiltersComponent": {
+      "header": "تصفية المعاملات",
+      "subHeader": "يمكنك تصفية المعاملات بجميع حالاتها ومواعيدها",
+      "chooseRequestingFoundation": "اختر الجهة الطالبة",
+      "chooseSector": "اختر القطاع",
+      "chooseAdvisor": "اختر المستشار المسئول"
+    }
+  },
+  "ActionsModule": {
+    "SectorsListComponent": {
+      "confirmDeletion": "تأكيد حذف القطاع",
+      "deleteSectorWarning": "هل أنت متأكد من إزالة قطاع"
+    },
+    "RecommendationTypesListComponent": {
+      "confirmDeletion": "تأكيد حذف نوع التوصية",
+      "deleteRecommendationTypeWarning": "هل أنت متأكد من إزالة نوع التوصية"
+    },
+    "ContainerOutcomesListComponent": {
+      "confirmDeletion": "تأكيد حذف نتيجة المعاملة",
+      "deleteOutcomeWarning": "هل أنت متأكد من إزالة نتيجة المعاملة"
+    },
+    "BenefitTypesListComponent": {
+      "confirmDeletion": "تأكيد حذف نوع الطلب",
+      "deleteBenefitTypeWarning": "هل أنت متأكد من إزالة نوع الطلب"
+    },
+    "ReferralJustificationsListComponent": {
+      "title": "مبررات إحالة الموضوع من الديوان الي اللجنة",
+      "confirmDeletion": "تأكيد حذف مبرر إحالة الموضوع",
+      "deleteReferralJustificationWarning": "هل أنت متأكد من إزالة مبرر الإحالة"
+    },
+    "FoundationsListComponent": {
+      "confirmDeletion": "تأكيد حذف الجهة",
+      "deleteFoundationWarning": "هل أنت متأكد من إزالة الجهة"
+    },
+    "PrioritiesListComponent": {
+      "confirmDeletion": "تأكيد حذف الأهمية",
+      "deletePriorityWarning": "هل أنت متأكد من إزالة الأهمية"
+    },
+    "StepCategoriesListComponent": {
+      "confirmDeletion": "تأكيد حذف تصنيف الخطوة",
+      "deleteStepCategoryWarning": "هل أنت متأكد من إزالة تصنيف الخطوة"
+    },
+    "ActionsListComponent": {
+      "searchPlaceHolder": "البحث عن إجراء",
+      "confirmDeletion": "تأكيد حذف الإجراء",
+      "deleteActionWarning": "هل أنت متأكد من إزالة الإجراء"
+    },
+    "ClassificationsListComponent": {
+      "confirmDeletion": "تأكيد حذف درجة السرية",
+      "deleteClassificationWarning": "هل أنت متأكد من إزالة درجة السرية",
+      "usersCount": "عدد المستخدمين"
+    },
+    "StepsListComponent": {
+      "confirmDeletion": "تأكيد حذف الخطوة",
+      "deleteStepWarning": "هل أنت متأكد من إزالة الخطوة"
+    },
+    "AddSectorPage": {
+      "viewSectorDetails": "عرض بيانات القطاع",
+      "editSectorDetails": "تعديل بيانات القطاع"
+    },
+    "AddRecommendationTypeComponent": {
+      "editRecommendationTypeDetails": "تعديل بيانات نوع التوصية"
+    },
+    "AddContainerOutcomeComponent": {
+      "editContainerOutcomeDetails": "تعديل بيانات نتيجة المعاملة"
+    },
+    "AddBenefitTypePage": {
+      "editBenefitTypeDetails": "تعديل بيانات نوع الطلب"
+    },
+    "AddReferralJustificationComponent": {
+      "editDetails": "تعديل بيانات مبرر الإحالة"
+    },
+    "AddFoundationPage": {
+      "editFoundationDetails": "تعديل بيانات الجهة"
+    },
+    "AddPriorityPage": {
+      "editPriorityDetails": "تعديل بيانات الأهمية",
+      "numOfHours": "عدد الساعات",
+      "numOfHoursRequired": "يجب إدخال عدد الساعات"
+    },
+    "AddStepCategoryComponent": {
+      "editStepCategoryDetails": "تعديل بيانات تصنيف الخطوة"
+    },
+    "AddWorkflowTreatmentComponent": {
+      "editWorkflowTreatmentDetails": "تعديل بيانات دورة حياة المعاملة"
+    },
+    "AddActionComponent": {
+      "viewActionDetails": "عرض بيانات الإجراء",
+      "editActionDetails": "تعديل بيانات الإجراء",
+      "actionTypeRequired": "نوع الإجراء مطلوب",
+      "approve": "تعميد",
+      "assignment": "التوزيع",
+      "delegate": "تفويض",
+      "changeRequest": "إعادة",
+      "redirectingRequest": "توجيه",
+      "signature": "توقيع",
+      "initiate": "تركين",
+      "escalation": "تصعيد",
+      "conservatism": "تحفظ",
+      "recommendation": "التوصية",
+      "noting": "ملاحظة",
+      "phoneApproval": "إبداء الرأي هاتفيا",
+      "addActorToClassifiedRequests": "إضافة مستخدم لمعاملة سرية",
+      "archiving": "أرشفة",
+      "close": "إغلاق"
+    },
+    "AddClassificationComponent": {
+      "viewClassificationDetails": "عرض بيانات درجة السرية",
+      "editClassificationDetails": "تعديل بيانات درجة السرية",
+      "classificationLevelRequired": "يجب اختيار درجة التقيد",
+      "atLeastOneUserRequired": "لابد من اختيار مستخدم واحد علي الأقل",
+      "passwordValidationError": "Your password must be at least 10 characters long, contains at least 1 letter, 1 number, 1 digit and 1 symbol."
+    },
+    "AddStepComponent": {
+      "viewStepDetails": "عرض بيانات الخطوة",
+      "editStepDetails": "تعديل بيانات الخطوة"
+    }
+  },
+  "SystemSettingsModule": {
+    "AddExportedAttachmentTypeComponent": {
+      "editDetails": "تعديل بيانات نوع المرفق"
+    },
+    "ExportedAttachmentTypesListComponent": {
+      "confirmDeletion": "تأكيد حذف نوع المرفق",
+      "deleteAttachmentTypeWarning": "هل أنت متأكد من حذف نوع المرفق"
+    },
+    "SystemSettingsPage": {
+      "referringMatterJustifications": "مبررات إحالة الموضوع"
+    },
+    "ConsultantGroupsListComponent": {
+      "confirmDeletion": "تأكيد حذف مجموعة المستشارين",
+      "deleteConsultantGroupWarning": "هل أنت متأكد من إزالة مجموعة المستشارين"
+    },
+    "ProcessTypeJustificationsListComponent": {
+      "confirmDeletion": "تأكيد حذف مبرر آلية المعالجة",
+      "deleteJustificationWarning": "هل أنت متأكد من إزالة مبرر آلية المعالجة"
+    },
+    "AddProcessTypeJustificationsComponent": {
+      "editDetails": "تعديل بيانات مبرر آلية المعالجة"
+    },
+    "AddCommitteeSignaturesComponent": {
+      "enterTitle": "اضغط لإدخال اللقب",
+      "insertTitle": "ادخل لقبا",
+      "viewDetails": "عرض بيانات توقيعات اللجنة",
+      "editDetails": "تعديل بيانات توقيعات اللجنة",
+      "successSignatureDeletion": "تم حذف التوقيع بنجاح",
+      "failedSignatureDeletion": "لم يتم حذف التوقيع",
+      "searchMember": "البحث عن عضو",
+      "memberAlreayExist": "هذا العضو موجود بالفعل",
+      "noSignaturesDefinedYet": "لم يتم تحديد توقيعات بعد"
+    },
+    "CommitteeSequencesListComponent": {
+      "dateNumber": "رقم مسلسل وتاريخ",
+      "yearNumber": "رقم مسلسل مع السنة",
+      "number": "رقم مسلسل",
+      "confirmDeletion": "تأكيد حذف التسلسل",
+      "deleteSequenceWarning": "هل أنت متأكد من ازالة التسلسل",
+      "reset": "إعادة بدء الترقيم",
+      "confirmResetting": "تأكيد إعادة بدء الترقيم",
+      "resetSequenceWarning": "هل أنت متأكد من إعادة بدء الترقيم",
+      "resetSuccessfully": "تمت إعادة بدء الترقيم بنجاح",
+      "yesReset": "نعم ابدأ الإعادة"
+    },
+    "AddCommitteeSequenceComponent": {
+      "addSequence": "إضافة تسلسل أرقام محاضر جديد",
+      "editSequenceDetails": "تعديل تسلسل أرقام المحاضر",
+      "viewSequenceDetails": "عرض تسلسل أرقام المحاضر"
+    }
+  },
+  "UsersModule": {
+    "UsersListComponent": {
+      "mainDepartmentMustSelected": "يجب اختيار القسم الرئيسي",
+      "updateMainDepartment": "تعديل القسم الرئيسي",
+      "updateMainDepartmentFor": "تعديل القسم الرئيسي للموظف",
+      "mainDepartment": "القسم الرئيسي",
+      "searchPlaceHolder": "ابحث باسم المستخدم او البريد الالكتروني او الهاتف",
+      "syncUsers": "مزامنة المستخدمين",
+      "syncUsersSuccessfully": "تمت مزامنة المستخدمين بنجاح",
+      "syncAttendance": "مزامنة الحضور والانصراف",
+      "syncAttendanceSuccessfully": "تمت مزامنة الحضور والانصراف بنجاح"
+    }
+  },
+  "SecretarialModule": {
+    "SecretarialsListComponent": {
+      "confirmDeletion": "تأكيد حذف الأمانة",
+      "deleteSecretarialWarning": "هل أنت متأكد من إزالة أمانة",
+      "viewDepartment": "عرض الإدارات"
+    },
+    "AddSecretarialComponent": {
+      "ediSecretarialDetails": "تعديل بيانات الأمانة"
+    },
+    "SecretarialStructureComponent": {},
+    "DepartmentsListComponent": {
+      "departments": "الإدارات",
+      "confirmDeletion": "تأكيد حذف الإدارة",
+      "deleteDepartmentWarning": "هل أنت متأكد من إزالة ادارة"
+    },
+    "AddDepartmentComponent": {
+      "ediDepartmentDetails": "تعديل بيانات الإدارة"
+    },
+    "ViewEmployeesComponent": {
+      "departmentName": "اسم الإدارة",
+      "employees": "السادة الموظفين",
+      "addEmployee": "إضافة موظف"
+    }
+  },
+  "CommitteesModule": {
+    "HisExcellencyRelatedDepartmentsListComponent": {
+      "header": "الأقسام التابعة لصاحب المعالي",
+      "editDepartment": "تعديل بيانات القسم",
+      "viewDepartment": "عرض بيانات القسم",
+      "confirmDeletion": "تأكيد حذف القسم",
+      "deleteWarning": "هل انت متأكد من حذف قسم"
+    },
+    "CommitteesListComponent": {
+      "confirmDeletion": "تأكيد حذف اللجنة",
+      "deleteCommitteeWarning": "هل أنت متأكد من إزالة لجنة"
+    },
+    "AddCommitteeComponent": {
+      "ediCommitteeDetails": "تعديل بيانات اللجنة",
+      "committeeSymbolRequired": "رمز آلية المعالجة مطلوب",
+      "committeeSequenceRequired": "يجب اختيار تسلسل أرقام المحاضر"
+    },
+    "ViewMembersComponent": {
+      "members": "السادة الأعضاء",
+      "addRelatedDepartment": "إضافة قسم تابع لصاحب المعالي"
+    }
+  },
+  "ActorsModule": {
+    "ActorsListComponent": {
+      "searchPlaceHolder": "البحث عن متفاعل",
+      "confirmDeletion": "تأكيد حذف المتفاعل",
+      "deleteActorWarning": "هل أنت متأكد من إزالة متفاعل",
+      "users": "مستخدمون",
+      "roles": "أدوار",
+      "departments": "إدارات",
+      "totalUsers": "إجمالي المستخدمين"
+    },
+    "AddActorComponent": {
+      "viewActorDetails": "عرض بيانات المتفاعلين",
+      "ediActorDetails": "تعديل بيانات المتفاعلين",
+      "searchForDepartments": "البحث عن أقسام",
+      "atLeastOneItemRequired": "يجب اختيار علي الاقل مستخدم واحد أو قسم واحد أو دور واحد"
+    }
+  },
+  "PermissionsSettingsModule": {
+    "RolesListComponent": {
+      "syncRoles": "مزامنة الأدوار",
+      "totalPermissions": "إجمالي عدد الصلاحيات",
+      "syncRolesSuccessfully": "تمت مزاملة الأدوار بنجاح",
+      "searchPlaceHolder": "البحث باسم الصلاحية"
+    },
+    "ManageRolesComponent": {
+      "saveRoles": "حفظ الصلاحيات"
+    }
+  },
+  "FilesDocumentsModule": {
+    "DocumentsListComponent": {
+      "filesAndDocuments": "الملفات والمستندات",
+      "syncDocuments": "مزامنة الملفات والمستندات",
+      "syncFilesDocsSuccessfully": "تمت مزامنة الملفات والفولدرات بنجاح",
+      "viewsStyle": "طريقة العرض",
+      "view": "مشاهدة",
+      "download": "تحميل",
+      "timeLastModified": "تاريخ آخر تعديل",
+      "subDirectoryCount": "عدد العناصر الداخلية",
+      "openFolder": "فتح الفولدر"
+    }
+  },
+  "WorkflowsModule": {
+    "WorkflowTreatmentsListComponent": {
+      "searchPlaceHolder": "البحث عن دورة حياة معاملة",
+      "confirmDeletion": "تأكيد حذف دورة حياة المعاملة",
+      "deleteWorkflowTreatmentWarning": "هل أنت متأكد من إزالة دورة حياة المعاملة",
+      "workflowEngine": "محرك دورة حياة المعاملة"
+    },
+    "WorkflowEngineComponent": {
+      "chooseStep": "اختر الخطوة",
+      "chooseStepRequired": "يجب اختيار الخطوة",
+      "chooseActor": "اختر المتفاعل",
+      "chooseActorRequired": "يجب اختيار المتفاعل",
+      "chooseAction": "اختر إجراء",
+      "chooseActionRequired": "يجب اختيار إجراء واحد علي الأقل",
+      "selectParentNodeFirst": "قم بتحديد النود الأب أولا",
+      "atleastOneMainNode": "يجب ان تكون هناك علي الأقل نود واحدة رئيسة",
+      "selectNodeFirst": "يجب اختيار نود أولا",
+      "canotAddMainNodeFromSecondary": "لا يمكن إضافة نود رئيسية من نود فرعية",
+      "allNodesActionsHaveTaken": "لقد استنفذت جميع الإجراءات لهذه النود",
+      "enterNodeDataFirst": "من فضلك أدخل بيانات النود أولا",
+      "nodeDeletedSuccessfully": "تم حذف النود بنجاح",
+      "bridgedSuccessfully": "تم عمل البريدج بنجاح",
+      "bridgedFailed": "فشل عمل البريدج",
+      "cannotDeleteAction": "لايمكن حذف هذا الإجراء لأنه مستخدم في فرع",
+      "cannotDeleteLink": "لايمكن حذف هذا اللينك لأنه يوجد لينك واحد فقط يتجه الي النود",
+      "linkDeletedSuccessfully": "تم حذف اللينك بنجاح",
+      "linkUpdateSuccess": "تم تعديل الإجراءات علي اللينك بنجاح",
+      "linkUpdateFailed": "فشل تعديل الإجراءات علي اللينك"
+    },
+    "EditDeleteLinkModalComponent": {
+      "header": "تعديل - حذف"
+    }
+  },
+  "TransactionsModule": {
+    "AdvancedSearchModalComponent": {
+      "containerId": "معرف المعاملة",
+      "studyOutcome": "مخرج دراسة",
+      "searchContent": "البحث في المحتوى",
+      "operator": "معامل البحث"
+    },
+    "TransactionsListComponent": {
+      "title": "عنوان المعاملة",
+      "open": "تحت الإجراء",
+      "scheduled": "مجدولة لاجتماع",
+      "reset": "إعادة دورة العمل",
+      "close": "مكتملة",
+      "forceClose": "مغلقة من الأدمن",
+      "searchPlaceHolder": "البحث بالعنوان أو رقم المعاملة",
+      "confirmDeletion": "تأكيد حذف المعاملة",
+      "deleteSectorWarning": "هل أنت متأكد من إزالة معاملة",
+      "viewTransactionDetails": "عرض تفاصيل المعاملة",
+      "requiredAmount": "المبلغ المطلوب",
+      "durationPeriod": "مدة الصلاحية",
+      "day": "يوم",
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "transactionSubject": "موضوع المعاملة",
+      "transactionTitle": "عنوان المعاملة",
+      "transactionTitlePlaceholder": "ادخل عنوان المعاملة",
+      "transactionInfo": "بيانات المعاملة الاساسية",
+      "transactionStatus": "حالة المعاملة"
+    },
+    "AddTransactionComponent": {
+      "accessibility": "صلاحية الاطلاع",
+      "atLeastOne": "يجب اختيار شخص واحد علي الأقل للاطلاع علي المعاملة",
+      "transactionIsRequired": "يجب اختيار معاملة",
+      "searchForFoundations": "البحث عن الجهات",
+      "searchForBenefitTypes": "البحث عن أنواع الطلبات",
+      "searchForSectors": "البحث عن القطاعات",
+      "benefitTypeRequired": "يجب اختيار نوع الطلب",
+      "referralJustifications": "مبررات إحالة الموضوع إلى اللجنة",
+      "referralJustificationsPlaceholder": "قم باختيار المبررات"
+    },
+    "TransactionDetailsComponent": {
+      "transaction": "معاملة",
+      "editAmounts": "تعديل المبالغ",
+      "importsAndExports": "الصادر والوارد",
+      "relatedTransactions": "المعاملات المتعلقة"
+    },
+    "EditAmountsModalComponent": {
+      "costsRequestedAmountRequired": "يجب ادخال المبالغ المطلوبة تكاليف",
+      "creditsRequestedAmountRequired": "يجب ادخال المبالغ المطلوبة اعتمادات",
+      "costsApprovedAmountRequired": "يجب ادخال المبالغ المعتمدة تكاليف",
+      "creditsApprovedAmountRequired": "يجب ادخال المبالغ المعتمدة اعتمادات"
+    },
+    "ExportDocumentComponent": {
+      "exportedFoundationRequired": "يجب اختيار الجهة المصدر اليها",
+      "searchForRequests": "البحث عن الوارد بالعنوان",
+      "importRequired": "يجب اختيار وارد",
+      "exportDocument": "تصدير وثيقة",
+      "editExportDocument": "تعديل بيانات الوثيقة المصدرة",
+      "exportTo": "تصدير الي",
+      "exportToRequired": "يجب اختيار لمن التصدير",
+      "chooseExportWay": "اختيار طريقة التصدير",
+      "chooseExportWayRequired": "يجب اختيار طريقة التصدير",
+      "exportedFoundations": "الجهات المصدر اليها",
+      "exportedFoundationsRequired": "يجب اختيار جهة واحدة علي الأقل",
+      "none": "غير محدد",
+      "mail": "البريد",
+      "email": "البريد الالكتروني",
+      "fax": "الفاكس",
+      "handover": "التسليم باليد",
+      "other": "اخرى",
+      "exportedNumber": "رقم الصادر",
+      "enterExportedNumber": "يجب إدخال رقم الصادر",
+      "studyOutput": "مخرج الدراسة",
+      "exportedNumberRequired": "مطلوب ادخال رقم الصادر",
+      "documentHijriDate": "تاريخ الوثيقة الورقي الهجري",
+      "documentHijriDateRequired": " مطلوب ادخال تاريخ الوثيقة الورقي الهجري",
+      "documentGregorianDate": "تاريخ الوثيقة الورقي الميلادي",
+      "documentGregorianDateRequired": "مطلوب ادخال تاريخ الوثيقة الورقي الميلادي",
+      "addressRequestingPartyLetter": "عنوان خطاب الجهة الطالبة",
+      "addressRequestingPartyLetterEn": "عنوان خطاب الجهة الطالبة بالانجليزية",
+      "requestType": "نوع الطلب",
+      "addressRequestingPartyLetterNumber": "رقم خطاب الجهة الطالبة",
+      "documentNumber": "رقم الوثيقة",
+      "paperDocumentNumber": "رقم الوثيقة الورقي",
+      "exportTransaction": "تصدير المعاملة",
+      "physicalNumber": "رقم الوثيقة الورقي",
+      "physicalNumberRequired": "رقم الوثيقة الورقي مطلوب",
+      "letter": "خطاب",
+      "note": "مذكرة",
+
+      "record": "محضر",
+      "exportedSuccessfully": "تم تصدير الوثيقة بنجاح"
+    }
+  },
+  "SharedModule": {
+    "ReUploadDocumentModalComponent": {
+      "reasonToReUpload": "سبب اعادة الرفع",
+      "document": "ملف المخرج"
+    },
+    "UploadCommitteeApprovalFileModalComponent": {
+      "document": "ملف الدراسة",
+      "group": "المجموعة",
+      "groupRequired": "يجب اختيار المجموعة "
+    },
+    "ExportModalComponent": {
+      "barcodeMustInserted": "يجب وضع الباركود أولا علي المستند"
+    },
+    "AuditingModalComponent": {
+      "noInitiateForYou": "لايوجد لديك تركين. برجاء إضافة تركين",
+      "noInitiateForUser": "لايوجد لهذا المستخدم تركين",
+      "youCanotInitiate": "لايمكن اتخاذ الإجراء لعدم وجود تركين",
+      "leaveComment": "اترك تعليقا"
+    },
+    "InitiateModalComponent": {
+      "noInitiateForYou": "لا يوجد لديك تركين. برجاء إضافة تركين",
+      "noInitiateForUser": "لا يوجد لهذا المستخدم تركين",
+      "youCanotInitiate": "لا يمكن اتخاذ الإجراء لعدم وجود تركين"
+    },
+    "ExportTemplateModalComponent": {
+      "addBarcode": "إضافة باركود",
+      "addSignatures": "إضافة توقيعات",
+      "addInitiate": "إضافة تركين",
+      "cannotExportWithoutPutSignatures": "عفوا لا يمكن تصدير المعاملة بدون وضع أماكن التوقيعات",
+      "cannotExportWithoutInitiate": "عفوا لا يمكن تصدير المعاملة بدون تركين",
+      "uploadForApp": "رفع للتطبيق"
+    },
+    "SharedMembersComponent": {
+      "goToDepartments": "الذهاب إلى الاقسام التابعة لصاحب المعالي"
+    },
+    "SignatureFormatModalComponent": {
+      "isSignatureRequireAttendance": "هل التوقيع يتطلب الحضور ؟",
+      "grabText": "قم بترتيب أسماء أعضاء اللجنة حسب أولوية التوقيع من الأعلى إلى الأسفل",
+      "chooseCommitteeSignature": "اختر توقيع اللجنة",
+      "committeeSignatureRequired": "يجب اختيار توقيع اللجنة"
+    },
+    "StatementRequestModalComponent": {
+      "chooseAtLeastOneFoundation": "يجب اختيار جهة واحدة علي الأقل"
+    },
+    "ProposedStudyDetailsComponent": {
+      "recommendationType": "نوع التوصية",
+      "creditsAmountMechanism": "آلية تدبير الاعتمادات",
+      "costsAmountMechanism": "آلية تدبير التكاليف",
+      "recommendationContent": "محتوي التوصية"
+    },
+    "StudyProjectModalComponent": {
+      "recordTypeRequired": "يجب اختيار نوع المحضر",
+      "processTypeJustRequired": "يجب اختيار مبرر آلية المعالجة",
+      "StudyDocumentKey": "مستند الدراسة",
+      "fileUpload": "رفع مستند الدراسة",
+      "createDocumentKey": "إنشاء مستند الدراسة",
+      "explainProcessTypeJust": "توضيح مبررات آلية المعالجة",
+      "explains": "المبررات",
+      "outcomeRequired": "يجب اختيار آلية المعالجة",
+      "proposedStudyOutcome": "مقترح مخرج الدراسة",
+      "chooseProposedStudyOutcome": "  قم باختيار المقترح",
+      "proposedStudyOutcomeRequired": "يجب اختيار مخرج الدراسة",
+      "amountRequired": "يجب إدخال المبلغ",
+      "recommendationTypeComment": "توضيح مبررات نوع التوصية",
+      "recommendationTypeCommentPlaceholder": "المبررات",
+      "editorIsEmpty": "عفوا محتوي الدراسة فارغ"
+    },
+    "ExportToRcModalComponent": {
+      "physicalNumber": "رقم الصادر الورقي",
+      "physicalNumberRequired": "يجب إدخال رقم الصادر الورقي"
+    },
+    "SelectProcessTypeModalComponent": {
+      "selectProcessType": "اختيار آلية المعالجة",
+      "selectProcessTypeRequired": "يجب اختيار آلية المعالجة",
+      "changeReason": "سبب التغيير"
+    },
+    "SelectBenefitTypeModalComponent": {
+      "chooseBenefitType": "اختر نوع الطلب",
+      "benefitTypeRequired": "يجب اختيار نوع الطلب"
+    },
+    "SelectRecommendationTypeModalComponent": {
+      "chooseRecommendation": " نوع التوصية",
+      "chooseRecommendationRequired": "قم باختيار نوع التوصية",
+      "recommendationRequired": "يجب اختيار نوع التوصية"
+    },
+    "AddConsultantGroupComponent": {
+      "editDetails": "تعديل بيانات مجموعة المستشارين"
+    },
+    "ConsultantsAssignmentModalComponent": {
+      "assignmentSelectConsultant": "التوزيع ( تحديد المستشار )",
+      "selectAtLeastOneConsultant": "-من فضلك-  قم باختيار مستشار واحد علي الأقل",
+      "selectMainConsulant": "-من فضلك-  قم بتحديد المستشار الرئيسي",
+      "selectGroupConsultant": "اختار محموعه المستشارين",
+      "searchGroupConsultant": "ابحث عن مجموعة مستشارين بالعنوان",
+      "selectMainConsultant": "حدد المستشار الرئيسي",
+      "selectSubConsultant": "تحديد المستشار الفرعي بالتنسيق",
+      "selectVoteConsultant": "تحديد المستشار الفرعي بالاشتراك",
+      "selectConsultant": "تحديد المستشارين للعمل علي المعاملة"
+    },
+    "RedirectRequestModalComponent": {
+      "selectFoundationToRedirect": "اختر الجهة المراد توجيه المعاملة لها",
+      "employee": "موظف",
+      "departmentsAndDivisions": "إدارات و أقسام",
+      "committees": "لجان",
+      "redirectRequest": "توجيه المعاملة",
+      "selectEmployee": "اختر الموظف المراد توجيه المعاملة اليه",
+      "employeeRequired": "يجب اختيار موظف واحد علي الأقل",
+      "selectDepartment": "اختر الإدارة أوالقسم المراد توجيه المعاملة اليها",
+      "departmentRequired": "يجب اختيار إدارة أو  قسم واحد علي الأقل",
+      "selectCommittee": "اختر اللجنة المراد توجيه المعاملة اليها",
+      "committeeRequired": "يجب اختيار لجنة واحدة علي الأقل"
+    },
+    "DelegateUserModalComponent": {
+      "chooseDelegatedTo": "اختر المفوض إليه",
+      "delegatedToRequired": "يجب اختيار المفوض إليه"
+    },
+    "ImportsExportsScrollableTableComponent": {
+      "noImportsNoExports": "لا يوجد صادر أو وارد"
+    },
+    "RelatedTransactionsScrollableTableComponent": {
+      "noRelatedTransactions": "لا توجد معاملات متعلقة"
+    },
+    "TransactionTimelineScrollableTableComponent": {
+      "noTimeLine": "لا يوجد تسلسل زمني للمعاملة",
+      "days": "الأيام",
+      "studyDocument": "مقترح الدراسة",
+      "studyDocumentPlaceholder": "اضغط لتحميل مقترح الدراسة"
+    },
+    "DropzoneComponent": {
+      "addFile": "إضافة ملف",
+      "deleteFile": "حذف الملف",
+      "dragFile": "اسحب ملف",
+      "allowedExtensions": "الامتدادات المسموح بها",
+      "megaBytes": "ميجا بايت"
+    }
+  },
+  "RequestTypesModule": {
+    "RequestTypesListComponent": {
+      "searchPlaceHolder": "البحث عن نوع الوثيقة",
+      "confirmDeletion": "تأكيد حذف نوع الوثيقة",
+      "deleteRequestTypeWarning": "هل أنت متأكد من إزالة نوع الوثيقة",
+      "requestType": "نوع الوثيقة",
+      "requestTypes": "أنواع الوثائق",
+      "schemas": "دورات حياة المعاملة",
+      "searchForSchemas": "البحث عن دورات حياة المعاملة",
+      "schemaRequired": "يجب اختيار دورة حياة معاملة"
+    },
+    "AddRequestTypeComponent": {
+      "viewRequestTypeDetails": "عرض تفاصيل نوع الوثيقة",
+      "editRequestTypeDetails": "تعديل تفاصيل نوع الوثيقة",
+      "docTypeRequired": "يجب اختيار نوع الوثيقة"
+    }
+  },
+  "ImportsExportsModule": {
+    "DeliveryReceiptFormModalComponent": {
+      "editDetails": "تعديل بيانات التسليم"
+    },
+    "AddBarcodeExportableDocumentComponent": {
+      "hint": "يمكنك إضافة باركود عن طريق الضغط علي كليك يمين ثم اختيار خيار (إضافة مكان الباركود)"
+    },
+    "ImportsExportsListComponent": {
+      "mustSelectAtLeastOneExport": "يجب اختيار صادر واحد علي الأقل",
+      "printDeliveryReceipts": "طباعة بيانات التسليم",
+      "addAttachments": "إضافة مرفقات",
+      "searchPlaceHolder": "العنوان-الرقم العام-الخاص-المعاملة-القيد-الجهة",
+      "export": "الصادر",
+      "import": "الوارد",
+      "transactionType": "نوع المعاملة",
+      "title": "الموضوع",
+      "confirmDeletion": "تأكيد حذف الوارد",
+      "confirmExportDeletion": "تأكيد حذف الصادر",
+      "deleteImportWarning": "هل أنت متأكد من إزالة الوارد",
+      "deleteExportWarning": "هل أنت متأكد من إزالة الصادر",
+      "canotEditImportedDocument": "لايمكن التعديل علي الوارد الا اذا كانت حالته تحت الإنشاء"
+    },
+    "AddImportComponent": {
+      "transaction": "المعاملة",
+      "editImport": "تعديل بيانات الوارد",
+      "requestType": "تصنيف الوثيقة",
+      "requestTypePlaceholder": "قم باختيار التصنيف ",
+      "requestTypeRequired": "يجب اختيار تصنيف الوثيقة بناء علي درجة السرية",
+      "searchForRequestTypes": "البحث عن تصنيف الوثائق",
+      "physicalHijriDate": "تاريخ الوثيقة الورقي الهجري",
+      "physicalGregorianDate": "تاريخ الوثيقة الورقي الميلادي",
+      "gregorianDatePlaceholder": "ادخل التاريخ الميلادي",
+      "hijriDatePlaceholder": "ادخل التاريخ الهجري",
+      "deliveryHijriDate": "تاريخ التوريد الفعلي الهجري",
+      "deliveryGregorianDate": "تاريخ التوريد الفعلي الميلادي",
+      "availabilityHijriDate": "تاريخ الإحالة من الديوان الهجري",
+      "availabilityGregorianDate": "تاريخ الإحالة من الديوان الميلادي",
+      "priorityRequired": "يجب اختيار الأهمية",
+      "physicalNumber": "رقم خطاب الجهة",
+      "physicalNumberPlaceholder": "أدخل رقم الخطاب ",
+      "physicalNumberRequired": "رقم خطاب الجهة مطلوب",
+      "deliveryNumber": "رقم القيد لدي الديوان ",
+      "deliveryNumberPlaceholder": "قم باختيار القطاع الداخلي",
+      "deliveryNumberRequired": "رقم القيد لدي الديوان  مطلوب",
+      "costsRequestedAmount": "المبالغ المطلوبة",
+      "creditsRequestedAmount": "المبالغ المعتمدة",
+      "createdImportSuccessfully": "تمت إضافة الوارد بنجاح",
+      "editedImportSuccessfully": "تمت تعديل بيانات الوارد بنجاح",
+      "requestingFoundation": "الجهة الطالبة",
+      "concernedFoundation": "الجهة المعنية",
+      "isAddAttachments": "هل ترغب في إضافة مرفقات؟",
+      "addAttachments": "إضافة مرفقات",
+      "saveAndAddAttachments": "حفظ ثم إضافة مرفقات"
+    },
+    "RequestDetailsComponent": {
+      "basicInfo": "معلومات المعاملة الأساسية",
+      "importData": "بيانات الوارد",
+      "cost": "الاعتمادات والتكاليف",
+      "proposal": "مقترح الدراسة",
+      "transationSuccess": "تم تولي المعاملة بنجاح",
+      "transationError": "تم إلغاء تولي المعاملة بنجاح",
+      "taketransaction": "طلب تول المعاملة",
+      "cancelTransaction": "إلغاء تول المعاملة",
+      "title": "وارد رقم",
+      "titleExport": "صادر رقم",
+      "operationOwner": "القائم علي المعاملة",
+      "operationUrl": " ربط المعاملة",
+      "settings": "اعادة ظبط",
+      "share": "مشاركة",
+      "printer": "طباعة",
+      "arrivalDate": "تاريخ الاستلام",
+      "transactionStatus": "حالة المعاملة",
+      "transactionTimeLine": "التسلسل الزمني للمعاملة",
+      "proposedStudyDetails": "مقترح الدراسة",
+      "importDetails": "تفاصيل الوارد",
+      "exportDetails": "تفاصيل الصادر",
+      "currentAction": "الإجراء الحالي",
+      "doneSuccessfully": "تم اتخاذ الإجراء بنجاح",
+      "actionFailed": "فشل اتخاذ الإجراء",
+      "noChosenCommittee": "لم يتم اختيار لجنة",
+      "chronology": "التسلسل الزمني",
+      "signatureViaTablet": "عفوا ، لايمكن التوقيع إلا من خلال تطبيق أمانة اللجنة المالية",
+      "currentStatus": " الحالة الحالية",
+      "addAttach": "اضافة مرفق",
+      "procedures": "الاجراءات",
+      "times": "التسلسل الزمني",
+      "approvals": "موافقة الاعضاء",
+      "procedureApproved": " تاكيد الاجراء",
+      "recordNumber": "رقم القيد",
+      "draft": "تم الحفظ  ",
+      "inProgress": "تم البدء",
+      "exported": "تم التصدير",
+      "deleted": "تم الحذف",
+      "archived": "تم الارشفة"
+    }
+  },
+  "LatestNewsModule": {
+    "LatestNewsListComponent": {
+      "confirmDeletion": "تأكيد حذف آخر الأخبار",
+      "deleteLatestNewsWarning": "هل أنت متأكد من إزالة آخر الأخبار"
+    },
+    "AddLatestNewsComponent": {
+      "editLatestNewsDetails": "تعديل بيانات آخر الأخبار"
+    }
+  },
+  "ManageMeetingsModule": {
+    "MeetingDetailsComponent": {
+      "scheduledRequestContainers": "المعاملات المجدولة",
+      "isDiscussed": "تمت مناقشتها ؟",
+      "didAttend": "حضر ؟",
+      "isOnVacation": "مجاز ؟",
+      "header": "تفاصيل الاجتماع",
+      "noMembersDefined": "لم يتم تحديد الأعضاء بعد",
+      "noAttendances": "لايوجد حضور",
+      "closeMeeting": "إغلاق الاجتماع",
+      "meetingClosedSuccessfully": "تم غلق الاجتماع بنجاح",
+      "close": "إغلاق",
+      "meetingIsClosed": "تم غلق الاجتماع",
+      "meetingIsConfirmed": "تم تأكيد الحضور"
+    },
+    "ManageMeetingsListComponent": {
+      "confirmDeletion": "تأكيد حذف الاجتماع",
+      "deleteSectorWarning": "هل أنت متأكد من إزالة اجتماع",
+      "searchPlaceHolder": "البحث بعنوان الاجتماع",
+      "viewMeetingDetails": "عرض تفاصيل الاجتماع"
+    },
+    "AddMeetingComponent": {
+      "meetingClassification": "نوع الاجتماع",
+      "meetingClassificationRequired": "يجب اختيار نوع الاجتماع",
+      "searchForCommittees": "البحث عن لجان",
+      "members": "الأعضاء",
+      "attendence": "الحضور",
+      "url": "رابط الاجتماع",
+      "meetingNature": "طبيعة الاجتماع",
+      "meetingTimeRequired": "يجب تحديد موعد الاجتماع",
+      "addedMemberBefore": "لقد قمت بإضافة هذا العضو من قبل",
+      "nameRequired": "يجب إدخال الاسم",
+      "emailRequired": "يجب إدخال البريد الالكتروني",
+      "addAttendence": "إضافة حاضر",
+      "nameAndEmailRequired": "يجب إدخال الاسم والبريد الالكتروني",
+      "noAttendanceInserted": "لم تقم بإضافة حضور بعد",
+      "scheduledRequestContainers": "قائمة المعاملات المجدولة",
+      "noScheduledRequestContainers": "لا توجد معاملات مجدولة",
+      "discussionPoint": "سبب الانعقاد",
+      "discussionPoints": "أسباب الانعقاد",
+      "editMeetingDetails": "تعديل بيانات الاجتماع"
+    }
+  },
+  "TimeAttendanceModule": {
+    "TimeAttendanceListComponent": {
+      "inTime": "وقت الحضور",
+      "outTime": "وقت الانصراف",
+      "normalRegular": "ساعات الدوام",
+      "normalOverTime": "الوقت الاضافي",
+      "totalWorkTime": "إجمالي ساعات الدوام",
+      "daily": "يومي",
+      "weekly": "اسبوعي",
+      "monthly": "شهري",
+      "custom": "فترة اختيارية",
+      "period": "الفترة الزمنية",
+      "noDataErrorMsg": "الرجاء التواصل مع ادارة النظام حيث أنه لا يوجد لديكم بيانات حضور وانصراف"
+    }
+  },
+  "ManageRecordsModule": {
+    "RecordsListComponent": {
+      "recordStatus": "حالة المحضر",
+      "followRecords": "تتبع المحاضر",
+      "financialCommitteeRecords": "اللجنة المالية",
+      "preparatoryCommitteeRecords": "اللجنة التحضيرية",
+      "searchPlaceHolder": "البحث في المحاضر",
+      "recordNumber": "رقم المحضر",
+      "recordDetails": "تفاصيل المحضر",
+      "signatures": "توقيعات الأعضاء",
+      "recordType": "نوع المحضر",
+      "recordTypePlaceholder": " قم باختيار نوع المحضر",
+      "isMembersVisible": "يظهر للأعضاء",
+      "isSecretRecord": "محضر سري",
+      "conservation": "تحفظ",
+      "phoneExpressed": "تم ابداء الرأي هاتفيا",
+      "noOpinion": "لم يتم ابداء الرأي حتي الآن",
+      "signed": "تم التوقيع",
+      "opinionRefrain": "امتناع",
+      "noMembersDefined": "لم يتم تحديد الأعضاء بعد"
+    },
+    "RecordDetailsComponent": {
+      "recordWorkflow": "سير عمل المحضر",
+      "recordView": "مشاهدة المحضر",
+      "record": "محضر",
+      "daysNumber": "عدد الأيام منذ رفع المحضر",
+      "recordUploadDate": "تاريخ رفع المحضر",
+      "recordAttach": "مرفق المحضر",
+      "recordDate": "تاريخ إنشاء المحضر",
+      "daysNum": "عدد الأيام منذ إنشاء المحضر",
+      "recordType": "نوع المحضر",
+      "signatures": "التوقيعات",
+      "editThroughPhone": "تعديل عبر الهاتف",
+      "confirmDeletion": "تأكيد حذف الإجراء",
+      "deleteActionWarning": "هل أنت متأكد من حذف الإجراء للمستخدم",
+      "onHoliday": "مجاز",
+      "didnotAcceptYet": "لم ترد الإفادة"
+    },
+    "TakeActionModalComponent": {
+      "expressByPhone": "الإجراء",
+      "sign": "توقيع",
+      "conservatism": "تحفظ",
+      "opinionRefrain": "امتناع عن ابداء الرأي",
+      "actionTypeRequired": "لابد من اختيار إجراء",
+      "commentRequired": "لابد من كتابة ملاحظة",
+      "chooseActionType": "اختر نوع الإجراء"
+    }
+  },
+  "ManageNotesModule": {
+    "NoteDetailsComponent": {
+      "noteHeader": "تفاصيل المذكرة",
+      "letterHeader": "تفاصيل الخطاب",
+      "title": "عنوان المذكرة",
+      "telephoneConsent": "الموافقة الهاتفية"
+    },
+    "NotesListComponent": {
+      "note": "المذكرة",
+      "letter": "الخطاب",
+      "searchPlaceHolder": "البحث برقم المذكرة",
+      "noteNumber": "رقم المذكرة",
+      "letterNumber": "رقم الخطاب",
+      "committee": "اللجنة",
+      "nonRelatedToContainer": "غير مرتبطة بمعاملة"
+    },
+    "NotesFiltersModalComponent": {
+      "header": "تصفية المذكرات",
+      "subHeader": "يمكنك تصفية المذكرات بجميع حالاتها ومواعيدها"
+    }
+  },
+  "RegularReportsModule": {
+    "RegularReportsListComponent": {
+      "reportsSyncedSuccessfully": "تمت مزامنة التقارير بنجاح",
+      "syncReports": "مزامنة التقارير",
+      "lastEditor": "آخر من قام بالتعديل",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "allReports": "كل التقارير"
+    },
+    "AddRegularReportComponent": {
+      "file": "تقرير",
+      "holder": "تصنيف",
+      "addNewFolder": "انشاء مجلد جديد",
+      "slogan": "انشاء مجلد مخصص للتقارير  بهدف تسهيل الحفظ والتنظيم والمتابعة",
+      "sloganPart": "انشاء مجلد فرعي يخص",
+      "enterFolderName": "ادخل اسم المجلد",
+      "pleaseEnterFolderName": "قم بادخل الاسم هنا",
+      "deletePopupTitle": "هل أنت متأكد من حذف هذا العنصر؟",
+      "deletePopupMessage": "هل أنت متأكد أنك تريد حذف هذه العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+      "activationPopupTitle": "هل ترغب في تفعيل هذا المجلد؟",
+      "deactivationPopupTitle": "هل ترغب في تعطيل هذا المجلد؟",
+      "activationPopupMessage": "عند التفعيل، سيكون المجلد متاحًا للاطلاع.",
+      "deactivationPopupMessage": "عند التعطيل، سيكون المجلد غير متاحًا للاطلاع.",
+      "FolderNameRequired": "يجب إدخال اسم المجلد ",
+      "committees": "اللجان",
+      "folderstatus": "حالة المجلد",
+      "holders": "التصنيفات",
+      "boardTypeRequired": "يجب اختيار النوع",
+      "holderRequired": "يجب اختيار التصنيف",
+      "thumbnail": " الغلاف",
+      "thumbnailImage": "صورة الغلاف",
+      "thumbnailImageRequired": "يجب اختيار صورة الغلاف",
+      "reportPeriod": "دورية التقارير",
+      "reportPeriodRequired": "يجب اختيار دورية التقارير",
+      "reportFile": "التقرير",
+      "mainFolder": "المجلد الرئيسي",
+      "mainFolderRequired": "يجب اختيار المجلد الرئيسي",
+      "subFolder": "المجلد الفرعي",
+      "subFolderRequired": "يجب اختيار المجلد الفرعي",
+      "pleaseSelectCommittees": "قم باختيار اللجان",
+      "pleaseSelectFolder": "قم باختيار المجلد",
+      "selectFolder": "اختر مجلد",
+      "reportFileRequired": "يجب اختيار التقرير",
+      "folderStatus": "حالة المجلد الفرعي"
+    }
+  },
+  "NotificationsModule": {
+    "NotificationsListComponent": {
+      "goToSystem": "الذهاب إلى النظام"
+    }
+  },
+  "ApplicationSettingsModule": {
+    "ApplicationSettingsComponent": {
+      "notificationPreferences": "طريقة الإشعار",
+      "applicationsNotificaions": "إشعارات التطبيق"
+    },
+    "NotificationUsersPreferencesListComponent": {
+      "searchPlaceHolder": "البحث باسم المستخدم"
+    },
+    "AppNotificationsComponent": {
+      "inquiries": "الاستفسارات",
+      "notes": "المذكرات",
+      "documents": "المستندات",
+      "letters": "الخطابات"
+    },
+    "AppVersionsListComponent": {
+      "searchPlaceHolder": "البحث باسم النسخة أو لينك الإصدار"
+    }
+  },
+  "WorkflowDesignModule": {
+    "DocumentTypesListComponent": {
+      "searchPlaceHolder": "البحث عن وثيقة",
+      "confirmDeletion": "تأكيد حذف الوثيقة",
+      "deleteDocTypeWarning": "هل أنت متأكد من إزالة وثيقة"
+    },
+    "AddDocumentTypeComponent": {
+      "editDetails": "تعديل بيانات الوثيقة"
+    }
+  },
+  "MyProfileModule": {
+    "MyProfileComponent": {
+      "myNotifications": "إشعاراتي"
+    }
+  },
+  "ConsultantsTypeList": {
+    "MainConsultant": "المستشار الرئيسي",
+    "CoordinatingSubConsultant": "المستشار الفرعي بالتنسيق",
+    "ParticipatingSubConsultant": "المستشار الفرعي بالاشتراك"
+  },
+  "statistics": {
+    "completedTransactions": "معاملات منجزه",
+    "transactionsUnderProcess": "معاملات تحت الإجراء",
+    "scheduledTransactions": "معاملات مجدولة"
+  },
+  "profile": {
+    "generalInfo": "معلومات عامة",
+    "directManager": "المدير المباشر",
+    "generalStats": "إحصائيات عامة",
+    "periodFrom": "الفترة من ",
+    "noTimeSelected": "لم يتم تحديد فلتر الفترة الزمنية",
+    "proceduresNumber": "عدد الاجراءات",
+    "numberOfLeavers": "عدد التركين",
+    "numberOfTransactions": "عدد المعاملات",
+    "attendanceTimeToday": "وقت الحضور اليوم",
+    "remainingTime": "الوقت المتبقي",
+    "totalWorkHours": "اجمالي ساعات العمل",
+    "overtimeHours": "الساعات الإضافية",
+    "showDetails": "عرض التفاصيل"
+  },
+  "unauthorized": {
+    "accessDenied": "تم رفض الوصول",
+    "youDoNotHavePermission": "ليس لديك إذن للوصول إلى هذه الصفحة.",
+    "contactAdministrator": "يرجى الاتصال بمسؤول النظام إذا كنت تعتقد أن هذا خطأ.",
+    "goBackHome": "العودة إلى الصفحة الرئيسية",
+    "ok": "حسناً"
+  }
+}

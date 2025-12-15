@@ -1,0 +1,473 @@
+<div>
+  <!--Start 2 tabs filters -->
+
+  <!--Start table-->
+  <!-- <div class="table-responsive">
+    <table mat-table [dataSource]="requestsSource" matSort multiTemplateDataRows (matSortChange)="
+          onSortColumn({ active: $event.active, direction: $event.direction })
+        " [matSortActive]="sortData.sortBy" [matSortDirection]="sortData.sortType">
+      <ng-container matColumnDef="checked">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <mat-checkbox *ngxPermissionsOnly="[PermissionsObj.CreateDeliveryReceipt]" [(ngModel)]="element.checked"
+            name="checked-{{ i }}" (change)="onSelect($event, element)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+
+          <ng-container *ngIf="element.isArchived; else NotArchievedExport">
+            <img class="row-icon tooltip-hovered-content" matTooltip="صادر مؤرشف"
+              src="assets/icons/archieved-export.png" />
+          </ng-container>
+          <ng-template #NotArchievedExport>
+            <img class="row-icon tooltip-hovered-content" matTooltip="صادر" src="assets/icons/red-envelope.png" />
+          </ng-template>
+
+          <a *ngIf="!element.isRestricted" [routerLink]="
+                      '/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'
+              " class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="autoNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.generalNumber" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.autoNumber }}
+          <a *ngIf="!element.isRestricted" [routerLink]="
+             '/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'
+              " class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="requestType.title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.type" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container>
+            <span *ngIf="element.documentType === ExportedDocumentType.Letter">
+              {{
+              "TransactionsModule.ExportDocumentComponent.letter"
+              | translate
+              }}
+            </span>
+            <span *ngIf="element.documentType === ExportedDocumentType.Note">
+              {{
+              "TransactionsModule.ExportDocumentComponent.note" | translate
+              }}
+            </span>
+            <span *ngIf="element.documentType === ExportedDocumentType.Record">
+              {{
+              "TransactionsModule.ExportDocumentComponent.record"
+              | translate
+              }}
+            </span>
+            <span *ngIf="element.documentType === ExportedDocumentType.Other">
+              {{ element.otherDocumentType?.title }}
+            </span>
+          </ng-container>
+
+          <ng-template #ExportType>
+            {{ element.requestType?.title }}
+          </ng-template>
+
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>الرقم الخاص</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.exportNumber }}
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="transactionNumber">
+        <th mat-header-cell *matHeaderCellDef>
+          رقم المعاملة
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.transactionNumber; else NoTransactionNumber">
+            {{ element.transactionNumber }}
+          </ng-container>
+
+          <ng-template #NoTransactionNumber> --</ng-template>
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="priority.title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.priority" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{
+          lang === "ar"
+          ? element.priority?.title
+          : element.priority?.titleEn
+          }}
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{
+          "ImportsExportsModule.ImportsExportsListComponent.title"
+          | translate
+          }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span [matTooltip]="element.title" class="tooltip-hovered-content">{{ element.title | summary : 55 }}</span>
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="foundation.title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.foundation" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span [matTooltip]="
+formatExportFoundations(element.foundations)
+              " class="tooltip-hovered-content">
+            {{
+            element.foundations[0]?.title
+            }}
+          </span>
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="concernedFoundation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{
+          "ImportsExportsModule.AddImportComponent.concernedFoundation"
+          | translate
+          }}
+        </th>
+        <td mat-cell *matCellDef="let element" [class.cursor-pointer]="!element.isRestricted"
+          (click)="onViewElement(element)">
+          {{ "Dummy data" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="requestingFoundation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{
+          "ImportsExportsModule.AddImportComponent.requestingFoundation"
+          | translate
+          }}
+        </th>
+        <td mat-cell *matCellDef="let element" [class.cursor-pointer]="!element.isRestricted"
+          (click)="onViewElement(element)">
+          {{ "Dummy data" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.date" | translate }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.date | date : "dd/MM/yyyy" }}
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isExportDocument">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.isExportDocument; else elseBlock">
+            <div class="export-container">
+              <img src="assets/icons/export-arrow.png" />
+              <span>
+                {{ "shared.export" | translate }}
+              </span>
+            </div>
+          </ng-container>
+          <ng-template #elseBlock>
+            <div class="import-container">
+              <img src="assets/icons/import-arrow.png" />
+              <span>
+                {{ "shared.import" | translate }}
+              </span>
+            </div>
+          </ng-template>
+          <a *ngIf="!element.isRestricted" [routerLink]="'/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'" class="mat-td-link"></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="options-container" [class.justify-content-center]="element.isRestricted">
+            <div *ngIf="!element.isRestricted; else restricted"
+              class="d-flex justify-content-center align-items-center | options-container">
+              <div *ngxPermissionsOnly="[PermissionsObj.UpdateRequest]"
+                class="d-flex align-items-center | edit-container" (click)="onEditElement(element)">
+                <span class="cursor-pointer" matTooltip="{{ 'shared.edit' | translate }}">
+                  <mat-icon class="d-flex align-items-center">
+                    edit
+                  </mat-icon>
+                </span>
+              </div>
+              <ng-container *ngIf="element?.classification?.level == ClassificationLevel.Restricted">
+                <div *ngxPermissionsOnly="[PermissionsObj.UpdateRequestContainerAccessibility]"
+                  class="d-flex align-items-center | edit-container" (click)="onOpenAccessibility(element)">
+                  <span class="cursor-pointer" matTooltip="{{
+                          'TransactionsModule.AddTransactionComponent.accessibility'
+                            | translate
+                        }}">
+                    <mat-icon>accessibility</mat-icon>
+                  </span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!element.isExportDocument">
+                <div *ngxPermissionsOnly="[PermissionsObj.UpdateRequest]"
+                  class="d-flex align-items-center | edit-container" (click)="onUploadAttachments(element)">
+                  <span class="cursor-pointer" matTooltip="{{
+                        'ImportsExportsModule.ImportsExportsListComponent.addAttachments'
+                          | translate
+                      }}">
+                    <mat-icon class="d-flex align-items-center">cloud_upload</mat-icon>
+                  </span>
+                </div>
+              </ng-container>
+
+              <div *ngxPermissionsOnly="[PermissionsObj.DeleteRequest]"
+                class="d-flex align-items-center | delete-container">
+                <img src="assets/icons/remove.svg" alt="Delete transaction ?" class="cursor-pointer"
+                  (click)="onDeleteElement(element)" matTooltip="{{ 'shared.delete' | translate }}" />
+              </div>
+            </div>
+            <ng-template #restricted>
+              <img src="assets/icons/restricted-icon.png" class="restricted-img" matTooltip="{{
+                    (element.classification
+                      ? element.classification.title + 'و'
+                      : '') + 'مقيد'
+                  }}" />
+            </ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+    
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="return_displayed_columns().length">
+          <div class="example-element-detail" [@detailExpand]="
+                check_view_element(element) ? 'expanded' : 'collapsed'
+              ">
+            <div class="example-element-description">
+              <ul class="detail-element">
+                <li>
+                  <p>
+                    {{
+                    "ImportsExportsModule.ImportsExportsListComponent.transactionType"
+                    | translate
+                    }}
+                  </p>
+                  <span>
+                    {{
+                    lang === "ar"
+                    ? element.requestType?.title
+                    : element.requestType?.titleEn
+                    }}</span>
+                </li>
+
+                <li>
+                  <p>{{ "shared.priority" | translate }}</p>
+                  <span>{{
+                    lang === "ar"
+                    ? element.priority?.title
+                    : element.priority?.titleEn
+                    }}</span>
+                </li>
+                <li>
+                  <p>
+                    {{
+                    "ImportsExportsModule.ImportsExportsListComponent.title"
+                    | translate
+                    }}
+                  </p>
+                  <span>
+                    {{ element.title | summary }}
+                  </span>
+                </li>
+                <li>
+                  <p>{{ "shared.incomingFoundation" | translate }}</p>
+                  <span>
+                    {{
+                    lang === "ar"
+                    ? element.foundation?.title
+                    : element.foundation?.titleEn
+                    }}</span>
+                </li>
+
+            
+
+                <li>
+                  <p>{{ "shared.date" | translate }}</p>
+                  <span>
+                    {{ element.deliveryDate | date : "dd/MM/yyyy" }}
+                  </span>
+                </li>
+
+                <li>
+                  <p>{{ "shared.advisor" | translate }}</p>
+                  <span>
+                    {{ element.mainConsultant?.name }}
+                  </span>
+                </li>
+
+                <li>
+                  <p>{{ "shared.status" | translate }}</p>
+                  <span>
+                    <ng-container *ngIf="element.status === RequestStatus.Initiated">
+                      {{ "shared.initiated" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.InProgress">
+                      {{ "shared.inProgress" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Scheduled">
+                      {{
+                      "TransactionsModule.TransactionsListComponent.scheduled"
+                      | translate
+                      }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Held">
+                      {{ "shared.held" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Exported">
+                      {{ "shared.exported" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Archived">
+                      {{ "shared.archived" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Rejected">
+                      {{ "shared.rejected" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Done">
+                      {{ "shared.isDone" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Closed">
+                      {{ "shared.closed" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.ForceClosed">
+                      {{ "shared.forceClosed" | translate }}
+                    </ng-container>
+
+                    <ng-container *ngIf="element.status === RequestStatus.Reset">
+                      {{ "shared.reset" | translate }}
+                    </ng-container>
+                  </span>
+                </li>
+
+                <li>
+                  <p></p>
+                  <span style="flex-grow: 1">
+                    <ng-container *ngIf="element.isExportDocument; else elseBlock">
+                      <div class="export-container">
+                        <img src="assets/icons/export-arrow.png" />
+                        <span>
+                          {{ "shared.export" | translate }}
+                        </span>
+                      </div>
+                    </ng-container>
+                    <ng-template #elseBlock>
+                      <div class="import-container">
+                        <img src="assets/icons/import-arrow.png" />
+                        <span>
+                          {{ "shared.import" | translate }}
+                        </span>
+                      </div>
+                    </ng-template>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+      <tr mat-row *matRowDef="let element; columns: return_displayed_columns()" class="example-element-row"
+        [ngClass]="{ hide: isLoading }"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+      <ng-container matColumnDef="noData">
+        <td mat-footer-cell *matFooterCellDef colspan="16">
+          <p class="text-center">{{ "shared.noRowsFound" | translate }}</p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">
+        <td mat-footer-cell *matFooterCellDef colspan="16">
+          <p class="text-center">{{ "shared.loading" | translate }} ...</p>
+        </td>
+      </ng-container>
+
+      <tr mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: !isLoading }"></tr>
+      <tr mat-footer-row *matFooterRowDef="['noData']"
+        [ngClass]="{ hide: isLoading || requestsSource.data.length != 0 }"></tr>
+    </table>
+  </div> -->
+  <app-table-list
+    [className]="'primary-table'"
+    [columnsConfig]="columnsConfig"
+    [columns]="columns"
+    [isError]="isError"
+    [isLoading]="isLoading"
+    [rows]="requestsSource"
+    (filterChanged)="onFiltersChange($event)"
+    [hasPaginator]="true"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [totalElements]="totalElements"
+    (checkedData)="onSelect($event)"
+    (pageChange)="onPaginationChange($event)"
+    [resetTableFilters]="resetTableFiltersFlag"
+    class="new-primary-table"
+  >
+  </app-table-list>
+
+  <!-- <div class="d-flex justify-content-end">
+    <app-table-paginator [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      (changePage)="onPaginationChange($event)"></app-table-paginator>
+  </div> -->
+</div>

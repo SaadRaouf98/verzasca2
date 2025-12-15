@@ -1,0 +1,64 @@
+<app-select></app-select>
+<app-input   formControlName="email"
+             label="Email"
+             placeholder="you@example.com"></app-input>
+<app-tabs [activeTabIndex]="2" [headerClass]="'w-25'">
+  <app-tab title="Overview"     [headerClass]="'text-lg font-bold fw-600'">
+    <h2>Overview</h2>
+    <p>This is the overview content.</p>
+  </app-tab>
+  <app-tab title="Details">
+    <h2>Details</h2>
+    <p>Here are more details...</p>
+  </app-tab>
+  <app-tab title="Settings">
+    <h2>Settings</h2>
+    <p>Configure your options here.</p>
+  </app-tab>
+</app-tabs>
+
+<form [formGroup]="form" class="page-filter">
+  <div class="page-filter__controls">
+
+
+    <ng-container *ngFor="let f of filters">
+      <div class="page-filter__field">
+        <label [for]="f.id">{{ f.label }}</label>
+
+        <!-- text -->
+        <input *ngIf="f.type === 'text'"
+               [id]="f.id"
+               [formControlName]="f.id"
+               [placeholder]="f.placeholder || ''"
+               type="text"/>
+
+        <!-- select, single or multiple -->
+        <select *ngIf="f.type === 'select'"
+                [id]="f.id"
+                [formControlName]="f.id"
+                [multiple]="f.multiple">
+          <option *ngIf="!f.multiple" value="">— All —</option>
+          <option *ngFor="let o of f.options" [value]="o.value">{{ o.label }}</option>
+        </select>
+        <!-- single date -->
+        <input *ngIf="f.type === 'date'"
+               [id]="f.id"
+               [formControlName]="f.id"
+               type="date"/>
+
+        <!-- calendar range picker -->
+        <app-range-gregorian-calendar
+          *ngIf="f.type === 'daterange'"
+          [fromDateStr]="form.get(f.id)?.get('from')?.value"
+          [toDateStr]="form.get(f.id)?.get('to')?.value"
+          (dateChange)="onDateRangeChange(f.id, $event)"
+        >
+        </app-range-gregorian-calendar>
+      </div>
+    </ng-container>
+  </div>
+  <div class="page-filter__buttons">
+    <button type="button" class="page-filter__btn" (click)="onApply()">Apply</button>
+    <button type="button" class="page-filter__btn" (click)="onReset()">Reset</button>
+  </div>
+</form>

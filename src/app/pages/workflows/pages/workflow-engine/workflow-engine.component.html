@@ -1,0 +1,731 @@
+<h1>
+  {{ pageTitle }}
+</h1>
+
+<mat-drawer-container class="example-container">
+  <!--Start node details-->
+  <mat-drawer
+    [class.d-none]="!selectedNode"
+    mode="side"
+    opened
+    class="sidebar drawer"
+    position="start"
+  >
+    <form id="tools-form" autocomplete="off" [formGroup]="form">
+      <!-- start title -->
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('title')?.errors && isTouched('title'),
+            'mat-form-field-div-success':
+              !form.get('title')?.errors && isTouched('title')
+          }"
+        >
+          <div class="label-container">
+            <label for="title">
+              {{ "shared.titleAr" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              name="title"
+              formControlName="title"
+              placeholder="{{ 'shared.titleAr' | translate }}"
+              #title
+              [autofocus]="true"
+              id="title"
+            />
+            <div class="flag-div">
+              <img
+                src="assets/icons/success-input.svg"
+                *ngIf="!form.get('title')?.errors && isTouched('title')"
+              />
+              <img
+                src="assets/icons/error-input.svg"
+                *ngIf="form.get('title')?.errors && isTouched('title')"
+              />
+            </div>
+          </mat-form-field>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                  form.get('title')?.errors?.['required'] &&
+                  isTouched('title')
+              "
+          >
+            {{ "shared.titleRequired" | translate }}
+          </span>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                form.get('title')?.errors?.['pattern'] &&
+                isTouched('title')
+              "
+          >
+            {{ "shared.arabicCharsRequired" | translate }}
+          </span>
+        </div>
+      </div>
+
+      <!-- end title-->
+
+      <!-- start title en-->
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('titleEn')?.errors && isTouched('titleEn'),
+            'mat-form-field-div-success':
+              !form.get('titleEn')?.errors && isTouched('titleEn')
+          }"
+        >
+          <div class="label-container">
+            <label for="titleEn">
+              {{ "shared.titleEn" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              name="titleEn"
+              formControlName="titleEn"
+              placeholder="{{ 'shared.titleEn' | translate }}"
+              id="titleEn"
+            />
+            <div class="flag-div">
+              <img
+                src="assets/icons/success-input.svg"
+                *ngIf="!form.get('titleEn')?.errors && isTouched('titleEn')"
+              />
+              <img
+                src="assets/icons/error-input.svg"
+                *ngIf="form.get('titleEn')?.errors && isTouched('titleEn')"
+              />
+            </div>
+          </mat-form-field>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                    form.get('titleEn')?.errors?.['required'] &&
+                    isTouched('titleEn')
+                  "
+          >
+            {{ "shared.titleRequired" | translate }}
+          </span>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                    form.get('titleEn')?.errors?.['pattern'] &&
+                    isTouched('titleEn')
+                  "
+          >
+            {{ "shared.englishCharsRequired" | translate }}
+          </span>
+        </div>
+      </div>
+      <!-- end title en-->
+
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+          'mat-form-field-div-error':
+          form.get('step')?.errors && isTouched('step'),
+          'mat-form-field-div-success':
+          !form.get('step')?.errors && isTouched('step'),
+        }"
+        >
+          <div class="label-container">
+            <label for="step">
+              {{
+                "WorkflowsModule.WorkflowEngineComponent.chooseStep" | translate
+              }}
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="step"
+            placeholder=" {{
+              'WorkflowsModule.WorkflowEngineComponent.chooseStep' | translate
+            }}"
+            [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+            [compareWith]="compareFn"
+            (change)="onSelectedStepChanged()"
+            class="form-control"
+            id="step"
+          >
+            <ng-option
+              *ngFor="let step of (stepsList$ | async)?.data"
+              [value]="step"
+            >
+              {{ lang === "ar" ? step.title : step.titleEn }}
+            </ng-option>
+          </ng-select>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+              form.get('step')?.errors?.['required'] &&
+              isTouched('step')
+            "
+          >
+            {{
+              "WorkflowsModule.WorkflowEngineComponent.chooseStepRequired"
+                | translate
+            }}
+          </span>
+        </div>
+      </div>
+
+      <!-- start committeeId-->
+      <div
+        *ngIf="
+          form.get('step')?.value?.id === environment.committeeApprovalStepId
+        "
+        class="row"
+      >
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('committee')?.errors && isTouched('committee'),
+            'mat-form-field-div-success':
+              !form.get('committee')?.errors && isTouched('committee')
+          }"
+        >
+          <div class="label-container">
+            <label for="committee">
+              {{ "shared.processType" | translate }}
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="committee"
+            placeholder=" {{ 'shared.processType' | translate }}"
+            [bindLabel]="'committeeSymbol'"
+            [compareWith]="compareFn"
+            class="form-control"
+            id="committee"
+          >
+            <ng-option
+              *ngFor="let committee of organizationUnitsList"
+              [value]="committee"
+            >
+              {{ committee.committeeSymbol }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <!-- end committeeId -->
+
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+          'mat-form-field-div-error':
+          form.get('actor')?.errors && isTouched('actor'),
+          'mat-form-field-div-success':
+          !form.get('actor')?.errors && isTouched('actor'),
+        }"
+        >
+          <div class="label-container">
+            <label for="actor">
+              {{
+                "WorkflowsModule.WorkflowEngineComponent.chooseActor"
+                  | translate
+              }}
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="actor"
+            placeholder=" {{
+              'WorkflowsModule.WorkflowEngineComponent.chooseActor' | translate
+            }}"
+            [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+            [compareWith]="compareFn"
+            class="form-control"
+            id="actor"
+          >
+            <ng-option
+              *ngFor="let actor of (actorsList$ | async)?.data"
+              [value]="actor"
+            >
+              {{ lang === "ar" ? actor.title : actor.titleEn }}
+            </ng-option>
+          </ng-select>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+          form.get('actor')?.errors?.['required'] &&
+          isTouched('actor')
+        "
+          >
+            {{
+              "WorkflowsModule.WorkflowEngineComponent.chooseActorRequired"
+                | translate
+            }}
+          </span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+          'mat-form-field-div-error':
+          form.get('actions')?.errors && isTouched('actions'),
+          'mat-form-field-div-success':
+          !form.get('actions')?.errors && isTouched('actions'),
+        }"
+        >
+          <div class="label-container">
+            <label for="actions">
+              {{
+                "WorkflowsModule.WorkflowEngineComponent.chooseAction"
+                  | translate
+              }}
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="actions"
+            placeholder=" {{
+              'WorkflowsModule.WorkflowEngineComponent.chooseAction' | translate
+            }}"
+            class="form-control"
+            [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+            [compareWith]="compareFn"
+            [multiple]="true"
+            (remove)="onClearAction($event)"
+            id="actions"
+          >
+            <ng-option
+              *ngFor="let action of (actionsList$ | async)?.data"
+              [value]="action"
+            >
+              {{ lang === "ar" ? action.title : action.titleEn }}
+            </ng-option>
+          </ng-select>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+            form.get('actions')?.errors?.['required'] &&
+            isTouched('actions')
+          "
+          >
+            {{
+              "WorkflowsModule.WorkflowEngineComponent.chooseActionRequired"
+                | translate
+            }}
+          </span>
+        </div>
+      </div>
+
+      <!-- start descriptionAr -->
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('description')?.errors && isTouched('description'),
+            'mat-form-field-div-success':
+              !form.get('description')?.errors && isTouched('description')
+          }"
+        >
+          <div class="label-container">
+            <label for="descriptionAr">
+              {{ "shared.descriptionAr" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <textarea
+              matInput
+              formControlName="description"
+              name="descriptionAr"
+              placeholder="{{ 'shared.descriptionAr' | translate }}"
+              rows="4"
+              id="descriptionAr"
+            ></textarea>
+          </mat-form-field>
+          <span
+            class="span-error-message"
+            *ngIf="
+                    form.get('description')?.errors?.['pattern'] &&
+                    isTouched('description')
+                  "
+          >
+            {{ "shared.arabicCharsRequired" | translate }}
+          </span>
+        </div>
+      </div>
+      <!-- end descriptionAr -->
+
+      <!-- start description en-->
+      <div class="row">
+        <div
+          class="col-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('descriptionEn')?.errors && isTouched('descriptionEn'),
+            'mat-form-field-div-success':
+              !form.get('descriptionEn')?.errors && isTouched('descriptionEn')
+          }"
+        >
+          <div class="label-container">
+            <label for="descriptionEn">
+              {{ "shared.descriptionEn" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <textarea
+              matInput
+              formControlName="descriptionEn"
+              name="descriptionEn"
+              placeholder="{{ 'shared.descriptionEn' | translate }}"
+              rows="4"
+              id="descriptionEn"
+            ></textarea>
+          </mat-form-field>
+          <span
+            class="span-error-message"
+            *ngIf="
+                      form.get('descriptionEn')?.errors?.['pattern'] &&
+                      isTouched('descriptionEn')
+                    "
+          >
+            {{ "shared.englishCharsRequired" | translate }}
+          </span>
+        </div>
+      </div>
+      <!-- end description en-->
+
+      <!--start button actions -->
+      <div class="row">
+        <div class="col-12 | btn-container">
+          <button
+            class="cancel-btn"
+            (click)="onCancel()"
+            mat-flat-button
+            color="primary"
+            data-appearance="outline"
+          >
+            {{ "shared.cancel" | translate }}
+          </button>
+          <button
+            class="save-btn"
+            (click)="onSubmit()"
+            mat-flat-button
+            [disabled]="!form.valid || disableSubmitBtn"
+          >
+            {{ "shared.save" | translate }}
+          </button>
+        </div>
+      </div>
+      <!--End button actions-->
+    </form>
+  </mat-drawer>
+  <!--End node details-->
+
+  <mat-sidenav-content>
+    <div class="page">
+      <ngx-graph
+        [links]="links"
+        [nodes]="nodes"
+        [clusters]="clusters"
+        [layout]="layout"
+        [curve]="curve"
+        [draggingEnabled]="draggingEnabled"
+        [panningEnabled]="panningEnabled"
+        [enableZoom]="zoomEnabled"
+        [zoomSpeed]="zoomSpeed"
+        [minZoomLevel]="minZoomLevel"
+        [maxZoomLevel]="maxZoomLevel"
+        [panOnZoom]="panOnZoom"
+        [autoZoom]="autoZoom"
+        [autoCenter]="autoCenter"
+        [update$]="update$"
+        [center$]="center$"
+        [zoomToFit$]="zoomToFit$"
+      >
+        <ng-template #defsTemplate>
+          <svg:marker
+            id="arrow"
+            viewBox="0 -5 10 10"
+            refX="8"
+            refY="0"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto"
+          >
+            <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+          </svg:marker>
+        </ng-template>
+
+        <!--         <ng-template #clusterTemplate let-cluster>
+          <svg:g class="node cluster">
+            <svg:rect
+              rx="5"
+              ry="5"
+              [attr.width]="cluster.dimension.width"
+              [attr.height]="cluster.dimension.height"
+              [attr.fill]="cluster.data.color"
+            />
+          </svg:g>
+        </ng-template> -->
+
+        <ng-template #nodeTemplate let-node>
+          <svg:g>
+            <symbol viewBox="0 0 24 24" id="DeleteNodeIcon">
+              <path
+                d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+              ></path>
+            </symbol>
+          </svg:g>
+
+          <svg:g
+            class="node"
+            (click)="onSelect(node)"
+            ngx-tooltip
+            [matTooltip]="getToolTipText(node)"
+            matTooltipPosition="below"
+          >
+            <svg:rect
+              rx="10"
+              [class.selected]="node.id === selectedNode?.id"
+              [attr.width]="node.dimension.width"
+              [attr.height]="80"
+              [attr.fill]="node.data.color"
+            />
+            <!--[attr.height]="node.dimension.height"-->
+            <use
+              href="#DeleteNodeIcon"
+              x="-5"
+              y="-10"
+              width="20"
+              height="20"
+              fill="red"
+              class="delete-icon"
+              (click)="onDeleteNode(node)"
+              *ngIf="node.isLeaf"
+            />
+
+            <svg:text
+              alignment-baseline="central"
+              [attr.x]="10"
+              [attr.y]="node.dimension.height / 2"
+            >
+              {{ lang === "ar" ? node.data?.title : node.data?.titleEn }}
+            </svg:text>
+          </svg:g>
+        </ng-template>
+
+        <ng-template #linkTemplate let-link>
+          <svg:g class="edge" (click)="onLinkClicked(link)">
+            <svg:path
+              class="line"
+              stroke-width="2"
+              [attr.stroke]="link.color"
+              marker-end="url(#arrow)"
+            ></svg:path>
+
+            <svg:text class="edge-label" text-anchor="middle">
+              <textPath
+                class="text-path"
+                [attr.href]="'#' + link.id"
+                [style.dominant-baseline]="link.dominantBaseline"
+                startOffset="40%"
+              >
+                {{ link.label }}
+              </textPath>
+            </svg:text>
+          </svg:g>
+        </ng-template>
+      </ngx-graph>
+    </div>
+  </mat-sidenav-content>
+
+  <!--Start configuration and tools-->
+  <mat-drawer
+    mode="side"
+    opened
+    class="drawer"
+    position="end"
+    style="width: 350px"
+  >
+    <div class="tools-container">
+      <h2>Tools</h2>
+      <div class="row">
+        <button
+          (click)="onAddNode()"
+          mat-stroked-button
+          color="primary"
+          class="button"
+        >
+          Add node
+        </button>
+
+        <mat-slide-toggle
+          name="bridgeTwoNodesCtrl"
+          [formControl]="bridgeTwoNodesCtrl"
+          class="d-flex justify-content-center"
+        >
+          Bridge 2 nodes
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <h3>Configuration</h3>
+    <form class="settings">
+      <mat-form-field appearance="outline">
+        <mat-select
+          placeholder="Layout"
+          [ngModel]="layout"
+          (ngModelChange)="setLayout($event)"
+          name="layout"
+        >
+          <mat-option *ngFor="let l of layouts" [value]="l.value">
+            {{ l.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-select
+          placeholder="Line Curve Interpolation"
+          [ngModel]="curveType"
+          (ngModelChange)="setInterpolationType($event)"
+          name="curve"
+        >
+          <mat-option
+            *ngFor="let curveType of interpolationTypes"
+            [value]="curveType"
+          >
+            {{ curveType }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--      <mat-checkbox [(ngModel)]="draggingEnabled" name="draggingEnabled"
+        >Enable Dragging</mat-checkbox
+      >
+      <mat-checkbox [(ngModel)]="panningEnabled" name="panningEnabled"
+        >Enable Panning</mat-checkbox
+      >
+      <mat-checkbox [(ngModel)]="zoomEnabled" name="zoonEnabled"
+        >Enable Zoom</mat-checkbox
+      >
+
+      <div class="row | mbs">
+        <div class="label-container">
+          <label for="zoom-speed"> Zoom speed </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="zoomSpeed"
+            name="zoomSpeed"
+            placeholder="Zoom speed"
+            step="0.1"
+            id="zoom-speed"
+            name="zoom-speed"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row | mbs">
+        <div class="label-container">
+          <label for="min-zoom-level"> Min Zoom Level </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="minZoomLevel"
+            name="minZoomLevel"
+            placeholder="Min Zoom Level"
+            min="0"
+            [max]="maxZoomLevel"
+            step="0.1"
+            id="min-zoom-level"
+            name="min-zoom-level"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row | mbs">
+        <div class="label-container">
+          <label for="max-zoom-level"> Max Zoom Level </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="maxZoomLevel"
+            name="maxZoomLevel"
+            placeholder="Max Zoom Level"
+            [min]="minZoomLevel"
+            step="0.1"
+            id="max-zoom-level"
+            name="max-zoom-level"
+          />
+        </mat-form-field>
+      </div> -->
+      <!-- 
+      <mat-checkbox [(ngModel)]="panOnZoom" name="panOnZoom"
+        >Pan while zooming</mat-checkbox
+      >
+
+      <mat-checkbox [(ngModel)]="autoZoom" name="autoZoom"
+        >Auto Zoom
+      </mat-checkbox>
+
+      <mat-checkbox [(ngModel)]="autoCenter" name="autoCenter"
+        >Auto Center
+      </mat-checkbox> -->
+    </form>
+    <div class="row">
+      <div class="col-12 | btn-container">
+        <!-- 
+    <button
+      mat-stroked-button
+      color="primary"
+      class="button"
+      (click)="update$.next(true)"
+    >
+      Update
+    </button> -->
+        <button
+          mat-stroked-button
+          color="primary"
+          class="button"
+          (click)="center$.next(true)"
+        >
+          Center
+        </button>
+      </div>
+      <div class="col-12 | btn-container">
+        <button
+          mat-stroked-button
+          color="primary"
+          class="button padding-btn"
+          (click)="zoomToFit$.next({})"
+        >
+          Zoom to fit
+        </button>
+      </div>
+    </div>
+  </mat-drawer>
+  <!--End configuration and tools-->
+</mat-drawer-container>

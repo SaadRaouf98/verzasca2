@@ -1,0 +1,403 @@
+// Shared styles for details, request-details, transaction-details, and exportable-document-details components
+// This file consolidates common styles used across multiple detail view pages
+
+@import './variables.scss';
+@import '../design-system/_colors.scss';
+
+// =============== Common Base Styles ===============
+a {
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+mat-icon {
+  margin: auto !important;
+}
+
+:host {
+  padding: 0;
+}
+
+// =============== Scrollbar Styling ===============
+::ng-deep {
+  ::-webkit-scrollbar-thumb:horizontal {
+    background: #9a9a9a;
+  }
+  ::-webkit-scrollbar {
+    background-color: #e0e0e0;
+  }
+}
+
+// =============== Layout Utilities ===============
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.gray-700 {
+  color: $gray-700;
+}
+
+// =============== Borders ===============
+.right-white-border {
+  border-right: 1px solid #fff;
+}
+
+.left-gray-border {
+  border-left: 1px solid #e6e8ed;
+}
+
+.left-white-border {
+  border-left: 1px solid #fff;
+}
+
+.gold-line {
+  opacity: 0.5;
+  color: $secondary-300;
+  margin: 0.75rem 0;
+  height: 0.0625rem;
+}
+
+// =============== Colors & Typography ===============
+.title-color {
+  color: #249db7;
+}
+
+.grey-color {
+  color: #4b5563;
+}
+
+// =============== Background Colors ===============
+.bg-green {
+  border: 1px solid #40b674;
+  background-color: #eef8f2;
+}
+
+.bg-3DB5B5 {
+  background-color: #3db5b5;
+  &:hover {
+    background-color: rgba(61, 181, 181, 0.96);
+  }
+}
+
+// =============== Headers ===============
+.component-header {
+  max-width: 100%;
+}
+
+.transactionSubHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+// =============== Approvals Section ===============
+.approvals-section {
+  padding: 1em;
+  background-color: #fff;
+  border-radius: 14px;
+  max-height: 805px;
+  overflow-y: auto;
+
+  h2 {
+    font-size: 1.1rem !important;
+    margin-bottom: 1em;
+  }
+}
+
+.single-approval-card {
+  margin-bottom: 0.5em;
+  padding: 1em;
+  border-radius: 11px;
+  font-size: 14px;
+
+  @media (min-width: 1332px) {
+    & {
+      margin-bottom: 1em;
+      font-size: 1rem;
+    }
+  }
+}
+
+.bg-sign {
+  background-color: #e9f7ef;
+}
+
+.bg-conservatism {
+  background-color: #fff4e6;
+}
+
+.bg-opinion-refrain {
+  background-color: #fce7e5;
+}
+
+.bg-no-action {
+  background-color: #f0f2f5;
+}
+
+.member-name {
+  color: #111827;
+}
+
+.action-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+
+  @media (min-width: 1332px) {
+    & {
+      margin-top: 1em;
+    }
+  }
+
+  @media (max-width: 1332px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5em;
+  }
+
+  .comment-container,
+  .edit-through-phone-container {
+    background: #fff;
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    border-radius: 5px;
+    padding: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.phone-actions-container {
+  display: flex;
+  gap: 10px;
+}
+
+.member-date {
+  color: #949292;
+  margin-bottom: 0;
+}
+
+// =============== Buttons & Actions ===============
+.take-transaction {
+  background-color: #20545f;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  padding-block: 18px;
+  width: 100%;
+  margin-bottom: 24px;
+  &:hover {
+    background-color: rgba(32, 84, 95, 0.79);
+  }
+}
+
+.print-template-btn.mat-mdc-raised-button:not(:disabled) {
+  background-color: #c0f5d5;
+}
+
+// =============== Notifications ===============
+.success-notification {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #4caf50;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  color: #000000;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding-block: 18px;
+  margin-bottom: 24px;
+
+  &__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  &__text {
+    white-space: nowrap;
+  }
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #f2e4d0;
+  border: 2px solid #ff9501;
+  border-radius: 12px;
+  padding: 10px 16px;
+  direction: rtl;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 18px;
+
+  .text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .hourglass {
+    color: #f79500;
+    font-size: 18px;
+  }
+}
+
+// =============== Info Section ===============
+.info {
+  padding: 1.25rem 1.5rem;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  background: $secondary-50;
+}
+
+// =============== Containers & Cards ===============
+.watch-file-container {
+  gap: 5px;
+  width: 113px;
+  height: 34px;
+  background: #f2f4f5;
+  padding: 6px;
+  border-radius: 18px;
+  border: 1px solid #f2f4f5;
+  cursor: pointer;
+  pointer-events: all !important;
+}
+
+.attach-container {
+  border-radius: 0.75rem;
+  border: 1px solid $gray-100;
+  background: $gray-50;
+  padding: 0.75rem;
+  width: 100%;
+  margin: auto;
+}
+
+.attachments-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+// =============== Tab Styling ===============
+::ng-deep mat-tab-header,
+::ng-deep .mat-mdc-tab-list {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+}
+
+::ng-deep .mat-mdc-tab-body-content {
+  overflow: hidden !important;
+}
+
+// Base tab label & mdc-tab styles
+::ng-deep mat-tab-header .mat-mdc-tab-labels {
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 4px rgba(79, 58, 197, 0.2);
+  padding: 0.375rem;
+}
+
+::ng-deep mat-tab-header .mdc-tab:not(.mdc-tab--active) {
+  border: none !important;
+}
+
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:focus .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
+  color: #fff;
+}
+
+// =============== Accordion & Procedures ===============
+.procedureContainer {
+  max-height: 20rem;
+  overflow: auto;
+}
+
+mat-accordion mat-expansion-panel:first-child {
+  margin-top: 0 !important;
+}
+
+.scroll-body ::ng-deep .mat-expansion-panel-body {
+  max-height: 44rem;
+  overflow: hidden;
+}
+
+// =============== Typography ===============
+aside {
+  .label {
+    text-align: center;
+  }
+}
+
+// =============== Virtual Scroll Example ===============
+.cdk-virtual-scroll-data-source-example {
+  .example-viewport {
+    height: 200px;
+    width: 200px;
+    border: 1px solid black;
+  }
+
+  .example-viewport .cdk-virtual-scroll-content-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .example-item {
+    width: 50px;
+    height: 100%;
+    writing-mode: vertical-lr;
+  }
+}
+
+// =============== Utility Classes ===============
+.full-width {
+  width: 100%;
+}
+
+.custom-file-name {
+  gap: 3px;
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  margin: 0;
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 3px;
+  width: 200px;
+}

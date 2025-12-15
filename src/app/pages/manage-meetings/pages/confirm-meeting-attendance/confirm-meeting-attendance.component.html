@@ -1,0 +1,633 @@
+<div class="row justify-content-between align-items-center component-header">
+  <div class="col-12 col-lg-6 d-flex align-items-center | heading">
+    <a routerLink="/manage-meetings">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+
+    <h2 class="component-header_title">
+      {{ "ManageMeetingsModule.MeetingDetailsComponent.header" | translate }}
+    </h2>
+  </div>
+
+  <div
+    class="col-12 col-lg-6 d-flex align-items-center justify-content-lg-end"
+    id="main-btns-container"
+  >
+    <button
+      mat-raised-button
+      (click)="onCloseMeeting()"
+      [disabled]="disableSubmitBtn"
+      class="save-btn"
+    >
+      تأكيد الإغلاق
+    </button>
+
+    <div class="buttons-card">
+      <span
+        *ngxPermissionsOnly="[PermissionsObj.UpdateMeeting]"
+        class="item"
+        [routerLink]="'../' + meetingDetails?.id + '/edit'"
+        matTooltip="{{ 'shared.edit' | translate }}"
+      >
+        <img src="assets/icons/edit_square.png" />
+      </span>
+
+      <span
+        *ngxPermissionsOnly="[PermissionsObj.DeleteMeeting]"
+        class="item"
+        (click)="onDeleteElement()"
+        matTooltip="{{ 'shared.delete' | translate }}"
+      >
+        <img src="assets/icons/delete-square.png" />
+      </span>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <div class="row">
+              <div class="col-12">
+                <div class="transactionSubHeader">
+                  <p class="label">
+                    {{ "shared.title" | translate }}
+                  </p>
+
+                  <p class="fw-400 | title-color">
+                    {{ meetingDetails?.title }}
+                  </p>
+                </div>
+              </div>
+              <hr class="divider" />
+              <div class="col-6 left-gray-border">
+                <p class="label">
+                  {{ "shared.meetingTime" | translate }}
+                </p>
+                <p class="fw-400 | info-data ltr">
+                  {{
+                    meetingDetails?.meetingDateTime
+                      | date : "dd/MM/yyyy hh:mm a"
+                  }}
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="label">
+                  {{ "shared.meetingDurationInMinutes" | translate }}
+                </p>
+
+                <p class="fw-400 | info-data">
+                  {{ meetingDetails?.durationInMinutes }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <p class="label">
+                {{
+                  "ManageMeetingsModule.AddMeetingComponent.meetingClassification"
+                    | translate
+                }}
+              </p>
+
+              <p class="info-data">
+                {{
+                  meetingDetails?.meetingType === MeetingType.Committee
+                    ? "لجنة"
+                    : "داخلي"
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <p class="label">
+                {{ "shared.committee" | translate }}
+              </p>
+
+              <p class="info-data">
+                {{ meetingDetails?.committee?.title || "-" }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <p class="label">
+              {{ "shared.description" | translate }}
+            </p>
+
+            <p class="info-data">
+              {{ meetingDetails?.description || "-" }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!--Start Attendances -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <h2 class="mb-4">
+                {{
+                  "ManageMeetingsModule.AddMeetingComponent.attendence"
+                    | translate
+                }}
+              </h2>
+
+              <table
+                *ngIf="
+                  meetingDetails?.attendances?.length;
+                  else noAttendancesBlock
+                "
+                class="attendances-table"
+              >
+                <thead class="mb-3">
+                  <th>{{ "shared.name" | translate }}</th>
+                  <th>{{ "shared.email" | translate }}</th>
+                  <th class="text-center">
+                    {{ "shared.foundation" | translate }}
+                  </th>
+                </thead>
+
+                <tbody>
+                  <tr
+                    *ngFor="let attendant of meetingDetails?.attendances"
+                    class="mb-2"
+                  >
+                    <td>{{ attendant.name }}</td>
+                    <td>{{ attendant.email }}</td>
+                    <td class="text-center">
+                      {{ attendant.foundation || "" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <ng-template #noAttendancesBlock>
+                <p class="no-rows-warning-msg">
+                  {{
+                    "ManageMeetingsModule.MeetingDetailsComponent.noAttendances"
+                      | translate
+                  }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Attendances -->
+
+      <!--Start Scheduled request containers -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <h3 class="mb-3">
+                {{
+                  "ManageMeetingsModule.MeetingDetailsComponent.scheduledRequestContainers"
+                    | translate
+                }}
+              </h3>
+
+              <table
+                *ngIf="
+                  meetingDetails?.scheduledRequestContainers?.length;
+                  else noScheduledRequestContainersBlock
+                "
+                class="request-containers-table"
+              >
+                <thead class="mb-3">
+                  <th>{{ "shared.title" | translate }}</th>
+
+                  <th class="checked-column">
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.isDiscussed"
+                        | translate
+                    }}
+                  </th>
+                </thead>
+
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let requestContainer of meetingDetails?.scheduledRequestContainers;
+                      let i = index
+                    "
+                    class="mb-2"
+                  >
+                    <td>{{ requestContainer.title }}</td>
+
+                    <td class="checked-column">
+                      <mat-checkbox
+                        [(ngModel)]="requestContainer.isDiscussed"
+                        name="checked-{{ i }}"
+                      >
+                      </mat-checkbox>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <ng-template #noScheduledRequestContainersBlock>
+                <p class="no-rows-warning-msg">
+                  {{
+                    "ManageMeetingsModule.AddMeetingComponent.noScheduledRequestContainers"
+                      | translate
+                  }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Scheduled request containers -->
+
+      <!--Start request containers -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <h3 class="mb-3">المعاملات</h3>
+
+              <table
+                *ngIf="
+                  meetingDetails?.requestContainers?.length;
+                  else noRequestContainersBlock
+                "
+                class="request-containers-table"
+              >
+                <thead class="mb-3">
+                  <th>{{ "shared.title" | translate }}</th>
+
+                  <th class="checked-column">
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.isDiscussed"
+                        | translate
+                    }}
+                  </th>
+                </thead>
+
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let requestContainer of meetingDetails?.requestContainers;
+                      let i = index
+                    "
+                    class="mb-2"
+                  >
+                    <td>{{ requestContainer.title }}</td>
+
+                    <td class="checked-column">
+                      <mat-checkbox
+                        [(ngModel)]="requestContainer.isDiscussed"
+                        name="checked-{{ i }}"
+                      >
+                      </mat-checkbox>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <ng-template #noRequestContainersBlock>
+                <p class="no-rows-warning-msg">لا توجد معاملات</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End request containers -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <h3 class="mb-3">
+              {{
+                "ManageMeetingsModule.AddMeetingComponent.discussionPoints"
+                  | translate
+              }}
+            </h3>
+
+            <ng-container
+              *ngIf="
+                meetingDetails?.discussionPoints?.length;
+                else noDiscussionPointsBlock
+              "
+            >
+              <p
+                *ngFor="let discussionPoint of meetingDetails?.discussionPoints"
+                class="info-data mb-2 discussion-point"
+              >
+                {{ discussionPoint }}
+              </p>
+            </ng-container>
+
+            <ng-template #noDiscussionPointsBlock>
+              <p class="no-rows-warning-msg">لم يتم ذكر أسباب</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- START SIDE -->
+    <aside class="col-lg-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="data-card bg-light-blue">
+            <div class="row">
+              <div class="col-6">
+                <p class="label">
+                  {{
+                    "ManageMeetingsModule.AddMeetingComponent.meetingNature"
+                      | translate
+                  }}
+                </p>
+                <p class="info-data">
+                  {{
+                    (meetingDetails?.isVirtual
+                      ? "shared.remotely"
+                      : "shared.inPerson"
+                    ) | translate
+                  }}
+                </p>
+              </div>
+
+              <div
+                *ngIf="
+                  meetingDetails?.status === MeetingStatus.Closed ||
+                  meetingDetails?.status === MeetingStatus.Confirmed
+                "
+                class="col-6 right-white-border"
+              >
+                <p class="label">
+                  {{ "shared.status" | translate }}
+                </p>
+
+                <p class="info-data">
+                  <ng-container
+                    *ngIf="meetingDetails?.status === MeetingStatus.Closed"
+                  >
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.meetingIsClosed"
+                        | translate
+                    }}
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="meetingDetails?.status === MeetingStatus.Confirmed"
+                  >
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.meetingIsConfirmed"
+                        | translate
+                    }}
+                  </ng-container>
+                </p>
+              </div>
+
+              <hr class="divider" />
+
+              <div class="col-12">
+                <div class="col-12">
+                  <p class="label">
+                    {{
+                      "ManageMeetingsModule.AddMeetingComponent.url" | translate
+                    }}
+                  </p>
+
+                  <div
+                    *ngIf="meetingDetails?.url; else NoUrlBlock"
+                    class="mb-3 | url-card"
+                  >
+                    <p class="info-data">
+                      {{ meetingDetails?.url }}
+                    </p>
+
+                    <span class="cursor-pointer">
+                      <img
+                        src="assets/icons/copy.png"
+                        (click)="onCopyMeetingUrl()"
+                      />
+                    </span>
+                  </div>
+
+                  <ng-template #NoUrlBlock>
+                    <div class="mb-3">
+                      <p class="no-data">لا يوجد</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="col-12">
+                  <p class="label mb-3">
+                    {{ "shared.password" | translate }}
+                  </p>
+
+                  <div
+                    *ngIf="meetingDetails?.password; else NoPasswordBlock"
+                    class="mb-3 | password-card"
+                  >
+                    <p class="info-data">
+                      <ng-container *ngIf="passwordField.type === 'text'">
+                        {{ meetingDetails?.password }}
+                      </ng-container>
+
+                      <ng-container *ngIf="passwordField.type === 'password'">
+                        ●●●●
+                      </ng-container>
+                    </p>
+
+                    <span class="cursor-pointer">
+                      <img
+                        [src]="passwordField.iconSrc"
+                        class="password-eye"
+                        (click)="onTogglePassword()"
+                        alt="Toggle password visibility."
+                      />
+                    </span>
+                  </div>
+                  <ng-template #NoPasswordBlock>
+                    <div class="mb-3">
+                      <p class="no-data">لا يوجد</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Start Committee Members -->
+
+        <div class="col-12">
+          <div class="data-card bg-white">
+            <div class="col-12">
+              <h3 class="mb-3">أعضاء اللجنة</h3>
+
+              <table
+                *ngIf="
+                  meetingDetails?.committeeMembers?.length;
+                  else noCommitteeMembersBlock
+                "
+                class="members-table"
+              >
+                <thead class="mb-3">
+                  <th>{{ "shared.name" | translate }}</th>
+
+                  <th class="checked-column">
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.didAttend"
+                        | translate
+                    }}
+                  </th>
+
+                  <th class="checked-column">
+                    {{
+                      "ManageMeetingsModule.MeetingDetailsComponent.isOnVacation"
+                        | translate
+                    }}
+                  </th>
+                </thead>
+
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let member of meetingDetails?.committeeMembers;
+                      let i = index
+                    "
+                    class="mb-2"
+                  >
+                    <td>{{ member.name }}</td>
+
+                    <td class="checked-column">
+                      <mat-checkbox
+                        [(ngModel)]="member.isAttended"
+                        name="checked-{{ i }}"
+                        (change)="
+                          onMemberPresenceChange($event, member, 'isOnVacation')
+                        "
+                      >
+                      </mat-checkbox>
+                    </td>
+
+                    <td class="checked-column">
+                      <mat-checkbox
+                        [(ngModel)]="member.isOnVacation"
+                        name="checked-{{ i }}"
+                        (change)="
+                          onMemberPresenceChange($event, member, 'isAttended')
+                        "
+                      >
+                      </mat-checkbox>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <ng-template #noCommitteeMembersBlock>
+                <p class="no-rows-warning-msg">
+                  {{
+                    "ManageMeetingsModule.MeetingDetailsComponent.noMembersDefined"
+                      | translate
+                  }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End Committee Members -->
+
+      <!--Start موظفي الأمانة -->
+
+      <div class="col-12">
+        <div class="data-card bg-white">
+          <div class="col-12">
+            <h3 class="mb-3">موظفو الأمانة</h3>
+
+            <table
+              *ngIf="meetingDetails?.members?.length; else noMembersBlock"
+              class="members-table"
+            >
+              <thead class="mb-3">
+                <th>{{ "shared.name" | translate }}</th>
+
+                <th class="checked-column">
+                  {{
+                    "ManageMeetingsModule.MeetingDetailsComponent.didAttend"
+                      | translate
+                  }}
+                </th>
+
+                <th class="checked-column">
+                  {{
+                    "ManageMeetingsModule.MeetingDetailsComponent.isOnVacation"
+                      | translate
+                  }}
+                </th>
+              </thead>
+
+              <tbody>
+                <tr
+                  *ngFor="let member of meetingDetails?.members; let i = index"
+                  class="mb-2"
+                >
+                  <td>{{ member.name }}</td>
+
+                  <td class="checked-column">
+                    <mat-checkbox
+                      [(ngModel)]="member.isAttended"
+                      name="checked-{{ i }}"
+                      (change)="
+                        onMemberPresenceChange($event, member, 'isOnVacation')
+                      "
+                    >
+                    </mat-checkbox>
+                  </td>
+
+                  <td class="checked-column">
+                    <mat-checkbox
+                      [(ngModel)]="member.isOnVacation"
+                      name="checked-{{ i }}"
+                      (change)="
+                        onMemberPresenceChange($event, member, 'isAttended')
+                      "
+                    >
+                    </mat-checkbox>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <ng-template #noMembersBlock>
+              <p class="no-rows-warning-msg">لا يوجد حضور من موظفي الأمانة</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <!--End موظفي الأمانة -->
+    </aside>
+    <!-- END SIDE -->
+  </div>
+</section>

@@ -1,0 +1,141 @@
+.header {
+  padding: 1em;
+
+  h2 {
+    font-size: 1rem !important;
+    color: #101828;
+    margin-bottom: 0;
+
+    @media only screen and (min-width: 1333px) {
+      & {
+        font-size: 1.3rem !important;
+      }
+    }
+  }
+}
+
+.arrow-container {
+  align-self: flex-start;
+  background-color: #f0f2f5;
+  padding: 1em;
+  border-radius: 7px;
+  cursor: pointer;
+
+  @media only screen and (max-width: 1333px) {
+    & {
+      padding: 0.7em;
+    }
+  }
+
+  img {
+    width: 8px;
+    height: 12px;
+    object-fit: contain;
+  }
+}
+
+::ng-deep app-events-timeline-modal mat-slide-toggle .mdc-form-field {
+  display: flex;
+  gap: 1em;
+}
+
+.week-month-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 14px;
+
+  @media (min-width: 1332px) {
+    & {
+      gap: 1em;
+    }
+  }
+}
+
+div[mat-dialog-contents] {
+  padding: 0 1rem;
+  min-height: 450px;
+  gap: 6px;
+
+  @media (min-width: 1332px) {
+    & {
+      padding: 1rem;
+    }
+  }
+
+  .events-section {
+    max-height: 600px;
+    width: 92%;
+
+    @media (min-width: 992px) {
+      & {
+        width: 100%;
+      }
+    }
+
+    .events-parent {
+      width: 100%;
+      height: 100%;
+      overflow-x: auto;
+      margin-bottom: 1em;
+      gap: 8px;
+
+      .event-column {
+        gap: 1em;
+        flex: 0 0 250px;
+        margin-bottom: 1em;
+
+        .day-header {
+          background-color: #ebf5f5;
+          padding: 0.5em;
+          border-radius: 10px;
+
+          @media (min-width: 1332px) {
+            & {
+              padding: 1em;
+            }
+          }
+
+          .day-number {
+            font-size: 1.2rem;
+            color: #545961;
+          }
+        }
+
+        .bg-active {
+          background-color: #3db5b5 !important;
+          color: #fff !important;
+
+          .day-number {
+            color: #fff !important;
+          }
+        }
+
+        .calendar-event-item {
+          gap: 1em;
+          background-color: #f9fafa;
+          border-radius: 10px;
+          padding: 0.4em;
+          box-shadow: 7px 5px 5px #dae3e3;
+
+          .hour-container {
+            display: flex;
+            gap: 5px;
+            padding: 0 7px;
+            color: #b1b3b7;
+          }
+
+          .event-title {
+            padding: 0 10px;
+            color: #111827;
+          }
+
+          .clock-icon {
+            width: 20px;
+            height: 24px;
+          }
+        }
+      }
+    }
+  }
+}

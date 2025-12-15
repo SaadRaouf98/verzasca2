@@ -1,0 +1,12 @@
+<div class="timeline-container">
+  <button class="arrow-btn" (click)="scrollLeft()">&lt;</button>
+  <div class="timeline-scroll" #timeline>
+    <div class="timeline-step" *ngFor="let step of steps">
+      <div class="step-icon" [ngClass]="step.status"></div>
+      <div class="step-label">{{ step.label }}</div>
+      <div class="step-date">{{ step.date }}</div>
+      <div class="step-value" *ngIf="step.value">{{ step.value }}</div>
+    </div>
+  </div>
+  <button class="arrow-btn" (click)="scrollRight()">&gt;</button>
+</div>

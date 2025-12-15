@@ -1,0 +1,229 @@
+<div class="row">
+  <div class="col-12 col-lg-5 mb-3 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="navigateToTablePage()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">{{ 'shared.reports' | translate }}</span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ reportID ? ('shared.editReport' | translate) : ('shared.addReport' | translate) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2 *ngIf="reportPath && reportPath.length > 0">
+    <img src="assets/icons/report_main_folder.svg" class="report_main_folder folder" />
+    <span>{{ reportPath.join(' < ') }}</span>
+  </h2>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3" *ngIf="breadcrumbItems && breadcrumbItems.length > 0">
+        <div class="d-flex align-items-center">
+          <svg width="1.15rem" height="1.15rem" class="ms-2">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#folder-breadcrumb'"></use>
+          </svg>
+          <ng-container *ngFor="let item of breadcrumbItems; let isLast = last; let index = index">
+            <span class="body-bold">{{ item }}</span>
+            <svg *ngIf="!isLast" width="1.5rem" height="1.5rem" class="">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-breadcrumb'"></use>
+            </svg>
+          </ng-container>
+        </div>
+      </div>
+      <!-- Title -->
+      <div class="col-12 col-md-6 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.title' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="title"
+          [placeholder]="'shared.title'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+
+        <div
+          *ngIf="form.get('title')?.errors?.['required'] && isTouched('title')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'shared.titleRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End Title -->
+
+      <!-- Start Report Period -->
+      <div class="col-12 col-md-6 mb-3">
+        <p class="body mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.reportPeriod' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="periodType"
+          [options]="reportPeriodOptions"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'RegularReportsModule.AddRegularReportComponent.reportPeriod'"
+          [multiple]="false"
+          [searchable]="false"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('periodType')?.errors?.['required'] && isTouched('periodType')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'RegularReportsModule.AddRegularReportComponent.reportPeriodRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End Report Period -->
+      <div class="col-12 mb-3  mt-3">
+        <p class="body-bold mb-3">
+          {{ 'RegularReportsModule.AddRegularReportComponent.folderStatus' | translate }}
+        </p>
+      
+ <mat-slide-toggle  name="isActive" formControlName="isActive" class="custom-slide-toggle">
+          <ng-container *ngIf="form.get('isActive')?.value; then Yes; else No"></ng-container>
+
+          <ng-template #Yes>
+            {{ 'RegularReportsModule.RegularReportsListComponent.active' | translate }}
+          </ng-template>
+          <ng-template #No>
+            {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
+          </ng-template>
+        </mat-slide-toggle>
+     
+       
+      </div>
+
+      <div class="col-12 mb-3 mt-3">
+        <p class="body-bold">{{ 'shared.addAttachments' | translate }}</p>
+      </div>
+      <div class="col-12 col-md-6 mb-3">
+        <p class="body mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.thumbnailImage' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <!-- [initialFiles]="existingExportFiles" -->
+        <app-upload-attachment
+          #uploadAttachmentThumbnail
+          [multiple]="false"
+          [showBtn]="false"
+          [split]="false"
+          [initialFiles]="thumbnailpathValues"
+          [customFileTypes]="['.png', '.jpg', '.PNG', '.JPEG']"
+          (fileUploaded)="onFileDropped($event, true)"
+          (fileRemoved)="onAttachmentRemoved($event, false)"
+          [showViewOption]="true"
+          (viewAttachment)="onViewAttachment($event, true)"
+        ></app-upload-attachment>
+
+        <div
+          *ngIf="form.errors?.['thumbnailImageRequired'] && isTouched('thumbnailImage')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{
+              'RegularReportsModule.AddRegularReportComponent.thumbnailImageRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3">
+        <p class="body mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.reportFile' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-upload-attachment
+          #uploadAttachment
+          [customFileTypes]="['.pdf']"
+          [multiple]="true"
+          [showBtn]="false"
+          [split]="false"
+          [initialFiles]="values"
+          (fileUploaded)="onFileDropped($event, false)"
+          (fileRemoved)="onAttachmentRemoved($event, true)"
+          [showViewOption]="true"
+          (viewAttachment)="onViewAttachment($event, false)"
+        ></app-upload-attachment>
+
+        <div
+          *ngIf="form.errors?.['reportFileRequired'] && isTouched('reportFile')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'RegularReportsModule.AddRegularReportComponent.reportFileRequired' | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!-- start thumbnailImage-->
+      <!-- <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div">
+
+        <app-dropzone [fileSize]="10000" fileDescriptor="Thumbnail image."
+          [fileExtensions]="['.png', '.jpg', '.PNG', '.JPEG']" [multiple]="false" [noTitle]="true"
+          [existedFileUrl]="report?.thumbnailPath?
+          environment.apiUrl + '/api/v1/regularreports/thumbnail?path=' + report?.thumbnailPath + '&access_token=' + authService.getToken(): ''" (fileId)="onSetThumbnailImage($event)"
+          [touched]="isThumbnailImageDropZoneTouched" [regularExpression]="regularExpression"></app-dropzone>
+        <span class="span-error-message" *ngIf="
+                  form.errors?.['thumbnailImageRequired'] && isTouched('thumbnailImage')
+          ">
+          {{
+          "RegularReportsModule.AddRegularReportComponent.thumbnailImageRequired"
+          | translate
+          }}
+        </span>
+      </div> -->
+      <!-- end thumbnailImage-->
+
+      <!-- start reportFile-->
+      <!-- <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div">
+
+        <app-dropzone [fileSize]="100000" fileDescriptor="Report file." [fileExtensions]="['.pdf']" [multiple]="false"
+          [noTitle]="true" [existedFileUrl]="report?.file?.name" (fileId)="onSetReportFile($event)"
+          [touched]="isReportFileDropZoneTouched" [regularExpression]="regularExpression"></app-dropzone>
+
+        <span class="span-error-message" *ngIf="
+                form.errors?.['reportFileRequired'] &&
+                isTouched('reportFile')
+          ">
+          {{
+          "RegularReportsModule.AddRegularReportComponent.reportFileRequired"
+          | translate
+          }}
+        </span>
+      </div> -->
+      <!-- end reportFile-->
+    </div>
+  </form>
+</div>
+
+<!--start button actions -->
+<div class="d-flex justify-content-end mt-3">
+  <button
+    class="button button-primary button-lg mx-3"
+    type="button"
+    (click)="onSubmit()"
+    [disabled]="!form.valid || disableSubmitBtn"
+  >
+    <!-- [disabled]="!form.valid || disableSubmitBtn" -->
+    {{ 'shared.saveReport' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" type="button" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>
+
+<!--End button actions-->

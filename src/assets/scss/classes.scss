@@ -1,0 +1,105 @@
+
+// ──────────────── Background Utilities ────────────────
+.bg-greyscale-surface-subtle   { background-color: $color-greyscale-surface-subtle; }
+.bg-greyscale-surface-default  { background-color: $color-greyscale-surface-default; }
+.bg-greyscale-surface-disabled { background-color: $color-greyscale-surface-disabled; }
+
+.bg-greyscale-border-default   { background-color: $color-greyscale-border-default; }
+.bg-greyscale-border-disabled  { background-color: $color-greyscale-border-disabled; }
+.bg-greyscale-border-darker    { background-color: $color-greyscale-border-darker; }
+
+.bg-greyscale-text-title       { background-color: $color-greyscale-text-title; }
+.bg-greyscale-text-body        { background-color: $color-greyscale-text-body; }
+.bg-greyscale-text-subtitle    { background-color: $color-greyscale-text-subtitle; }
+.bg-greyscale-text-caption     { background-color: $color-greyscale-text-caption; }
+.bg-greyscale-text-negative    { background-color: $color-greyscale-text-negative; }
+.bg-greyscale-text-disabled    { background-color: $color-greyscale-text-disabled; }
+
+.bg-primary-surface-subtle     { background-color: $color-primary-surface-subtle; }
+.bg-primary-surface-lighter    { background-color: $color-primary-surface-lighter; }
+.bg-primary-surface-default    { background-color: $color-primary-surface-default; }
+.bg-primary-surface-darker     { background-color: $color-primary-surface-darker; }
+
+.bg-primary-border-subtle      { background-color: $color-primary-border-subtle; }
+.bg-primary-border-lighter     { background-color: $color-primary-border-lighter; }
+.bg-primary-border-default     { background-color: $color-primary-border-default; }
+.bg-primary-border-darker      { background-color: $color-primary-border-darker; }
+
+.bg-primary-text-label         { background-color: $color-primary-text-label; }
+
+.bg-error-surface-subtle       { background-color: $color-error-surface-subtle; }
+.bg-error-surface-lighter      { background-color: $color-error-surface-lighter; }
+.bg-error-surface-default      { background-color: $color-error-surface-default; }
+.bg-error-surface-darker       { background-color: $color-error-surface-darker; }
+
+.bg-error-border-subtle        { background-color: $color-error-border-subtle; }
+.bg-error-border-lighter       { background-color: $color-error-border-lighter; }
+.bg-error-border-default       { background-color: $color-error-border-default; }
+.bg-error-border-darker        { background-color: $color-error-border-darker; }
+
+.bg-error-text-label           { background-color: $color-error-text-label; }
+
+.bg-warning-surface-subtle     { background-color: $color-warning-surface-subtle; }
+.bg-warning-surface-lighter    { background-color: $color-warning-surface-lighter; }
+.bg-warning-surface-default    { background-color: $color-warning-surface-default; }
+.bg-warning-surface-darker     { background-color: $color-warning-surface-darker; }
+
+.bg-warning-border-subtle      { background-color: $color-warning-border-subtle; }
+.bg-warning-border-lighter     { background-color: $color-warning-border-lighter; }
+.bg-warning-border-default     { background-color: $color-warning-border-default; }
+.bg-warning-border-darker      { background-color: $color-warning-border-darker; }
+
+.bg-warning-text-label         { background-color: $color-warning-text-label; }
+
+.bg-success-surface-subtle     { background-color: $color-success-surface-subtle; }
+.bg-success-surface-lighter    { background-color: $color-success-surface-lighter; }
+.bg-success-surface-default    { background-color: $color-success-surface-default; }
+.bg-success-surface-darker     { background-color: $color-success-surface-darker; }
+
+.bg-success-border-subtle      { background-color: $color-success-border-subtle; }
+.bg-success-border-lighter     { background-color: $color-success-border-lighter; }
+.bg-success-border-default     { background-color: $color-success-border-default; }
+.bg-success-border-darker      { background-color: $color-success-border-darker; }
+
+.bg-success-text-label         { background-color: $color-success-text-label; }
+
+// ──────────────── Border-Color Utilities ────────────────
+.border-greyscale-border-default   { border-color: $color-greyscale-border-default; }
+.border-greyscale-border-disabled  { border-color: $color-greyscale-border-disabled; }
+.border-greyscale-border-darker    { border-color: $color-greyscale-border-darker; }
+
+.border-primary-border-subtle      { border-color: $color-primary-border-subtle; }
+.border-primary-border-lighter     { border-color: $color-primary-border-lighter; }
+.border-primary-border-default     { border-color: $color-primary-border-default; }
+.border-primary-border-darker      { border-color: $color-primary-border-darker; }
+
+.border-error-border-subtle        { border-color: $color-error-border-subtle; }
+.border-error-border-lighter       { border-color: $color-error-border-lighter; }
+.border-error-border-default       { border-color: $color-error-border-default; }
+.border-error-border-darker        { border-color: $color-error-border-darker; }
+
+.border-warning-border-subtle      { border-color: $color-warning-border-subtle; }
+.border-warning-border-lighter     { border-color: $color-warning-border-lighter; }
+.border-warning-border-default     { border-color: $color-warning-border-default; }
+.border-warning-border-darker      { border-color: $color-warning-border-darker; }
+
+.border-success-border-subtle      { border-color: $color-success-border-subtle; }
+.border-success-border-lighter     { border-color: $color-success-border-lighter; }
+.border-success-border-default     { border-color: $color-success-border-default; }
+.border-success-border-darker      { border-color: $color-success-border-darker; }
+
+// ──────────────── Text-Color Utilities ────────────────
+.text-greyscale-text-title       { color: $color-greyscale-text-title; }
+.text-greyscale-text-body        { color: $color-greyscale-text-body; }
+.text-greyscale-text-subtitle    { color: $color-greyscale-text-subtitle; }
+.text-greyscale-text-caption     { color: $color-greyscale-text-caption; }
+.text-greyscale-text-negative    { color: $color-greyscale-text-negative; }
+.text-greyscale-text-disabled    { color: $color-greyscale-text-disabled; }
+
+.text-primary-text-label         { color: $color-primary-text-label; }
+
+.text-error-text-label           { color: $color-error-text-label; }
+
+.text-warning-text-label         { color: $color-warning-text-label; }
+
+.text-success-text-label         { color: $color-success-text-label; }

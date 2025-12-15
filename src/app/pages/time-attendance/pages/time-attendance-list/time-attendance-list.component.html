@@ -1,0 +1,482 @@
+<section>
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a routerLink="../">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{ "shared.timeAttendance" | translate }}
+      </h1>
+    </div>
+  </div>
+
+  <div *ngIf="userHasFingerPrint; else elseBlock">
+    <div class="row justify-content-between">
+      <!--start filters-->
+      <div class="col-9 align-self-end">
+        <form autocomplete="off" [formGroup]="form">
+          <div class="row">
+            <div class="col-9 row">
+              <div class="col-lg-6 mb">
+                <mat-form-field appearance="outline">
+                  <mat-select
+                    formControlName="timeFilterSelect"
+                    placeholder="{{
+                      'TimeAttendanceModule.TimeAttendanceListComponent.period'
+                        | translate
+                    }}"
+                    name="time-filter"
+                    id="time-filter"
+                  >
+                    <mat-option [value]="TimeFilterType.Daily">
+                      {{
+                        "TimeAttendanceModule.TimeAttendanceListComponent.daily"
+                          | translate
+                      }}
+                      ({{
+                        (day | date : "dd-MM-yyyy") +
+                          " ~ " +
+                          (day | date : "dd-MM-yyyy")
+                      }})
+                    </mat-option>
+
+                    <mat-option [value]="TimeFilterType.Weekly">
+                      {{
+                        "TimeAttendanceModule.TimeAttendanceListComponent.weekly"
+                          | translate
+                      }}
+                      (
+                      {{
+                        (firstWeekDay | date : "dd-MM-yyyy") +
+                          " ~ " +
+                          (lastWeekDay | date : "dd-MM-yyyy")
+                      }}
+                      )
+                    </mat-option>
+
+                    <mat-option [value]="TimeFilterType.Monthly">
+                      {{
+                        "TimeAttendanceModule.TimeAttendanceListComponent.monthly"
+                          | translate
+                      }}
+                      (
+                      {{
+                        (firstMonthDay | date : "dd-MM-yyyy") +
+                          " ~ " +
+                          (lastMonthDay | date : "dd-MM-yyyy")
+                      }}
+                      )
+                    </mat-option>
+
+                    <mat-option [value]="TimeFilterType.Custom">
+                      {{
+                        "TimeAttendanceModule.TimeAttendanceListComponent.custom"
+                          | translate
+                      }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div
+                *ngIf="
+                  form?.get('timeFilterSelect')?.value === TimeFilterType.Custom
+                "
+                class="col-lg-6 row"
+              >
+                <mat-form-field class="col-6 | height-fit-content">
+                  <mat-label>Start Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="startDatePicker"
+                    formControlName="startDate"
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="startDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="col-6 | height-fit-content">
+                  <mat-label>End Date</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="endDatePicker"
+                    formControlName="endDate"
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="endDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--end filters-->
+
+      <div *ngIf="timeRemaining" class="col-3 row m-0">
+        <div class="col-12 col-md-6 col-lg-12 row w-100 p-0 m-0">
+          <div class="data-card bg-white">
+            <div class="row">
+              <div class="col-12 text-center remaining-time-container">
+                <p class="label remaining-time-label">الوقت المتبقي</p>
+
+                <p class="title-color remaining-time-value">
+                  {{ timeRemaining }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-9">
+        <!--Start table-->
+        <div class="table-responsive">
+          <table
+            mat-table
+            [dataSource]="timeAttendanceSource"
+            multiTemplateDataRows
+          >
+            <ng-container matColumnDef="dayOfWeek">
+              <th mat-header-cell *matHeaderCellDef>اليوم</th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (click)="view_hide_element(element)"
+              >
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Saturday">
+                  السبت
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Sunday">
+                  الأحد
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Monday">
+                  الاثنين
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Tuesday">
+                  الثلاثاء
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Wednesday">
+                  الأربعاء
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Thursday">
+                  الخميس
+                </ng-container>
+                <ng-container *ngIf="element.dayOfWeek === DayOfWeek.Friday">
+                  الجمعة
+                </ng-container>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateTime">
+              <th mat-header-cell *matHeaderCellDef>
+                {{ "shared.date" | translate }}
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (click)="view_hide_element(element)"
+              >
+                {{ element.dateTime }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="inTime">
+              <th mat-header-cell *matHeaderCellDef>
+                {{
+                  "TimeAttendanceModule.TimeAttendanceListComponent.inTime"
+                    | translate
+                }}
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (click)="view_hide_element(element)"
+              >
+                {{ element.inTime }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="outTime">
+              <th mat-header-cell *matHeaderCellDef>
+                {{
+                  "TimeAttendanceModule.TimeAttendanceListComponent.outTime"
+                    | translate
+                }}
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (click)="view_hide_element(element)"
+              >
+                {{ element.outTime }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="normalRegular">
+              <th mat-header-cell *matHeaderCellDef>
+                {{
+                  "TimeAttendanceModule.TimeAttendanceListComponent.normalRegular"
+                    | translate
+                }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.normalRegular }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="normalOverTime">
+              <th mat-header-cell *matHeaderCellDef>
+                {{
+                  "TimeAttendanceModule.TimeAttendanceListComponent.normalOverTime"
+                    | translate
+                }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.normalOverTime }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalWorkTime">
+              <th mat-header-cell *matHeaderCellDef>
+                {{
+                  "TimeAttendanceModule.TimeAttendanceListComponent.totalWorkTime"
+                    | translate
+                }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.totalWorkTime }}
+              </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [attr.colspan]="return_displayed_columns().length"
+              >
+                <div
+                  class="example-element-detail"
+                  [@detailExpand]="
+                    check_view_element(element) ? 'expanded' : 'collapsed'
+                  "
+                >
+                  <div class="example-element-description">
+                    <ul class="detail-element">
+                      <li>
+                        <p>
+                          {{
+                            "TimeAttendanceModule.TimeAttendanceListComponent.normalRegular"
+                              | translate
+                          }}
+                        </p>
+                        <span>{{ element.normalRegular }}</span>
+                      </li>
+                      <li>
+                        <p>
+                          {{
+                            "TimeAttendanceModule.TimeAttendanceListComponent.normalOverTime"
+                              | translate
+                          }}
+                        </p>
+                        <span>{{ element.normalOverTime }}</span>
+                      </li>
+
+                      <li>
+                        <p>
+                          {{
+                            "TimeAttendanceModule.TimeAttendanceListComponent.totalWorkTime"
+                              | translate
+                          }}
+                        </p>
+                        <span>
+                          {{ element.totalWorkTime }}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="return_displayed_columns()"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let element; columns: return_displayed_columns()"
+              class="example-element-row"
+              [ngClass]="{ hide: isLoadingTable }"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+            ></tr>
+
+            <ng-container matColumnDef="noData">
+              <td
+                mat-footer-cell
+                *matFooterCellDef
+                [attr.colspan]="return_displayed_columns().length"
+              >
+                <p class="text-center">
+                  {{ "shared.noRowsFound" | translate }}
+                </p>
+              </td>
+            </ng-container>
+
+            <!--start loading -->
+            <ng-container matColumnDef="loading">
+              <td
+                mat-footer-cell
+                *matFooterCellDef
+                [attr.colspan]="return_displayed_columns().length"
+              >
+                <p class="text-center">
+                  {{ "shared.loading" | translate }} ...
+                </p>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-footer-row
+              *matFooterRowDef="['loading']"
+              [ngClass]="{ hide: !isLoadingTable }"
+            ></tr>
+            <!--end loading -->
+            <tr
+              mat-footer-row
+              *matFooterRowDef="['noData']"
+              [ngClass]="{
+                hide: isLoadingTable || timeAttendanceSource.data.length != 0
+              }"
+            ></tr>
+          </table>
+        </div>
+        <div
+          class="d-flex justify-content-end paginateMobile justify-content-end"
+        >
+          <mat-paginator
+            [length]="length"
+            [pageIndex]="pageIndex"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="[20, 30, 40, 50]"
+            (page)="pageEvent = $event; onPaginationChange($event)"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </div>
+        <!--End table-->
+      </div>
+
+      <aside class="col-3">
+        <div *ngIf="!isLoadingSummary; else loadingSpinnerBlock" class="row">
+          <div class="col-12">
+            <div class="data-card bg-white">
+              <div class="row">
+                <div class="col-6 left-gray-border">
+                  <p class="label">ساعات عمل الموظف</p>
+
+                  <p class="title-color">
+                    {{ summary?.totalWorkTime }}
+                  </p>
+                </div>
+
+                <div class="col-6">
+                  <p class="label">اجمالي الساعات المعتمدة</p>
+
+                  <p class="title-color">
+                    {{ summary?.totalHours }}
+                  </p>
+                </div>
+                <hr class="divider" />
+                <div class="col-6 left-gray-border">
+                  <p class="label">مرات نسيان بصمة الدخول</p>
+                  <p class="info-data">
+                    {{ summary?.missingPunchIn }}
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p class="label">مرات نسيان بصمة الخروج</p>
+
+                  <p class="info-data">
+                    {{ summary?.missingPunchOut }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="data-card bg-white">
+              <div class="row">
+                <div class="col-6 left-gray-border">
+                  <p class="label">الساعات الإضافية</p>
+
+                  <p class="title-color">
+                    {{ summary?.normalOvertime }}
+                  </p>
+                </div>
+
+                <div class="col-6">
+                  <p class="label">أيام الغياب</p>
+                  <p class="info-data">
+                    {{ summary?.absence }}
+                  </p>
+                </div>
+                <!--   <div class="col-4 left-gray-border">
+                  <p class="label">ايام التأخير</p>
+
+                  <p class="info-data">
+                    {{ summary?.lateIn }}
+                  </p>
+                </div>
+
+                <div class="col-4">
+                  <p class="label">ايام الخروج مبكرا</p>
+
+                  <p class="info-data">
+                    {{ summary?.earlyOut }}
+                  </p>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #loadingSpinnerBlock>
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 100%; height: 15vh"
+          >
+            <mat-spinner [diameter]="50"></mat-spinner>
+          </div>
+        </ng-template>
+      </aside>
+    </div>
+  </div>
+
+  <ng-template #elseBlock>
+    <div class="warning-msg">
+      {{
+        "TimeAttendanceModule.TimeAttendanceListComponent.noDataErrorMsg"
+          | translate
+      }}
+    </div>
+  </ng-template>
+</section>

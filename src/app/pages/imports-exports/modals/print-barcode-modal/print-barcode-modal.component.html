@@ -1,0 +1,77 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-500 fw-bold">طباعة الباركود</h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row rest-fields-container">
+      <!-- start attachmentDescription -->
+      <div
+        class="col-12 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('attachmentDescription')?.errors &&
+            isTouched('attachmentDescription'),
+          'mat-form-field-div-success':
+            !form.get('attachmentDescription')?.errors &&
+            isTouched('attachmentDescription')
+        }"
+      >
+        <div class="label-container">
+          <label for="attachmentDescription">
+            المرفقات ( <span class="optional-label">اختياري </span> )
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="attachmentDescription"
+            formControlName="attachmentDescription"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="
+                !form.get('attachmentDescription')?.errors &&
+                isTouched('attachmentDescription')
+              "
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="
+                form.get('attachmentDescription')?.errors &&
+                isTouched('attachmentDescription')
+              "
+            />
+          </div>
+        </mat-form-field>
+      </div>
+
+      <!-- End attachmentDescription -->
+    </div>
+  </form>
+</div>
+
+<div class="modal-actions">
+  <div class="d-flex justify-content-end save-btn-container">
+    <button
+      class="save-btn"
+      mat-flat-button
+      (click)="onSubmit()"
+      [disabled]="disableSubmitBtn"
+    >
+      طباعة
+    </button>
+  </div>
+</div>

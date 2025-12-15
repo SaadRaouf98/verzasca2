@@ -1,0 +1,110 @@
+<div class="wrapper">
+  <!--  <app-header [isLoggedIn]="false"></app-header>-->
+
+  <div class="login-page">
+    <div class="card">
+      <div class="card-header">
+        <img src="assets/images/login-logo.png" alt="{{ 'shared.mainHeader' | translate }}" />
+        <!--         <p class="fs-400 fw-bold text-primary">
+          {{ 'shared.mainHeader' | translate }}
+        </p> -->
+      </div>
+      <div class="card-body">
+        <h1 class="h2-bold mb-5">{{ 'shared.logIn' | translate }}</h1>
+        <div class="subHeader">
+          <h3 class="h3 gray-500">
+            {{ 'مرحبا بك في بوابة اللجنة المالية فضلاً أدخل بيانات الدخول للمتابعة' | translate }}
+          </h3>
+        </div>
+        <form [formGroup]="loginForm" autocomplete="on">
+          <div>
+            <label for="userName" class="body-bold">
+              {{ 'AuthModule.LoginPage.user' | translate }}
+            </label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="userName"
+                formControlName="userName"
+                name="userName"
+                placeholder="ادخل اسم المستخدم"
+                class="fs-400 fw-light text-light-grey"
+              />
+              <!--              <div class="username-icon-container">-->
+              <!--                <img src="assets/icons/question-circle.png" alt="Question ?" />-->
+              <!--              </div>-->
+            </div>
+
+            <small
+              *ngIf="userName.touched && userName.errors?.['required']"
+              class="invalid-feedback"
+            >
+              {{ 'AuthModule.LoginPage.userRequired' | translate }}
+            </small>
+          </div>
+
+          <div>
+            <label for="password" class="body-bold"> {{ 'الرمز السري' | translate }} </label>
+            <div class="input-container">
+              <input
+                formControlName="password"
+                [type]="passwordInput.type"
+                id="password"
+                name="password"
+                class="fs-400 fw-light text-light-grey"
+                (keyup.enter)="onSubmit()"
+              />
+              <div class="password-icon-container">
+                <img
+                  [src]="passwordInput.type === 'password' ? 'assets/icons/eye-opened.png' : 'assets/icons/eye-closed.png'"
+                  (click)="togglePasswordVisibility()"
+                  alt="Toggle password visibility."
+                  class="cursor-pointer"
+                />
+              </div>
+            </div>
+            <small
+              *ngIf="password.touched && password.errors?.['required']"
+              class="invalid-feedback"
+            >
+              {{ 'AuthModule.LoginPage.passwordRequired' | translate }}
+            </small>
+          </div>
+
+          <!--  <div class="rememberMe-container">
+            <input
+              formControlName="rememberMe"
+              type="checkbox"
+              id="rememberMe"
+              name="rememberMe"
+              checked
+            />
+            <label for="rememberMe">
+              {{ 'AuthModule.LoginPage.rememberMe' | translate }}
+            </label>
+
+
+          </div> -->
+
+          <div class="form-submit">
+            <button
+              [disabled]="loginForm.invalid || isLoading"
+              (click)="onSubmit()"
+              type="button"
+              class="button button-primary button-xl"
+            >
+              {{ 'shared.logIn' | translate }}
+            </button>
+          </div>
+          <!--
+          <p>
+            Dont have account,
+            <a routerLink="/register">Register</a>
+          </p> -->
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <app-footer [isFromLogin]="true"></app-footer>
+</div>

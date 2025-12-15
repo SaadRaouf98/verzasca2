@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-500 fw-bold">التقويم الهجري</h2>
+</div>
+
+<div mat-dialog-contents>
+  <div class="d-flex justify-content-center">
+    <ngb-datepicker #dp [(ngModel)]="hijriToday" />
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-8">
+      <app-range-hijri-calendar
+        [fromDateStr]="filtersForm.get('hijriFromDate')?.value"
+        [toDateStr]="filtersForm.get('hijriToDate')?.value"
+        (dateChange)="
+          fromDateToDateSearchService.onHijriDateChanges2(filtersForm, $event)
+        "
+      ></app-range-hijri-calendar>
+    </div>
+    <div class="col-4 d-flex align-items-center">
+      <p class="mb-0">
+        الفرق في الأيام هو
+        <span style="color: #5ababa">{{ differenceInDays }}</span>
+      </p>
+    </div>
+  </div>
+</div>

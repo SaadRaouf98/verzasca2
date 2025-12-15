@@ -1,0 +1,509 @@
+<div class="row mb-3">
+  <div class="col-12 col-lg-5 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="goToLastPage()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <p class="body-bold mb-0 mx-1">
+        <ng-container *ngIf="exportId; else elseBlock">
+          {{ 'shared.editExportDetails' | translate }}
+          : ({{ this.form.get('autoNumber')?.value }})
+        </ng-container>
+
+        <ng-template #elseBlock>
+          {{ 'shared.addExport' | translate }}
+        </ng-template>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <!-- Title -->
+      <div class="col-12 col-md-4 offset-md-8 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.title' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="title"
+          [placeholder]="'shared.title'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+
+        <div
+          *ngIf="
+            form.get('title')?.errors?.['required'] &&
+            isTouched('title')
+          "
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'shared.titleRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End Title -->
+      <!-- Transaction -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.transactions' | translate }}
+          <!-- <span class="text-danger text-small">*</span> -->
+        </p>
+        <app-select
+          formControlName="requestContainerId"
+          [options]="mappedContainersList"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'shared.transactions' | translate"
+          [multiple]="false"
+          [searchable]="true"
+          (selectionChange)="onSelectedContainerChanged()"
+          (searchChange)="searchOnContainers($event)"
+          (scrollToEnd)="loadMoreContainers()"
+        >
+        </app-select>
+
+        <!-- <div *ngIf="form.get('requestContainerId')?.invalid && form.get('requestContainerId')?.touched"
+          class="text-danger text-small mt-1">
+          <small> {{ "shared.transactionsRequired" | translate }} </small>
+        </div> -->
+      </div>
+      <!-- End Transaction -->
+
+      <!-- Import/Request -->
+      <div class="col-12 col-md-4 offset-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.ImportsExportsListComponent.import' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="request"
+          [options]="mappedRequestsList"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'ImportsExportsModule.ImportsExportsListComponent.import' | translate"
+          [multiple]="false"
+          [searchable]="true"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.errors?.['requestRequired'] && isTouched('request')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'TransactionsModule.ExportDocumentComponent.importRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End Import/Request -->
+
+      <!-- chooseexportingMethod -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.ExportDocumentComponent.chooseExportWay' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="exportingMethod"
+          [options]="exportingMethodOptions"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'TransactionsModule.ExportDocumentComponent.chooseExportWay' | translate"
+          [multiple]="false"
+          [searchable]="false"
+        >
+        </app-select>
+        <!-- (search)="searchOnContainers($event)" -->
+
+        <div
+          *ngIf=" form.get('exportingMethod')?.errors?.['required'] && isTouched('exportingMethod')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'TransactionsModule.ExportDocumentComponent.chooseExportWayRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End chooseexportingMethod -->
+
+      <!-- documentType -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.transactionType' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="documentType"
+          [options]="documentTypeOptions"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'shared.transactionType' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          (selectionChange)="onDocumentTypeSelectionChange()"
+        >
+        </app-select>
+
+        <div
+          *ngIf=" form.get('documentType')?.errors?.['required'] && isTouched('documentType')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'RequestTypesModule.AddRequestTypeComponent.docTypeRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End documentType -->
+
+      <!-- OtherDocumentTypeId -->
+      <div
+        class="col-12 col-md-4 mb-3"
+        *ngIf="form.get('documentType')?.value === DocumentType.Other"
+      >
+        <p class="body mb-2">
+          {{ 'SystemManagementModule.SystemManagementPage.docsTypes' | translate }}
+        </p>
+        <app-select
+          formControlName="otherDocumentTypeId"
+          [options]="documentTypes"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="'SystemManagementModule.SystemManagementPage.docsTypes' | translate"
+          [multiple]="false"
+          [searchable]="false"
+        >
+        </app-select>
+      </div>
+      <!-- End OtherDocumentTypeId -->
+
+      <!-- export number -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.exportNumber' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="exportNumber"
+          [placeholder]="'shared.exportNumber'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+          [type]="'number'"
+        ></app-input>
+
+        <div
+          *ngIf="form.get('exportNumber')?.errors?.['required'] && isTouched('exportNumber')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'TransactionsModule.ExportDocumentComponent.enterExportedNumber' | translate }}
+          </small>
+        </div>
+
+        <div
+          *ngIf="form.get('exportNumber')?.errors?.['pattern'] && isTouched('exportNumber')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'shared.numberOnly' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End export number -->
+
+      <!-- export to -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.ExportDocumentComponent.exportTo' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="exportTo"
+          [options]="exportToOptions"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'TransactionsModule.ExportDocumentComponent.exportTo' | translate"
+          [multiple]="false"
+          [searchable]="false"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('exportTo')?.errors?.['required'] && isTouched('exportTo')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{
+              'TransactionsModule.ExportDocumentComponent.exportedFoundationRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <!-- End export to -->
+      <!-- exported foundation to -->
+      <div *ngIf="form.get('exportTo')?.value === DocumentExportTo.EE" class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.ExportDocumentComponent.exportedFoundations' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+
+        <app-select
+          formControlName="foundations"
+          [options]="foundationsList"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="
+            'TransactionsModule.ExportDocumentComponent.exportedFoundations' | translate
+          "
+          [multiple]="true"
+          [searchable]="false"
+          [showSelected]="true"
+        ></app-select>
+
+        <div
+          *ngIf="form.errors?.['foundationsRequired'] && isTouched('foundations')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{
+              'TransactionsModule.ExportDocumentComponent.exportedFoundationsRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <!-- End exported foundation to -->
+      <!-- classification -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.classification' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="classification"
+          [options]="classificationsList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.classification' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          (selectionChange)="onClassificationChanges()"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('classification')?.errors?.['required'] && isTouched('classification')"
+          class="text-danger text-small mt-1"
+        >
+          <small> {{ 'shared.classificationRequired' | translate }} </small>
+        </div>
+      </div>
+      <!-- End classification -->
+
+      <!--Start access users-->
+      <div *ngIf="showAccessUsers" class="col-12 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.AddTransactionComponent.accessibility' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+
+        <app-select
+          formControlName="users"
+          [options]="usersList"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.searchForUsers' | translate"
+          [multiple]="true"
+          [searchable]="true"
+          [showSelected]="true"
+          (searchChange)="searchOnUsers($event)"
+        ></app-select>
+
+        <div
+          *ngIf="form.errors?.['usersRequired'] && isTouched('users')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'TransactionsModule.AddTransactionComponent.atLeastOne' | translate }}
+          </small>
+        </div>
+      </div>
+      <!--end access users-->
+
+      <div class="row">
+        <!--Start physicalHijriDate-->
+        <div class="col-12 col-md-4 mb-3">
+          <p class="body mb-2">
+            {{ 'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate }}
+            <span class="text-danger">*</span>
+          </p>
+          <app-date-picker-hijri
+            [formControlName]="'physicalHijriDate'"
+            [placeholder]="
+              'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate
+            "
+            [range]="false"
+            (hijriDateChange)="onPatchFormPhysicalHijriDate($event)"
+          ></app-date-picker-hijri>
+          <div
+            *ngIf="form.get('physicalHijriDate')?.invalid && form.get('physicalHijriDate')?.touched"
+            class="text-danger mt-1"
+          >
+            <small>
+              {{
+                'TransactionsModule.ExportDocumentComponent.documentHijriDateRequired' | translate
+              }}
+            </small>
+          </div>
+        </div>
+        <!--End physicalHijriDate-->
+        <!--Start physicalGregorianDate-->
+        <div class="col-12 col-md-4 mb-3">
+          <p class="body mb-2">
+            {{ 'TransactionsModule.ExportDocumentComponent.documentGregorianDate' | translate }}
+            <span class="text-danger">*</span>
+          </p>
+          <app-date-picker
+            [formControlName]="'physicalGregorianDate'"
+            [placeholder]="
+              'TransactionsModule.ExportDocumentComponent.documentGregorianDate' | translate
+            "
+            [range]="false"
+            (gregorianDateChange)="onPatchFormPhysicalGregorianDate($event)"
+          ></app-date-picker>
+
+          <div
+            *ngIf="
+              form.get('physicalGregorianDate')?.invalid &&
+              form.get('physicalGregorianDate')?.touched
+            "
+            class="text-danger mt-1"
+          >
+            <small>
+              {{
+                'TransactionsModule.ExportDocumentComponent.documentGregorianDateRequired'
+                  | translate
+              }}
+            </small>
+          </div>
+        </div>
+        <!--End physicalGregorianDate-->
+      </div>
+
+      <ng-container *ngIf="form.get('documentType')?.value !== DocumentType.Record">
+        <div class="d-flex align-items-center mb-3">
+          <mat-checkbox formControlName="isInitiated">
+            <span class="check-item">{{ 'shared.isInitiated' | translate }}</span>
+          </mat-checkbox>
+
+          <mat-checkbox formControlName="isSigned" class="mx-3">
+            <span class="check-item">{{ 'shared.isSigned' | translate }}</span>
+          </mat-checkbox>
+        </div>
+      </ng-container>
+
+      <!-- start description -->
+      <div class="col-12 col-md-8 mb-3">
+        <p class="body mb-2">{{ 'shared.note' | translate }}</p>
+
+        <textarea
+          class="form-control w-100 bg-white"
+          rows="3"
+          placeholder="{{ 'shared.note' | translate }}"
+          formControlName="description"
+          id="description"
+        ></textarea>
+      </div>
+      <!-- end description -->
+
+      <div class="col-12 mb-3">
+        <p class="body mb-2">{{ 'shared.addExportFile' | translate }}</p>
+
+        <app-upload-attachment
+          #uploadAttachment
+          [multiple]="false"
+          [showBtn]="false"
+          [split]="true"
+          [customFileTypes]="['.pdf']"
+          [initialFiles]="existingExportFiles"
+          (fileUploaded)="onExportFileDropped($event)"
+          (fileRemoved)="onExportFileRemoved($event)"
+          [showViewOption]="true"
+          (viewAttachment)="onViewAttachment($event)"
+        ></app-upload-attachment>
+      </div>
+
+      <div class="col-12 mb-3">
+        <p class="body mb-2">{{ 'shared.addAttachments' | translate }}</p>
+        <app-upload-attachment
+          #uploadAttachment2
+          [multiple]="true"
+          [showBtn]="false"
+          [split]="true"
+          [initialFiles]="existingAttachmentFiles"
+          (fileUploaded)="onFileDropped($event)"
+          (fileRemoved)="onAttachmentRemoved($event)"
+          [showViewOption]="this.exportId ? true : false"
+          (viewAttachment)="onViewAttachment($event)"
+        ></app-upload-attachment>
+      </div>
+
+      <!-- 
+      <div class="col-12 col-lg-6 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('document')?.errors && form.get('document')?.touched,
+          'mat-form-field-div-success':
+            !form.get('document')?.errors && form.get('document')?.touched
+        }">
+        <div class="label-container">
+          <label for="file">
+            {{ "shared.attachments" | translate }}
+          </label>
+        </div>
+
+        <mat-form-field appearance="outline" class="d-flex justify-content-between"
+          [matTooltip]="form.get('document')?.value?.name">
+          <input matInput name="attachment" formControlName="document" (click)="onAddDocumentFile()" placeholder="
+        {{ 'ManageDocumentsModule.AddDocumentPage.addFile' | translate }}
+        " #visibleFileToUpload />
+
+          <input hidden (change)="onDocumentFileChange($event)" #hiddenFileToUpload type="file" accept=".pdf" />
+
+          <div *ngIf="form.get('document')?.value" (click)="onViewAttachment()"
+            class="d-flex justify-content-center align-items-center| file-options">
+            <div class="d-flex align-items-center | watch-file-container">
+              <img src="assets/icons/eye-opened.png" class="eye-opened" />
+              <span>{{ "shared.watch" | translate }}</span>
+            </div>
+            <div class="d-flex align-items-center | delete-file">
+              <img src="assets/icons/remove.svg" alt="Delete file ?" class="cursor-pointer"
+                (click)="onDeleteDocumentFile()" />
+            </div>
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                form.get('document')?.errors?.['required'] &&
+                form.get('document')?.touched
+            ">
+          {{ "ManageDocumentsModule.AddDocumentPage.fileRequired" | translate }}
+        </span>
+      </div> -->
+    </div>
+  </form>
+</div>
+<div class="d-flex justify-content-end mt-3">
+  <button
+    class="button button-primary button-lg mx-3"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || disableSubmitBtn"
+  >
+    {{ 'shared.saveExport' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" (click)="goToLastPage()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

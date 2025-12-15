@@ -1,0 +1,220 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-sm-6">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <span *ngIf="elementId; else elseBlock">
+          {{
+          "SharedModule.AddConsultantGroupComponent.editDetails" | translate
+          }}
+        </span>
+        <ng-template #elseBlock>
+          {{ "shared.addConsultantGroup" | translate }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start title -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }">
+        <div class="label-container">
+          <label for="title">
+            {{ "shared.title" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput name="title" formControlName="title" placeholder="{{ 'shared.title' | translate }}" />
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="!form.get('title')?.errors && isTouched('title')" />
+            <img src="assets/icons/error-input.svg" *ngIf="form.get('title')?.errors && isTouched('title')" />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                form.get('title')?.errors?.['required'] &&
+                isTouched('title')
+              ">
+          {{ "shared.titleRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title-->
+
+      <!-- start description -->
+      <div class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('description')?.errors && isTouched('description'),
+          'mat-form-field-div-success':
+            !form.get('description')?.errors && isTouched('description')
+        }">
+        <div class="label-container">
+          <label for="description">
+            {{ "shared.description" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea matInput formControlName="description" name="description"
+            placeholder="{{ 'shared.description' | translate }}" rows="4"></textarea>
+        </mat-form-field>
+      </div>
+      <!-- end description -->
+    </div>
+
+    <div class="row mb">
+      <div class="col-12 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('consultants')?.errors && isTouched('consultants'),
+          'mat-form-field-div-success':
+            !form.get('consultants')?.errors && isTouched('consultants')
+        }">
+        <div class="label-container">
+          <label for="consultants">
+            {{ "ConsultantsTypeList.MainConsultant" | translate }}
+          </label>
+        </div>
+        <app-select formControlName="mainConsultant" [options]="usersList" [bindLabel]="'name'" [bindValue]="'id'"
+          [placeholder]="'shared.selectConsultants' | translate" [multiple]="false" [searchable]="true"
+          [showSelected]="false" [hideSelected]="true"
+          (selectionChange)="onAdd($event,ConsultantType.MainConsultant)"></app-select>
+        <!-- form.get('consultants')?.setValue($event) -->
+        <!-- <app-user-search [multiple]="false" [placeholder]="'shared.selectConsultants'"
+          [value]="form.get('consultants')?.value" (emitValue)="onAdd($event,ConsultantType.MainConsultant)"
+          (touched)="onSetIfUserIsTouched($event)" (clear)="onClearConsultants()"
+          (remove)="onRemoveSingleConsultant($event)"></app-user-search> -->
+
+
+
+        <!-- <span
+          class="span-error-message"
+          *ngIf="
+              form.get('consultants')?.errors?.['required'] &&
+              isTouched('consultants')
+            "
+        >
+          {{
+            "SharedModule.ConsultantsAssignmentModalComponent.selectAtLeastOneConsultant"
+              | translate
+          }}
+        </span> -->
+      </div>
+    </div>
+    <div class="row mb">
+      <div class="col-12 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('consultants')?.errors && isTouched('consultants'),
+          'mat-form-field-div-success':
+            !form.get('consultants')?.errors && isTouched('consultants')
+        }">
+        <div class="label-container">
+          <label for="consultants">
+            {{ "ConsultantsTypeList.CoordinatingSubConsultant" | translate }}
+          </label>
+        </div>
+
+        <!-- <app-user-search [multiple]="true" [placeholder]="'shared.selectConsultants'"
+          [value]="form.get('consultants')?.value" (emitValue)="onAdd($event,ConsultantType.CoordinatingSubConsultant)"
+          (touched)="onSetIfUserIsTouched($event)" (clear)="onClearConsultants()"
+          (remove)="onRemoveSingleConsultant($event)"></app-user-search> -->
+
+        <app-select formControlName="coordinatingSubConsultants" [options]="usersList" [bindLabel]="'name'"
+          [bindValue]="'id'" [placeholder]="'shared.selectConsultants' | translate" [multiple]="true"
+          [searchable]="true" [showSelected]="false" [hideSelected]="true"
+          (selectionChange)="onAdd($event,ConsultantType.CoordinatingSubConsultant)"></app-select>
+
+        <!-- <span
+          class="span-error-message"
+          *ngIf="
+              form.get('consultants')?.errors?.['required'] &&
+              isTouched('consultants')
+            "
+        >
+          {{
+            "SharedModule.ConsultantsAssignmentModalComponent.selectAtLeastOneConsultant"
+              | translate
+          }}
+        </span> -->
+      </div>
+    </div>
+    <div class="row mb">
+      <div class="col-12 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('consultants')?.errors && isTouched('consultants'),
+          'mat-form-field-div-success':
+            !form.get('consultants')?.errors && isTouched('consultants')
+        }">
+        <div class="label-container">
+          <label for="consultants">
+            {{ "ConsultantsTypeList.ParticipatingSubConsultant" | translate }}
+          </label>
+        </div>
+        <!-- 
+        <app-user-search [multiple]="true" [placeholder]="'shared.selectConsultants'"
+          [value]="form.get('consultants')?.value" (emitValue)="onAdd($event,ConsultantType.ParticipatingSubConsultant)"
+          (touched)="onSetIfUserIsTouched($event)" (clear)="onClearConsultants()"
+          (remove)="onRemoveSingleConsultant($event)"></app-user-search> -->
+
+        <app-select formControlName="participatingSubConsultants" [options]="usersList" [bindLabel]="'name'"
+          [bindValue]="'id'" [placeholder]="'shared.selectConsultants' | translate" [multiple]="true"
+          [searchable]="true" [showSelected]="false" [hideSelected]="true"
+          (selectionChange)="onAdd($event,ConsultantType.ParticipatingSubConsultant)"></app-select>
+
+        <!-- <span
+          class="span-error-message"
+          *ngIf="
+              form.get('consultants')?.errors?.['required'] &&
+              isTouched('consultants')
+            "
+        >
+          {{
+            "SharedModule.ConsultantsAssignmentModalComponent.selectAtLeastOneConsultant"
+              | translate
+          }}
+        </span> -->
+      </div>
+    </div>
+
+    <!-- <div
+      *ngIf="selectedConsultants && selectedConsultants.length"
+      class="row mb consultants-container"
+    >
+      <h3 class="mb-2">
+        {{
+          "SharedModule.ConsultantsAssignmentModalComponent.selectMainConsulant"
+            | translate
+        }}
+      </h3>
+
+      <mat-radio-group
+        formControlName="mainConsultantId"
+        aria-label="Select main Consultant"
+      >
+        <mat-radio-button
+          *ngFor="let consultant of selectedConsultants"
+          [value]="consultant.id"
+        >
+          {{ consultant.name }}</mat-radio-button
+        >
+      </mat-radio-group>
+    </div> -->
+
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button class="cancel-btn" (click)="onCancel()" mat-flat-button color="primary" data-appearance="outline">
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button *ngIf="formMode === FormMode.Modify" class="save-btn" (click)="onSubmit()" mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn">
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

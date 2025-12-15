@@ -1,0 +1,122 @@
+// RTL Mixins and Utilities
+
+// RTL property mixins
+@mixin margin-inline($start, $end: $start) {
+  margin-inline-start: $start;
+  margin-inline-end: $end;
+}
+
+@mixin padding-inline($start, $end: $start) {
+  padding-inline-start: $start;
+  padding-inline-end: $end;
+}
+
+@mixin border-inline($start, $end: $start) {
+  border-inline-start: $start;
+  border-inline-end: $end;
+}
+
+@mixin position-inline($start, $end: $start) {
+  inset-inline-start: $start;
+  inset-inline-end: $end;
+}
+
+// Text alignment
+@mixin text-align-start {
+  text-align: start;
+}
+
+@mixin text-align-end {
+  text-align: end;
+}
+
+// Flex direction
+@mixin flex-row-rtl {
+  flex-direction: row-reverse;
+}
+
+// Transform origin for RTL animations
+@mixin transform-origin-start {
+  transform-origin: right center;
+  [dir='ltr'] & {
+    transform-origin: left center;
+  }
+}
+
+// Border radius for RTL
+@mixin border-radius-rtl($topStart, $topEnd, $bottomEnd, $bottomStart) {
+  border-radius: $topStart $topEnd $bottomEnd $bottomStart;
+  [dir='ltr'] & {
+    border-radius: $topEnd $topStart $bottomStart $bottomEnd;
+  }
+}
+
+// Float utility
+@mixin float-start {
+  float: right;
+  [dir='ltr'] & {
+    float: left;
+  }
+}
+
+@mixin float-end {
+  float: left;
+  [dir='ltr'] & {
+    float: right;
+  }
+}
+
+// Scroll utility
+@mixin scroll-margin-inline($start, $end: $start) {
+  scroll-margin-inline-start: $start;
+  scroll-margin-inline-end: $end;
+}
+
+@mixin scroll-padding-inline($start, $end: $start) {
+  scroll-padding-inline-start: $start;
+  scroll-padding-inline-end: $end;
+}
+
+// Background position
+@mixin background-position-start($distance: 0) {
+  background-position: right $distance center;
+  [dir='ltr'] & {
+    background-position: left $distance center;
+  }
+}
+
+// Icon rotation for RTL
+@mixin icon-rotation {
+  [dir='rtl'] & {
+    transform: scaleX(-1);
+  }
+}
+
+// Logical properties for borders
+@mixin border-inline-start($width, $style, $color) {
+  border-inline-start: $width $style $color;
+}
+
+@mixin border-inline-end($width, $style, $color) {
+  border-inline-end: $width $style $color;
+}
+
+// Text indent
+@mixin text-indent($value) {
+  text-indent: $value;
+  [dir='rtl'] & {
+    text-indent: -$value;
+  }
+}
+
+// Example usage in components:
+// .text-field {
+//   &-input {
+//     @include padding-inline(0.75rem);
+//     @include text-align-end;
+//   }
+//
+//   &-icon {
+//     @include position-inline(1rem);
+//   }
+// }

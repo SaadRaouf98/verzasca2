@@ -1,0 +1,71 @@
+.rest-fields-container {
+  padding: 0 1em;
+
+  .label-container {
+    margin-bottom: 12px;
+  }
+
+  .date-label-container {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-div {
+    padding: 1em;
+  }
+
+  .file-input-parent {
+    display: flex;
+    align-items: center;
+
+    .insert-file-btn {
+      height: 55px;
+      text-wrap: nowrap;
+      background: #ebf5f5;
+      color: #3db5b5;
+      font-size: 1.1rem;
+    }
+  }
+
+  .inserted-file-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+
+    p {
+      padding: 0.7em;
+    }
+
+    .inserted-file-options {
+      display: flex;
+      gap: 10px;
+
+      .delete-file {
+        img {
+          height: 46px;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+.save-btn-container {
+  margin-top: 2em;
+  padding-bottom: 1em;
+
+  .save-btn,
+  .back-btn {
+    padding: 1.5em;
+  }
+  .save-btn:not([disabled]) {
+    background: #3db5b5;
+    color: #fff;
+  }
+
+  .back-btn {
+    background-color: #ebf5f5;
+    color: #3db5b5;
+  }
+}

@@ -1,0 +1,55 @@
+@use 'src/assets/design-system/colors' as *;
+.custom-toast-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 24rem;
+  max-width: 24rem;
+  border-radius: 0.75rem;
+  border: 1px solid $red-500;
+  background: $red-50;
+
+  &.toast-success {
+    border: 1px solid $green-500;
+    background: $green-100;
+
+    .toast-title {
+      color: $green-500;
+    }
+
+    .toast-message {
+      color: $green-500;
+    }
+  }
+
+  &.toast-error {
+    border: 1px solid $red-500;
+    background: $red-50;
+
+    .toast-title {
+      color: $red-500;
+    }
+
+    .toast-message {
+      color: $red-500;
+    }
+  }
+
+  &.toast-warning {
+    border: 1px solid $orange-500;
+    background: $orange-100;
+    .toast-title {
+      color: $orange-500;
+    }
+
+    .toast-message {
+      color: $orange-500;
+    }
+  }
+}
+.toast-content {
+  margin: 0 0.75rem;
+}

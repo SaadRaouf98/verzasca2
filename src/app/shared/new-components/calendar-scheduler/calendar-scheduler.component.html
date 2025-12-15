@@ -1,0 +1,83 @@
+<div class="d-flex">
+    <div class="calendar-scheduler">
+  <div class="sidebar">
+    <h4>Draggable Items</h4>
+    <div
+      cdkDropList
+      id="externalList"
+      [cdkDropListData]="externalItems"
+      [cdkDropListConnectedTo]="daysIds"
+      class="external-list"
+      cdkDropListOrientation="vertical"
+    >
+      <div class="external-item" *ngFor="let it of externalItems; let i = index" cdkDrag [cdkDragData]="it">
+        <div class="title">{{ it.title || it.name || ('Item ' + (i + 1)) }}</div>
+      </div>
+    </div>
+      </div>
+
+      <!-- Pending category picker modal -->
+      <div class="modal-backdrop" *ngIf="pendingDrop">
+        <div class="modal" [class.show_modal]="pendingDrop">
+          <h3>Select Main Category</h3>
+          <div class="modal-body">
+            <div class="item-preview"><strong>Item:</strong> {{ pendingDrop?.item?.title || pendingDrop?.item?.name || 'Item' }}</div>
+            <div *ngIf="mainCategories && mainCategories.length; else noCats">
+              <label>
+                <select [(ngModel)]="pendingSelectedCategory">
+                  <option *ngFor="let c of mainCategories" [value]="c.id">{{ c.name }}</option>
+                </select>
+              </label>
+            </div>
+            <ng-template #noCats>
+              <div class="no-cats">No categories configured. The item will be added without a category.</div>
+            </ng-template>
+          </div>
+          <div class="modal-actions">
+            <button type="button" (click)="confirmPendingDrop()">Confirm</button>
+            <button type="button" (click)="cancelPendingDrop()">Cancel</button>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="calendar">
+    <div class="header">
+      <button (click)="prevMonth()">&lt;</button>
+      <div class="month">{{ displayYear }} - {{ displayMonth + 1 }}</div>
+      <button (click)="nextMonth()">&gt;</button>
+    </div>
+
+    <div class="weekdays">
+      <div *ngFor="let w of weekdays" class="weekday">{{ w }}</div>
+    </div>
+
+    <div class="days">
+      <div
+        class="day"
+        *ngFor="let day of days; let idx = index"
+        [class.other]="!day.inMonth"
+        cdkDropList
+        [id]="'day-' + day.date"
+        [cdkDropListData]="day.events"
+        [cdkDropListConnectedTo]="allDropListIds"
+        (cdkDropListDropped)="dropToDay($event, idx)"
+      >
+        <div class="label">{{ day.label }}</div>
+        <div class="events">
+          <ng-container *ngFor="let group of day.categoryGroups">
+            <div class="category-group" *ngIf="group.items && group.items.length">
+              <div class="category-header">{{ group.categoryName }}</div>
+              <div class="event" *ngFor="let ev of group.items; let eidx = index" cdkDrag>
+                <span class="event-title">{{ ev.title || ev.name || ev.payload?.title || ev.payload?.name || 'Event' }}</span>
+                <button type="button" class="event-remove" (click)="removeEventFromCategory(idx, group.categoryId, eidx)">✕</button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

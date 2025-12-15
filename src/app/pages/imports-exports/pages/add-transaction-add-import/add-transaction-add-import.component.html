@@ -1,0 +1,28 @@
+<div class="row mb-3">
+  <div class="col-12 col-lg-5 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="goToLastPage()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <p class="body-bold mb-0 mx-1">
+        {{ 'shared.addImport' | translate }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<app-add-transaction
+  [showImport]="showImport"
+  (nextStep)="onGOToNextStep($event)"
+></app-add-transaction>
+
+<app-add-import
+  *ngIf="showImport || didUserChooseDocument"
+  [requestContainerId]="requestContainerId"
+  [requestContainerData]="requestContainerData"
+  [didUserChooseDocument]="didUserChooseDocument"
+  (nextStep)="onGOToNextStep($event)"
+  [cardData]="cardData"
+></app-add-import>
+
+<!-- <app-add-import-attachments [requestId]="requestId"></app-add-import-attachments> -->

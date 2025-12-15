@@ -1,0 +1,40 @@
+div[mat-dialog-contents] {
+  .page {
+    border: "1px solid black";
+  }
+
+  .canvasWrapper {
+    border: 1px solid black;
+  }
+
+  /* You can add global styles to this file, and also import other style files */
+
+  .thumbnails {
+    .page {
+      max-width: 25%;
+    }
+  }
+
+  .pdf-viewer-container {
+    position: relative;
+
+    .download-icon {
+      position: absolute;
+      top: 0;
+      left: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    &:hover {
+      .download-icon {
+        display: block;
+      }
+    }
+  }
+}
+
+.error {
+  color: #ff4146;
+  text-align: center;
+}

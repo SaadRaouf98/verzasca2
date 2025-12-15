@@ -1,0 +1,186 @@
+<div class="grid">
+  <div class="profileCard mb-4">
+    <div class="row">
+      <div class="col-12 col-md-6" *ngIf="userInfo">
+        <p class="body-bold mb-3">{{ 'profile.generalInfo' | translate }}</p>
+        <div class="child-flex">
+          <div>
+            <div class="d-flex align-items-center mb-3">
+              <svg width="1.3rem" height="1.3rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#profile'"></use>
+              </svg>
+              <div class="mx-2">
+                <p class="body text-small mb-1">{{ 'shared.name' | translate }}</p>
+                <p class="body-bold text-small mb-0">{{ userInfo.name || '-' }}</p>
+              </div>
+            </div>
+            <!-- end item -->
+            <div class="d-flex align-items-center mb-3">
+              <svg width="1.2rem" height="1.3rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#phone'"></use>
+              </svg>
+              <div class="mx-2">
+                <p class="body text-small mb-1">{{ 'shared.phone' | translate }}</p>
+                <p class="body-bold text-small mb-0">{{ userInfo.phoneNumber || '-' }}</p>
+              </div>
+            </div>
+            <!-- end item -->
+            <div class="d-flex align-items-center mb-3">
+              <svg width="1.3rem" height="1.3rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#email'"></use>
+              </svg>
+              <div class="mx-2">
+                <p class="body text-small mb-1">{{ 'shared.email' | translate }}</p>
+                <p class="body-bold text-small mb-0">{{ userInfo.email || '-' }}</p>
+              </div>
+            </div>
+            <!-- end item -->
+          </div>
+          <!-- ------------ -->
+          <div>
+            <div class="d-flex align-items-center mb-3">
+              <svg width="1.3rem" height="1.3rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#section'"></use>
+              </svg>
+              <div class="mx-2">
+                <p class="body text-small mb-1">{{ 'shared.section' | translate }}</p>
+                <p class="body-bold text-small mb-0">
+                  {{ userInfo.directManager?.department || '-' }}
+                </p>
+              </div>
+            </div>
+            <!-- end item -->
+            <div class="d-flex align-items-center mb-3">
+              <svg width="1.3rem" height="1.3rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#direct-manager'"></use>
+              </svg>
+              <div class="mx-2">
+                <p class="body text-small mb-1">{{ 'profile.directManager' | translate }}</p>
+                <p class="body-bold text-small mb-0">{{ userInfo.directManager?.name || '-' }}</p>
+              </div>
+            </div>
+            <!-- end item -->
+          </div>
+        </div>
+      </div>
+      <!-- ------------------------------------------------- -->
+      <div class="col-12 col-md-6" *ngIf="userStatistics">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center">
+            <span class="body-bold">{{ 'profile.generalStats' | translate }}</span>
+            <span class="body-bold mx-2"
+              >(
+              {{
+                (userStatistics.totalActions || 0) +
+                  (userStatistics.initiationsCount || 0) +
+                  (userStatistics.transactionsCount || 0)
+              }}
+              )</span
+            >
+          </div>
+          <div class="d-flex align-items-center">
+            <p class="body text-small mb-0 mx-2">
+              <ng-container *ngIf="range.fromDate; else NoFilterDefined">
+                <span>{{ 'profile.periodFrom' | translate }}</span>
+                <span class="body-bold text-small"
+                  >( {{ range.fromDate }} - {{ range.toDate }} )</span
+                >
+              </ng-container>
+              <ng-template #NoFilterDefined>
+                <span>{{ 'profile.noTimeSelected' | translate }}</span>
+              </ng-template>
+            </p>
+            <span
+              class="cursor-pointer d-flex align-items-center"
+              (click)="onOpenCalendarFilter()"
+              style="height: 17px"
+            >
+              <svg width="1.3rem" height="1.3rem" class="mx-1" style="flex-shrink: 0">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#period-from'"></use>
+              </svg>
+              <svg width="1.3rem" height="1.3rem" style="transform: rotate(-90deg); flex-shrink: 0">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-left'"></use>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="child">
+            <p class="body-bold mb-1">{{ userStatistics.totalActions || '0' }}</p>
+            <p class="body mb-0">{{ 'profile.proceduresNumber' | translate }}</p>
+          </div>
+          <!-- end item -->
+          <div class="child">
+            <p class="body-bold mb-1">{{ userStatistics.initiationsCount || '0' }}</p>
+            <p class="body mb-0">{{ 'profile.numberOfLeavers' | translate }}</p>
+          </div>
+          <!-- end item -->
+        </div>
+        <div class="child">
+          <p class="body-bold mb-1">{{ userStatistics.transactionsCount || '0' }}</p>
+          <p class="body mb-0">{{ 'profile.numberOfTransactions' | translate }}</p>
+        </div>
+        <!-- end item -->
+      </div>
+    </div>
+    <!-- ------------------------------------------------- -->
+  </div>
+  <div class="row g-2" *ngIf="summary">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+      <span class="body-bold">{{ 'shared.timeAttendance' | translate }}</span>
+      <span class="body link text-small" [routerLink]="'/time-attendance'">{{
+        'profile.showDetails' | translate
+      }}</span>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="timeBox d-flex align-items-center">
+        <svg width="2.25rem" height="2.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#fingerprint'"></use>
+        </svg>
+        <div class="mx-2">
+          <p class="body-bold secondary-500 mb-2" style="direction: ltr">
+            {{ inTimeAttendance || '0' }}
+          </p>
+          <p class="body mb-0">{{ 'profile.attendanceTimeToday' | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- ----------------------------------------------------------------------------- -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="timeBox d-flex align-items-center">
+        <svg width="2.25rem" height="2.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#hour-glass'"></use>
+        </svg>
+        <div class="mx-2">
+          <p class="body-bold secondary-500 mb-2">{{ timeRemaining || '0' }}</p>
+          <p class="body mb-0">{{ 'profile.remainingTime' | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- ----------------------------------------------------------------------------- -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="timeBox d-flex align-items-center">
+        <svg width="2.25rem" height="2.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#work-history'"></use>
+        </svg>
+        <div class="mx-2">
+          <p class="body-bold secondary-500 mb-2">{{ summary?.totalWorkTime }}</p>
+          <p class="body mb-0">{{ 'profile.totalWorkHours' | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- ----------------------------------------------------------------------------- -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="timeBox d-flex align-items-center">
+        <svg width="2.25rem" height="2.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#timer'"></use>
+        </svg>
+        <div class="mx-2">
+          <p class="body-bold secondary-500 mb-2">{{ summary?.normalOvertime }}</p>
+          <p class="body mb-0">{{ 'profile.overtimeHours' | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- ----------------------------------------------------------------------------- -->
+  </div>
+</div>

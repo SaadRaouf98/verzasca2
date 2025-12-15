@@ -1,0 +1,36 @@
+<div class="popup-container">
+  <div class="d-flex align-items-center justify-content-between mb-3" mat-dialog-title *ngIf="!data.Feedback">
+    <span class="delete-icon">
+      <svg width="2rem" height="2rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#popup-delete'"></use>
+      </svg>
+    </span>
+    <svg width="1.5rem" height="1.5rem" matDialogClose>
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#popup-close'"></use>
+    </svg>
+  </div>
+  <mat-dialog-content>
+    <p class="body-bold" [class.text-center]="data.isTextCenter" style="color: #000;">{{ data.title | translate }}</p>
+
+    <p class="body gray-700" [class.text-center]="data.isTextCenter">{{ data.message | translate }}</p>
+
+    <div class="d-flex align-items-center justify-content-center gap-3 w-100">
+      <button class="button button-primary button-lg " [class.button-error]="!data.Feedback" (click)="onDelete()"
+        *ngIf="data.delete">
+        <span class="px-4 fs-12">
+          <ng-container *ngIf="data.Feedback; else deleteText">
+            {{ "shared.deactivate" | translate }}
+          </ng-container>
+          <ng-template #deleteText>
+            {{ "shared.deletePopup" | translate }}
+          </ng-template>
+        </span>
+      </button>
+      <button matDialogClose class="button button-secondary button-lg">
+        <span class="px-4 fs-12">
+          {{ "shared.cancel" | translate }}
+        </span>
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

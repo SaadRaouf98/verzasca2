@@ -1,0 +1,78 @@
+.table-responsive {
+  max-height: 400px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+table {
+  margin-top: -10px;
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #c4d7ed;
+    font-size: 16px;
+  }
+  th {
+    color: #0f1419;
+  }
+}
+
+tr.example-detail-row {
+  height: 0;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 991px) {
+  tr.example-detail-row {
+    height: 0;
+    display: contents;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flow-root;
+}
+
+ul.detail-element {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 0 5px;
+
+    p {
+      font-size: 13px;
+      color: #808080;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.delete-icon {
+  color: red;
+}

@@ -1,0 +1,139 @@
+p {
+  font-family: Lato;
+}
+
+.drawer {
+  background: #efefef;
+  padding: 10px;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+mat-form-field,
+mat-checkbox {
+  display: block;
+  width: 100%;
+}
+
+mat-checkbox {
+  margin-bottom: 7px;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 0;
+  }
+
+  .label-container {
+    margin-bottom: 15px;
+  }
+}
+
+.selected {
+  filter: drop-shadow(-2px -2px 0px #3e68ff) drop-shadow(3px -2px 0px #3e68ff)
+    drop-shadow(2px 2px 0px #3e68ff) drop-shadow(-1px 2px 0px #3e68ff);
+}
+
+/** Mat drawer of node form ***/
+::ng-deep .drawer .mat-drawer-inner-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#tools-form {
+  height: 120vh;
+}
+
+form > div {
+  margin-bottom: 1em;
+}
+
+.drawer {
+  max-width: 340px;
+}
+
+.label-container {
+  margin-bottom: 12px;
+}
+
+.btn-container {
+  display: flex;
+  gap: 0em;
+  margin-top: 2em;
+  justify-content: center;
+}
+
+button,
+mat-slide-toggle {
+  height: 40px !important;
+  padding-right: 3rem !important;
+  padding-left: 3rem !important;
+  margin: 3px;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch:enabled + .mdc-label {
+  font-weight: 500 !important;
+}
+
+::ng-deep mat-slide-toggle {
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+::ng-deep mat-slide-toggle .mdc-label {
+  color: #3f51b5;
+}
+
+.cancel-btn {
+  border: 2px solid #cd3b0c !important;
+  color: #cd3b0c !important;
+  background-color: #fff !important;
+}
+
+.save-btn:not([disabled]) {
+  background-color: #3db5b5 !important;
+  color: #fff;
+}
+
+/******Graph*****/
+ngx-graph {
+  direction: ltr;
+}
+
+mat-sidenav-content {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+
+  // margin: 0 !important;
+  direction: rtl !important;
+}
+
+::ng-deep .mdc-tooltip__surface {
+  white-space: pre-line;
+}
+.delete-icon {
+  cursor: pointer;
+}
+
+.text-path {
+  cursor: pointer;
+}
+/********Tools*********/
+h2,
+h3 {
+  margin-bottom: 0.8em;
+}
+.tools-container {
+  margin-bottom: 2em;
+}
+
+.mbs {
+  margin-bottom: 7px;
+}
+.padding-btn {
+  padding-right: 23px !important;
+  padding-left: 23px !important;
+}

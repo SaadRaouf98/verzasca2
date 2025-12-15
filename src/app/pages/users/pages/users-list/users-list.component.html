@@ -1,0 +1,268 @@
+<section>
+  <div class="row justify-content-between | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a routerLink="/system-management/users-roles">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{ "shared.users" | translate }}
+      </h1>
+    </div>
+    <div class="col-12 col-md-6 mt-s d-flex justify-content-end | simple-gap">
+      <button
+        *ngxPermissionsOnly="[PermissionsObj.BiosStarUsersAsync]"
+        mat-fab
+        extended
+        (click)="onSyncAttendance()"
+        class="d-flex align-items-center | primary-btn"
+        matTooltip="{{
+          'UsersModule.UsersListComponent.syncAttendance' | translate
+        }}"
+      >
+        <mat-icon class="d-flex align-items-center m-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+            <path
+              d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z"
+            />
+          </svg>
+        </mat-icon>
+      </button>
+
+      <button
+        *ngxPermissionsOnly="[PermissionsObj.SynchronizationUsers]"
+        mat-fab
+        extended
+        (click)="onSyncUsers()"
+        class="d-flex align-items-center | primary-btn"
+        matTooltip="{{
+          'UsersModule.UsersListComponent.syncUsers' | translate
+        }}"
+      >
+        <mat-icon class="d-flex align-items-center m-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+            <path
+              d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z"
+            />
+          </svg>
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div class="row | table-actions">
+      <div class="col-md-6 col-12">
+        <div class="search-container">
+          <img
+            src="assets/icons/search-ico.svg"
+            alt="Search by name, email or phone number."
+            class="icon search-icon"
+          />
+          <input
+            [formControl]="searchKeywordControl"
+            type="text"
+            [placeholder]="
+              'UsersModule.UsersListComponent.searchPlaceHolder' | translate
+            "
+          />
+        </div>
+      </div>
+    </div>
+
+    <!--Start table-->
+    <div class="table-responsive">
+      <table
+        mat-table
+        [dataSource]="usersSource"
+        matSort
+        multiTemplateDataRows
+        (matSortChange)="
+          onSortColumn({ active: $event.active, direction: $event.direction })
+        "
+        [matSortActive]="sortData.sortBy"
+        [matSortDirection]="sortData.sortType"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "shared.userName" | translate }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="view_hide_element(element)"
+          >
+            {{ element.name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "shared.email" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "shared.phoneNumber" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element" class="ltr">
+            {{ element.phoneNumber }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="main-department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "UsersModule.UsersListComponent.mainDepartment" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element" class="ltr">
+            {{ element.department?.title }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <div
+              class="d-flex justify-content-center align-items-center | options-container"
+            >
+              <div
+                class="cursor-pointer"
+                (click)="openReportDialog(element)"
+                matTooltip="{{ 'سجلات المستخدم' | translate }}"
+              >
+                <img src="assets/icons/restore.png" width="19" alt="View file."/>
+              </div>
+              <div
+                *ngxPermissionsOnly="[PermissionsObj.ModifyUserPermissions]"
+                class="d-flex align-items-center"
+                style="gap: 10px"
+              >
+                <a
+                  (click)="onViewPermissions(element.id)"
+                  class="cursor-pointer | options-eye"
+                  matTooltip="{{ 'shared.managePermissions' | translate }}"
+                >
+                  <img
+                    src="assets/icons/options-eye.svg"
+                    alt="{{ 'shared.managePermissions' | translate }}"
+                  />
+                </a>
+              </div>
+
+              <div
+                *ngxPermissionsOnly="[
+                  PermissionsObj.UpdateOrganizationStructure
+                ]"
+                class="d-flex align-items-center | edit-container"
+                (click)="onUpdateUserMainDepartment(element.id)"
+              >
+                <span
+                  class="cursor-pointer"
+                  matTooltip="{{
+                    'UsersModule.UsersListComponent.updateMainDepartment'
+                      | translate
+                  }}"
+                >
+                  <mat-icon class="d-flex align-items-center"> edit </mat-icon>
+                </span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="return_displayed_columns().length"
+          >
+            <div
+              class="example-element-detail"
+              [@detailExpand]="
+                check_view_element(element) ? 'expanded' : 'collapsed'
+              "
+            >
+              <div class="example-element-description">
+                <ul class="detail-element">
+                  <li>
+                    <p>{{ "shared.userName" | translate }}</p>
+                    <span>{{ element.name }}</span>
+                  </li>
+                  <li>
+                    <p>{{ "shared.email" | translate }}</p>
+                    <span>{{ element.email }}</span>
+                  </li>
+                  <li>
+                    <p>{{ "shared.phoneNumber" | translate }}</p>
+                    <span class="ltr">{{ element.phoneNumber }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: return_displayed_columns()"
+          class="example-element-row"
+          [ngClass]="{ hide: isLoading }"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"
+        ></tr>
+
+        <ng-container matColumnDef="noData">
+          <td mat-footer-cell *matFooterCellDef colspan="8">
+            <p class="text-center">{{ "shared.noRowsFound" | translate }}</p>
+          </td>
+        </ng-container>
+
+        <!--start loading -->
+        <ng-container matColumnDef="loading">
+          <td mat-footer-cell *matFooterCellDef colspan="8">
+            <p class="text-center">{{ "shared.loading" | translate }} ...</p>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: !isLoading }"
+        ></tr>
+        <!--end loading -->
+        <tr
+          mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{ hide: isLoading || usersSource.data.length != 0 }"
+        ></tr>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-end paginateMobile">
+      <mat-paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[20, 30, 40, 50]"
+        (page)="pageEvent = $event; onPaginationChange($event)"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div>
+
+    <!--End table-->
+  </div>
+</section>

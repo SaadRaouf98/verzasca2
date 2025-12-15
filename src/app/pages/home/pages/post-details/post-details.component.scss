@@ -1,0 +1,48 @@
+@import "../../../../../assets/scss/variables.scss";
+
+a {
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+.right-white-border {
+  border-right: 1px solid #fff;
+}
+
+.left-gray-border {
+  border-left: 1px solid #e6e8ed;
+}
+
+.title-color {
+  color: #249db7;
+}
+
+.post-image {
+  width: 100%;
+  object-fit: contain;
+}
+
+.post-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.component-header {
+  max-width: 100%;
+}
+
+aside {
+  max-height: 150px;
+}
+
+.data-card {
+  font-size: 14px;
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1rem;
+    }
+  }
+}

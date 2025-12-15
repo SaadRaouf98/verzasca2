@@ -1,0 +1,158 @@
+<form autocomplete="off" [formGroup]="filtersForm">
+  <div class="row">
+    <div class="col-12 col-lg-3">
+      <div class="search-container">
+        <input
+          formControlName="searchKeyword"
+          appInputSanitizer
+          type="text"
+          [placeholder]="
+            'TransactionsModule.TransactionsListComponent.searchPlaceHolder'
+              | translate
+          "
+        />
+        <img
+          src="assets/icons/search_.png"
+          alt="Search by title."
+          class="icon search-icon"
+        />
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-3">
+      <ng-select
+        formControlName="requestType"
+        appInputSanitizer
+        placeholder="النوع"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        (search)="requestTypesSearchService.searchOnRequestTypes($event)"
+        class="form-control"
+      >
+        <ng-option
+          *ngFor="
+            let requestType of (
+              requestTypesSearchService.requestTypesList$ | async
+            )?.data
+          "
+          [value]="requestType"
+        >
+          {{ lang === "ar" ? requestType.title : requestType.titleEn }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-12 col-lg-3">
+      <ng-select
+        formControlName="foundation"
+        appInputSanitizer
+        placeholder="{{ 'shared.incomingFoundation' | translate }}"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        (search)="foundationsSearchService.searchOnFoundations($event)"
+        class="form-control"
+      >
+        <ng-option
+          *ngFor="
+            let foundation of (
+              foundationsSearchService.foundationsList$ | async
+            )?.data
+          "
+          [value]="foundation"
+        >
+          {{ lang === "ar" ? foundation.title : foundation.titleEn }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-12 col-lg-1 priority-width">
+      <ng-select
+        formControlName="priority"
+        placeholder="{{ 'shared.priority' | translate }}"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        class="form-control"
+      >
+        <ng-option *ngFor="let element of prioritiesList" [value]="element">
+          {{ lang === "ar" ? element.title : element.titleEn }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-12 col-lg-2 next-step-width">
+      <ng-select
+        formControlName="nextStep"
+        placeholder="الخطوة الحالية"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        [matTooltip]="filtersForm.get('nextStep')?.value"
+        class="form-control"
+      >
+        <ng-option *ngFor="let element of nextStepsList" [value]="element">
+          {{ element }}
+
+          <ng-template ng-option-tmp let-item="item">
+            <div title="{{ item }}">{{ item }}</div>
+          </ng-template>
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-12 col-lg-3 mt-2 | special-calendar-flex">
+      <app-range-gregorian-calendar
+        [fromDateStr]="filtersForm.get('fromDate')?.value"
+        [toDateStr]="filtersForm.get('toDate')?.value"
+        (dateChange)="
+          fromDateToDateSearchService.onGregorianDateChanges2(
+            filtersForm,
+            $event
+          )
+        "
+      >
+      </app-range-gregorian-calendar>
+    </div>
+
+    <div class="col-12 col-lg-3 mt-2 | special-calendar-flex">
+      <app-range-hijri-calendar
+        [fromDateStr]="filtersForm.get('hijriFromDate')?.value"
+        [toDateStr]="filtersForm.get('hijriToDate')?.value"
+        (dateChange)="
+          fromDateToDateSearchService.onHijriDateChanges2(filtersForm, $event)
+        "
+      ></app-range-hijri-calendar>
+    </div>
+
+    <div class="col-12 col-lg-3 mt-2 | special-flex">
+      <ng-select
+        formControlName="exportType"
+        placeholder="مقترح الدراسة"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        class="form-control"
+      >
+        <ng-option *ngFor="let status of allExportTypes" [value]="status">
+          {{ status.name | translate }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="col-12 col-lg-3 mt-2 | special-flex">
+      <ng-select
+        formControlName="consultant"
+        appInputSanitizer
+        placeholder="{{ 'shared.advisor' | translate }}"
+        [bindLabel]="'name'"
+        [compareWith]="compareFn"
+        class="form-control"
+        (search)="usersSearchService.searchOnUsers($event)"
+      >
+        <ng-option
+          *ngFor="let user of (usersSearchService.usersList$ | async)?.data"
+          [value]="user"
+        >
+          {{ user.name }}
+        </ng-option>
+      </ng-select>
+    </div>
+  </div>
+</form>

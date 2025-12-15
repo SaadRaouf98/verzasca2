@@ -1,0 +1,139 @@
+$redColor: #e02020;
+$greenColor: #016a30;
+$currentBorder: #c4d7ed;
+
+.upload-area {
+  background: linear-gradient(
+      to right,
+      #{$currentBorder + "af"} 50%,
+      rgba(255, 255, 255, 0) 0%
+    ),
+    linear-gradient(#{$currentBorder + "bf"} 50%, rgba(255, 255, 255, 0) 0%),
+    linear-gradient(
+      to right,
+      #{$currentBorder + "af"} 50%,
+      rgba(255, 255, 255, 0) 0%
+    ),
+    linear-gradient(#{$currentBorder + "af"} 50%, rgba(255, 255, 255, 0) 0%);
+  background-position: top, right, bottom, left;
+  background-repeat: repeat-x, repeat-y;
+  background-size: 20px 2px, 2px 20px;
+  border-radius: 10px;
+  padding: 30px;
+  /*  min-height: 200px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1rem;
+    }
+  }
+  &.drag-over {
+    background: linear-gradient(
+        to right,
+        $currentBorder 50%,
+        rgba(255, 255, 255, 0) 0%
+      ),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient(to right, $currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%);
+
+    background-position: top, right, bottom, left;
+    background-repeat: repeat-x, repeat-y;
+    background-size: 20px 2px, 2px 20px;
+  }
+
+  &.success {
+    $currentBorder: $greenColor;
+    background: linear-gradient(
+        to right,
+        $currentBorder 50%,
+        rgba(255, 255, 255, 0) 0%
+      ),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient(to right, $currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%);
+    background-position: top, right, bottom, left;
+    background-repeat: repeat-x, repeat-y;
+    background-size: 20px 2px, 2px 20px;
+  }
+
+  &.error {
+    $currentBorder: $redColor;
+    background: linear-gradient(
+        to right,
+        $currentBorder 50%,
+        rgba(255, 255, 255, 0) 0%
+      ),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient(to right, $currentBorder 50%, rgba(255, 255, 255, 0) 0%),
+      linear-gradient($currentBorder 50%, rgba(255, 255, 255, 0) 0%);
+    background-position: top, right, bottom, left;
+    background-repeat: repeat-x, repeat-y;
+    background-size: 20px 2px, 2px 20px;
+
+    .validation {
+      color: $redColor;
+    }
+  }
+}
+
+.add {
+  @media (max-width: 525px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.validation {
+  text-align: center;
+}
+
+.on-upload {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  > div {
+    width: 100%;
+  }
+
+  > a {
+    width: 64px;
+    text-align: left;
+  }
+}
+
+.img-sm {
+  width: 150px;
+  position: relative;
+  box-shadow: #2d2a2a1a 2px 2px 5px 2px, #2d2a2a1a -2px -2px 5px 2px;
+  .target {
+    width: 100%;
+    height: 100%;
+  }
+  .close {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+  }
+}
+
+.text-ellipsis {
+  max-width: 75%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.files-names {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

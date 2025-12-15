@@ -1,0 +1,23 @@
+<div class="grid">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="categoryId"
+          [options]="items"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.section'"
+          [multiple]="false"
+          [searchable]="false"
+          [appendTo]="'body'"
+        ></app-select>
+      </div>
+      <div class="col-12 p-0">
+        <button (click)="reset()" class="button button-lg button-secondary w-100">
+          {{ 'shared.resetBtn' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,55 @@
+<div class="grid">
+  <div class="row">
+    <div class="col-12">
+      <p class="mb-3 d-flex align-items-center">
+        <svg width="1.25rem" height="1.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-pending'"></use>
+        </svg>
+        <span class="body-bold mx-1">
+          {{
+            'PendingTransactionsModule.PendingTransactionsListPage.pendingTransactions' | translate
+          }}
+        </span>
+      </p>
+    </div>
+    <!-- <div class="col-6 d-flex justify-content-end"></div> -->
+  </div>
+</div>
+<div class="grid listingPageCard">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <app-filters
+        [hasFiltersApplied]="isTableFiltered"
+        [prioritiesList]="prioritiesList"
+        [nextStepsList]="nextStepsList"
+        [foundationsList]="foundationsList"
+        [usersList]="usersList"
+        [requestTypesList]="requestTypesList"
+        [isPendingListFilters]="true"
+        [filterData]="appFiltersModel"
+        (filtersChange)="onFiltersComponentChanged($event)"
+        (resetFilters)="onResetFilters()"
+      ></app-filters>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <app-table-list
+        [className]="'primary-table'"
+        [columnsConfig]="columnsConfig"
+        [columns]="columns"
+        [isError]="isError"
+        [isLoading]="isLoading"
+        [rows]="items"
+        (filterChanged)="onTableFilterChanged($event)"
+        [resetTableFilters]="!isTableFiltered"
+        [hasPaginator]="true"
+        [pageIndex]="pageNumber"
+        [pageSize]="pageSize"
+        [totalElements]="totalElements"
+        (pageChange)="pageChanged($event)"
+        class="new-primary-table"
+      ></app-table-list>
+    </div>
+  </div>
+</div>

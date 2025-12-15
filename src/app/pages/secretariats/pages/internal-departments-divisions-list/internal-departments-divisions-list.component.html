@@ -1,0 +1,249 @@
+<section>
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a (click)="goToLastPage()" class="cursor-pointer">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{ "shared.internalDepartmentsAndDivisions" | translate }}
+      </h1>
+    </div>
+    <div class="col-12 col-md-6 d-flex justify-content-end">
+      <button
+        mat-fab
+        extended
+        [routerLink]="['add']"
+        class="d-flex align-items-center | add-btn"
+      >
+        <mat-icon class="d-flex align-items-center">
+          <img src="assets/icons/plus.png" />
+        </mat-icon>
+        {{ "shared.addNewDepartmentOrDivision" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!--start filters-->
+  <!--End filters
+          -->
+
+  <!--Start table-->
+  <div class="table-responsive">
+    <table
+      mat-table
+      [dataSource]="internalDepartmentsSource"
+      matSort
+      multiTemplateDataRows
+      (matSortChange)="
+        onSortColumn({ active: $event.active, direction: $event.direction })
+      "
+      [matSortActive]="sortData.sortBy"
+      [matSortDirection]="sortData.sortType"
+    >
+      <ng-container matColumnDef="parentName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.managementName" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [ngClass]="{
+            'cursor-pointer': element.hasChildren,
+            'bg-hover': element.hasChildren
+          }"
+          (click)="goToChildren(element)"
+        >
+          {{ lang === "ar" ? element.parentName : element.parentNameEn }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.divisionName" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [class.cursor-pointer]="element.hasChildren"
+          (click)="view_hide_element(element)"
+        >
+          {{ lang === "ar" ? element.title : element.titleEn }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ "shared.shortDescription" | translate }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [class.cursor-pointer]="element.hasChildren"
+          (click)="goToChildren(element)"
+        >
+          {{ lang === "ar" ? element.description : element.descriptionEn }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex align-items-center" style="gap: 10px">
+            <a
+              (click)="onViewElement(element.id)"
+              class="cursor-pointer | options-eye"
+            >
+              <img
+                src="assets/icons/options-eye.svg"
+                alt="View sector details"
+              />
+            </a>
+            <button
+              mat-fab
+              extended
+              [matMenuTriggerFor]="optionsMenu"
+              class="d-flex align-items-center | options-btn"
+            >
+              {{ "shared.options" | translate }}
+
+              <mat-icon class="d-flex align-items-center">
+                <img
+                  src="assets/icons/white-arrow-down.png"
+                  alt="Press to select an option."
+                />
+              </mat-icon>
+            </button>
+            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn">
+              <button
+                mat-menu-item
+                *ngIf="element.hasChildren && isSmallDeviceWidthForTable()"
+                (click)="goToChildren(element)"
+              >
+                {{ "shared.viewInternalDepartments" | translate }}
+              </button>
+              <button mat-menu-item (click)="onViewEmployees(element.id)">
+                {{ "shared.viewEmployees" | translate }}
+              </button>
+              <button
+                mat-menu-item
+                (click)="onAddNewInternalDivision(element.id)"
+              >
+                {{ "shared.addInternalDivision" | translate }}
+              </button>
+              <button mat-menu-item (click)="onEditElement(element.id)">
+                {{ "shared.edit" | translate }}
+              </button>
+              <button
+                mat-menu-item
+                (click)="onDeleteElement(element)"
+                class="delete-color"
+              >
+                {{ "shared.delete" | translate }}
+              </button>
+            </mat-menu>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [attr.colspan]="return_displayed_columns().length"
+        >
+          <div
+            class="example-element-detail"
+            [@detailExpand]="
+              check_view_element(element) ? 'expanded' : 'collapsed'
+            "
+          >
+            <div class="example-element-description">
+              <ul class="detail-element">
+                <li>
+                  <p>
+                    {{ "shared.managementName" | translate }}
+                  </p>
+                  <span>
+                    {{
+                      lang === "ar" ? element.parentName : element.parentNameEn
+                    }}</span
+                  >
+                </li>
+                <li>
+                  <p>
+                    {{ "shared.shortDescription" | translate }}
+                  </p>
+                  <span>
+                    {{
+                      lang === "ar"
+                        ? element.description
+                        : element.descriptionEn
+                    }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: return_displayed_columns()"
+        class="example-element-row"
+        [ngClass]="{ hide: isLoading }"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+      ></tr>
+
+      <ng-container matColumnDef="noData">
+        <td mat-footer-cell *matFooterCellDef colspan="8">
+          <p class="text-center">{{ "shared.noRowsFound" | translate }}</p>
+        </td>
+      </ng-container>
+
+      <!--start loading -->
+      <ng-container matColumnDef="loading">
+        <td mat-footer-cell *matFooterCellDef colspan="8">
+          <p class="text-center">{{ "shared.loading" | translate }} ...</p>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['loading']"
+        [ngClass]="{ hide: !isLoading }"
+      ></tr>
+      <!--end loading -->
+      <tr
+        mat-footer-row
+        *matFooterRowDef="['noData']"
+        [ngClass]="{
+          hide: isLoading || internalDepartmentsSource.data.length != 0
+        }"
+      ></tr>
+    </table>
+  </div>
+  <div class="d-flex justify-content-end paginateMobile">
+    <mat-paginator
+      [length]="length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[20, 30, 40, 50]"
+      (page)="pageEvent = $event; onPaginationChange($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+  <!--End table-->
+</section>

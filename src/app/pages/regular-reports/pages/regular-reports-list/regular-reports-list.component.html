@@ -1,0 +1,389 @@
+<div class="row justify-content-between align-items-center">
+  <div class="col-12 col-lg-5 d-flex align-items-center | heading">
+    <!-- <a class="cursor-pointer" (click)="onNavigateBack()">
+      <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'" />
+    </a> -->
+    <p class="body-bold">
+      {{ directoryName ? directoryName : ('shared.reports' | translate) }}
+    </p>
+  </div>
+
+  <!-- <div class="col-12 col-lg-4 d-flex align-items-center justify-content-end" id="main-btns-container">
+    <div *ngxPermissionsOnly="[PermissionsObj.CreateRegularReports]" class="btn-card" [routerLink]="['add']">
+      <img src="assets/icons/green-envelope.png" />
+      <span> {{"shared.addReport" | translate }}</span>
+    </div>
+
+  </div> -->
+</div>
+
+<div class="lists-container position-relative" *ngIf="!isLoading">
+  <form [formGroup]="searchForm">
+    <div class="row mb-3 justify-content-between">
+      <div class="col-8 d-flex">
+        <button class="sorting_btn asc_btn" [class.selectedSort]="isAsc" (click)="setSort()">
+          <img
+            width="26"
+            height="26"
+            [src]="isAsc ? 'assets/icons/sorting-enabled.svg' : 'assets/icons/sorting-disabled.svg'"
+            alt="ms-excel"
+          />
+        </button>
+        <button class="sorting_btn desc_btn" [class.selectedSort]="!isAsc" (click)="setSort()">
+          <img
+            width="26"
+            height="26"
+            [src]="
+              !isAsc ? 'assets/icons/sorting-enabled.svg' : 'assets/icons/sorting-disabled.svg'
+            "
+            alt="ms-excel"
+          />
+        </button>
+        <div class="col-md-6 col-9">
+          <app-input
+            formControlName="searchKeyword"
+            [placeholder]="'shared.searchByAddress' | translate"
+            [showSearchIcon]="true"
+            [clicked]="true"
+          ></app-input>
+        </div>
+        <div class="col-3 col-md-4 d-flex align-items-center">
+          <button
+            [disabled]="searchForm.invalid"
+            class="button button-lg button-secondary mx-2"
+            (click)="reset()"
+          >
+            {{ 'shared.resetBtn' | translate }}
+            <svg width="1rem" height="1rem">
+              <use
+                [attr.xlink:href]="
+                  'assets/icons/sprite.svg#' + (searchForm.invalid ? 'reset-disabled' : 'reset')
+                "
+              ></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="col-4 justify-content-end d-flex">
+        <button class="button button-lg button-primary" (click)="addFolder()">
+          <svg width="1.5rem" height="1.5rem">
+            <use xlink:href="assets/icons/add-square.svg"></use>
+          </svg>
+          {{ 'shared.addNewFolder' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="row" *ngIf="dataSource?.data.length > 0; else noData">
+    <div class="col-md-5 fixed_height position-relative">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" dir="rtl">
+        <div>
+          <mat-tree-node
+            mat-tree-node
+            [class.sp_mb]="!treeControl.isExpanded(node)"
+            *matTreeNodeDef="let node"
+            matTreeNodePadding
+            [ngStyle]="getGroupColor(findRootId(node.id))"
+            [ngClass]="nodeClasses(node)"
+            [class.child-node]="node.level > 0"
+          >
+            <!-- use a disabled button to provide padding for tree leaf -->
+            <div
+              class="d-flex w-100 tree_node_content"
+              [attr.data-node-id]="node.id"
+              [class.report_container]="node.boardType == RegularReportBoardType.File"
+              [class.selcted]="node.id == selectedID"
+            >
+              <img
+                *ngIf="!node.parentId && node.boardType == RegularReportBoardType.Holder"
+                src="assets/icons/report_main_folder.svg"
+                alt="Navigation back."
+                class="report_main_folder folder"
+              />
+              <img
+                *ngIf="node.boardType == RegularReportBoardType.File"
+                [src]="
+                  node.isActive
+                    ? 'assets/icons/active_report.svg'
+                    : 'assets/icons/inactive_report.svg'
+                "
+                alt="Navigation back."
+                class="folder"
+              />
+              <button
+                matIconButton
+                (click)="loadFile(node)"
+                class="w-100"
+                [class.bold-body]="node.boardType != RegularReportBoardType.File"
+              >
+                {{ node.title }}
+              </button>
+              <button extended [matMenuTriggerFor]="optionsMenu" mat-icon-button class="menu_btn">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+
+            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn" xPosition="before">
+              <button
+                mat-menu-item
+                *ngIf="!node.parentId"
+                class="menu_item"
+                (click)="addFolder(node)"
+              >
+                <img
+                  *ngIf="!node.parentId"
+                  class="iconic_btn"
+                  src="assets/icons/add-square-black.svg"
+                  class="iconic_btn"
+                />
+                {{ 'shared.addFolder' | translate }}
+              </button>
+              <span mat-menu-item class="menu_item" (click)="editFolder(node, node.boardType)">
+                <img class="iconic_btn" src="assets/icons/edite.svg" class="iconic_btn" />
+
+                {{ 'shared.edit' | translate }}
+              </span>
+              <span mat-menu-item class="menu_item">
+                <div class="checkboxes__item">
+                  <label class="checkbox style-d">
+                    <input
+                      type="checkbox"
+                      [checked]="node.isActive"
+                      (change)="toggleActiveStatus(node)"
+                    />
+                    <div class="checkbox__checkmark"></div>
+                    <div class="checkbox__body">
+                      {{ 'RegularReportsModule.RegularReportsListComponent.active' | translate }}
+                    </div>
+                  </label>
+                </div>
+              </span>
+              <button mat-menu-item class="menu_item">
+                <div class="checkboxes__item">
+                  <label class="checkbox style-d">
+                    <input
+                      type="checkbox"
+                      [checked]="!node.isActive"
+                      (change)="toggleActiveStatus(node)"
+                    />
+                    <div class="checkbox__checkmark"></div>
+                    <div class="checkbox__body">
+                      {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <button
+                mat-menu-item
+                class="menu_item"
+                (click)="addReport(node)"
+                *ngIf="node.boardType != RegularReportBoardType.File"
+              >
+                <img src="assets/icons/add-black.svg" class="iconic_btn" />
+                {{ 'shared.addReport' | translate }}
+              </button>
+              <button
+                mat-menu-item
+                class="menu_item"
+                (click)="moveReport(node)"
+                *ngIf="node.boardType == RegularReportBoardType.File"
+              >
+                <img src="assets/icons/menu-01.svg" />
+                {{ 'shared.moveReport' | translate }}
+              </button>
+              <button mat-menu-item class="menu_item delete-color" (click)="deleteItem(node.id)">
+                <img src="assets/icons/delete-02.svg" />
+                {{
+                  node.boardType == RegularReportBoardType.File
+                    ? ('shared.deleteReport' | translate)
+                    : node.boardType == RegularReportBoardType.Holder && node.parentId
+                    ? ('shared.deleteSubFolder' | translate)
+                    : ('shared.deleteFolder' | translate)
+                }}
+              </button>
+            </mat-menu>
+          </mat-tree-node>
+        </div>
+
+        <div class="test">
+          <mat-tree-node
+            [class.sp_mb]="!treeControl.isExpanded(node)"
+            *matTreeNodeDef="let node; when: hasChild"
+            matTreeNodePadding
+            [cdkTreeNodeTypeaheadLabel]="node.title"
+            [ngStyle]="getGroupColor(findRootId(node.id))"
+            [ngClass]="nodeClasses(node)"
+            [class.parent-node]="node.level === 0"
+          >
+            <div
+              class="d-flex w-100 tree_node_content"
+              [attr.data-node-id]="node.id"
+              [class.report_container]="node.boardType == RegularReportBoardType.File"
+              [class.selcted]="node.id == selectedID"
+            >
+              <img
+                *ngIf="node.boardType == RegularReportBoardType.File"
+                [src]="
+                  node.isActive
+                    ? 'assets/icons/active_report.svg'
+                    : 'assets/icons/inactive_report.svg'
+                "
+                alt="Navigation back."
+                class="folder"
+              />
+              <button
+                matIconButton
+                matTreeNodeToggle
+                [attr.aria-label]="'Toggle ' + node.title"
+                [class.bold-body]="node.boardType != RegularReportBoardType.File"
+                class="w-100"
+              >
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+                <img
+                  *ngIf="!node.parentId"
+                  src="assets/icons/report_main_folder.svg"
+                  alt="Navigation back."
+                  class="report_main_folder folder"
+                />
+                {{ node.title }}
+              </button>
+
+              <button extended [matMenuTriggerFor]="optionsMenu" mat-icon-button class="menu_btn">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+
+            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn" xPosition="before">
+              <button
+                mat-menu-item
+                *ngIf="!node.parentId"
+                class="menu_item"
+                (click)="addFolder(node)"
+              >
+                <img src="assets/icons/add-square-black.svg" class="iconic_btn" />
+                {{ 'shared.addFolder' | translate }}
+              </button>
+              <span mat-menu-item class="menu_item" (click)="editFolder(node, node.boardType)">
+                <img class="iconic_btn" src="assets/icons/edite.svg" class="iconic_btn" />
+                {{ 'shared.edit' | translate }}
+              </span>
+              <span mat-menu-item class="menu_item">
+                <div class="checkboxes__item">
+                  <label class="checkbox style-d">
+                    <input
+                      type="checkbox"
+                      [checked]="node.isActive"
+                      (change)="toggleActiveStatus(node)"
+                    />
+                    <div class="checkbox__checkmark"></div>
+                    <div class="checkbox__body">
+                      {{ 'RegularReportsModule.RegularReportsListComponent.active' | translate }}
+                    </div>
+                  </label>
+                </div>
+              </span>
+              <button mat-menu-item class="menu_item">
+                <div class="checkboxes__item">
+                  <label class="checkbox style-d">
+                    <input
+                      type="checkbox"
+                      [checked]="!node.isActive"
+                      (change)="toggleActiveStatus(node)"
+                    />
+                    <div class="checkbox__checkmark"></div>
+                    <div class="checkbox__body">
+                      {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <button
+                mat-menu-item
+                class="menu_item"
+                (click)="addReport(node)"
+                *ngIf="node.boardType != RegularReportBoardType.File"
+              >
+                <img src="assets/icons/add-black.svg" class="iconic_btn" />
+                {{ 'shared.addReport' | translate }}
+              </button>
+              <button
+                mat-menu-item
+                class="menu_item"
+                (click)="moveReport(node)"
+                *ngIf="node.boardType == RegularReportBoardType.File"
+              >
+                <img src="assets/icons/menu-01.svg" />
+                {{ 'shared.moveReport' | translate }}
+              </button>
+              <button mat-menu-item class="menu_item delete-color" (click)="deleteItem(node.id)">
+                <img src="assets/icons/delete-02.svg" />
+                {{
+                  node.boardType == RegularReportBoardType.File
+                    ? ('shared.deleteReport' | translate)
+                    : node.boardType == RegularReportBoardType.Holder && node.parentId
+                    ? ('shared.deleteSubFolder' | translate)
+                    : ('shared.deleteFolder' | translate)
+                }}
+              </button>
+            </mat-menu>
+          </mat-tree-node>
+        </div>
+      </mat-tree>
+    </div>
+    <div class="col-md-7 fixed_height">
+      <div
+        *ngIf="!isLoadingReport; else loadingReportData"
+        class="details_container"
+        [class.details_bg]="showDetails && dataSource?.data.length > 0"
+      >
+        <ng-container
+          *ngIf="
+            showDetails && dataSource?.data.length > 0 && exportableDocument.pdfSrc;
+            else noData
+          "
+        >
+          <div class="d-flex justify-content-between">
+            <h3>{{ selectedItemInfo.title }}</h3>
+            <span class="data_span"
+              ><span>{{ selectedItemInfo.data | date : 'dd/MM/yyyy' }}</span>
+              {{ findPeriodType(selectedItemInfo.periodType) }}</span
+            >
+          </div>
+          <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+        </ng-container>
+      </div>
+      <ng-template #loadingReportData>
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style="height: 100%; width: 100%"
+        >
+          <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
+      </ng-template>
+    </div>
+
+    <ng-template #noData>
+      <div class="no_data_contaner">
+        <img
+          class="w-25 mb-3"
+          src="../assets/images/Illustration_found.svg"
+          alt="under construction"
+        />
+        <div class="body-bold noData d-flex justify-content-center w-100">
+          {{ 'shared.noData' | translate }}
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div
+    *ngIf="isLoading"
+    class="d-flex justify-content-center align-items-center position-absolute right-0 bottom-0 left-0 top-0"
+    style="width: 100%; background-color: #ffffff94"
+  >
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</div>

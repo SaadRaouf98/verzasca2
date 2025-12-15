@@ -1,0 +1,62 @@
+<div class="  h-100">
+  <div class="row bg-white gap-14px transaction-section p-3 mb-4" *ngIf="userStatistics">
+    <div class="d-flex justify-content-between mb-2">
+      <h3 class="fs-300">ارقام ومعاملات</h3>
+      <a class="details-link" [routerLink]="'/home/statistics'">
+        عرض التفاصيل
+      <img src="assets/icons/share.svg">
+      </a>
+    </div>
+    <div class="col-12 filter-border">
+      <div class="filter-card justify-content-between"   (click)="onOpenCalendarFilter()">
+
+        <div class="filter-card-text ">
+          <p class="fw-bold mb-0">
+            <ng-container *ngIf="range.fromDate; else NoFilterDefined">
+              <span>الفترة من</span>
+              <span>( {{ range.fromDate }} - {{ range.toDate }})</span>
+            </ng-container>
+
+            <ng-template #NoFilterDefined>
+              <span>لم يتم تحديد فلتر الفترة الزمنية</span>
+            </ng-template>
+          </p>
+        </div>
+        <div
+
+          class="filter-card-icon cursor-pointer"
+        >
+          <img src="assets/icons/system-calendar.svg" alt="icon."/>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class="card d-flex justify-content-start">
+        <div>
+          <h2>{{userStatistics.initiationsCount}}</h2>
+          <p>عدد التركين</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class="card d-flex justify-content-start">
+        <div>
+          <h2>{{userStatistics.transactionsCount}}</h2>
+          <p>عدد المعاملات</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class="card d-flex justify-content-start">
+        <div>
+          <h2>{{userStatistics.totalActions}}</h2>
+          <p>عدد الاجراءات</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

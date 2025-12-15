@@ -1,0 +1,25 @@
+@use 'src/assets/design-system/colors' as *;
+.card {
+  border-radius: 0.5rem;
+  border: 1px solid $primary-100;
+  background: #fff;
+  padding: 1.25rem;
+}
+
+// // Make ApexCharts tooltip always visible
+// ::ng-deep .apexcharts-tooltip {
+//   display: block !important;
+//   opacity: 1 !important;
+//   visibility: visible !important;
+//   pointer-events: auto !important;
+// }
+::ng-deep .apexcharts-tooltip-y-group {
+  direction: rtl;
+}
+::ng-deep .apexcharts-tooltip-series-group {
+  flex-direction: row-reverse;
+}
+::ng-deep .apexcharts-tooltip-marker {
+  margin-right: 0;
+  margin-left: 4px;
+}

@@ -1,0 +1,610 @@
+<div class="row justify-content-between align-items-center stats-container mb-3">
+  <div class="col-12 col-md-6 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400"> {{ 'shared.main' | translate }} </span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold"> {{ 'shared.stats' | translate }} </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 d-flex align-items-center justify-content-end">
+    <app-date-picker
+      [(ngModel)]="fromDate"
+      [ngModelOptions]="{ standalone: true }"
+      [placeholder]="'shared.dateFrom' | translate"
+      [range]="false"
+      (dateChange)="onFromDateChange()"
+    ></app-date-picker>
+
+    <app-date-picker
+      [(ngModel)]="toDate"
+      [ngModelOptions]="{ standalone: true }"
+      [placeholder]="'shared.dateTo' | translate"
+      [range]="false"
+      (dateChange)="onToDateChange()"
+    ></app-date-picker>
+    <form autocomplete="off" [formGroup]="form">
+      <span
+        (click)="$event.stopPropagation()"
+        [matMenuTriggerFor]="filterCategoryMenue"
+        [matMenuTriggerRestoreFocus]="false"
+        class="filterCategory"
+      >
+        <svg width="1.3rem" height="1.3rem">
+          <use [attr.xlink:href]="'assets/icons/filter_icon_black_big.svg'"></use>
+        </svg>
+      </span>
+      <mat-menu
+        #filterCategoryMenue="matMenu"
+        matMenuPositionX="center"
+        matMenuPositionY="below"
+        class="menu-same-width customPosition custom-shadow"
+      >
+        <span class="fs-14">
+          <button
+            mat-menu-item
+            class="text-small p-1"
+            (click)="filterCategory = StatisticsCategory.All"
+          >
+            <mat-radio-button
+              [checked]="filterCategory == StatisticsCategory.All"
+              (click)="$event.stopPropagation()"
+              name="StatisticsCategory.All"
+              class="mr-2"
+              disableRipple
+            ></mat-radio-button>
+            الكل
+          </button>
+        </span>
+        <span class="fs-14">
+          <button
+            mat-menu-item
+            class="text-small p-1"
+            (click)="filterCategory = StatisticsCategory.Transactions"
+          >
+            <mat-radio-button
+              [checked]="filterCategory == StatisticsCategory.Transactions"
+              name="StatisticsCategory.Transactions"
+              (click)="$event.stopPropagation()"
+              class="mr-2"
+              disableRipple
+            ></mat-radio-button>
+            المعاملات
+          </button>
+        </span>
+        <span class="fs-14">
+          <button
+            mat-menu-item
+            class="text-small p-1"
+            (click)="filterCategory = StatisticsCategory.Records"
+          >
+            <mat-radio-button
+              [checked]="filterCategory == StatisticsCategory.Records"
+              name="StatisticsCategory.Records"
+              (click)="$event.stopPropagation()"
+              class="mr-2"
+              disableRipple
+            ></mat-radio-button>
+            المحاضر
+          </button>
+        </span>
+      </mat-menu>
+    </form>
+  </div>
+</div>
+
+<section class="internal_dashboard" *ngIf="!isLoading; else elseBlock">
+  <ng-container
+    *ngIf="
+      filterCategory === StatisticsCategory.All ||
+      filterCategory === StatisticsCategory.Transactions
+    "
+  >
+    <div class="listingPageCard mb-3">
+      <div class="row gx-3">
+        <ng-container *ngIf="searchKeyword ? isItMatching('المعاملات') : true">
+          <p class="body-bold mb-3">
+            {{ 'shared.transactions' | translate }}
+            <span> ({{ transactionsSummay?.total }})</span>
+          </p>
+          <div class="col-md-4 col-12 mb-3" *ngFor="let item of transactionsPieData">
+            <div class="summary-card">
+              <div>
+                <p class="h2-bold">{{ item.val }}</p>
+                <p class="body-bold gray-700">
+                  {{ item.name }}
+                </p>
+              </div>
+              <img [src]="item.imgSrc" class="" />
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row gx-3">
+        <ng-container
+          *ngIf="
+            searchKeyword
+              ? isItMatching('الأدوات النظامية') || isItMatching('المعاملات من ناحية الأهمية')
+              : true
+          "
+        >
+          <div class="col-md-4 col-12">
+            <ng-container *ngIf="searchKeyword ? isItMatching('المعاملات من ناحية الأهمية') : true">
+              <div class="d-flex canvas-card mb-3 px-xxl-3 px-xl-2 px-3 justify-content-center">
+                <div>
+                  <canvas
+                    baseChart style="min-height: 100px !important; min-width: 100px !important;"
+                    [data]="priorityTransactionsDoughnutChartData!"
+                    [type]="doughnutChartType"
+                    [options]="priorityTransactionsOptions"
+                  >
+                  </canvas>
+                </div>
+                <div class="legends">
+                  <p class="body-bold mb-3">{{ 'shared.priorityTransactions' | translate }}</p>
+                  <div
+                    *ngFor="let priorityTransaction of priorityTransactions?.values; let i = index"
+                    class="legend"
+                  >
+                    <div class="legend-container">
+                      <div
+                        class="legend-color-box"
+                        [style.backgroundColor]="priorityTransactionsColors[i]"
+                      ></div>
+                      <span class="body text-small"> {{ priorityTransaction.title }} </span>
+                    </div>
+                    <span class="body-bold text-small">{{ priorityTransaction.count }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="searchKeyword ? isItMatching('الأدوات النظامية') : true">
+              <div class="d-flex canvas-card mb-3 px-xxl-3 px-xl-2 px-3 justify-content-center">
+                <div>
+                  <canvas
+                    baseChart style="min-height: 100px !important; min-width: 100px !important;"
+                    [data]="systematicImportsDoughnutChartData!"
+                    [type]="doughnutChartType"
+                    [options]="systematicImportsDoughnutOptions"
+                  >
+                  </canvas>
+                </div>
+                <div class="legends">
+                  <p class="body-bold mb-3">{{ 'shared.systematicTools' | translate }}</p>
+                  <div
+                    *ngFor="let systematicImport of systematicImports?.values; let i = index"
+                    class="legend"
+                  >
+                    <div class="legend-container">
+                      <div
+                        class="legend-color-box"
+                        [style.backgroundColor]="systematicImportsColors[i]"
+                      ></div>
+                      <span class="body text-small">{{ systematicImport.title }}</span>
+                    </div>
+                    <span class="body-bold text-small">{{ systematicImport.count }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="searchKeyword ? isItMatching('التوصيات والنتائج') : true">
+          <div class="col-md-8">
+            <div class="canvas-card h-100 align-items-start">
+              <div class="w-100">
+                <p class="body-bold mb-3 custom-title mt-2">
+                  {{ 'shared.recommendationResults' | translate }}
+                  <span> ({{ recommendationResults?.total }}) </span>
+                </p>
+                <apx-chart
+                  *ngIf="recommendationResultsChartData"
+                  [series]="recommendationResultsChartData.series"
+                  [chart]="recommendationResultsChartData.chart"
+                  [responsive]="recommendationResultsChartData.responsive"
+                  [plotOptions]="recommendationResultsChartData.plotOptions"
+                  [xaxis]="recommendationResultsChartData.xaxis"
+                  [legend]="recommendationResultsChartData.legend"
+                  [fill]="recommendationResultsChartData.fill"
+                  [dataLabels]="recommendationResultsChartData.dataLabels"
+                ></apx-chart>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <ng-container *ngIf="searchKeyword ? isItMatching('الاعتمادات والتكاليف') : true">
+      <div class="listingPageCard mb-3">
+        <p class="body-bold mb-3">{{ 'shared.budget' | translate }}</p>
+
+        <div class="nested-card mb-3 pb-0">
+          <div class="row gx-3">
+            <div class="col-md-6 col-12 ps-0 scrollable-table">
+              <p class="body-bold mb-3">{{ 'shared.theCredits' | translate }}</p>
+              <div class="w-100">
+                <table>
+                  <thead>
+                    <th>{{ 'shared.sector' | translate }}</th>
+                    <th>{{ 'shared.affiliatedEntity' | translate }}</th>
+                    <th>{{ 'shared.requestedAmount' | translate }}</th>
+                    <th>{{ 'shared.approvedAmount' | translate }}</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of foundationsAmounts?.credits">
+                      <td>{{ item.sector.title }}</td>
+                      <td>{{ item.title }}</td>
+                      <td>
+                        <div class="d-flex align-items-center justify-content-center">
+                          {{ item.requestedAmount | number : '1.2-2' }}
+                          <svg width="1.3rem" height="1.4rem" class="mx-2">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                          </svg>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center justify-content-center">
+                          {{ item.approvedAmount | number : '1.2-2' }}
+                          <svg width="1.3rem" height="1.4rem" class="mx-2">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                          </svg>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-md-6 col-12 pe-0">
+              <div class="h-100">
+                <!-- <div class="inner_header">
+                <p class="fw-bold fs-300">اجمالي الاعتمادات:</p>
+                <p class="fw-bold fs-300">{{ totalCredits | currency : "" : "symbol" : "1.2-2" }}</p>
+              <svg  width="1.5rem" height="1.5rem" class=""><use  xlink:href="assets/icons/sprite.svg#riyal"></use></svg>
+              </div> -->
+                <div>
+                  <apx-chart
+                    *ngIf="creditsChartData"
+                    [series]="creditsChartData.series"
+                    [chart]="creditsChartData.chart"
+                    [xaxis]="creditsChartData.xaxis"
+                    [stroke]="creditsChartData.stroke"
+                    [dataLabels]="creditsChartData.dataLabels"
+                    [yaxis]="creditsChartData.yaxis"
+                    [labels]="creditsChartData.labels"
+                    [legend]="creditsChartData.legend"
+                    [title]="creditsChartData.title"
+                    [subtitle]="creditsChartData.subtitle"
+                    [fill]="creditsChartData.fill"
+                  ></apx-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nested-card pb-0">
+          <div class="row gx-3">
+            <div class="col-md-6 col-12 ps-0 scrollable-table">
+              <p class="body-bold mb-3">{{ 'shared.theCosts' | translate }}</p>
+              <div class="w-100">
+                <table>
+                  <thead>
+                    <th>{{ 'shared.sector' | translate }}</th>
+                    <th>{{ 'shared.affiliatedEntity' | translate }}</th>
+                    <th>{{ 'shared.requestedAmount' | translate }}</th>
+                    <th>{{ 'shared.approvedAmount' | translate }}</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of foundationsAmounts?.costs">
+                      <td>{{ item.sector.title }}</td>
+                      <td>{{ item.title }}</td>
+                      <td>
+                        <div class="d-flex align-items-center justify-content-center">
+                          {{ item.requestedAmount | number : '1.2-2' }}
+                          <svg width="1.3rem" height="1.4rem" class="mx-2">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                          </svg>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center justify-content-center">
+                          {{ item.approvedAmount | number : '1.2-2' }}
+                          <svg width="1.3rem" height="1.4rem" class="mx-2">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+                          </svg>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-12 pe-0">
+              <div class="h-100">
+                <!-- <div class="inner_header">
+                <p class="fw-bold fs-300">اجمالي التكاليف:</p>
+                <p class="fw-bold fs-300">{{ totalCosts | currency : "" : "symbol" : "1.2-2" }}</p>
+              <svg  width="1.5rem" height="1.5rem" class=""><use  xlink:href="assets/icons/sprite.svg#riyal"></use></svg>
+
+              </div> -->
+                <!--The content below is only a placeholder and can be replaced.-->
+                <div id="chart">
+                  <apx-chart
+                    *ngIf="costsChartData"
+                    [series]="costsChartData.series"
+                    [chart]="costsChartData.chart"
+                    [xaxis]="costsChartData.xaxis"
+                    [stroke]="costsChartData.stroke"
+                    [dataLabels]="costsChartData.dataLabels"
+                    [yaxis]="costsChartData.yaxis"
+                    [labels]="costsChartData.labels"
+                    [legend]="costsChartData.legend"
+                    [title]="costsChartData.title"
+                    [subtitle]="costsChartData.subtitle"
+                    [fill]="costsChartData.fill"
+                  ></apx-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container
+    *ngIf="
+      filterCategory === StatisticsCategory.All || filterCategory === StatisticsCategory.Records
+    "
+  >
+    <div class="listingPageCard mb-3">
+      <!-- <span class="statistics-value fw-bold"> {{ priorityRecords?.total }} </span> -->
+
+      <ng-container *ngIf="searchKeyword ? isItMatching('المحاضر') : true">
+        <div class="row gx-3">
+          <div class="col-md-6 col-12">
+            <div class="nested-card mb-3 pb-0">
+              <p class="body-bold mb-3">
+                {{ 'shared.activeAndInactiveRecords' | translate }}
+                <span
+                  >({{ getActiveRecordsCount() + getInActiveRecordsCount() }})
+                </span>
+              </p>
+              <div class="records-chart">
+                <apx-chart
+                  *ngIf="stackedBarChartData"
+                  [series]="stackedBarChartData.series"
+                  [chart]="stackedBarChartData.chart"
+                  [xaxis]="stackedBarChartData.xaxis"
+                  [stroke]="stackedBarChartData.stroke"
+                  [dataLabels]="stackedBarChartData.dataLabels"
+                  [yaxis]="stackedBarChartData.yaxis"
+                  [labels]="stackedBarChartData.labels"
+                  [legend]="stackedBarChartData.legend"
+                  [title]="stackedBarChartData.title"
+                  [subtitle]="stackedBarChartData.subtitle"
+                  [fill]="stackedBarChartData.fill"
+                ></apx-chart>
+
+                <!-- <div class="legends">
+              <div class="legend">
+                <div class="legend-color-box active-records"></div>
+                <div class="legend-label">
+                  <span class="records-legend-label">المحاضر النشطة</span>
+
+                  <span class="fw-bold records-legend-count"
+                  >({{ getActiveRecordsCount() }})</span
+                  >
+                </div>
+              </div>
+
+              <div class="legend">
+                <div class="legend-color-box inactive-records"></div>
+                <div class="legend-label">
+                  <span class="records-legend-label">المحاضر غير النشطة</span>
+
+                  <span class="fw-bold records-legend-count"
+                  >({{ getInActiveRecordsCount() }})</span
+                  >
+                </div>
+              </div>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-12">
+            <div class="nested-card mb-3 pb-0">
+              <p class="body-bold mb-3">
+                {{ 'shared.handOverAndMeetingRecords' | translate }}
+                <span
+                  >({{ getHandOverRecordsCount() + getMeetingsRecordsCount() }})
+                </span>
+              </p>
+              <div class="records-chart">
+                <apx-chart
+                  *ngIf="groupedBarChartData"
+                  [series]="groupedBarChartData.series"
+                  [chart]="groupedBarChartData.chart"
+                  [xaxis]="groupedBarChartData.xaxis"
+                  [stroke]="groupedBarChartData.stroke"
+                  [dataLabels]="groupedBarChartData.dataLabels"
+                  [yaxis]="groupedBarChartData.yaxis"
+                  [labels]="groupedBarChartData.labels"
+                  [legend]="groupedBarChartData.legend"
+                  [title]="groupedBarChartData.title"
+                  [subtitle]="groupedBarChartData.subtitle"
+                  [fill]="groupedBarChartData.fill"
+                ></apx-chart>
+
+                <!-- <div class="legends">
+              <div class="legend">
+                <div class="legend-color-box active-records"></div>
+                <div class="legend-label">
+                  <span class="records-legend-label">محاضر التمرير</span>
+
+                  <span class="fw-bold records-legend-count"
+                  >({{ getHandOverRecordsCount() }})</span
+                  >
+                </div>
+              </div>
+
+              <div class="legend">
+                <div class="legend-color-box inactive-records"></div>
+                <div class="legend-label">
+                  <span class="records-legend-label">محاضر الاجتماع</span>
+
+                  <span class="fw-bold records-legend-count"
+                  >({{ getMeetingsRecordsCount() }})</span
+                  >
+                </div>
+              </div>
+            </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="searchKeyword ? isItMatching('معدل تواقيع أصحاب المعالي') : true">
+        <div class="nested-card">
+          <div class="row gx-3">
+            <div class="col-md-5 col-12 d-flex align-items-center">
+              <p class="body-bold mb-0">معدل تواقيع أصحاب المعالي</p>
+            </div>
+            <div class="col-md-7 col-12">
+              <div class="avg-sign-container">
+                <div class="avg-sign-card">
+                  <span class="body text-small">{{ 'shared.signaturesNum' | translate }}</span>
+                  <span class="body-bold">{{ signsCount }}</span>
+                </div>
+                <div class="avg-sign-card">
+                  <span class="body text-small">{{ 'shared.reservationsNum' | translate }}</span>
+                  <span class="body-bold">{{ converatismsCount }}</span>
+                </div>
+                <div class="avg-sign-card">
+                  <span class="body text-small">{{ 'shared.objectionsNum' | translate }}</span>
+                  <span class="body-bold">
+                    {{ opinionRefrainsCount }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <table class="table table-bordered mt-3 mb-0 custom-table">
+                <thead class="border-style-none">
+                  <th>العضو</th>
+                  <th>
+                    <span
+                      (click)="$event.stopPropagation()"
+                      [matMenuTriggerFor]="filterMenu"
+                      [matMenuTriggerRestoreFocus]="false"
+                      class="filter"
+                      >اللجنة
+                      <svg width="1rem" height="1rem">
+                        <use [attr.xlink:href]="'assets/icons/filter_icon_black.svg'"></use>
+                      </svg>
+                    </span>
+                    <mat-menu
+                      #filterMenu="matMenu"
+                      class="p-4 text-center"
+                      matMenuPositionX="center"
+                      matMenuPositionY="below"
+                      class="menu-same-width customPosition"
+                    >
+                      <span class="fs-14">
+                        <button
+                          mat-menu-item
+                          class="text-small p-1"
+                          (click)="
+                            filterSign = SignCategoryType.FinanceCommittee;
+                            filterCommitteeApprovals()
+                          "
+                        >
+                          <mat-radio-button
+                            [checked]="filterSign == SignCategoryType.FinanceCommittee"
+                            (click)="$event.stopPropagation()"
+                            class="mr-2"
+                            disableRipple
+                          ></mat-radio-button>
+                          اللجنة المالية
+                        </button>
+                      </span>
+                      <span class="fs-14">
+                        <button
+                          mat-menu-item
+                          class="text-small p-1"
+                          (click)="
+                            filterSign = SignCategoryType.PreparatoryCommittee;
+                            filterCommitteeApprovals()
+                          "
+                        >
+                          <mat-radio-button
+                            [checked]="filterSign == SignCategoryType.PreparatoryCommittee"
+                            (click)="$event.stopPropagation()"
+                            class="mr-2"
+                            disableRipple
+                          ></mat-radio-button>
+                          اللجنة التحضيرية
+                        </button>
+                      </span>
+                    </mat-menu>
+                  </th>
+
+                  <th>متوسط التوقيع</th>
+                  <th>توقيع</th>
+                  <th>تحفظ</th>
+                  <th>امتناع</th>
+                  <th>إجمالي الإجراءات</th>
+                </thead>
+                <tbody class="borderless">
+                  <tr
+                    [ngClass]="dataSource.length == i + 1 ? 'border-style-none' : ''"
+                    class="border-left-style-none border-right-style-none"
+                    *ngFor="let item of dataSource; let i = index"
+                  >
+                    <td>{{ item.member }}</td>
+                    <td>{{ item.committee }}</td>
+
+                    <td class="fw-bold">
+                      {{ item.averageSign | minutesToReadableTime }}
+                    </td>
+                    <td>
+                      {{ item.sign }}
+                    </td>
+                    <td>
+                      {{ item.conservatism }}
+                    </td>
+                    <td>
+                      {{ item.opinionRefrain }}
+                    </td>
+                    <td class="fw-bold">
+                      {{ item.totalActions }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</section>
+<ng-template #elseBlock>
+  <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 89vh">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</ng-template>

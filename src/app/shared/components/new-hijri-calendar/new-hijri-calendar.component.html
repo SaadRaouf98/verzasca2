@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold"></h2>
+</div>
+
+<div class="body-content">
+  <div id="calendarHeader">
+    <div id="dateInfo">
+      <span id="islamicDate"></span>
+      <button id="todayButton" (click)="goToToday()">Today</button>
+      <span id="gregorianDate"></span>
+    </div>
+
+    <div id="navigationIcons">
+      <span class="nav-icon" (click)="changeYear(-1)">❮❮</span>
+      <span class="nav-icon" (click)="changeMonth(-1)">❮</span>
+      <select id="gMonth"></select>
+      <select id="gYear"></select>
+      <span class="nav-icon" (click)="changeMonth(1)">❯</span>
+      <span class="nav-icon" (click)="changeYear(1)">❯❯</span>
+    </div>
+  </div>
+  <table id="calendar">
+    <tr>
+      <th>الاحد</th>
+      <th>الاثنين</th>
+      <th>الثلاثاء</th>
+      <th>الاربعاء</th>
+      <th>الخميس</th>
+      <th>الجمعة</th>
+      <th>السبت</th>
+    </tr>
+  </table>
+  <div>
+    <script></script>
+  </div>
+</div>
+
+<div
+  *ngIf="data.editable"
+  mat-dialog-actions
+  class="d-flex justify-content-center | modal-actions"
+>
+  <!--start Submit button-->
+  <div class="d-flex justify-content-center mt-s | submit-btn-container">
+    <button
+      mat-fab
+      extended
+      class="save-btn d-flex align-items-center fw-bold fs-500 | submit-btn"
+      (click)="onSubmit()"
+    >
+      حفظ واغلاق
+    </button>
+  </div>
+  <!--end Submit button-->
+</div>

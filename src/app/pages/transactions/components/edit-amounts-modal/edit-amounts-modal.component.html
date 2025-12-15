@@ -1,0 +1,187 @@
+<div mat-dialog-title class="modal-header">
+  <button id="close-icon" (click)="onCancel()" class="dismiss-btn" mat-icon-button>
+    <img src="assets/icons/close-ico.svg" />
+  </button>
+
+  <h2 class="fs-600 fw-bold">
+    {{
+    "TransactionsModule.TransactionDetailsComponent.editAmounts" | translate
+    }}
+  </h2>
+</div>
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <div class="col-12 col-md-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('costsRequestedAmount')?.errors &&
+            isTouched('costsRequestedAmount'),
+          'mat-form-field-div-success':
+            !form.get('costsRequestedAmount')?.errors &&
+            isTouched('costsRequestedAmount')
+        }">
+        <div class="label-container">
+          <label for="costsRequestedAmount">
+            {{ "shared.costsRequestedAmount" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput type="number" min="0" step="10000" name="costsRequestedAmount"
+            formControlName="costsRequestedAmount" placeholder="{{ 'shared.costsRequestedAmount' | translate }}"
+            id="costsRequestedAmount" />
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="
+                !form.get('costsRequestedAmount')?.errors &&
+                isTouched('costsRequestedAmount')
+              " />
+            <img src="assets/icons/error-input.svg" *ngIf="
+                form.get('costsRequestedAmount')?.errors &&
+                isTouched('costsRequestedAmount')
+              " />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+          form.get('costsRequestedAmount')?.errors?.['required'] &&
+            isTouched('costsRequestedAmount')
+        ">
+          {{
+          "TransactionsModule.EditAmountsModalComponent.costsRequestedAmountRequired"
+          | translate
+          }}
+        </span>
+      </div>
+
+      <div class="col-12 col-md-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('creditsRequestedAmount')?.errors &&
+            isTouched('creditsRequestedAmount'),
+          'mat-form-field-div-success':
+            !form.get('creditsRequestedAmount')?.errors &&
+            isTouched('creditsRequestedAmount')
+        }">
+        <div class="label-container">
+          <label for="creditsRequestedAmount">
+            {{ "shared.creditsRequestedAmount" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <app-input matInput type="number" [appCurrencySarInput]="true" [showriyalIcon]="true" min="0" step="10000"
+            name="creditsRequestedAmount" formControlName="creditsRequestedAmount"
+            placeholder="{{ 'shared.creditsRequestedAmount' | translate }}" id="creditsRequestedAmount"></app-input>
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="
+                !form.get('creditsRequestedAmount')?.errors &&
+                isTouched('creditsRequestedAmount')
+              " />
+            <img src="assets/icons/error-input.svg" *ngIf="
+                form.get('creditsRequestedAmount')?.errors &&
+                isTouched('creditsRequestedAmount')
+              " />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+          form.get('creditsRequestedAmount')?.errors?.['required'] &&
+            isTouched('creditsRequestedAmount')
+        ">
+          {{
+          "TransactionsModule.EditAmountsModalComponent.creditsRequestedAmountRequired"
+          | translate
+          }}
+        </span>
+      </div>
+
+      <div class="col-12 col-md-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('costsApprovedAmount')?.errors &&
+            isTouched('costsApprovedAmount'),
+          'mat-form-field-div-success':
+            !form.get('costsApprovedAmount')?.errors &&
+            isTouched('costsApprovedAmount')
+        }">
+        <div class="label-container">
+          <label for="costsApprovedAmount">
+            {{ "shared.costsApprovedAmount" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput type="number" min="0" step="10000" name="costsApprovedAmount"
+            formControlName="costsApprovedAmount" placeholder="{{ 'shared.costsApprovedAmount' | translate }}"
+            id="costsApprovedAmount" />
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="
+                !form.get('costsApprovedAmount')?.errors &&
+                isTouched('costsApprovedAmount')
+              " />
+            <img src="assets/icons/error-input.svg" *ngIf="
+                form.get('costsApprovedAmount')?.errors &&
+                isTouched('costsApprovedAmount')
+              " />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+          form.get('costsApprovedAmount')?.errors?.['required'] &&
+            isTouched('costsApprovedAmount')
+        ">
+          {{
+          "TransactionsModule.EditAmountsModalComponent.costsApprovedAmountRequired"
+          | translate
+          }}
+        </span>
+      </div>
+
+      <div class="col-12 col-md-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('creditsApprovedAmount')?.errors &&
+            isTouched('creditsApprovedAmount'),
+          'mat-form-field-div-success':
+            !form.get('creditsApprovedAmount')?.errors &&
+            isTouched('creditsApprovedAmount')
+        }">
+        <div class="label-container">
+          <label for="creditsApprovedAmount">
+            {{ "shared.creditsApprovedAmount" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <app-input matInput type="number" min="0" step="10000" [appCurrencySarInput]="true" [showriyalIcon]="true"
+            name="creditsApprovedAmount" formControlName="creditsApprovedAmount"
+            placeholder="{{ 'shared.creditsApprovedAmount' | translate }}" id="creditsApprovedAmount"></app-input>
+          <div class="flag-div">
+            <img src="assets/icons/success-input.svg" *ngIf="
+                !form.get('creditsApprovedAmount')?.errors &&
+                isTouched('creditsApprovedAmount')
+              " />
+            <img src="assets/icons/error-input.svg" *ngIf="
+                form.get('creditsApprovedAmount')?.errors &&
+                isTouched('creditsApprovedAmount')
+              " />
+          </div>
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+          form.get('creditsApprovedAmount')?.errors?.['required'] &&
+            isTouched('creditsApprovedAmount')
+        ">
+          {{
+          "TransactionsModule.EditAmountsModalComponent.creditsApprovedAmountRequired"
+          | translate
+          }}
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="justify-content-end">
+  <button (click)="onSubmit()" [disabled]="form.invalid || disableSubmitBtn" class="bg-primary | save-btn btnMd"
+    mat-flat-button>
+    {{ "shared.save" | translate }}
+  </button>
+
+  <button (click)="onCancel()" class="btnSmall" mat-flat-button data-appearance="outline" id="cancel-btn">
+    {{ "shared.cancel" | translate }}
+  </button>
+</div>

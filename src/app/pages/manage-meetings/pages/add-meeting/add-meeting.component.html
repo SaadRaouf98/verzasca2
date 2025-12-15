@@ -1,0 +1,845 @@
+<div class="row justify-content-between align-items-center component-header">
+  <div class="col-12 col-lg-7 d-flex align-items-center | heading">
+    <a class="cursor-pointer" (click)="onNavigateBack()">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+
+    <h2 class="component-header_title">
+      <span *ngIf="elementId; else elseBlock">
+        {{
+          "ManageMeetingsModule.AddMeetingComponent.editMeetingDetails"
+            | translate
+        }}
+      </span>
+      <ng-template #elseBlock>
+        {{ "shared.addNewMeeting" | translate }}
+      </ng-template>
+    </h2>
+  </div>
+
+  <div
+    class="col-12 col-lg-5 d-flex justify-content-end align-items-center button-group-gap"
+  >
+    <button class="cancel-btn" (click)="onNavigateBack()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      [disabled]="form.invalid || disableSubmitBtn"
+      (click)="onSubmit()"
+      mat-flat-button
+    >
+      {{ "shared.save" | translate }}
+    </button>
+  </div>
+</div>
+
+<div id="steps-container">
+  <div class="step" [class.active]="currentStep === 1">
+    <span class="step-number" [class.step-number-done]="currentStep !== 1"
+      >1</span
+    >
+    <span class="step-title" [class.step-title-done]="currentStep !== 1"
+      >بيانات الاجتماع</span
+    >
+  </div>
+
+  <hr [class.hr-done]="currentStep !== 1" />
+
+  <div class="step" [class.active]="currentStep === 2">
+    <span class="step-number" [class.step-number-done]="currentStep === 3"
+      >2</span
+    >
+    <span class="step-title" [class.step-title-done]="currentStep === 3"
+      >الحضور</span
+    >
+  </div>
+
+  <hr [class.hr-done]="currentStep === 3" />
+
+  <div class="step" [class.active]="currentStep === 3">
+    <span class="step-number">3</span>
+    <span class="step-title"> جدول الانعقاد</span>
+  </div>
+</div>
+
+<form autocomplete="off" [formGroup]="form">
+  <section *ngIf="currentStep === 1">
+    <div class="section-card mb-3">
+      <div class="row justify-content-between">
+        <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+          <a class="cursor-pointer" (click)="onNavigateBack()">
+            <img
+              src="assets/icons/right-arrow.png"
+              alt="Navigation back."
+              class="arrow-icon"
+              [class.rotate-arrow]="lang === 'en'"
+            />
+          </a>
+
+          <h2>بيانات الاجتماع</h2>
+        </div>
+      </div>
+      <div class="row rest-fields-container">
+        <!-- start title -->
+        <div
+          class="col-12 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('title')?.errors && isTouched('title'),
+            'mat-form-field-div-success':
+              !form.get('title')?.errors && isTouched('title')
+          }"
+        >
+          <div class="label-container">
+            <label for="title"> عنوان الاجتماع *</label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input matInput name="title" formControlName="title" />
+            <div class="flag-div">
+              <img
+                src="assets/icons/success-input.svg"
+                *ngIf="!form.get('title')?.errors && isTouched('title')"
+              />
+              <img
+                src="assets/icons/error-input.svg"
+                *ngIf="form.get('title')?.errors && isTouched('title')"
+              />
+            </div>
+          </mat-form-field>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                form.get('title')?.errors?.['required'] &&
+                isTouched('title')
+              "
+          >
+            {{ "shared.titleRequired" | translate }}
+          </span>
+        </div>
+        <!-- end title-->
+
+        <!-- start password -->
+        <div
+          class="col-12 col-lg-4 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('password')?.errors && isTouched('password'),
+            'mat-form-field-div-success':
+              !form.get('password')?.errors && isTouched('password')
+          }"
+        >
+          <div class="label-container">
+            <label for="password">
+              {{ "shared.password" | translate }}
+            </label>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="password"
+              [type]="passwordInput.type"
+              id="password"
+              name="password"
+              autocomplete="new-password"
+            />
+            <div class="flag-div">
+              <img
+                [src]="passwordInput.iconSrc"
+                class="password-eye"
+                (click)="onTogglePassword()"
+                alt="Toggle password visibility."
+              />
+            </div>
+          </mat-form-field>
+        </div>
+        <!-- end password-->
+
+        <!-- start meetingDateTime -->
+        <div
+          class="col-12 col-lg-4 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('meetingDateTime')?.errors &&
+              isTouched('meetingDateTime'),
+            'mat-form-field-div-success':
+              !form.get('meetingDateTime')?.errors &&
+              isTouched('meetingDateTime')
+          }"
+        >
+          <div class="label-container">
+            <label for="meetingDateTime">
+              {{ "shared.meetingTime" | translate }} *
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              name="meetingDateTime"
+              formControlName="meetingDateTime"
+              [ngxMatDatetimePicker]="picker"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="$any(picker)"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              style="direction: ltr !important"
+              #picker
+              [showSpinners]="showSpinners"
+              [showSeconds]="showSeconds"
+              [stepHour]="stepHour"
+              [stepMinute]="stepMinute"
+              [stepSecond]="stepSecond"
+              [touchUi]="touchUi"
+              [color]="color"
+              [enableMeridian]="enableMeridian"
+              [disableMinute]="disableMinute"
+              [hideTime]="hideTime"
+            ></ngx-mat-datetime-picker>
+          </mat-form-field>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+            form.get('meetingDateTime')?.errors?.['required'] &&
+            isTouched('meetingDateTime')
+          "
+          >
+            {{
+              "ManageMeetingsModule.AddMeetingComponent.meetingTimeRequired"
+                | translate
+            }}
+          </span>
+        </div>
+        <!-- end meetingDateTime-->
+
+        <!--start durationInMinutes -->
+
+        <div
+          class="col-12 col-lg-4 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('durationInMinutes')?.errors &&
+              isTouched('durationInMinutes'),
+            'mat-form-field-div-success':
+              !form.get('durationInMinutes')?.errors &&
+              isTouched('durationInMinutes')
+          }"
+        >
+          <div class="label-container">
+            <label for="durationInMinutes">
+              {{ "shared.meetingDurationInMinutes" | translate }} *
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              name="durationInMinutes"
+              formControlName="durationInMinutes"
+              type="number"
+              min="1"
+            />
+            <div class="flag-div">
+              <img
+                src="assets/icons/success-input.svg"
+                *ngIf="
+                  !form.get('durationInMinutes')?.errors &&
+                  isTouched('durationInMinutes')
+                "
+              />
+              <img
+                src="assets/icons/error-input.svg"
+                *ngIf="
+                  form.get('durationInMinutes')?.errors &&
+                  isTouched('durationInMinutes')
+                "
+              />
+            </div>
+          </mat-form-field>
+        </div>
+
+        <!--end durationInMinutes -->
+
+        <!-- start url -->
+        <div
+          class="col-12 col-lg-8 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('url')?.errors && isTouched('url'),
+            'mat-form-field-div-success':
+              !form.get('url')?.errors && isTouched('url')
+          }"
+        >
+          <div class="label-container">
+            <label for="url">
+              {{ "ManageMeetingsModule.AddMeetingComponent.url" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              name="url"
+              formControlName="url"
+              autocomplete="off"
+            />
+            <div class="flag-div">
+              <img
+                src="assets/icons/success-input.svg"
+                *ngIf="!form.get('url')?.errors && isTouched('url')"
+              />
+              <img
+                src="assets/icons/error-input.svg"
+                *ngIf="form.get('url')?.errors && isTouched('url')"
+              />
+            </div>
+          </mat-form-field>
+        </div>
+        <!-- end url-->
+
+        <!-- start isVirtual -->
+        <div
+          class="col-12 col-lg-4 pt-2 mat-form-field-div d-flex align-items-end justify-content-between"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('isVirtual')?.errors && isTouched('isVirtual'),
+            'mat-form-field-div-success':
+              !form.get('isVirtual')?.errors && isTouched('isVirtual')
+          }"
+        >
+          <div
+            class="d-flex align-items-center justify-content-between | card-content"
+            style="gap: 2em"
+          >
+            <p class="label">
+              {{
+                "ManageMeetingsModule.AddMeetingComponent.meetingNature"
+                  | translate
+              }}
+              *
+            </p>
+
+            <p class="info-data">
+              <mat-slide-toggle name="isVirtual" formControlName="isVirtual">
+                <ng-container
+                  *ngIf="
+                    form.get('isVirtual')?.value;
+                    then isRemotely;
+                    else inPerson
+                  "
+                ></ng-container>
+
+                <ng-template #isRemotely>
+                  {{ "shared.remotely" | translate }}
+                </ng-template>
+                <ng-template #inPerson>
+                  {{ "shared.inPerson" | translate }}
+                </ng-template>
+              </mat-slide-toggle>
+            </p>
+          </div>
+        </div>
+        <!-- end isVirtual-->
+
+        <!-- start description -->
+        <div
+          class="col-12 col-lg-12 pt-2 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('description')?.errors && isTouched('description'),
+            'mat-form-field-div-success':
+              !form.get('description')?.errors && isTouched('description')
+          }"
+        >
+          <div class="label-container">
+            <label for="description">
+              {{ "shared.description" | translate }}
+            </label>
+          </div>
+          <mat-form-field appearance="outline">
+            <textarea
+              matInput
+              formControlName="description"
+              name="description"
+              rows="5"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <!-- end description -->
+      </div>
+    </div>
+
+    <!-- end discussionPoint-->
+
+    <div class="section-card">
+      <h2 class="mb">نوع الاجتماع</h2>
+
+      <div class="row rest-fields-container">
+        <div
+          class="col-12 col-lg-6 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form.get('meetingType')?.errors && isTouched('meetingType'),
+            'mat-form-field-div-success':
+              !form.get('meetingType')?.errors && isTouched('meetingType')
+          }"
+        >
+          <div class="label-container">
+            <label for="meetingType">
+              {{
+                "ManageMeetingsModule.AddMeetingComponent.meetingClassification"
+                  | translate
+              }}
+              *
+            </label>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-select
+              formControlName="meetingType"
+              (selectionChange)="onMeetingTypeChanged()"
+              name="meetingType"
+              id="meetingType"
+            >
+              <mat-option
+                *ngFor="let meetingType of meetingTypes"
+                [value]="meetingType.id"
+              >
+                {{ meetingType.displayedText }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+                    form.get('meetingType')?.errors?.['required'] &&
+                    isTouched('meetingType')
+                  "
+          >
+            {{
+              "ManageMeetingsModule.AddMeetingComponent.meetingClassificationRequired"
+                | translate
+            }}
+          </span>
+        </div>
+
+        <div
+          *ngIf="form.get('meetingType')?.value === MeetingType.Committee"
+          class="col-12 col-lg-6 mat-form-field-div"
+          [ngClass]="{
+            'mat-form-field-div-error':
+              form?.errors?.['committeeRequired'] &&
+            isTouched('committee'),
+            'mat-form-field-div-success':
+              !form?.errors?.['committeeRequired'] &&
+            isTouched('committee'),
+          }"
+        >
+          <div class="label-container">
+            <label for="committee">
+              {{ "shared.committee" | translate }} *
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="committee"
+            [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+            [compareWith]="compareFn"
+            class="form-control"
+            (search)="searchOnCommittees($event)"
+            (change)="onCommitteeSelected()"
+          >
+            <ng-option
+              *ngFor="
+                let organization of (organizationUnitsList$ | async)?.data
+              "
+              [value]="organization"
+            >
+              {{ lang === "ar" ? organization.title : organization.titleEn }}
+            </ng-option>
+          </ng-select>
+
+          <span
+            class="span-error-message"
+            *ngIf="
+            form?.errors?.['committeeRequired'] && isTouched('committee')
+          "
+          >
+            {{ "shared.committeeRequired" | translate }}
+          </span>
+        </div>
+
+        <!--Start committee members-->
+
+        <div
+          *ngIf="form.get('meetingType')?.value === MeetingType.Committee"
+          class="col-12 pt-2"
+        >
+          <p>
+            {{ "ManageMeetingsModule.AddMeetingComponent.members" | translate }}
+          </p>
+
+          <div class="row mb">
+            <div
+              *ngFor="let member of organizationUnitMembers"
+              class="col-12 col-lg-4"
+            >
+              <!-- start member -->
+              <div class="col-12 pt-2 mat-form-field-div">
+                <!--  <div class="label-container">
+                <label> </label>
+              </div> -->
+
+                <div class="member-div">
+                  <p class="member-text">
+                    {{ member.name }}
+                  </p>
+                </div>
+              </div>
+              <!-- end member-->
+            </div>
+
+            <!--Incase if committee has no members -->
+            <p
+              *ngIf="
+                this.form.get('committee')?.value &&
+                organizationUnitMembers.length === 0 &&
+                !this.isLoadingCommitteeMembers
+              "
+              class="no-rows-warning-msg"
+            >
+              {{ "shared.noCommitteeMembers" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section *ngIf="currentStep === 2">
+    <!--Start  الحضور من موظفي الامانه -->
+    <section class="row mb | section-card">
+      <h2 class="mb">الحضور من موظفي الامانه</h2>
+
+      <div class="row">
+        <app-user-search
+          [multiple]="true"
+          [placeholder]="'موظفين الامانة'"
+          [value]="form.get('members')?.value"
+          (emitValue)="form.get('members')?.setValue($event)"
+          (touched)="onSetIfUserIsTouched($event)"
+        ></app-user-search>
+      </div>
+    </section>
+
+    <!--Start attendence-->
+    <section formArrayName="attendances" class="row mb | section-card">
+      <h2 class="mb">
+        {{ "ManageMeetingsModule.AddMeetingComponent.attendence" | translate }}
+      </h2>
+
+      <div
+        *ngFor="let control of attendances.controls; let i = index"
+        [formGroupName]="i"
+        class="row mb-2"
+      >
+        <div class="col-11 row">
+          <!-- start name -->
+          <div
+            class="col-12 col-lg-4 pt-2 mat-form-field-div"
+            [ngClass]="{
+              'mat-form-field-div-error':
+                form.get('name')?.errors && isTouched('name'),
+              'mat-form-field-div-success':
+                !form.get('name')?.errors && isTouched('name')
+            }"
+          >
+            <div class="label-container">
+              <label for="name"> {{ "shared.name" | translate }} * </label>
+            </div>
+            <mat-form-field appearance="outline">
+              <input matInput name="name" formControlName="name" />
+              <div class="flag-div">
+                <img
+                  src="assets/icons/success-input.svg"
+                  *ngIf="!form.get('name')?.errors && isTouched('name')"
+                />
+                <img
+                  src="assets/icons/error-input.svg"
+                  *ngIf="form.get('name')?.errors && isTouched('name')"
+                />
+              </div>
+            </mat-form-field>
+
+            <span
+              class="span-error-message"
+              *ngIf="
+                form.get('name')?.errors?.['required'] &&
+                isTouched('name')
+              "
+            >
+              {{
+                "ManageMeetingsModule.AddMeetingComponent.nameRequired"
+                  | translate
+              }}
+            </span>
+          </div>
+          <!-- end name-->
+
+          <!-- start email -->
+          <div
+            class="col-12 col-lg-4 pt-2 mat-form-field-div"
+            [ngClass]="{
+              'mat-form-field-div-error':
+                form.get('email')?.errors && isTouched('email'),
+              'mat-form-field-div-success':
+                !form.get('email')?.errors && isTouched('email')
+            }"
+          >
+            <div class="label-container">
+              <label for="email"> {{ "shared.email" | translate }} * </label>
+            </div>
+            <mat-form-field appearance="outline">
+              <input matInput name="email" formControlName="email" />
+              <div class="flag-div">
+                <img
+                  src="assets/icons/success-input.svg"
+                  *ngIf="!form.get('email')?.errors && isTouched('email')"
+                />
+                <img
+                  src="assets/icons/error-input.svg"
+                  *ngIf="form.get('email')?.errors && isTouched('email')"
+                />
+              </div>
+            </mat-form-field>
+
+            <span
+              class="span-error-message"
+              *ngIf="
+                      form.get('email')?.errors?.['required'] &&
+                      isTouched('email')
+                    "
+            >
+              {{
+                "ManageMeetingsModule.AddMeetingComponent.emailRequired"
+                  | translate
+              }}
+            </span>
+          </div>
+          <!-- end email-->
+
+          <!-- start foundation -->
+          <div
+            class="col-12 col-lg-4 pt-2 mat-form-field-div"
+            [ngClass]="{
+              'mat-form-field-div-error':
+                form.get('foundation')?.errors && isTouched('foundation'),
+              'mat-form-field-div-success':
+                !form.get('foundation')?.errors && isTouched('foundation')
+            }"
+          >
+            <div class="label-container">
+              <label for="foundation">
+                {{ "shared.foundation" | translate }}
+              </label>
+            </div>
+            <mat-form-field appearance="outline">
+              <input matInput name="foundation" formControlName="foundation" />
+              <div class="flag-div">
+                <img
+                  src="assets/icons/success-input.svg"
+                  *ngIf="
+                    !form.get('foundation')?.errors && isTouched('foundation')
+                  "
+                />
+                <img
+                  src="assets/icons/error-input.svg"
+                  *ngIf="
+                    form.get('foundation')?.errors && isTouched('foundation')
+                  "
+                />
+              </div>
+            </mat-form-field>
+          </div>
+          <!-- end foundation-->
+        </div>
+
+        <div
+          class="col-lg-1 d-flex flex-column justify-content-end align-items-center"
+        >
+          <a
+            (click)="onDeleteAttendant(i)"
+            class="cursor-pointer | delete-icon"
+          >
+            <img src="assets/icons/big-delete.png" />
+          </a>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4 | add-btn-container">
+        <button
+          class="add-attendant-btn"
+          (click)="onAddAttendence()"
+          mat-flat-button
+        >
+          إضافة حاضر
+        </button>
+      </div>
+    </section>
+    <!--End attendence-->
+  </section>
+
+  <section *ngIf="currentStep === 3">
+    <!--start  containers section -->
+    <section
+      *ngxPermissionsOnly="[PermissionsObj.MeetingAddUnScheduledRequests]"
+      class="row mb | section-card"
+    >
+      <div class="row">
+        <div class="col-12">
+          <h2>
+            قائمة المعاملات
+            <span>(المعاملات تحت الاجراء)</span>
+          </h2>
+          <app-scheduled-request-containers-scrollable-table
+            [committeeId]="this.form.get('committee')?.value?.id"
+            [checkedIds]="this.form.get('requestContainersIds')?.value || []"
+            (requestContainersIds)="onSetRequestContainersIds($event)"
+          ></app-scheduled-request-containers-scrollable-table>
+        </div>
+      </div>
+    </section>
+
+    <!--end  containers section-->
+
+    <!--start scheduled containers section -->
+    <section class="row mb | section-card">
+      <div class="row">
+        <div class="col-12">
+          <h2>
+            {{
+              "ManageMeetingsModule.AddMeetingComponent.scheduledRequestContainers"
+                | translate
+            }}
+          </h2>
+          <app-scheduled-request-containers-scrollable-table
+            [committeeId]="this.form.get('committee')?.value?.id"
+            [isScheduled]="true"
+            [checkedIds]="
+              this.form.get('scheduledRequestContainersIds')?.value || []
+            "
+            (requestContainersIds)="onSetScheduledRequestContainersIds($event)"
+          ></app-scheduled-request-containers-scrollable-table>
+        </div>
+      </div>
+    </section>
+
+    <!--end scheduled containers section-->
+
+    <!-- start discussionPoint -->
+
+    <section class="row mb | section-card">
+      <h2 class="mb">
+        {{
+          "ManageMeetingsModule.AddMeetingComponent.discussionPoints"
+            | translate
+        }}
+      </h2>
+
+      <div formArrayName="discussionPoints">
+        <div
+          *ngFor="let control of discussionPoints.controls; let i = index"
+          class="row mb"
+        >
+          <div
+            class="col-12 col-lg-11 mat-form-field-div"
+            [ngClass]="{
+              'mat-form-field-div-error':
+                form.get('discussionPoint')?.errors &&
+                isTouched('discussionPoint'),
+              'mat-form-field-div-success':
+                !form.get('discussionPoint')?.errors &&
+                isTouched('discussionPoint')
+            }"
+          >
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                name="discussionPoint"
+                [formControl]="getFormControlByIndex(discussionPoints, i)"
+              />
+              <div class="flag-div">
+                <img
+                  src="assets/icons/success-input.svg"
+                  *ngIf="
+                    !form.get('discussionPoint')?.errors &&
+                    isTouched('discussionPoint')
+                  "
+                />
+                <img
+                  src="assets/icons/error-input.svg"
+                  *ngIf="
+                    form.get('discussionPoint')?.errors &&
+                    isTouched('discussionPoint')
+                  "
+                />
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div
+            class="col-12 col-lg-1 d-flex flex-column justify-content-end align-items-center"
+          >
+            <a
+              (click)="onDeleteDiscussionPoint(i)"
+              class="cursor-pointer | delete-icon"
+            >
+              <img src="assets/icons/big-delete.png" />
+            </a>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4 | add-btn-container">
+          <button
+            class="add-attendant-btn"
+            (click)="onAddDiscussionPoint()"
+            mat-flat-button
+          >
+            اضافة
+          </button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <div class="row rest-fields-container next-before-btn-container">
+    <div class="justify-content-between" [class.d-flex]="currentStep > 1">
+      <button
+        *ngIf="currentStep > 1"
+        class="before-btn"
+        (click)="onGOToPreviousStep()"
+        mat-flat-button
+      >
+        {{ "shared.before" | translate }}
+      </button>
+
+      <button
+        *ngIf="currentStep !== 3"
+        class="next-btn"
+        (click)="onGOToNextStep()"
+        mat-flat-button
+      >
+        {{ "shared.next" | translate }}
+      </button>
+    </div>
+  </div>
+</form>

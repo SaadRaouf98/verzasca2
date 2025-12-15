@@ -1,0 +1,21 @@
+h3 {
+  margin: 1em 0;
+}
+
+div[mat-dialog-contents] {
+  height: 200px;
+  padding: 0 24px 9px;
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+.mdc-dialog__title::before {
+  content: unset;
+}
+@media screen and (max-width: 991px) {
+  .imgSuceess {
+    width: 100%;
+  }
+}

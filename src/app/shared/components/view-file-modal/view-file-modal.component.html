@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">
+    {{ data.fileName }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <tx-document-editor
+    width="90%"
+    height="800px"
+    [webSocketURL]="
+      'wss://backend.textcontrol.com/TXWebSocket?access-token=' + editorToken
+    "
+    [documentTargetMarkers]="true"
+    [editMode]="editMode"
+  >
+  </tx-document-editor>
+</div>

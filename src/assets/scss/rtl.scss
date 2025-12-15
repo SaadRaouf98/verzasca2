@@ -1,0 +1,112 @@
+@import '../design-system/_typography.scss';
+
+html[lang='ar'] {
+  direction: rtl;
+  text-align: right;
+  font-family: $font-family-primary !important;
+  font-size: 16px;
+
+  //select all except mat-icon tags
+  *:not(mat-icon):not(.fc-icon):not(.hgi):not(.icon) {
+    font-family: $font-family-primary !important;
+  }
+  .mdc-label,
+  mat-date-range-input span {
+    font-family: $font-family-primary !important;
+  }
+
+  .mat-mdc-extended-fab {
+    letter-spacing: 0;
+  }
+
+  .mdc-button {
+    letter-spacing: 0;
+  }
+
+  .mat-form-field {
+    text-align: right;
+  }
+
+  .mat-menu-item {
+    text-align: right;
+  }
+
+  th.mat-mdc-header-cell {
+    text-align: center;
+  }
+
+  .mat-form-field-appearance-outline {
+    .mat-form-field-outline-start {
+      border-radius: 0 5px 5px 0;
+      border-left-style: none;
+      border-right-style: solid;
+    }
+  }
+
+  .mat-option {
+    text-align: right;
+  }
+
+  .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+    right: -7px;
+  }
+
+  .mat-badge-medium.mat-badge-above .mat-badge-content {
+    top: 1px;
+  }
+
+  .mat-mdc-tab {
+    letter-spacing: 0;
+  }
+
+  .mat-mdc-table {
+    .mat-mdc-cell {
+      // padding: 4px 4px 4px 0 !important;
+      @media (min-width: 1332px) {
+        & {
+          // padding: 14px 14px 14px 0 !important;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .modal-content {
+      padding: 20px 24px !important;
+    }
+  }
+
+  .modal-container {
+    .dismiss-btn {
+      left: 10px;
+      right: auto !important;
+    }
+  }
+
+  /*Calendar icon in the datepicker*/
+  .calendar-icon {
+    margin-left: 8px;
+    margin-right: 0;
+  }
+
+  /**********   Dialog      **************/
+  .mdc-dialog__title {
+    padding: 0 !important;
+  }
+
+  /**********  Notifications icon ****************/
+  @media (max-width: 660px) {
+    .header-icons-container {
+      margin-right: auto;
+      margin-left: 0;
+    }
+  }
+
+  /**************************  TimeLine  *********************************/
+
+  /*************************************************/
+  app-container .number-container .number {
+    right: unset !important;
+    left: 0px;
+  }
+}

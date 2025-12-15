@@ -1,0 +1,46 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{
+            "SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType"
+              | translate
+          }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="benefitType"
+          [options]="(benefitTypesList$ | async)?.data || []"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="
+            'SharedModule.SelectBenefitTypeModalComponent.chooseBenefitType'
+          "
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+
+        <div
+          *ngIf="
+            form.get('benefitType')?.invalid && form.get('benefitType')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              "SharedModule.SelectBenefitTypeModalComponent.benefitTypeRequired"
+                | translate
+            }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8.005" viewBox="0 0 8 8.005">
+    <defs>
+        <clipPath id="s2n3umvpna">
+            <path fill="none" d="M103.15-17.85a.483.483 0 0 1 .7 0L107-14.7l3.15-3.152a.483.483 0 0 1 .7 0 .482.482 0 0 1 .059.63l-.059.07L107.7-14l3.15 3.152a.482.482 0 0 1 .059.63l-.059.07a.483.483 0 0 1-.7 0L107-13.3l-3.15 3.152a.483.483 0 0 1-.7 0 .484.484 0 0 1 0-.7L106.3-14l-3.15-3.152-.059-.07a.482.482 0 0 1 .059-.628z" clip-rule="evenodd"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#s2n3umvpna)" transform="translate(-103 18)">
+        <path fill="#002b6b" d="M98-23h18v18H98z"/>
+    </g>
+</svg>

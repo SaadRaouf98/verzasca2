@@ -1,0 +1,994 @@
+@use 'src/assets/design-system/colors' as *;
+:host ::ng-deep {
+  .table-responsive table {
+    --th-height: 32px;
+    --th-bg: var(--purple);
+    --th-fc: var(--white);
+    --td-height: 75px;
+    --td-radius: 0;
+    --border-spacing: 0;
+    --border-collapse: collapse;
+    --tr-even-bc: var(--white);
+    --tr-odd-bc: var(--white);
+    --tr-border: 1px solid var(--light-gray);
+    --th-border: none;
+    --cell-pading: 0 24px;
+    --th-fs: 11px;
+    // border-top: 1px solid $rose-200;
+    tr.selected-row,
+    tr.selected-row:hover {
+      background-color: #ecfeff;
+      border-inline-start: 3px solid var(--sea-light);
+    }
+
+    td.mat-mdc-cell.mat-mdc-table-sticky {
+      box-shadow: -10px 0px 10px 0px rgb(0 0 0 / 7%);
+    }
+
+    mat-form-field,
+    .e-control,
+    .mdc-form-field {
+      --input-height: 35px;
+    }
+    .cursor-pointer td {
+      cursor: pointer;
+    }
+  }
+
+  .ServiceDetails {
+    display: inline-block;
+    max-width: 230px;
+    white-space: normal;
+  }
+
+  .Color {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+  }
+
+  .Colorbg {
+    width: fit-content;
+    min-width: 102px;
+
+    span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+  }
+
+  span.number {
+    color: var(--coral);
+  }
+
+  .progress_group {
+    width: 100px;
+
+    .progress-container.default-progress {
+      min-width: 25px;
+      background-color: #cdd0d1;
+    }
+  }
+
+  .subsidiary {
+    img {
+      height: 22px;
+      max-width: initial;
+    }
+  }
+
+  .sla {
+    svg {
+      width: 37px;
+    }
+
+    text {
+      font-size: 10px;
+    }
+  }
+
+  .Periority {
+    &.High {
+      color: var(--red);
+    }
+
+    &.Medium {
+      color: var(--orange);
+    }
+
+    &.Low,
+    &.Yes {
+      color: var(--green);
+    }
+  }
+
+  tr {
+    &:nth-child(odd) {
+      .history,
+      .Finished {
+        background-color: var(--light-gray);
+      }
+    }
+
+    &:nth-child(even) {
+      .history,
+      .Finished {
+        background-color: var(--white);
+      }
+    }
+
+    th {
+      top: -1px !important;
+    }
+  }
+
+  .Finished {
+    min-width: 27px;
+  }
+
+  ds-button.coral:hover svg path {
+    fill: var(--coral);
+  }
+
+  ds-status.statusAction::part(base) {
+    min-height: 35px;
+    --status-width: 100%;
+  }
+
+  .dropdown {
+    border-radius: 3px;
+    background: var(--Grays-Off-white, #f3f3f1);
+    display: flex;
+    height: 35px;
+    padding: 10px;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    width: fit-content;
+
+    ds-icon span {
+      font-weight: bold;
+    }
+  }
+}
+
+.dot-status {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.red {
+    background-color: var(--red);
+  }
+
+  &.green {
+    background-color: var(--green);
+  }
+}
+
+.sticky-table {
+  // max-height: 100vh;
+}
+
+:host ::ng-deep {
+  ds-status::part(base) {
+    min-height: 23px;
+  }
+
+  .Category span {
+    border-radius: 3px;
+    width: 97px;
+    height: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mat-checkbox {
+    .mat-checkbox-ripple {
+      left: calc(50% - 17px);
+      top: calc(50% - 17px);
+      height: 30px;
+      width: 30px;
+    }
+
+    .mat-checkbox-layout .mat-checkbox-inner-container .mat-checkbox-frame {
+      width: 20px;
+      height: 20px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgb(144 154 159 / 30%);
+    }
+  }
+
+  .mat-checkbox-checked .mat-checkbox-checkmark {
+    width: 20px;
+  }
+
+  .idea a {
+    &:hover {
+      text-decoration: underline;
+      color: var(--coral);
+    }
+  }
+}
+.paginator {
+  width: 800px;
+}
+
+.table-container {
+  max-height: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  border-radius: 12px;
+  transition: scroll-behavior 0.5s ease-in-out;
+  // min-height: 21rem;
+  // height: 400px;
+  @media (max-width: 768px) {
+    max-height: 65vh;
+    height: 65vh;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &--btn {
+    &.reRequest {
+      [dir='rtl'] & {
+        transform: scale(-1, 1);
+      }
+    }
+  }
+
+  &--name,
+  &--date {
+    @media (min-width: 1200px) {
+      max-width: 120px;
+    }
+  }
+
+  [dir='rtl'] & {
+    &--name {
+      @media (min-width: 1200px) {
+        max-width: initial;
+      }
+    }
+  }
+
+  &--item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 105px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+
+    h4 {
+      @media (min-width: 991px) {
+        max-width: calc(100% - 200px);
+        display: inline-block;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+
+    ds-status::part(base) {
+      --status-width: 60px;
+    }
+  }
+
+  &--info {
+    span {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &:not(:first-of-type) {
+        &:before {
+          content: '';
+          min-width: 3px;
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background-color: var(--black);
+        }
+      }
+    }
+  }
+
+  &--status {
+    @media (min-width: 991px) {
+      //  opacity: 0;
+      // visibility: hidden;
+      //width: 0;
+      //height: 0;
+      position: absolute;
+      top: 1rem;
+      right: 0;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .max-width-150 {
+    max-width: 150px;
+  }
+
+  .text-align-custom {
+    unicode-bidi: plaintext;
+  }
+
+  .table-responsive table {
+    --th-height: var(--default-size-sm);
+    --th-bg: var(--purple);
+    --th-fc: var(--white);
+    // --td-height: 48px;
+    --td-radius: 0;
+    --border-spacing: 0;
+    --border-collapse: collapse;
+    --tr-even-bc: var(--off-white);
+    --tr-odd-bc: var(--white);
+  }
+
+  .ServiceDetails {
+    display: inline-block;
+    max-width: 230px;
+    white-space: normal;
+  }
+
+  .progress_group {
+    width: 100px;
+
+    .progress-container.default-progress {
+      min-width: 25px;
+      background-color: #cdd0d1;
+    }
+  }
+
+  .sla {
+    svg {
+      width: 36px;
+    }
+
+    text {
+      font-size: 10px;
+    }
+  }
+
+  .Periority {
+    &.High {
+      color: var(--red);
+    }
+
+    &.Medium {
+      color: var(--orange);
+    }
+
+    &.Low,
+    &.Yes {
+      color: var(--green);
+    }
+  }
+
+  tr {
+    &:nth-child(odd) {
+      .history,
+      .Finished {
+        background-color: var(--light-gray);
+      }
+    }
+
+    &:nth-child(even) {
+      .history,
+      .Finished {
+        background-color: var(--white);
+      }
+    }
+  }
+
+  .Finished {
+    min-width: 27px;
+  }
+
+  ds-button.coral:hover svg path {
+    fill: var(--coral);
+  }
+
+  .controls-tabel {
+    .mat-sort-header-container {
+      justify-content: center !important;
+    }
+  }
+}
+
+.dot-status {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+
+  &.red {
+    background-color: var(--red);
+  }
+
+  &.green {
+    background-color: var(--green);
+  }
+}
+
+.dimCheckbox {
+  background: var(--gray);
+  pointer-events: none;
+}
+
+.none-decoration {
+  text-decoration: none !important;
+}
+
+.hasItem {
+  font-weight: 500;
+}
+.mat-mdc-table {
+  border-spacing: 0 !important;
+  background-color: #fff !important;
+  border-radius: 0.75rem 0.75rem 0 0;
+  // border: 1px solid $rose-100;
+  overflow: hidden;
+}
+
+tr th {
+  background: $secondary-200;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  color: $secondary-700;
+  padding: 0 0.5rem !important;
+}
+.primary-table th,
+.primary-table td {
+  border-bottom: 1px solid $gray-200;
+  border-left: 0;
+  padding: 0.375rem;
+  cursor: text;
+  // white-space: normal;
+  text-wrap: auto;
+  white-space: nowrap;
+  min-width: auto;
+  @media (min-width: 1024px) and (max-width: 1500px) {
+    min-width: auto;
+    font-size: 14px;
+    text-wrap: auto;
+    white-space: nowrap;
+    max-width: 17rem;
+  }
+  td span {
+    font-size: 13px;
+  }
+}
+
+.primary-table th:last-child,
+.primary-table td:last-child {
+  border-left: none;
+}
+
+.primary-table tr:last-child td,
+.primary-table tr:nth-last-child(2) td {
+  border-bottom: none;
+}
+
+.primary-table {
+  border-radius: 0.75rem 0.75rem 0 0;
+  overflow: hidden; // ensures corners are visible
+}
+td span {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+td svg {
+  overflow: visible;
+  cursor: pointer;
+}
+td .actionIcons svg {
+  transform: scale(1.2);
+}
+@media (min-width: 1024px) and (max-width: 1500px) {
+  td .actionIcons svg {
+    transform: scale(1);
+  }
+}
+.mat-mdc-table tbody,
+.mat-mdc-table tfoot,
+.mat-mdc-table thead,
+.mat-mdc-cell,
+.mat-mdc-footer-cell,
+.mat-mdc-header-row,
+.mat-mdc-row,
+.mat-mdc-footer-row,
+.mat-mdc-table .mat-mdc-header-cell {
+  height: 57px;
+}
+::ng-deep .customPosition {
+  transform: translateX(-29%) !important;
+  left: 50% !important;
+  box-shadow: -1px -1px 10px 0 var(--Colours-Primary-50, #d8effd) !important;
+  padding: 0 10px;
+}
+
+// ::ng-deep .last-column-menu,
+// ::ng-deep .second-last-column-menu {
+//   transform: translateX(0) !important;
+// }
+
+::ng-deep .customPosition:has(span.lastItemPosition) {
+  transform: translateX(-25%) !important;
+}
+th mat-menu {
+  display: none;
+}
+::ng-deep .customPosition span.body {
+  border-bottom: 1px solid #e4e5e7;
+  display: block;
+}
+::ng-deep .customPosition span.body:last-child {
+  border-bottom: none;
+}
+::ng-deep .mat-mdc-select-arrow-wrapper {
+  height: auto;
+}
+::ng-deep .mat-mdc-paginator-container {
+  display: flex;
+  align-items: center;
+  // flex-direction: row-reverse;
+  justify-content: space-between !important ;
+  border-radius: 0 0 0.75rem 0.75rem;
+  // border-bottom: 1px solid $rose-100;
+  // border-left: 1px solid $rose-100;
+  background: $secondary-200;
+  padding: 0;
+  overflow: hidden;
+  ::ng-deep .mat-form-field-appearance-outline .mat-mdc-select-arrow {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.18414 5.7676C4.423 5.53792 4.80282 5.54537 5.0325 5.78423L8 8.93443L10.9675 5.78423C11.1972 5.54537 11.577 5.53792 11.8159 5.7676C12.0547 5.99727 12.0622 6.3771 11.8325 6.61596L8.4325 10.216C8.31938 10.3336 8.16321 10.4001 8 10.4001C7.83679 10.4001 7.68062 10.3336 7.5675 10.216L4.1675 6.61596C3.93782 6.3771 3.94527 5.99727 4.18414 5.7676Z" fill="%23615238"/></svg>');
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-position: center;
+    width: 20px !important;
+    height: 20px !important;
+  }
+  ::ng-deep .mat-mdc-form-field {
+    width: fit-content;
+    max-width: 4.8rem;
+  }
+}
+::ng-deep .mat-mdc-paginator-container ::ng-deep .mat-mdc-paginator-page-size {
+  display: flex;
+  justify-content: flex-end;
+  order: 2; // Move page size selector to the end
+  flex: 0 0 auto;
+}
+::ng-deep .mat-mdc-paginator-container ::ng-deep .mat-mdc-paginator-range-actions {
+  margin: 0 auto;
+}
+
+::ng-deep
+  .mat-mdc-paginator-container
+  ::ng-deep
+  .mat-mdc-paginator-range-actions
+//   button {
+//   transform: scaleX(-1);
+// }
+.mat-mdc-paginator ::ng-deep .mat-mdc-select {
+  border-radius: 1.25rem;
+  border: 1px solid $rose-200;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0rem 0.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  width: 6rem;
+  height: 2.3125rem;
+}
+.mat-mdc-paginator ::ng-deep .mat-mdc-paginator-range-label {
+  display: none;
+}
+.mat-mdc-paginator ::ng-deep .mat-mdc-select-trigger {
+  flex-direction: row;
+  height: 100%;
+  border-radius: 13.875rem;
+  background: $secondary-300;
+  width: auto;
+  padding: 0.5rem 0.75rem;
+}
+.mat-mdc-paginator ::ng-deep .mat-mdc-select-value {
+  margin-left: 5px;
+  width: auto;
+  color: $secondary-700;
+  font-weight: 700;
+  span {
+    font-size: 14px !important;
+  }
+}
+.custom-paginator {
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  bottom: 2.6875rem;
+  max-width: fit-content;
+  margin: auto;
+}
+.custom-paginator span {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.0625rem;
+  height: 2.0625rem;
+  cursor: pointer;
+}
+.custom-paginator span.active {
+  border-radius: 1.5rem;
+  background: #ece7df;
+}
+
+.skeleton-cont {
+  margin-top: 3rem;
+}
+.skeleton-row {
+  display: inline-table;
+  width: 100%;
+  margin-top: 21px;
+}
+.skeleton-cell {
+  height: 1.2rem;
+  background: linear-gradient(90deg, #f3f3f3 25%, #e7e7e7 50%, #f3f3f3 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite;
+  width: 80%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-row {
+  pointer-events: none;
+}
+.redColor {
+  color: $red-500;
+}
+:host ::ng-deep .mat-mdc-menu-content {
+  min-width: 9.6875rem;
+  border-radius: 0.375rem;
+  border: 1px solid $gray-100;
+  background: #fff;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0.75rem 0.8125rem 0.75rem;
+}
+:host ::ng-deep [dir='rtl'] .mat-mdc-menu-item,
+:host ::ng-deep .mat-mdc-menu-item[dir='rtl'] {
+  padding: 0px 0px;
+  min-height: 1.5625rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+:host ::ng-deep [dir='rtl'] .mat-mdc-menu-item:last-child,
+:host ::ng-deep .mat-mdc-menu-item[dir='rtl']:last-child {
+  margin-bottom: 0;
+  border-top: 1px solid $gray-200;
+}
+.action_customhover {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.focused {
+  background: #ead6db;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.booleanText {
+  font-weight: 700 !important ;
+}
+.focused::before {
+  position: absolute;
+  right: 0;
+  content: '';
+  top: 30%;
+  width: 0;
+  height: 0;
+  /* border-top: 50px solid transparent; */
+  /* border-bottom: 50px solid transparent; */
+  /* border-left: 100px solid green; */
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 13px solid #fff;
+}
+
+.custom-direction {
+  direction: ltr;
+  flex-direction: row-reverse;
+}
+.percent-gauge-chart-wrapper {
+  width: 15.5rem !important;
+}
+percent-gauge-chart {
+  margin-inline-start: -35%;
+  margin-inline-end: -10%;
+  margin-top: 30px;
+}
+.percent-gauge-chart-container {
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 2rem;
+  align-items: center;
+  flex-direction: row;
+}
+.accessibility-icon,
+svg {
+  margin-inline-start: 2px;
+  margin-top: 2px;
+  // transform: scale(1.2);
+}
+::ng-deep .mat-custom-page {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 1.875rem;
+  height: 1.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1px;
+  border-radius: 0.5rem;
+  transition: transform 200ms ease;
+}
+::ng-deep .mat-custom-page:hover {
+  background: $secondary-300;
+}
+::ng-deep.mat-custom-page-active {
+  background: $secondary-500;
+  color: #fff;
+  cursor: default;
+  font-weight: 700;
+}
+.table-pagination ::ng-deep .mat-mdc-icon-button {
+  &[disabled],
+  &.mat-mdc-button-disabled {
+    pointer-events: none;
+    // background: #f3f3f3 !important;
+    color: #c4c4c4 !important;
+    border: 1px solid #fff !important;
+    opacity: 0.3;
+    background: transparent;
+    svg {
+      fill: #fff !important;
+    }
+  }
+  padding: 0 !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid $secondary-500 !important;
+  background: transparent;
+  width: 1.875rem !important;
+  height: 1.875rem !important;
+  margin: 0 0.7rem;
+  transition: transform 200ms ease;
+  color: $secondary-500;
+  .mat-mdc-button-persistent-ripple {
+    display: none;
+  }
+  svg {
+    width: 16px !important;
+    height: 16px !important;
+    fill: $secondary-500;
+  }
+}
+.table-pagination ::ng-deep .mat-mdc-icon-button:hover {
+  background: $secondary-300 !important;
+}
+::ng-deep .custom-total-records {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0.5rem 0.75rem;
+  border-radius: 13.875rem;
+  background: $secondary-300;
+  color: $secondary-700;
+  min-height: 40px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+:host ::ng-deep .custom-slide-toggle {
+  width: 100%;
+  height: 1.5rem;
+  flex-shrink: 0;
+  display: flex !important;
+  justify-content: center !important;
+  .mdc-form-field{
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 65%;
+    label {
+      margin: 0 !important;
+    }
+  }
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__track {
+  width: 1.875rem !important;
+  height: 1.125rem !important;
+  flex-shrink: 0;
+  border-radius: 4rem;
+}
+:host ::ng-deep .mdc-switch__handle {
+  display: none;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__handle-track {
+  width: 0.9375rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+  border: 1px solid #fff;
+  background: var(--ios-home-indicator-background-color, #fff);
+  top: 13%;
+  left: 3px;
+  right: 0px;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__handle-track .mdc-switch__icons {
+  display: none;
+}
+
+:host ::ng-deep .switcher_span {
+  font-size: 16px;
+  margin-inline-start: 4px;
+}
+
+:host ::ng-deep .table-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Expandable row styles */
+:host ::ng-deep .example-element-detail {
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+:host ::ng-deep .example-element-diagram {
+  min-width: 200px;
+  border: 2px solid black;
+  padding: 28px;
+  font-weight: lighter;
+  margin: 28px 28px 28px 0;
+  height: 100px;
+}
+
+:host ::ng-deep .example-element-position {
+  font-size: 13px;
+  font-weight: normal;
+}
+
+:host ::ng-deep .example-element-description {
+  padding: 16px;
+  font-size: 1.2em;
+  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.2), inset 0 -1px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .example-element-description-attribution {
+  opacity: 0.5;
+}
+
+:host ::ng-deep .example-expanded-row {
+  height: 64px;
+  background-color: $rose-50 !important; /* Pink background */
+}
+
+:host ::ng-deep {
+  .example-expanded-row td {
+    background-color: rgba(245, 235, 237, 0.5) !important;
+    svg {
+      transform: scale(0.75);
+    }
+  }
+  .example-detail-row td {
+    background-color: $rose-50 !important;
+  }
+  .example-expanded-row > .mat-column-expandedDetail {
+    padding: 0.375rem 0.75rem !important;
+  }
+  /* Detail row - always visible but empty when collapsed */
+  .example-detail-row {
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+
+    td {
+      padding: 0 !important;
+      border: none !important;
+      height: 0;
+      min-height: 0;
+    }
+
+    /* Optional: Add a background when debugging */
+    background-color: transparent;
+  }
+
+  /* Animation wrapper inside the table cell */
+  .expanded-content {
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    overflow: hidden;
+  }
+
+  .expanded-box {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+}
+
+:host ::ng-deep .example-element-diagram pre {
+  margin: 0;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 12px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.approved {
+  color: $green-500;
+}
+.rejected {
+  color: $orange-500;
+}
+.noAnswer {
+  color: $gray-500;
+}
+.comment {
+  color: $secondary-500;
+}
+.member-line {
+  background-color: $gray-200;
+  margin: 0.5rem 0;
+  opacity: 0.1;
+}

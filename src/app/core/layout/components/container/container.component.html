@@ -1,0 +1,140 @@
+<mat-sidenav-container class="side-nav-container" [ngClass]="{ isCollapse: isCollapsed }">
+  <mat-sidenav
+    [style.width.px]="isCollapsed ? 95 : 200"
+    #sidenav
+    [mode]="sideNavMode"
+    [opened]="opened"
+  >
+    <div class="nav-container h-100">
+      <nav class="primary-navigation h-100 w-100 d-flex flex-column justify-content-between">
+        <div class="menu-arrow-action cursor-pointer" (click)="toggleSidenav()">
+          <svg *ngIf="isLightTheme" width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="
+            isCollapsed? 'assets/icons/sprite.svg#nav-arrow-light-collapsed':
+            'assets/icons/sprite.svg#nav-arrow-light'"></use>
+          </svg>
+
+          <svg *ngIf="!isLightTheme" width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="
+            isCollapsed? 'assets/icons/sprite.svg#nav-arrow-dark-collapsed' :
+            'assets/icons/sprite.svg#nav-arrow-dark'"></use>
+          </svg>
+        </div>
+
+        <div
+          [routerLink]="'/home'"
+          class="top-header-logo custom-mb-60 cursor-pointer custom-mt-16"
+        >
+          <img
+            [width]="isCollapsed ? 46 : 176"
+            [src]="
+              !isCollapsed ? 'assets/images/Logo-white.svg' : 'assets/images/small-logo-white.svg'
+            "
+            class="logo-light"
+          />
+          <img
+            [width]="isCollapsed ? 46 : 176"
+            [src]="
+              isCollapsed ? 'assets/images/small-logo-dark.svg' : 'assets/images/Logo-dark.svg'
+            "
+            class="logo-dark"
+          />
+        </div>
+        <div class="nav-container-list">
+          <ul role="menu" class="nav-list w-100">
+            <span class="add-new custom-mb-35">
+              <button
+                [matMenuTriggerFor]="menu"
+                class="btn btn-lg align-items-center justify-content-around d-flex"
+                [ngClass]="{ 'btn-lg': !isCollapsed, 'p-2': isCollapsed }"
+              >
+                <svg width="1.5rem" height="1.5rem">
+                  <use [attr.xlink:href]="'assets/icons/add-square.svg'"></use>
+                </svg>
+                <span *ngIf="!isCollapsed" class="body body-bold">{{
+                  'shared.addNewBtn' | translate
+                }}</span>
+                <svg *ngIf="!isCollapsed" width="1.25rem" height="1.25rem">
+                  <use [attr.xlink:href]="'assets/icons/u_angle-down.svg'"></use>
+                </svg>
+              </button>
+              <mat-menu
+                #menu="matMenu"
+                panelClass="menu-same-width custom-shadow"
+                class="menu-same-width custom-shadow"
+              >
+                <!-- <button mat-menu-item class="text-small p-0" (click)="selectedOption = 'option1'">
+                  <mat-radio-button [checked]="selectedOption === 'option1'" class="mr-2"
+                    disableRipple></mat-radio-button>
+                  معاملة
+                </button> -->
+                <button mat-menu-item class="text-small p-0" (click)="navigateTo('export')">
+                  <mat-radio-button
+                    [checked]="selectedOption === 'export'"
+                    class="mr-2"
+                    disableRipple
+                  ></mat-radio-button>
+                  صادر
+                </button>
+                <button mat-menu-item class="text-small p-0" (click)="navigateTo('import')">
+                  <mat-radio-button
+                    [checked]="selectedOption === 'import'"
+                    class="mr-2"
+                    disableRipple
+                  ></mat-radio-button>
+                  وارد
+                </button>
+              </mat-menu>
+            </span>
+            <ng-container *ngFor="let item of navItems; trackBy: trackByRoute">
+              <app-nav-item
+                *ngIf="!item.isFooterItem"
+                [item]="item"
+                [statistics]="StatisticsSummary"
+                [mergeFn]="getMergingBehaviour.bind(this)"
+                [isLightTheme]="isLightTheme"
+                [isCollapsed]="isCollapsed"
+                class="d-block w-100"
+              ></app-nav-item>
+            </ng-container>
+          </ul>
+          <ul class="nav-list w-100">
+            <ng-container *ngFor="let item of navItems; trackBy: trackByRoute">
+              <app-nav-item
+                *ngIf="item.isFooterItem"
+                [item]="item"
+                [statistics]="StatisticsSummary"
+                [mergeFn]="getMergingBehaviour.bind(this)"
+                [isLightTheme]="isLightTheme"
+                [isCollapsed]="isCollapsed"
+                class="d-block w-100"
+              ></app-nav-item>
+            </ng-container>
+            <div class="d-flex align-items-center">
+              <svg width="1.5rem" height="1.5rem" [ngClass]="{ 'dark-icon': isCollapsed }">
+                <use
+                  [attr.xlink:href]="
+                    isLightTheme ? 'assets/icons/moon-dark.svg' : 'assets/icons/moon.svg'
+                  "
+                ></use>
+              </svg>
+              <app-slide-toggle class="m-3" (onSlideChange)="changeThemeColor()"></app-slide-toggle>
+              <svg width="1.5rem" height="1.5rem" [ngClass]="{ 'light-icon': isCollapsed }">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-light-mode'"></use>
+              </svg>
+            </div>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </mat-sidenav>
+  <!-- [class.sp_margin]="!isCollapsed" -->
+  <mat-sidenav-content>
+    <app-header [inputSideNav]="sidenav" [isLoggedIn]="true"></app-header>
+    <section class="custom-pl-51 custom-pr-51 custom-pt-20">
+      <router-outlet></router-outlet>
+    </section>
+
+    <app-footer></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,71 @@
+@import "../../../../../assets/scss/variables.scss";
+
+.close-icon-container {
+  #close-icon {
+    padding: 0;
+    z-index: 100;
+  }
+}
+
+.modal-header {
+  position: relative;
+  top: -1em;
+  display: flex;
+  flex-direction: row-reverse;
+
+  h2 {
+    flex-grow: 1;
+    margin-bottom: 1em;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 1.8em;
+  max-height: 600px;
+  overflow: auto;
+
+  .demo-inline-calendar-card {
+    width: 62%;
+    margin: auto;
+  }
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 10px;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap");
+/* :root$calendar-green-color #00a362;
+  -$calendar-green-color #007244;
+  --gray-light-color: #f2f4fa;
+  --white-color: #ffffff;
+  --black-color: #000000;
+  --text-color: #000000;
+  --border-color: #ccc;
+}
+
+body.dark-mode$calendar-green-color #00a362;
+  -$calendar-green-color #007244;
+  --gray-light-color: #1f2020;
+  --white-color: #0c0c0c;
+  --black-color: #000000;
+  --text-color: #ffffff;
+  --border-color: #ccc;
+}
+ */
+
+::ng-deep .mat-calendar-content {
+  direction: ltr !important;
+}

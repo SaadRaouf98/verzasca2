@@ -1,0 +1,250 @@
+@use "src/assets/design-system/colors" as *;
+@import "../../../../../assets/scss/variables.scss";
+
+
+.div-card {
+  border-radius: 14px;
+  margin-top: 8px;
+  color: #545961;
+  background-color: #fff;
+  margin: 8px 5px 5px 5px;
+
+  @media (min-width: 1332px) {
+    & {
+      
+      margin: 8px;
+      margin-top: 0;
+    }
+  }
+}
+
+form {
+  margin: 0;
+
+  .rest-fields-container {
+    padding: 0 1em;
+    font-size: 14px;
+
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1rem;
+      }
+    }
+
+    .mat-form-field-div {
+      padding: 0.5em;
+
+      @media (min-width: 1332px) {
+        & {
+          padding: 0.7em;
+          padding-top: 0;
+        }
+      }
+    }
+  }
+}
+
+.btn-container {
+  display: flex;
+  gap: 2em;
+  margin-top: 2em;
+  justify-content: center;
+}
+
+button {
+  height: 40px !important;
+  padding-right: 3rem !important;
+  padding-left: 3rem !important;
+}
+
+.cancel-btn {
+  border: 2px solid #043049 !important;
+  color: #043049 !important;
+  background-color: #fff !important;
+}
+
+.save-btn:not([disabled]) {
+  background-color: #3db5b5 !important;
+  color: #fff;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 0;
+  }
+
+  .mat-form-field-div {
+    margin-bottom: 10px;
+  }
+
+  .label-container {
+    margin-bottom: 15px;
+  }
+}
+
+.label,
+.info-data {
+  margin-bottom: 0;
+}
+
+.status-content {
+  background-color: #f0f2f5;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 2.7rem;
+  padding: 10px;
+
+  @media (min-width: 1332px) {
+    height: 3.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 0;
+  }
+}
+
+/* * {
+  border: 1px solid red;
+}
+ */
+
+.save-btn-container {
+  margin-top: 2em;
+  padding-bottom: 1em;
+  gap: 1em;
+  margin-bottom: 10px;
+  .save-btn,
+  .back-btn {
+    padding: 1.5em;
+  }
+  .save-btn:not([disabled]) {
+    background: #3db5b5;
+    color: #fff;
+  }
+
+  .back-btn {
+    background-color: #ebf5f5;
+    color: #3db5b5;
+  }
+}
+.component-header{
+  padding-bottom: 0 !important;
+  position: relative;
+}
+.body-bold,p{
+   font-size: 14px !important;
+}
+.component-header_title{
+  margin-bottom: 10px;
+  font-size: 16px !important;
+}
+.wrapper{
+  overflow-x: hidden;
+}
+::ng-deep .mat-mdc-text-field-wrapper{
+height: 50px !important;
+}
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+padding-top: 0px !important;
+padding-bottom: 8px !important;
+}
+::ng-deep .mat-mdc-form-field-infix{
+  min-height: 50px !important;
+}
+.close_btn{
+    position: absolute;
+    left: 0;
+    top: 20px;
+    cursor: pointer;
+    width: auto;
+}
+
+
+
+:host ::ng-deep .custom-slide-toggle {
+  width: 2.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__track {
+  width: 2.5rem;
+  height: 1.6875rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+}
+:host ::ng-deep .mdc-switch__handle {
+  display: none;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__handle-track {
+  width: 1.1875rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+  border: 1px solid #fff;
+  background: var(--ios-home-indicator-background-color, #fff);
+  top: 18%;
+  left: 3px;
+  right: 3px;
+}
+
+:host ::ng-deep  .mdc-switch:enabled .mdc-switch__track::before , :host ::ng-deep   {
+      background: $gray-50 !important;
+}
+
+:host ::ng-deep .mdc-switch__shadow {
+  background: #fff;
+}
+
+
+// Dark theme: green-500
+
+  ::ng-deep
+  .mdc-switch:enabled
+  .mdc-switch__track::after,
+
+  ::ng-deep
+  .mdc-switch:enabled:hover:not(:focus):not(:active)
+  .mdc-switch__track::after,
+
+  ::ng-deep
+  .mdc-switch:enabled:focus:not(:active)
+  .mdc-switch__track::after,
+
+  ::ng-deep
+  .mdc-switch:enabled:active
+  .mdc-switch__track::after {
+  background: $green-500;
+  background-color: $green-500;
+  width: 2.5rem;
+  height: 1.6875rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+}
+
+::ng-deep .mdc-switch__handle {
+  background: $gray-50 !important;
+  background-color: $gray-50 !important;
+}
+::ng-deep .mdc-switch__handle {
+  background: $green-500 !important;
+  background-color: $green-500 !important;
+}
+:host ::ng-deep .mdc-switch__handle,
+:host ::ng-deep .mdc-switch__ripple {
+  top: 65%;
+}
+:host
+  ::ng-deep
+  .custom-slide-toggle
+  .mdc-switch__handle-track
+  .mdc-switch__icons {
+  display: none;
+}
+mat-slide-toggle ::ng-deep .mdc-label{
+display: inline-block;
+    min-width: 200px;
+    padding-inline-start: 10px;
+}

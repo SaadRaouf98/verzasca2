@@ -1,0 +1,21 @@
+.add-btn {
+  img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+  }
+}
+
+.add-btn {
+  background-color: #3db5b5;
+}
+
+@media (max-width: 576px) {
+  .add-btn {
+    max-height: 46px;
+    font-size: 14px;
+  }
+  .mt-s {
+    margin-top: 1em;
+  }
+}

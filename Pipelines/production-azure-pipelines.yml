@@ -1,0 +1,97 @@
+# Start this pipeline after pushing to `production` branch.
+trigger:
+  branches:
+    include:
+      - production
+
+variables:
+  - group: SharedGroup
+  - name: prodEnv
+    value: 'production'
+  - name: preProdEnv
+    value: 'pre-production'
+  - name: nodeVersion
+    value: '22.x'
+  - name: outputDir
+    value: '$(Build.ArtifactStagingDirectory)'
+  - name: prodArtifactName
+    value: '$(ProductionPortalArtifact)'
+  - name: preProdArtifactName
+    value: '$(PreProductionPortalArtifact)'
+
+stages:
+- stage: Building
+  pool: Pool
+  jobs:
+  - job: BuildingAngular
+    displayName: 'Building project'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: '$(nodeVersion)'
+
+    - task: UseNode@1
+      displayName: 'Use Node.js $(nodeVersion)'
+      inputs:
+        version: '$(nodeVersion)'
+
+    - task: PowerShell@2
+      displayName: 'Install Angular CLI'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "▶ Installing Angular CLI globally"
+          npm install -g @angular/cli --loglevel verbose
+
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "❌ Failed to install Angular CLI"
+              exit $LASTEXITCODE
+          }
+          Write-Host "✅ CLI installed."
+
+    - task: PowerShell@2
+      displayName: 'Install Dependencies'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "🔍 Current path: $(Get-Location)"
+
+          npm install --verbose --force
+
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "❌ Failed to install dependencies"
+              exit $LASTEXITCODE
+          }
+
+          Write-Host "✅ All installs completed"
+
+    - script: |
+        @echo on 
+        ng build --configuration $(prodEnv) --output-path="$(outputDir)\$(prodArtifactName)\SFC.Web"
+        if ($LASTEXITCODE -ne 0) {
+          Write-Error "❌ Angular build failed with exit code $LASTEXITCODE"
+          exit $LASTEXITCODE
+        }
+      displayName: 'Building Angular app (Production)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(outputDir)\$(prodArtifactName)'
+        ArtifactName: $(prodArtifactName)
+        publishLocation: 'Container'
+
+    - script: |
+        @echo on 
+        ng build --configuration $(preProdEnv) --output-path="$(outputDir)\$(preProdArtifactName)\SFC.Web"
+        if ($LASTEXITCODE -ne 0) {
+          Write-Error "❌ Angular build failed with exit code $LASTEXITCODE"
+          exit $LASTEXITCODE
+        }
+      displayName: 'Building Angular app (Pre-Production)'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(outputDir)\$(preProdArtifactName)'
+        ArtifactName: $(preProdArtifactName)
+        publishLocation: 'Container'

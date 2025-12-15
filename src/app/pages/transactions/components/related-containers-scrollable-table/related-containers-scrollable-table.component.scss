@@ -1,0 +1,61 @@
+@use 'src/assets/design-system/colors' as *;
+
+.info {
+  padding: 1.25rem 1.5rem;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  background: $secondary-50;
+}
+.gold-line {
+  opacity: 0.5;
+  color: $secondary-300;
+  margin: 0.75rem 0;
+  height: 0.0625rem;
+}
+
+.gray-700 {
+  color: $gray-700;
+}
+.flex-1 {
+  flex: 1;
+}
+.flex-2 {
+  flex: 2;
+}
+.transaction-card {
+  border-radius: 0.75rem;
+  background: $gray-50;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.svg-arrow {
+  position: absolute;
+  left: -15px;
+  display: none;
+}
+.svg-arrow.active {
+  display: block;
+}
+.bg-custom {
+  background: #eff0fe;
+}
+
+.scroll-cards {
+  max-height: 44rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.consultant {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 12px;
+  img {
+    display: inline-block;
+    margin: 0;
+    margin-inline-end: 12px;
+  }
+}

@@ -1,0 +1,23 @@
+<div
+  [style.left]="left + 'px'"
+  [style.top]="top + 'px'"
+  [style.height]="height + 'px'"
+  [style.width]="width + 'px'"
+  style="
+    font-weight: 900;
+    background-color: rgba(210, 210, 210, 0.6);
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    cursor: move;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+  "
+>
+  <span class="delete-icon" (click)="onDeleteBox()">x</span>
+
+  <p>ورقة عادية</p>
+</div>

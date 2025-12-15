@@ -1,0 +1,22 @@
+<div class="search-filter align-items-center">
+  <div class="input-wrapper">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      [placeholder]="placeholder"
+      (keydown)="onKey($event)"
+    />
+    <button
+      *ngIf="query"
+      type="button"
+      class="clear-btn"
+      aria-label="Clear"
+      (click)="clear()"
+    >
+      ✕
+    </button>
+  </div>
+  <button type="button" class="filter-btn d-flex" (click)="onFilterClick()">
+    <i class="hgi hgi-stroke fs-24 hgi-preference-horizontal"></i>
+  </button>
+</div>

@@ -1,0 +1,400 @@
+<section class="">
+  <div class="row justify-content-between align-items-center | mb">
+    <div class="col-12">
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        <ng-container *ngIf="formMode === FormMode.Modify; else viewBlock">
+          <span *ngIf="elementId; else elseBlock">
+            {{
+              "RequestTypesModule.AddRequestTypeComponent.editRequestTypeDetails"
+                | translate
+            }}
+          </span>
+          <ng-template #elseBlock>
+            {{ "shared.addRequestType" | translate }}
+          </ng-template>
+        </ng-container>
+
+        <ng-template #viewBlock>
+          {{
+            "RequestTypesModule.AddRequestTypeComponent.viewRequestTypeDetails"
+              | translate
+          }}
+        </ng-template>
+      </h1>
+    </div>
+  </div>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start title -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }"
+      >
+        <div class="label-container">
+          <label for="title">
+            {{ "shared.titleAr" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="title"
+            formControlName="title"
+            placeholder="{{ 'shared.titleAr' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('title')?.errors && isTouched('title')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('title')?.errors && isTouched('title')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                  form.get('title')?.errors?.['required'] &&
+                  isTouched('title')
+                "
+        >
+          {{ "shared.titleRequired" | translate }}
+        </span>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('title')?.errors?.['pattern'] &&
+                isTouched('title')
+              "
+        >
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title-->
+
+      <!-- start title en-->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('titleEn')?.errors && isTouched('titleEn'),
+          'mat-form-field-div-success':
+            !form.get('titleEn')?.errors && isTouched('titleEn')
+        }"
+      >
+        <div class="label-container">
+          <label for="titleEn">
+            {{ "shared.titleEn" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="titleEn"
+            formControlName="titleEn"
+            placeholder="{{ 'shared.titleEn' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('titleEn')?.errors && isTouched('titleEn')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('titleEn')?.errors && isTouched('titleEn')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('titleEn')?.errors?.['required'] &&
+                isTouched('titleEn')
+              "
+        >
+          {{ "shared.titleRequired" | translate }}
+        </span>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('titleEn')?.errors?.['pattern'] &&
+                isTouched('titleEn')
+              "
+        >
+          {{ "shared.englishCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end title en-->
+    </div>
+
+    <div class="row mb">
+      <!-- start document type -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('documentTypeId')?.errors && isTouched('documentTypeId'),
+          'mat-form-field-div-success':
+            !form.get('documentTypeId')?.errors && isTouched('documentTypeId')
+        }"
+      >
+        <div class="label-container">
+          <label for="documentTypeId">
+            {{
+              "SystemManagementModule.SystemManagementPage.documentTypes"
+                | translate
+            }}
+          </label>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-select
+            formControlName="documentTypeId"
+            placeholder=" {{
+              'SystemManagementModule.SystemManagementPage.documentTypes'
+                | translate
+            }}"
+            name="documentTypeId"
+            id="documentTypeId"
+          >
+            <mat-option
+              *ngFor="let documentType of documentTypesList"
+              [value]="documentType.id"
+            >
+              {{ documentType.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                 form.get('documentTypeId')?.errors?.['required'] &&
+                 isTouched('documentTypeId')
+           "
+        >
+          {{
+            "RequestTypesModule.AddRequestTypeComponent.docTypeRequired"
+              | translate
+          }}
+        </span>
+      </div>
+      <!-- end document type-->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('schema')?.errors && isTouched('schema'),
+          'mat-form-field-div-success':
+            !form.get('schema')?.errors && isTouched('schema')
+        }"
+      >
+        <div class="label-container">
+          <label for="schema">
+            {{
+              "RequestTypesModule.RequestTypesListComponent.schemas" | translate
+            }}
+          </label>
+        </div>
+
+        <ng-select
+          formControlName="schema"
+          placeholder="{{
+            'RequestTypesModule.RequestTypesListComponent.searchForSchemas'
+              | translate
+          }}"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [compareWith]="compareFn"
+          class="form-control"
+          (search)="searchOnSchemas($event)"
+        >
+          <ng-option
+            *ngFor="let schema of (schemasList$ | async)?.data"
+            [value]="schema"
+          >
+            {{ lang === "ar" ? schema.title : schema.titleEn }}
+          </ng-option>
+        </ng-select>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+              form.get('schema')?.errors?.['required'] &&
+              isTouched('schema')
+            "
+        >
+          {{
+            "RequestTypesModule.RequestTypesListComponent.schemaRequired"
+              | translate
+          }}
+        </span>
+      </div>
+
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div mt-2"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('classifications')?.errors && isTouched('classifications'),
+          'mat-form-field-div-success':
+            !form.get('classifications')?.errors && isTouched('classifications')
+        }"
+      >
+        <div class="label-container">
+          <label for="classifications">
+            {{ "shared.classifications" | translate }}
+          </label>
+        </div>
+
+        <ng-select
+          formControlName="classifications"
+          placeholder="{{ 'shared.searchForClassifications' | translate }}"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [compareWith]="compareFn"
+          class="form-control"
+          [multiple]="true"
+          (search)="searchOnClassifications($event)"
+        >
+          <ng-option
+            *ngFor="let classification of classificationsList"
+            [value]="classification"
+          >
+            {{ lang === "ar" ? classification.title : classification.titleEn }}
+          </ng-option>
+        </ng-select>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+              form.get('classifications')?.errors?.['required'] &&
+              isTouched('classifications')
+            "
+        >
+          {{ "shared.classificationRequired" | translate }}
+        </span>
+      </div>
+
+      <div
+        class="col-12 col-lg-6 pt-2 mat-form-field-div mt-2 d-flex"
+        style="align-items: end"
+      >
+        <div class="label-container">
+          <label> </label>
+        </div>
+        <mat-checkbox formControlName="isTransaction" class="mb-2">
+          <span class="check-item">دورة حياة معاملة ؟</span>
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <div class="row mb">
+      <!-- start descriptionAr -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('description')?.errors && isTouched('description'),
+          'mat-form-field-div-success':
+            !form.get('description')?.errors && isTouched('description')
+        }"
+      >
+        <div class="label-container">
+          <label for="descriptionAr">
+            {{ "shared.descriptionAr" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="description"
+            name="descriptionAr"
+            placeholder="{{ 'shared.descriptionAr' | translate }}"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+        <span
+          class="span-error-message"
+          *ngIf="
+              form.get('description')?.errors?.['pattern'] &&
+              isTouched('description')
+            "
+        >
+          {{ "shared.arabicCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end descriptionAr -->
+
+      <!-- start description en-->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('descriptionEn')?.errors && isTouched('descriptionEn'),
+          'mat-form-field-div-success':
+            !form.get('descriptionEn')?.errors && isTouched('descriptionEn')
+        }"
+      >
+        <div class="label-container">
+          <label for="descriptionEn">
+            {{ "shared.descriptionEn" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="descriptionEn"
+            name="descriptionEn"
+            placeholder="{{ 'shared.descriptionEn' | translate }}"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('descriptionEn')?.errors?.['pattern'] &&
+                isTouched('descriptionEn')
+              "
+        >
+          {{ "shared.englishCharsRequired" | translate }}
+        </span>
+      </div>
+      <!-- end description en-->
+    </div>
+
+    <!--start button actions -->
+    <div class="row | footer-container">
+      <div class="col-6 d-none d-sm-block"></div>
+      <div class="col-6 | btn-container">
+        <button
+          class="cancel-btn"
+          (click)="onCancel()"
+          mat-flat-button
+          color="primary"
+          data-appearance="outline"
+        >
+          {{ "shared.cancel" | translate }}
+        </button>
+        <button
+          *ngIf="formMode === FormMode.Modify"
+          class="save-btn"
+          (click)="onSubmit()"
+          mat-flat-button
+          [disabled]="!form.valid || disableSubmitBtn"
+        >
+          {{ "shared.save" | translate }}
+        </button>
+      </div>
+    </div>
+    <!--End button actions-->
+  </form>
+</section>

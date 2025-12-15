@@ -1,0 +1,338 @@
+<section>
+  <div class="row justify-content-between align-items-center text-primary | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a routerLink="../">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="text-gray-900 fw-bold">
+        {{ "shared.systemSettings" | translate }}
+      </h1>
+    </div>
+  </div>
+
+  <h2 class="mb-3">المعاملات</h2>
+  <div class="row mb-4">
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewSectors]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="sectors"
+        >
+          <img
+            src="assets/icons/chart.png"
+            class="icon"
+            alt="'shared.sectors' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="sectors"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.sectors" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewFoundations]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="foundations"
+        >
+          <img
+            src="assets/icons/activity.png"
+            class="icon"
+            alt="'shared.foundations' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="foundations"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.foundations" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewBenefitTypes]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="benefit-types"
+        >
+          <img
+            src="assets/icons/setting.png"
+            class="icon"
+            alt="'shared.benefitTypes' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="benefit-types"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.benefitTypes" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewPriorities]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="priorities"
+        >
+          <img
+            src="assets/icons/notes-document.png"
+            class="icon"
+            alt="'shared.priorities' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="priorities"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.priorities" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewReferralJustifications]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="referral-justifications"
+        >
+          <img
+            src="assets/icons/notes-document.png"
+            class="icon"
+            alt="'SystemSettingsModule.SystemSettingsPage.referringMatterJustifications' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="referral-justifications"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{
+              "SystemSettingsModule.SystemSettingsPage.referringMatterJustifications"
+                | translate
+            }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewProcessTypeJustifications]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="process-type-justifications"
+        >
+          <img
+            src="assets/icons/notes-document.png"
+            class="icon"
+            alt="'shared.processTypeJustifications' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="process-type-justifications"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.processTypeJustifications" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewOutcomes]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="container-outcomes"
+        >
+          <img
+            src="assets/icons/results.png"
+            class="icon"
+            alt="'shared.recommendationOutcomes' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="container-outcomes"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.recommendationOutcomes" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewRecommendationTypes]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="recommendation-types"
+        >
+          <img
+            src="assets/icons/3-users.png"
+            class="icon"
+            alt="'shared.recommendationTypes' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="recommendation-types"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.recommendationTypes" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mb-3">النظام</h2>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewConsultantGroups]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="consultant-groups"
+        >
+          <img
+            src="assets/icons/user-groups.jpg"
+            class="icon"
+            alt="'shared.consultantGroups' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="consultant-groups"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.consultantGroups" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewExportedAttachmentType]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="exported-attachment-types"
+        >
+          <img
+            src="assets/icons/attachments.png"
+            class="icon"
+            alt="'shared.exportedAttachmentTypes' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="exported-attachment-types"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.exportedAttachmentTypes" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewSignatureFormats]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="committees-signatures"
+        >
+          <img
+            src="assets/icons/signature.png"
+            class="icon"
+            alt="'shared.committeesSignatures' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="committees-signatures"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.committeesSignatures" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | div-card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ViewOrganizationsStructure]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="committees-sequences"
+        >
+          <img
+            src="assets/icons/numeric.png"
+            class="icon"
+            alt="'shared.committeeSequences' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="committees-sequences"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{ "shared.committeeSequences" | translate }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

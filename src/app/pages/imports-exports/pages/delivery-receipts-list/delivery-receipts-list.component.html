@@ -1,0 +1,271 @@
+<section>
+  <div class="row justify-content-between | mb">
+    <div class="col-12 col-sm-8 d-flex align-items-center | heading mb">
+      <a class="cursor-pointer" routerLink="../">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+
+      <h1 class="fs-600 text-gray-900 fw-bold">بيانات التسليم</h1>
+    </div>
+  </div>
+
+  <div>
+    <div class="filters-container">
+      <!--Start filters-->
+      <form autocomplete="off" [formGroup]="filtersForm">
+        <div class="row | filters-container">
+          <div class="col-12 col-lg-3">
+            <ng-select
+              formControlName="creator"
+              placeholder="المنشئ"
+              [bindLabel]="'name'"
+              [compareWith]="compareFn"
+              class="form-control"
+              (search)="searchOnUsers($event)"
+            >
+              <ng-option
+                *ngFor="let user of (usersList$ | async)?.data"
+                [value]="user"
+              >
+                {{ user.name }}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-12 col-lg-3">
+            <mat-form-field appearance="outline">
+              <mat-date-range-input
+                (click)="picker.open()"
+                [rangePicker]="picker"
+              >
+                <input
+                  matStartDate
+                  formControlName="fromDate"
+                  [placeholder]="'shared.fromDate' | translate"
+                />
+                <input
+                  matEndDate
+                  formControlName="toDate"
+                  [placeholder]="'shared.toDate' | translate"
+                  (dateChange)="onGregorianDateChanges()"
+                />
+              </mat-date-range-input>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <img
+                src="assets/icons/calendar.svg"
+                (click)="picker.open()"
+                class="calendar-icon"
+                matSuffix
+                alt="Click to open calendar."
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-lg-3">
+            <app-hijri-date-range
+              [date]="hijriDateCalendarInput"
+              [hasLabel]="false"
+              (submit)="onPatchFormHijriDate($event)"
+            ></app-hijri-date-range>
+          </div>
+        </div>
+      </form>
+      <!--End filters-->
+    </div>
+
+    <!--Start table-->
+    <div class="table-responsive">
+      <table
+        mat-table
+        [dataSource]="deliveryReceiptsSource"
+        matSort
+        multiTemplateDataRows
+        (matSortChange)="
+          onSortColumn({ active: $event.active, direction: $event.direction })
+        "
+        [matSortActive]="sortData.sortBy"
+        [matSortDirection]="sortData.sortType"
+      >
+        <ng-container matColumnDef="autoNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "shared.generalNumber" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.autoNumber }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ "shared.date" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.date | date : "dd/MM/yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="creator.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>المنشئ</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.creator?.name || "--" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemsCount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>عدد العناصر</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.itemsCount }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            تاريخ التسليم
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.deliveryDate | date : "dd/MM/yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <div
+              class="d-flex justify-content-center align-items-center | options-container"
+            >
+              <div
+                *ngxPermissionsOnly="[PermissionsObj.UpdateDeliveryReceipt]"
+                class="d-flex align-items-center | edit-container"
+                (click)="onEditElement(element)"
+              >
+                <span class="cursor-pointer" matTooltip="تعديل تاريخ التسليم">
+                  <mat-icon class="d-flex align-items-center"> edit </mat-icon>
+                </span>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="return_displayed_columns().length"
+          >
+            <div
+              class="example-element-detail"
+              [@detailExpand]="
+                check_view_element(element) ? 'expanded' : 'collapsed'
+              "
+            >
+              <div class="example-element-description">
+                <ul class="detail-element">
+                  <li>
+                    <p>
+                      {{ "shared.generalNumber" | translate }}
+                    </p>
+                    <span> {{ element.autoNumber }}</span>
+                  </li>
+
+                  <li>
+                    <p>{{ "shared.date" | translate }}</p>
+                    <span> {{ element.date | date : "dd/MM/yyyy" }} </span>
+                  </li>
+
+                  <li>
+                    <p>المنشئ</p>
+                    <span>
+                      {{ element.creator?.name || "--" }}
+                    </span>
+                  </li>
+
+                  <li>
+                    <p>عدد العناصر</p>
+                    <span>
+                      {{ element.itemsCount }}
+                    </span>
+                  </li>
+
+                  <li>
+                    <p>
+                      {{ "shared.deliveryDate" | translate }}
+                    </p>
+                    <span>
+                      {{ element.deliveryDate | date : "dd/MM/yyyy" }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="return_displayed_columns()"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: return_displayed_columns()"
+          class="example-element-row"
+          [ngClass]="{ hide: isLoading }"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"
+        ></tr>
+
+        <ng-container matColumnDef="noData">
+          <td
+            mat-footer-cell
+            *matFooterCellDef
+            [attr.colspan]="return_displayed_columns().length"
+          >
+            <p class="text-center">{{ "shared.noRowsFound" | translate }}</p>
+          </td>
+        </ng-container>
+
+        <!--start loading -->
+        <ng-container matColumnDef="loading">
+          <td
+            mat-footer-cell
+            *matFooterCellDef
+            [attr.colspan]="return_displayed_columns().length"
+          >
+            <p class="text-center">{{ "shared.loading" | translate }} ...</p>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: !isLoading }"
+        ></tr>
+        <!--end loading -->
+        <tr
+          mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{
+            hide: isLoading || deliveryReceiptsSource.data.length != 0
+          }"
+        ></tr>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <mat-paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[20, 30, 40, 50]"
+        (page)="pageEvent = $event; onPaginationChange($event)"
+        showFirstLastButtons
+      >
+      </mat-paginator>
+    </div>
+    <!--End table-->
+  </div>
+</section>

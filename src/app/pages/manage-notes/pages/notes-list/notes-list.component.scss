@@ -1,0 +1,35 @@
+@import '../../../../../assets/scss/variables.scss';
+@import '../../../../../assets/scss/shared-list-views.scss';
+@import '../../../../../assets/scss/shared-details.scss';
+
+// Notes-specific: Custom pink/rose tab styling
+::ng-deep mat-tab-header .mat-mdc-tab-labels {
+  border-radius: 0.75rem;
+  background: #ead6db;
+  box-shadow: 0 0 0 4px rgba(79, 58, 197, 0.2);
+  padding: 0.375rem;
+  color: #c08290;
+}
+.autoWidth ::ng-deep mat-tab-header .mat-mdc-tab-label-container {
+  max-width: 25rem;
+}
+::ng-deep mat-tab-header .mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: #c08290;
+}
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active,
+::ng-deep mat-tab-header .mdc-tab:hover {
+  border-radius: 0.5rem;
+  background: $rose-500;
+}
+::ng-deep mat-tab-header .mdc-tab:not(.mdc-tab--active):hover .mdc-tab__text-label {
+  color: #fff;
+}
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:focus .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
+  color: #fff;
+}
+
+.pdf_card {
+  background-color: #ece7df;
+}

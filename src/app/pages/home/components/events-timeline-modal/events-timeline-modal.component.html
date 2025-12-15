@@ -1,0 +1,149 @@
+<div class="d-flex align-items-center justify-content-between | header">
+  <div class="d-flex align-items-center">
+    <button
+      id="close-icon"
+      (click)="onCancel()"
+      class="d-flex justify-content-center align-items-center cursor-pointer"
+      mat-icon-button
+    >
+      <img src="assets/icons/time-line-close.png" alt="Click to close popup." />
+    </button>
+
+    <h2>
+      {{ "shared.timeTable" | translate }}
+    </h2>
+  </div>
+
+  <div class="week-month-control">
+    <div
+      class="arrow-container"
+      (click)="goPreviousWeekOrMonth()"
+      [matTooltip]="
+        (isweeklyControl && isweeklyControl.value
+          ? 'shared.previousWeek'
+          : 'shared.previousMonth'
+        ) | translate
+      "
+    >
+      <img src="assets/icons/calendar-right-arrow.png" />
+    </div>
+
+    <mat-slide-toggle name="status" [formControl]="isweeklyControl">
+      <ng-container
+        *ngIf="isweeklyControl?.value; then weekly; else monthly"
+      ></ng-container>
+
+      <ng-template #weekly>
+        {{ "shared.weekly" | translate }}
+      </ng-template>
+      <ng-template #monthly>
+        {{ "shared.monthly" | translate }}
+      </ng-template>
+    </mat-slide-toggle>
+
+    <div
+      class="arrow-container"
+      (click)="goNextWeekOrMonth()"
+      [matTooltip]="
+        (isweeklyControl && isweeklyControl.value
+          ? 'shared.nextWeek'
+          : 'shared.nextMonth'
+        ) | translate
+      "
+    >
+      <img src="assets/icons/calendar-left-arrow.png" />
+    </div>
+  </div>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        [matDatepicker]="datePicker"
+        [formControl]="userSelectedDate"
+        [placeholder]="'shared.day/month/year' | translate"
+        (click)="datePicker.open()"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="datePicker"
+      ></mat-datepicker-toggle>
+
+      <mat-datepicker #datePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-contents class="d-flex">
+  <div
+    class="arrow-container"
+    (click)="onGoRightScroll()"
+    matTooltip="Right scroll"
+  >
+    <img src="assets/icons/calendar-right-arrow.png" />
+  </div>
+
+  <div class="events-section">
+    <div
+      *ngIf="!isLoadingData; else loadingBlock"
+      class="d-flex | events-parent"
+      [class.justify-content-center]="getParentDaysNumber() <= 5"
+    >
+      <div
+        *ngFor="let event of events; let i = index"
+        class="d-flex flex-column | event-column"
+        [class.sunday]="i == 0"
+        [class.thursday]="i == events.length - 2"
+        #dayColumn
+      >
+        <!--Start  day-->
+        <div
+          class="d-flex justify-content-between align-items-center | day-header"
+          [class.bg-active]="isSelectedDate(event.parentDay)"
+        >
+          <span>{{ event.parentDay.dayStr }}</span>
+          <span class="day-number">{{ event.parentDay.dayNum }}</span>
+          <span>{{
+            event.parentDay.monthStr + " " + event.parentDay.year
+          }}</span>
+        </div>
+        <!--End  day-->
+
+        <div
+          *ngFor="let x of event.meeings"
+          (click)="onNavToMeetingDetails(x)"
+          class="d-flex flex-column cursor-pointer"
+        >
+          <div class="d-flex flex-column | calendar-event-item">
+            <p class="hour-container">
+              <img src="assets/icons/clock-icon.png" class="clock-icon" />
+              <span class="ltr">{{ x.time | date : "h:mm a" }}</span>
+            </p>
+            <p class="event-title">{{ x.title }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="events.length === 0" class="d-flex align-items-center">
+        <p>لا توجد اجتماعات في هذه الفترة الزمنية</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingBlock>
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="width: 100%"
+    >
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+  </ng-template>
+
+  <div
+    class="arrow-container"
+    (click)="onGoLeftScroll()"
+    matTooltip="Left scroll"
+  >
+    <img src="assets/icons/calendar-left-arrow.png" />
+  </div>
+</div>

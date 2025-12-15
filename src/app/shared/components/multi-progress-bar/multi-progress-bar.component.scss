@@ -1,0 +1,27 @@
+@import "../../../../assets/scss/variables.scss";
+
+.progress-container {
+  width: 100%;
+  height: 11px; //25px
+  background: #c4d7ed;
+  border-radius: 7px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-basis: 24px;
+
+  .progress-bar {
+    color: #fff;
+    position: relative;
+    height: 100%;
+    width: 0;
+  }
+
+  span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 2px);
+    color: white;
+  }
+}

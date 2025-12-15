@@ -1,0 +1,28 @@
+.tabs {
+  &__header {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  &__header li {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    user-select: none;
+
+    &.active {
+      border-bottom: 2px solid var(--theme-color1);
+      font-weight: 600;
+    }
+
+    &:hover {
+      background: rgba(var(--theme-color1-rgb), 0.1);
+    }
+  }
+
+  &__content {
+    padding: 1rem 0;
+  }
+}

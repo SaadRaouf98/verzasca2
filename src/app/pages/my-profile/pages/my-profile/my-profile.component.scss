@@ -1,0 +1,70 @@
+form {
+  margin-top: 1em;
+
+  .check-item {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+
+.submit-btn-container {
+  width: 100%;
+
+  .submit-btn {
+    width: 22%;
+    color: #fff;
+    background-color: #3db5b5;
+    margin-bottom: 15px;
+  }
+}
+
+::ng-deep app-my-profile {
+  .mat-mdc-tab-body-content {
+    overflow: hidden !important;
+  }
+}
+
+::ng-deep {
+  .ms-4.tab-content {
+    width: 100%;
+    margin-left: 0 !important;
+    .card{
+      border-radius: 12px;
+    }
+  }
+  .nav-pills .nav-link.active{
+    color: #50abab;
+    background-color: transparent;
+    position: relative;
+    //border-left: 2px solid #50abab;
+  }
+  .nav-link.active::after{
+    content: "";
+    position: absolute;
+    width: 6px;
+    background-color: #20545F;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  .nav-link.nav-item{
+    margin-bottom: 63px;
+    color: #A3AED0;
+    mat-icon{
+      width: 31px;
+      height: 31px;
+      color: #20545F;
+    }
+  }
+}
+
+.nav-pills {
+  background-color: #fff;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  margin-left: 28px;
+  padding-top: 25px;
+  height: fit-content;
+}

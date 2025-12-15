@@ -1,0 +1,278 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold">
+    {{ data.header }}
+
+    <!-- For the progress type indicators -->
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Statement">
+      {{ 'actions.auditing.statementRequest' | translate }}
+    </ng-container>
+
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Recommendation">
+      {{ 'actions.auditing.studyProposal' | translate }}
+    </ng-container>
+  </span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<div class="custom-modal-body" mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <mat-tab-group class="modal-tabs" [preserveContent]="true" id="group-body">
+      <mat-tab formGroupName="basicsTab">
+        <ng-template mat-tab-label>
+          <!-- For tab labels -->
+          <div class="custom-tab-label">
+            <span>{{ 'dialogs.exportModel.firstData' | translate }}</span>
+          </div>
+        </ng-template>
+        <div class="row">
+          <!-- start chooseexportingMethod-->
+          <div class="col-12 col-md-6 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'TransactionsModule.ExportDocumentComponent.chooseExportWay' | translate }}
+              <span class="text-danger">*</span>
+            </p>
+            <app-select
+              formControlName="exportingMethod"
+              [options]="exportWayOptions"
+              [bindLabel]="'displayLabel'"
+              [bindValue]="'id'"
+              [placeholder]="'TransactionsModule.ExportDocumentComponent.chooseExportWay'"
+              [multiple]="false"
+              [searchable]="false"
+              [appendTo]="'body'"
+            ></app-select>
+
+            <div
+              *ngIf="
+                basicsTab.get('exportingMethod')?.invalid &&
+                basicsTab.get('exportingMethod')?.touched
+              "
+              class="text-danger mt-1"
+            >
+              <small>
+                {{
+                  'TransactionsModule.ExportDocumentComponent.chooseExportWayRequired' | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <!-- end choose exportingMethod -->
+
+          <!--Start export to -->
+          <div class="col-12 col-md-6 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'TransactionsModule.ExportDocumentComponent.exportTo' | translate }}
+              <span class="text-danger">*</span>
+            </p>
+            <app-select
+              formControlName="exportTo"
+              [options]="exportToOptions"
+              [bindLabel]="'displayLabel'"
+              [bindValue]="'id'"
+              [placeholder]="'TransactionsModule.ExportDocumentComponent.exportTo'"
+              [multiple]="false"
+              [searchable]="false"
+            ></app-select>
+
+            <div
+              *ngIf="basicsTab.get('exportTo')?.invalid && basicsTab.get('exportTo')?.touched"
+              class="text-danger mt-1"
+            >
+              <small>
+                {{ 'TransactionsModule.ExportDocumentComponent.exportToRequired' | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- End export to -->
+
+          <!--Start exported foundation to -->
+          <div
+            class="col-12 col-md-6 offset-md-6 mb-3"
+            *ngIf="basicsTab.get('exportTo')?.value === DocumentExportTo.EE"
+          >
+            <p class="body-bold text-small mb-2">
+              {{ 'TransactionsModule.ExportDocumentComponent.exportedFoundations' | translate }}
+              <span class="text-danger">*</span>
+            </p>
+            <app-select
+              formControlName="foundations"
+              [options]="foundationsList"
+              [bindLabel]="'title'"
+              [bindValue]="'id'"
+              [placeholder]="'TransactionsModule.ExportDocumentComponent.exportedFoundations'"
+              [multiple]="true"
+              [searchable]="false"
+              [showSelected]="true"
+              [appendTo]="'body'"
+            ></app-select>
+
+            <div
+              *ngIf="basicsTab.get('foundations')?.invalid && basicsTab.get('foundations')?.touched"
+              class="text-danger mt-1"
+            >
+              <small>
+                {{
+                  'TransactionsModule.ExportDocumentComponent.exportedFoundationsRequired'
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <!-- End exported foundation to -->
+
+          <!--Start physicalHijriDate-->
+          <div class="col-12 col-md-6 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate }}
+              <span class="text-danger">*</span>
+            </p>
+            <app-date-picker-hijri
+              [formControlName]="'physicalHijriDate'"
+              [placeholder]="
+                'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate
+              "
+              [range]="false"
+              (hijriDateChange)="onPatchFormPhysicalHijriDate($event)"
+            ></app-date-picker-hijri>
+            <div
+              *ngIf="
+                basicsTab.get('physicalHijriDate')?.invalid &&
+                basicsTab.get('physicalHijriDate')?.touched
+              "
+              class="text-danger mt-1"
+            >
+              <small>
+                {{
+                  'TransactionsModule.ExportDocumentComponent.documentHijriDateRequired' | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <!--End physicalHijriDate-->
+          <!--Start physicalGregorianDate-->
+          <div class="col-12 col-md-6 mb-3">
+            <p class="body-bold text-small mb-2">
+              {{ 'TransactionsModule.ExportDocumentComponent.documentGregorianDate' | translate }}
+              <span class="text-danger">*</span>
+            </p>
+            <app-date-picker
+              [formControlName]="'physicalGregorianDate'"
+              [placeholder]="
+                'TransactionsModule.ExportDocumentComponent.documentGregorianDate' | translate
+              "
+              [range]="false"
+              (gregorianDateChange)="onPatchFormPhysicalGregorianDate($event)"
+            ></app-date-picker>
+
+            <div
+              *ngIf="
+                basicsTab.get('physicalGregorianDate')?.invalid &&
+                basicsTab.get('physicalGregorianDate')?.touched
+              "
+              class="text-danger mt-1"
+            >
+              <small>
+                {{
+                  'TransactionsModule.ExportDocumentComponent.documentGregorianDateRequired'
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <!--End physicalGregorianDate-->
+        </div>
+      </mat-tab>
+
+      <mat-tab formGroupName="documentTab">
+        <ng-template mat-tab-label>
+          <!-- For tab labels -->
+          <div class="custom-tab-label">
+            <span>{{ 'dialogs.exportModel.document' | translate }}</span>
+          </div>
+        </ng-template>
+
+        <div style="max-width: 100%; max-height: 100%">
+          <ng-template #signaturediv>
+            <app-signature-place-holder></app-signature-place-holder>
+          </ng-template>
+
+          <div style="display: flex; flex-direction: row; max-height: 100%">
+            <div style="height: 100%; flex: 4 1 0%">
+              <div
+                #pdfHolder
+                class="pdf-viewer-container"
+                [class.thumbnails]="showThumbnails"
+                style="border: 1px solid gray; max-width: 100%; display: block; max-height: 100%"
+              >
+                <pdf-viewer
+                  *ngIf="!isRecordFileLoading; else elseBlock"
+                  [src]="recordFile.pdfSrc"
+                  [fit-to-page]="true"
+                  [autoresize]="true"
+                  [render-text]="false"
+                  (contextmenu)="contextmenu($event)"
+                  style="
+                    display: flex;
+                    padding: 0px;
+                    background-color: #aaa;
+                    box-sizing: border-box;
+                    height: 100vh;
+                  "
+                ></pdf-viewer>
+
+                <span
+                  class="download-icon"
+                  (click)="onDownloadRecordFile()"
+                  matTooltip="{{ 'shared.download' | translate }}"
+                >
+                  <mat-icon>cloud_download</mat-icon>
+                </span>
+
+                <ng-template #elseBlock>
+                  <div
+                    class="d-flex justify-content-center align-items-center"
+                    style="width: 100%; height: 17vh"
+                  >
+                    <mat-spinner [diameter]="50"></mat-spinner>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          [style.display]="contextmenuOpened && recordFile.pdfSrc ? 'block' : 'none'"
+          style="background-color: #ddd; box-shadow: 1px 1px 1px 1px #ccc"
+          #contextmenuEl
+          (contextmenu)="$event.preventDefault()"
+        >
+          <div style="padding: 0.2em">
+            <a class="cursor-pointer" (click)="createBarcodePlaceholderComponent()"
+              >إضافة مكان الباركود</a
+            >
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button
+    class="button button-primary button-lg"
+    style="flex: 0 0 69%"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || disableSubmitBtn"
+  >
+    {{ 'TransactionsModule.ExportDocumentComponent.exportTransaction' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

@@ -1,0 +1,231 @@
+<!-- <div>
+  <label class="form-label" *ngIf="!noTitle">{{
+    "SharedModule.DropzoneComponent.addFile" | translate
+  }}</label>
+  <div
+    [ngClass]="{
+      error: (sizeLimitExceeded || !valid) && touched,
+      success: valid && touched,
+      'upload-area': true
+    }"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <ng-container
+      *ngIf="!existedFileUrl && !selectedFile; else previewTemplate"
+    >
+      <input
+        type="file"
+        #fileToUpload
+        style="display: none"
+        (change)="onFileChange($event)"
+        [multiple]="multiple"
+        [accept]="fileExtensionsStr"
+      />
+      <img src="assets/icons/upload-ico.svg" />
+      <div class="mt-2 add">
+        <a
+          class="fw-bold mx-2 text-decoration-underline cursor-pointer textSmall"
+          (click)="addFile()"
+        >
+          {{ "SharedModule.DropzoneComponent.addFile" | translate }}
+        </a>
+        <span class="textSmall">
+          {{ "SharedModule.DropzoneComponent.dragFile" | translate }}
+        </span>
+      </div>
+      <div class="validation">
+        <span class="textSmall">{{
+          "SharedModule.DropzoneComponent.allowedExtensions" | translate
+        }}</span>
+        <span style="direction: ltr; display: inline-flex">
+          <span class="textSmall ltr" *ngFor="let extension of fileExtensions"
+            >{{ extension }}&nbsp;
+          </span>
+        </span>
+        <span class="textSmall"> {{ "shared.until" | translate }} </span>
+        <span class="textSmall">
+          {{ fileSize }}
+          {{ "SharedModule.DropzoneComponent.megaBytes" | translate }}</span
+        >
+      </div>
+      <div class="files-names ltr text-center">
+        <ng-container *ngIf="!existedFilesNames">
+          <p *ngFor="let file of filesArray">{{ file.name }}</p>
+        </ng-container>
+        <ng-container *ngIf="existedFilesNames">
+          <p *ngFor="let fileName of existedFilesNames">{{ fileName }}</p>
+        </ng-container>
+      </div>
+    </ng-container>
+   
+    <ng-template #previewTemplate>
+      <div
+        *ngIf="isImage; else filePreviewTemplate"
+        class="d-flex justify-content-center align-items-center img-sm"
+      >
+        <img
+          [src]="selectedFile || existedFileUrl"
+          class="target cursor-pointer"
+          (click)="viewImage()"
+        />
+        <img
+          class="close"
+          src="assets/icons/close_upload_file.png"
+          (click)="resetDropzone()"
+        />
+      </div>
+    </ng-template>
+
+    <ng-template #filePreviewTemplate>
+      <img src="assets/images/upload-ico.svg" />
+      <div class="files-names">
+        <ng-container
+          *ngIf="filesArray && filesArray.length; else existedFileUrlTemplate"
+        >
+          <p class="ltr text-center" *ngFor="let file of filesArray">
+            {{ file.name }}
+          </p>
+        </ng-container>
+        <ng-template #existedFileUrlTemplate>
+          <p class="ltr text-center text-ellipsis">{{ existedFileUrl }}</p>
+        </ng-template>
+      </div>
+      <div class="on-upload my-3">
+        <a
+          type="button"
+          (click)="cancel()"
+          class="fw-bold mx-2 text-decoration-underline"
+          style="white-space: nowrap"
+          >{{ "SharedModule.DropzoneComponent.deleteFile" | translate }}</a
+        >
+      </div>
+    </ng-template>
+  </div>
+</div>
+ -->
+
+<div>
+  <label class="form-label" *ngIf="!noTitle">{{
+    "SharedModule.DropzoneComponent.addFile" | translate
+  }}</label>
+  <div
+    [ngClass]="{
+      error: (sizeLimitExceeded || !valid) && touched,
+      success: valid && touched,
+      'upload-area': true
+    }"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <ng-container
+      *ngIf="!existedFileUrl && !selectedFile; else previewTemplate"
+    >
+      <input
+        type="file"
+        #fileToUpload
+        style="display: none"
+        (change)="onFileChange($event)"
+        [multiple]="multiple"
+        [accept]="fileExtensionsStr"
+      />
+      <img src="assets/icons/upload-ico.svg" />
+      <div class="mt-2 add" *ngIf="!uploading">
+        <a
+          class="fw-bold mx-2 text-decoration-underline cursor-pointer textSmall"
+          (click)="addFile()"
+          >{{ "SharedModule.DropzoneComponent.addFile" | translate }}</a
+        >
+        <span class="textSmall">
+          {{ "SharedModule.DropzoneComponent.dragFile" | translate }}
+        </span>
+      </div>
+      <div class="validation" *ngIf="!uploading">
+        <span class="textSmall">{{
+          "SharedModule.DropzoneComponent.allowedExtensions" | translate
+        }}</span>
+        <span style="direction: ltr; display: inline-flex">
+          <span class="textSmall ltr" *ngFor="let extension of fileExtensions"
+            >{{ extension }}&nbsp;
+          </span>
+        </span>
+        <span class="textSmall"> {{ "shared.until" | translate }} </span>
+        <span class="textSmall">
+          {{ fileSize }}
+          {{ "SharedModule.DropzoneComponent.megaBytes" | translate }}</span
+        >
+      </div>
+      <div class="files-names ltr text-center">
+        <ng-container *ngIf="!existedFilesNames">
+          <p *ngFor="let file of filesArray">{{ file.name }}</p>
+        </ng-container>
+        <ng-container *ngIf="existedFilesNames">
+          <p *ngFor="let fileName of existedFilesNames">{{ fileName }}</p>
+        </ng-container>
+      </div>
+
+      <div class="on-upload my-3" *ngIf="uploading">
+        <a
+          type="button"
+          (click)="cancel()"
+          *ngIf="!fileUploadedSuccessfully"
+          class="fw-bold mx-2 text-decoration-underline"
+          >{{ "shared.cancelUpload" | translate }}</a
+        >
+        <a
+          type="button"
+          (click)="cancel()"
+          *ngIf="fileUploadedSuccessfully"
+          class="fw-bold cursor-pointer mx-2 text-decoration-underline"
+          style="white-space: nowrap"
+          >{{ "SharedModule.DropzoneComponent.deleteFile" | translate }}</a
+        >
+      </div>
+    </ng-container>
+
+    <ng-template #previewTemplate>
+      <div
+        *ngIf="isImage; else filePreviewTemplate"
+        class="d-flex justify-content-center align-items-center img-sm"
+      >
+        <img
+          [src]="selectedFile || existedFileUrl"
+          class="target"
+          (click)="viewImage()"
+        />
+        <img
+          class="close"
+          src="assets/icons/close_upload_file.png"
+          (click)="resetDropzone()"
+        />
+      </div>
+    </ng-template>
+
+    <ng-template #filePreviewTemplate>
+      <img src="assets/icons/upload-ico.svg" />
+      <div class="files-names">
+        <ng-container
+          *ngIf="filesArray && filesArray.length; else existedFileUrlTemplate"
+        >
+          <p class="ltr text-center" *ngFor="let file of filesArray">
+            {{ file.name }}
+          </p>
+        </ng-container>
+        <ng-template #existedFileUrlTemplate>
+          <p class="ltr text-center text-ellipsis">{{ existedFileUrl }}</p>
+        </ng-template>
+      </div>
+      <div class="on-upload my-3">
+        <a
+          type="button"
+          (click)="cancel()"
+          class="fw-bold cursor-pointer mx-2 text-decoration-underline"
+          style="white-space: nowrap; color: red"
+          >{{ "SharedModule.DropzoneComponent.deleteFile" | translate }}</a
+        >
+      </div>
+    </ng-template>
+  </div>
+</div>

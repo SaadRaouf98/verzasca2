@@ -1,0 +1,84 @@
+<div mat-dialog-title class="modal-header">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="dismiss-btn"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" class="close-icon" />
+  </button>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+                          'mat-form-field-div-error':
+                          form.get('title')?.errors && isTouched('title'),
+                          'mat-form-field-div-success':
+                          !form.get('title')?.errors && isTouched('title'),
+                  }"
+      >
+        <div class="label-container">
+          <label for="title">
+            {{ data.label }}
+          </label>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="title"
+            formControlName="title"
+            placeholder="{{ 'shared.title' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('title')?.errors && isTouched('title')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('title')?.errors && isTouched('title')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('title')?.errors?.['required'] &&
+                            isTouched('title')
+            "
+        >
+          {{ "shared.titleRequired" | translate }}
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="justify-content-end">
+  <button
+    (click)="onSubmit()"
+    [disabled]="form.invalid"
+    class="save-btn btnMd"
+    mat-flat-button
+    type="button"
+  >
+    {{ "shared.save" | translate }}
+  </button>
+
+  <button
+    (click)="onCancel()"
+    class="btnSmall"
+    mat-flat-button
+    data-appearance="outline"
+    id="cancel-btn"
+    type="button"
+  >
+    {{ "shared.cancel" | translate }}
+  </button>
+</div>

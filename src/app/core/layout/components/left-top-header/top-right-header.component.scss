@@ -1,0 +1,99 @@
+@use 'src/assets/design-system/colors' as *;
+.top-nav {
+  background: #fff;
+  //border-bottom: 1px solid #e0e0e0;
+  .menu {
+    display: flex;
+    list-style: none;
+    padding: 0.5rem 0rem;
+    margin: 0;
+    padding-right: 39px;
+    .active {
+      border-radius: 0.5rem;
+      background: #dad0be;
+      &:hover {
+        background: #dad0be;
+      }
+    }
+    .active .arrow {
+      transform: rotate(180deg);
+    }
+    .arrow {
+      transition: transform 0.3s ease-in-out;
+    }
+    li {
+      position: relative;
+      margin: 0;
+      padding: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        border-radius: 0.5rem;
+        background: $secondary-100;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.95rem;
+
+        svg {
+          transform: rotate(0deg) !important;
+        }
+      }
+
+      &.has-children {
+        cursor: pointer;
+
+        .icon-caret-down {
+          margin-left: 0.3rem;
+          font-size: 0.8rem;
+        }
+
+        .submenu {
+          position: absolute;
+          right: 0; // RTL
+          top: 110%;
+          background: #fff;
+          border-radius: 0.5rem;
+          /* Blur/Overlay */
+          backdrop-filter: blur(calc(var(--sds-size-blur-100) / 2));
+          box-shadow: -1px -1px 10px 0 var(--Colours-Primary-50, #d8effd);
+          list-style: none;
+          padding: 0.5rem;
+          margin: 0;
+          min-width: 11.8rem;
+
+          li {
+            margin: 0;
+            transition: none;
+            padding: 0;
+            &:hover {
+              background: #fff;
+
+              box-shadow: none;
+              transition: none;
+            }
+            a {
+              padding: 10px 0;
+              width: 100%;
+              border-bottom: 1px solid $gray-200;
+              color: #333;
+              &:hover {
+                background-color: #f5faff;
+              }
+            }
+
+            &:last-child a {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="shared-form row">
+  <ng-container *ngFor="let field of fields">
+    <div [ngSwitch]="field.type" class="form-group" [ngClass]="field.cssClass">
+      <!-- Label -->
+      <label [for]="field.name">{{ field.label }}</label>
+
+      <!-- Text & Autocomplete -->
+      <ng-container *ngSwitchCase="'text'">
+        <input
+          [id]="field.name"
+          type="text"
+          [formControlName]="field.name"
+          [attr.list]="field.searchFn ? field.name + '_suggestions' : null"
+          autocomplete="off"
+          class="form-control"
+        />
+        <datalist *ngIf="field.searchFn" [id]="field.name + '_suggestions'">
+          <option
+            *ngFor="let opt of suggestions[field.name] || []"
+            [value]="opt.title"
+          ></option>
+        </datalist>
+      </ng-container>
+
+      <!-- Email, Password, Number -->
+      <ng-container *ngSwitchCase="'email'">
+        <input
+          id="{{ field.name }}"
+          type="email"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.label"
+        />
+      </ng-container>
+      <ng-container *ngSwitchCase="'password'">
+        <input
+          id="{{ field.name }}"
+          type="password"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.label"
+        />
+      </ng-container>
+      <ng-container *ngSwitchCase="'number'">
+        <input
+          id="{{ field.name }}"
+          type="number"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.label"
+        />
+      </ng-container>
+      <!-- DATE RANGE -->
+      <ng-container *ngSwitchCase="'date-range'">
+        <label [for]="field.name">{{ field.label }}</label>
+        <div [formGroupName]="field.name">
+          <app-range-gregorian-calendar
+            [fromDate]="form.get(field.name + '.start')!.value"
+            [toDate]="form.get(field.name + '.end')!.value"
+            (dateChange)="onDateRangeChange(field.name, $event)"
+          >
+          </app-range-gregorian-calendar>
+        </div>
+      </ng-container>
+      <!-- Textarea -->
+      <ng-container *ngSwitchCase="'textarea'">
+        <textarea
+          id="{{ field.name }}"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.label"
+        ></textarea>
+      </ng-container>
+
+      <!-- Select -->
+      <ng-container *ngSwitchCase="'select'">
+        <app-select
+          [id]="field.name"
+          [multiple]="field.multiple ?? false"
+          [formControlName]="field.name"
+          [options]="field.options || []"
+        >
+        </app-select>
+      </ng-container>
+
+      <!-- Checkbox -->
+      <ng-container *ngSwitchCase="'checkbox'">
+        <input type="checkbox" [formControlName]="field.name" />
+      </ng-container>
+
+      <!-- Radio -->
+      <ng-container *ngSwitchCase="'radio'">
+        <div *ngFor="let opt of field.options || []" class="radio-option">
+          <input type="radio" [formControlName]="field.name" [value]="opt.id" />
+          {{ opt.title }}
+        </div>
+      </ng-container>
+
+      <!-- Error Message -->
+      <div
+        *ngIf="
+          form.controls[field.name].touched && form.controls[field.name].invalid
+        "
+        class="error"
+      >
+        <small *ngFor="let validation of field.validations || []">
+          <span *ngIf="form.controls[field.name].errors?.[validation.name]">
+            {{ validation.message }}
+          </span>
+        </small>
+      </div>
+    </div>
+  </ng-container>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

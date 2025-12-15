@@ -1,0 +1,70 @@
+<!-- home-news.component.html -->
+<div class="home-news home-section">
+  <!-- <div class="header">
+    <h2>{{ "HomeModule.DashboardPage.news" | translate }}</h2>
+
+  </div> -->
+
+  <div class="cards">
+    <!-- featured card on the right -->
+    <div class="large-card" *ngIf="featured">
+      <div class="news-card large">
+        <img
+          [src]="
+            environment.apiUrl +
+            '/api/v1/newsposts/images/' +
+            featured.imagePath +
+            '?access_token=' +
+            token
+          "
+          alt=""
+          class="thumb-large"
+          (error)="$event.target.src = 'assets/images/news-default-large.png'"
+        />
+        <div class="content">
+          <p class="body-bold mb-0">{{ featured.title }}</p>
+          <div *ngIf="featured.date" class="date d-flex align-items-center mt-2 mb-1">
+            <i class="hgi hgi-stroke hgi-calendar-03"></i>
+            <span class="body text-small mx-1"> {{ featured.date | date : 'dd MMM yyyy' }}</span>
+          </div>
+          <!-- full HTML content as excerpt -->
+          <p class="body mb-0" [innerHTML]="featured.content"></p>
+          <a class="body-bold text-small read-more link" [routerLink]="'./posts/'">{{
+            'HomeModule.DashboardPage.readMore' | translate
+          }}</a>
+        </div>
+      </div>
+    </div>
+    <!-- small cards on the left     -->
+    <div class="small-cards">
+      <ng-container *ngFor="let post of others">
+        <div class="news-card small">
+          <img
+            width="147"
+            height="115"
+            [src]="
+              environment.apiUrl +
+              '/api/v1/newsposts/images/' +
+              post.imagePath +
+              '?access_token=' +
+              token
+            "
+            alt=""
+            class="thumb"
+            (error)="$event.target.src = 'assets/images/news-default-small.png'"
+          />
+          <div class="text">
+            <p class="body-bold text-small mb-0">{{ post.title }}</p>
+            <div *ngIf="post.date" class="date d-flex align-items-center">
+              <i class="hgi hgi-stroke hgi-calendar-03"></i>
+              <span class="caption mx-1 mt-2 mb-1"> {{ post.date | date : 'dd MMM yyyy' }}</span>
+            </div>
+            <div class="body text-small" *ngIf="post.definition">
+              {{ post.definition }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

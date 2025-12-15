@@ -1,0 +1,45 @@
+<form autocomplete="off" [formGroup]="filtersForm">
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="search-container">
+        <input
+          formControlName="searchKeyword"
+          type="text"
+          [placeholder]="
+            'ManageMeetingsModule.ManageMeetingsListComponent.searchPlaceHolder'
+              | translate
+          "
+        />
+        <img
+          src="assets/icons/search_.png"
+          alt="Search by title."
+          class="icon search-icon"
+        />
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-3 | special-calendar-flex">
+      <app-range-gregorian-calendar
+        [fromDateStr]="filtersForm.get('fromDate')?.value"
+        [toDateStr]="filtersForm.get('toDate')?.value"
+        (dateChange)="
+          fromDateToDateSearchService.onGregorianDateChanges2(
+            filtersForm,
+            $event
+          )
+        "
+      >
+      </app-range-gregorian-calendar>
+    </div>
+
+    <div class="col-12 col-lg-3 | special-calendar-flex">
+      <app-range-hijri-calendar
+        [fromDateStr]="filtersForm.get('hijriFromDate')?.value"
+        [toDateStr]="filtersForm.get('hijriToDate')?.value"
+        (dateChange)="
+          fromDateToDateSearchService.onHijriDateChanges2(filtersForm, $event)
+        "
+      ></app-range-hijri-calendar>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center | heading">
+  <svg width="1.5rem" height="1.5rem" (click)="onNavigateBack()" class="cursor-pointer">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+  </svg>
+
+  <div>
+    <p class="body-bold" id="file-title">{{ exportableDocumentName }}</p>
+  </div>
+</div>
+
+<iframe
+  [src]="exportableDocument.pdfSrc"
+  style="width: 99%; height: 100vh; display: block; margin: auto"
+></iframe>

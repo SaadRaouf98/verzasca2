@@ -1,0 +1,120 @@
+<!-- <div class="filter-bar">
+  <input
+    [(ngModel)]="filterText"
+    (ngModelChange)="onFilterChange($event)"
+    placeholder="Search..."
+    type="text"
+  />
+</div> -->
+<div class="table-wrapper">
+  <div class="table-container">
+    <table
+      [appShowWhenNoData]="items"
+      [appShowWhenNoDataNoImage]="
+        'assets/images/under-construction/building-blocks.png'
+      "
+      [appShowWhenNoDataText]="'No items to display.'"
+    >
+      <thead>
+        <tr>
+          <th *ngIf="detailTpl && items.length > 0"></th>
+          <th *ngFor="let col of columns" (click)="onSort(col.key)">
+            {{ col.label }}
+            <span *ngIf="sortKey === col.key">
+              {{ sortDirection === "asc" ? "▲" : "▼" }}
+            </span>
+          </th>
+          <th *ngIf="showActions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of filterMode === 'client' ? clientPaginatedItems : items
+          "
+        >
+          <td *ngIf="detailTpl">
+            <button class="expand-btn" (click)="toggleRow(row)">
+              {{ expandedRows.has(row) ? "−" : "+" }}
+            </button>
+          </td>
+          <td *ngFor="let col of columns">
+            <ng-container
+              *ngIf="templatesMap[col.key]; else defaultCell"
+              [ngTemplateOutlet]="templatesMap[col.key]"
+              [ngTemplateOutletContext]="{ $implicit: row }"
+            ></ng-container>
+            <ng-template #defaultCell>{{ row[col.key] }}</ng-template>
+          </td>
+          <td *ngIf="showActions">
+            <button class="button mx-2">Edit</button>
+            <button class="button">Delete</button>
+          </td>
+        </tr>
+        <ng-container
+          *ngFor="
+            let row of filterMode === 'client' ? clientPaginatedItems : items
+          "
+        >
+          <tr
+            [@expandCollapse]="expandedRows.has(row) ? 'open' : 'closed'"
+            *ngIf="detailTpl && expandedRows.has(row)"
+          >
+            <td [attr.colspan]="columns.length + (showActions ? 2 : 1)">
+              <ng-template
+                [ngTemplateOutlet]="detailTpl.template"
+                [ngTemplateOutletContext]="{ $implicit: row }"
+              ></ng-template>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination-controls">
+    <button
+      (click)="onPageChange(currentPage - 1)"
+      [disabled]="currentPage === 0"
+    >
+      Previous
+    </button>
+    <ng-container
+      *ngFor="
+        let i of [].constructor(
+          filterMode === 'client'
+            ? clientTotalPages
+            : Math.ceil(total / pageSize)
+        );
+        let idx = index
+      "
+    >
+      <button (click)="onPageChange(idx)" [class.active]="idx === currentPage">
+        {{ idx + 1 }}
+      </button>
+    </ng-container>
+    <button
+      (click)="onPageChange(currentPage + 1)"
+      [disabled]="
+        (currentPage + 1) * pageSize >=
+        (filterMode === 'client' ? displayedItems.length : total)
+      "
+    >
+      Next
+    </button>
+    <label>
+      Items per page:
+      <select
+        (change)="onPageSizeChange($any($event.target).value)"
+        [value]="pageSize"
+      >
+        <option *ngFor="let size of pageSizeOptions" [value]="size">
+          {{ size }}
+        </option>
+      </select>
+    </label>
+  </div>
+</div>
+<img
+  *ngIf="items.length == 0"
+  src="assets/images/under-construction/building-blocks.png"
+/>

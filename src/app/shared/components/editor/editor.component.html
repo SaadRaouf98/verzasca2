@@ -1,0 +1,25 @@
+<form
+  #editorForm
+  enctype="multipart/form-data"
+  id="editorForm"
+  name="editorForm"
+  method="POST"
+  [action]="
+    editorUrl + editorFileId + (allowEdit ? '' : '/false') + '&lang=ar-sa'
+  "
+  target="office"
+  hidden="hidden"
+>
+  <input #access_token type="text" name="access_token" [value]="token" />
+</form>
+
+<iframe
+  src="about:blank"
+  #office
+  id="office"
+  name="office"
+  allowfullscreen="true"
+  width="100%"
+  height="850px"
+  allow="clipboard-read *; clipboard-write *"
+></iframe>

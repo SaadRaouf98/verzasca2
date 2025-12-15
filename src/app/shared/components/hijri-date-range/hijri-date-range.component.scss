@@ -1,0 +1,7 @@
+.label-container {
+  margin-bottom: 12px;
+}
+
+::ng-deep .mat-calendar-content {
+  direction: rtl !important;
+}

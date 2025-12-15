@@ -1,0 +1,33 @@
+.footer {
+  width: 97%;
+  margin: auto;
+  margin-top: 1.5rem;
+  border-radius: 0.75rem 0.75rem 0 0;
+  border-top: 1px solid #5bbdf6;
+  border-right: 1px solid #5bbdf6;
+  border-left: 1px solid #5bbdf6;
+  background: #fff;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Effect style */
+  box-shadow: -1px -1px 10px 0 var(--Colours-Primary-50, #d8effd);
+  .caption {
+    color: #000;
+  }
+  img {
+    margin: 0 0.75rem;
+  }
+  a {
+    color: #5bbdf6;
+  }
+}
+.from-login {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  .caption {
+    color: #000;
+  }
+}

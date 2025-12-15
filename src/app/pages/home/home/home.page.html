@@ -1,0 +1,39 @@
+<app-home-statistics-section></app-home-statistics-section>
+<div class="home-section-bg">
+  <div class="col-12 home-section-header d-flex justify-content-between mb-3">
+    <div class="d-flex align-items-center">
+      <svg width="1.1rem" height="1.1rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#home-events'"></use>
+      </svg>
+      <span class="body-bold mx-2"> {{ 'HomeModule.DashboardPage.nextEvents' | translate }} </span>
+    </div>
+    <button class="add-btn text-white">
+      <svg width="1.3rem" height="1.3rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#home-add-new'"></use>
+      </svg>
+      <span class="mx-1 body-bold text-small"
+        >{{ 'HomeModule.DashboardPage.addNew' | translate }}</span
+      >
+    </button>
+  </div>
+  <div class="col-12">
+    <app-home-next-events [meetingGroups]="rawData"></app-home-next-events>
+  </div>
+</div>
+
+<div class="home-section-bg">
+  <div class="col-12 home-section-header d-flex justify-content-between mb-3">
+    <div class="d-flex align-items-center">
+      <svg width="1.2rem" height="1.2rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#home-news'"></use>
+      </svg>
+      <span class="body-bold mx-2"> {{ 'HomeModule.DashboardPage.latestNew' | translate }} </span>
+    </div>
+    <a class="link" [routerLink]="'./posts/'">
+      {{ 'HomeModule.DashboardPage.showAll' | translate }}</a
+    >
+  </div>
+  <app-home-news class="p-0" [posts]="latestNews"></app-home-news>
+</div>
+
+<app-home-policies></app-home-policies>

@@ -1,0 +1,72 @@
+<div class="select_container">
+  <!-- <label>
+    {{placeholder | translate}}
+  </label> -->
+  <ng-select
+    class="custom-multi-select"
+    [items]="options"
+    [bindLabel]="bindLabel"
+    [bindValue]="bindValue"
+    [multiple]="multiple"
+    [hideSelected]="true"
+    [clearable]="false"
+    [closeOnSelect]="!multiple"
+    [searchable]="searchable"
+    [placeholder]="placeholder | translate"
+    [disabled]="disabled"
+    [(ngModel)]="internalValue"
+    (change)="onChangeTriggered($event)"
+    (blur)="onTouched()"
+    [notFoundText]="'shared.noResultsFound' | translate"
+    (search)="onSearchInput($event)"
+    [class.multiplle]="internalValue?.length > 0"
+    [appendTo]="appendTo"
+  >
+    <!-- [hideSelected]="true" -->
+    <!-- <ng-template ng-dropdown-arrow>
+    <svg width="1.25rem" height="1.25rem">
+      <use
+        [attr.xlink:href]="'assets/icons/sprite.svg#header-arrow-down'"
+      ></use>
+    </svg>
+  </ng-template> -->
+    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear" *ngIf="multiple">
+      <ng-container *ngIf="items.length <= 1">
+        <div
+          class=""
+          *ngFor="let item of internalValueToSHow | slice : 0 : 1; let i = index; trackBy: index"
+        >
+          <!-- <span class="body text-small"> {{ item[bindLabel] }}</span> -->
+          <!-- <span class="ng-value-icon right" (click)="clear(item)">×</span> -->
+        </div>
+      </ng-container>
+
+      <div class="d-flex align-items-center" >
+        <span class="body">{{ placeholder | translate }}</span>
+        <span class="body-bold secondary-500 mx-3"
+          >{{ items.length }}
+          {{
+            items.length > 2 ? ('shared.options' | translate) : ('shared.option' | translate)
+          }}</span
+        >
+      </div>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" *ngIf="multiple">
+      <div class="d-flex align-items-center option-custom">
+        <!-- [checked]="isChecked(item)" -->
+        <mat-radio-button class="custom-radio" disableRipple></mat-radio-button>
+        <span class="mx-2 body text-small">
+          {{ item[bindLabel] }}
+        </span>
+      </div>
+    </ng-template>
+  </ng-select>
+  <!-- <ng-template *ngIf="multiple" ng-label-tmp >
+    <span>
+      {{ placeholder | translate }}
+    </span>
+  </ng-template> -->
+  <!-- <span class="bold-bold text-small font-bold selected-count mt-1" *ngIf="internalValue?.length > 1 && showSelected">{{
+    internalValue?.length || 0 }} {{ "shared.selected" | translate }}
+  </span> -->
+</div>

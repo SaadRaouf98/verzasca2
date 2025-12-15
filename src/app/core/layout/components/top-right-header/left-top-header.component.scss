@@ -1,0 +1,71 @@
+@use 'src/assets/design-system/colors' as *;
+.left-top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0rem;
+  background: #fff;
+  padding-left: 35px;
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    // margin-right: 40px;
+    .avatar {
+      // width: 40px;
+      // height: 40px;
+      // border-radius: 50%;
+      // overflow: hidden;
+      // flex-shrink: 0;
+      // margin-left: 24px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: none;
+      }
+    }
+
+    .text {
+      //margin-right: 0.75rem;  // RTL: space on right
+      text-align: right;
+      .name {
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        color: #000;
+      }
+
+      .email {
+        color: $gray-300;
+        font-size: 0.75rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 0.875rem;
+      }
+    }
+  }
+
+  .notification-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    i.icon-bell {
+      font-size: 1.4rem;
+      color: #555;
+    }
+
+    .dot {
+      position: absolute;
+      top: 4px;
+      right: 4px; // RTL coordinate is same since icon is symmetric
+      width: 8px;
+      height: 8px;
+      background: #e74c3c;
+      border-radius: 50%;
+    }
+  }
+}

@@ -1,0 +1,105 @@
+@use "src/assets/design-system/colors" as *;
+::ng-deep .mat-badge-content {
+  position: absolute;
+  background: #e7e2e2;
+  color: #002c6c;
+  border-radius: 100%;
+  padding: 3px 6px;
+  right: -3px;
+  bottom: 4px;
+  aspect-ratio: 1 / 1;
+  min-width: 26px;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  font-size: 12px;
+  line-height: 13px;
+  font-weight: 400;
+  font-size: 0.8rem !important;
+}
+
+::ng-deep
+  .mat-badge-medium.mat-badge-overlap.mat-badge-after
+  .mat-badge-content {
+  right: 12px !important;
+  top: 14px !important;
+  // min-width: 31px;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 0.625rem;
+  border: 1px solid $gray-50;
+  background: $red-500;
+  max-width: 10px;
+  font-size: 1px !important;
+  padding: 0;
+  min-width: 0;
+}
+
+::ng-deep .mat-mdc-menu-panel.notifications-menu-width {
+  width: 600px !important;
+  max-width: none !important;
+}
+
+.cart-menu {
+  font-size: 14px;
+
+  .first-p {
+    color: #032c6c;
+    font-weight: bold;
+    margin-bottom: 16px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .watch-all {
+    color: #37a0a0;
+    font-weight: 400;
+    text-align: center;
+    display: block;
+    margin: auto;
+  }
+
+  .minHeight {
+    min-height: 1rem;
+    max-height: 18rem;
+    overflow: auto;
+  }
+
+  .notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #fff;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 10px !important;
+    cursor: pointer;
+
+    .alarm-img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+    }
+
+    .title {
+      padding-top: 3px;
+      color: #20545f;
+      font-weight: 700;
+      font-size: 15px;
+      max-width: 200px;
+      min-width: 152px;
+    }
+
+    .date {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: #858d95;
+    }
+  }
+}

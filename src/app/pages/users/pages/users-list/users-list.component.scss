@@ -1,0 +1,344 @@
+@import "../../../../../assets/scss/variables.scss";
+
+.primary-btn {
+  img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+  }
+}
+
+.primary-btn {
+  background-color: #3db5b5;
+}
+
+.simple-gap {
+  gap: 1em;
+}
+
+@media (max-width: 576px) {
+  .primary-btn {
+    max-height: 46px;
+  }
+  .mt-s {
+    margin-top: 1em;
+  }
+}
+/**************** filters ******************/
+
+.page-options {
+  position: relative;
+
+  &:after {
+    content: "";
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: #e5e8eb;
+  }
+
+  .table-options {
+    display: flex;
+    margin: 0;
+    padding: 0;
+
+    button {
+      span {
+        gap: 5px;
+      }
+    }
+
+    ::ng-deep {
+      .mat-mdc-button,
+      .mat-mdc-flat-button.mat-mdc-primary,
+      .mat-mdc-raised-button.mat-mdc-primary,
+      .mat-mdc-fab.mat-mdc-primary,
+      .mat-mdc-mini-fab.mat-mdc-primary {
+        min-height: 45px;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &.row-options {
+    background-color: green;
+    align-items: center;
+    color: #fff;
+  }
+}
+
+.selected-filters {
+  display: flex;
+  margin-right: auto;
+  width: auto;
+  justify-content: flex-end;
+  @media (max-width: 900px) {
+    margin-bottom: 15px;
+    justify-content: flex-start;
+    overflow: scroll;
+    //width: 100%;
+    display: flex;
+    padding-bottom: 0.5rem;
+  }
+  li {
+    background-color: #f0f5fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    border-radius: 27px;
+    border: 1px solid blue;
+    line-height: 30px;
+    margin: 5px;
+    min-width: 65px;
+    height: 30px;
+    @media screen and (max-width: 1200px) {
+      display: inline-block;
+      min-width: fit-content;
+    }
+    span {
+      font-size: 10px;
+      color: black;
+    }
+
+    button {
+      background-color: blue;
+      height: 20px;
+      width: 20px;
+      line-height: 20px;
+      font-size: 13px;
+    }
+  }
+}
+
+/**************** Table ********************/
+::ng-deep app-users-list .mat-mdc-table {
+  thead {
+    background-color: #20545f !important;
+  }
+}
+
+table {
+  margin-top: -10px;
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #c4d7ed;
+  }
+  .mat-column-name {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+  }
+  .mat-column-actions {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+  }
+}
+
+tr.example-detail-row {
+  height: 0;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 991px) {
+  tr.example-detail-row {
+    height: 0;
+    display: contents;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flow-root;
+}
+
+ul.detail-element {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 0 5px;
+
+    p {
+      font-size: 13px;
+      color: #808080;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.example-element-description {
+  padding: 12px;
+}
+
+::ng-deep {
+  .mat-paginator {
+    background: none;
+  }
+  @media only screen and (max-width: 360px) {
+    .mat-button-wrapper {
+      font-size: 13px;
+    }
+  }
+  .mat-paginator-container {
+    height: 60px;
+    @media only screen and (max-width: 1200px) {
+      justify-content: center !important;
+    }
+  }
+}
+
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.table-actions {
+  margin: 0;
+  padding: 0;
+
+  height: 45px;
+  overflow: hidden;
+  background: transparent; //#f0f5fa;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #c4d7ed;
+
+  > div {
+    padding: 0;
+    height: 100%;
+    position: relative;
+  }
+
+  .search-container {
+    width: 400px;
+    font-size: 15px;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    @media screen and (max-width: 767px) {
+      width: 100% !important;
+    }
+
+    input {
+      opacity: 0.8;
+    }
+  }
+
+  ::ng-deep {
+    .mat-paginator {
+      background: none;
+    }
+
+    .mat-paginator-container {
+      height: 60px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .table-actions {
+    display: none;
+  }
+}
+
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1;
+  background: rgb(0 0 0 / 43%);
+}
+
+::ng-deep .cdk-overlay-transparent-backdrop,
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1 !important;
+}
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.progress-bar {
+  display: block;
+  margin-bottom: 5px;
+  width: 90%;
+}
+
+@media (max-width: 576px) {
+  .progress-bar {
+    width: 100%;
+  }
+}
+
+.options-btn {
+  background-color: #3db5b5;
+  height: 40px;
+}
+
+.options-container {
+  display: flex;
+  gap: 1.2em;
+  align-items: baseline;
+}
+
+.options-container {
+  .edit-container {
+    gap: 5px;
+    height: 39px;
+    background: #f2f4f5;
+    padding: 6px;
+    border-radius: 18px;
+    border: 1px solid #f2f4f5;
+  }
+
+  .edit-container {
+    width: auto;
+  }
+}
+/** search */
+.search-container {
+  width: 100% !important;
+  font-size: 15px;
+  height: 100%;
+  border-radius: 2px;
+  border-right: solid 0.5px #c4d7ed;
+  border-left: solid 0.5px #c4d7ed;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  @media screen and (max-width: 767px) {
+    width: 100% !important;
+  }
+
+  input {
+    opacity: 0.8;
+    border: 0;
+    outline: none;
+    background: none;
+    width: 100%;
+  }
+}

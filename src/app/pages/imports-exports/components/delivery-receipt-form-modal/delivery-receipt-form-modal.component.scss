@@ -1,0 +1,184 @@
+.close-icon-container {
+  #close-icon {
+    padding: 0;
+    z-index: 100;
+  }
+}
+
+.modal-header {
+  position: relative;
+  top: -2em;
+  display: flex;
+  flex-direction: row-reverse;
+
+  h2 {
+    flex-grow: 1;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 2.8em;
+  min-height: 350px;
+  max-height: 350px;
+
+  overflow: auto;
+
+  .mat-form-field-div {
+    padding: 1em;
+  }
+
+  .label-container {
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 576px) {
+    .mb {
+      margin-bottom: 10px;
+    }
+    .label-container {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+/**************** Table ********************/
+::ng-deep app-delivery-receipt-form-modal .mat-mdc-table {
+  thead {
+    background-color: #20545f !important;
+  }
+}
+
+table {
+  margin-top: -10px;
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #c4d7ed;
+    font-size: 16px;
+  }
+  .mat-column-exportNumber {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+  }
+
+  .mat-column-actions {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+    padding: 14px 14px 14px 14px !important;
+  }
+}
+
+tr.example-detail-row {
+  height: 0;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 991px) {
+  tr.example-detail-row {
+    height: 0;
+    display: contents;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flow-root;
+}
+
+ul.detail-element {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 0 5px;
+
+    p {
+      font-size: 13px;
+      color: #808080;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.example-element-description {
+  padding: 12px;
+}
+
+::ng-deep {
+  .mat-paginator {
+    background: none;
+  }
+  @media only screen and (max-width: 360px) {
+    .mat-button-wrapper {
+      font-size: 13px;
+    }
+  }
+  .mat-paginator-container {
+    height: 60px;
+    @media only screen and (max-width: 1200px) {
+      justify-content: center !important;
+    }
+  }
+}
+
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1;
+  background: rgb(0 0 0 / 43%);
+}
+
+::ng-deep .cdk-overlay-transparent-backdrop,
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1 !important;
+}
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.save-btn-container {
+  gap: 1em;
+  padding: 1em;
+
+  .save-btn,
+  .back-btn {
+    padding: 1.5em;
+  }
+  .save-btn:not([disabled]) {
+    background: #3db5b5;
+    color: #fff;
+  }
+
+  .back-btn {
+    background-color: #ebf5f5;
+    color: #545961;
+  }
+}

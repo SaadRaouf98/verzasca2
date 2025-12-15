@@ -1,0 +1,19 @@
+@use "src/assets/design-system/colors" as *;
+.card {
+  border-radius: 0.75rem;
+  border: 1px solid $gray-100;
+  background: #fff;
+  padding: 1rem;
+}
+.info {
+  padding: 1.25rem 1.5rem;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  background: $secondary-50;
+}
+.gold-line {
+  opacity: 0.5;
+  color: $secondary-300;
+  margin: 0.75rem 0;
+  height: 0.0625rem;
+}

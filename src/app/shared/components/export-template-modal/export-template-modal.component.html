@@ -1,0 +1,181 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold">
+    {{ data.header }}
+
+    <!-- For the progress type indicators -->
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Statement">
+      ({{ 'actions.auditing.statementRequest' | translate }})
+    </ng-container>
+
+    <ng-container *ngIf="data.currentProgress === RequestProgressType.Recommendation">
+      ({{ 'actions.auditing.studyProposal' | translate }})
+    </ng-container>
+  </span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<div class="custom-modal-body" mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="grid">
+      <div class="row">
+        <div class="col-12 col-md-6 mb-3">
+          <p class="body-bold text-small mb-2">
+            {{ 'TransactionsModule.ExportDocumentComponent.studyOutput' | translate }}
+          </p>
+          <div class="download-container mb-2">
+            <div class="d-flex align-items-center">
+              <svg width="1.5rem" height="1.5rem" class="ms-1">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+              </svg>
+              <span class="body-bold"> {{ this.data.studyingFile?.name }}</span>
+            </div>
+
+            <svg
+              class="cursor-pointer"
+              width="1.5rem"
+              height="1.5rem"
+              (click)="onDownloadOriginalUploadedFile()"
+              matTooltip="{{ 'shared.download' | translate }}"
+            >
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+            </svg>
+          </div>
+        </div>
+        <!--start export number -->
+        <div class="col-12 col-md-6 mb-3">
+          <p class="body-bold text-small mb-2">
+            {{ 'TransactionsModule.ExportDocumentComponent.exportedNumber' | translate }}
+            ({{ 'actions.auditing.studyProposal' | translate }})
+            <span class="text-danger">*</span>
+          </p>
+          <app-input
+            formControlName="exportNumber"
+            [placeholder]="'TransactionsModule.ExportDocumentComponent.exportedNumber'"
+            [showSearchIcon]="false"
+            [showFilterIcon]="false"
+            [type]="'number'"
+          ></app-input>
+
+          <div
+            *ngIf="form.get('exportNumber')?.errors?.['required'] && isControlTouched('exportNumber')"
+            class="text-danger mt-1"
+          >
+            <small>
+              {{ 'TransactionsModule.ExportDocumentComponent.enterExportedNumber' | translate }}
+            </small>
+          </div>
+        </div>
+        <!-- End export number -->
+        <div class="col-12" *ngIf="!filedUploaded">
+          <app-upload-attachment
+            #uploadAttachment
+            [multiple]="true"
+            [showBtn]="false"
+            [split]="false"
+            (fileUploaded)="onPdfFileChange($event)"
+            (fileRemoved)="onDeletePdfFile()"
+            [customFileTypes]="['.pdf']"
+          ></app-upload-attachment>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------------- -->
+    <div *ngIf="filedUploaded" style="max-width: 100%; height: 94vh">
+      <!-- Uploaded File Info -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+          <svg width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+          </svg>
+          <span class="body-bold mx-1">{{
+            uploadFileTab?.get('userJustUploadedFile')?.value?.name
+          }}</span>
+        </div>
+        <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onDeletePdfFile()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#delete-sm'"></use>
+        </svg>
+      </div>
+
+      <!-- PDF Viewer -->
+      <ng-template #signaturediv>
+        <app-signature-place-holder></app-signature-place-holder>
+      </ng-template>
+      <div style="display: flex; flex-direction: row; max-height: 100%">
+        <div style="flex: 4 1 0%">
+          <div
+            #pdfHolder
+            [class]="{ thumbnails: showThumbnails }"
+            style="max-width: 100%; display: block"
+          >
+            <div *ngIf="error" class="error mb">
+              {{ error.message | json }}
+            </div>
+
+            <pdf-viewer
+              *ngIf="pdfSrc"
+              [fit-to-page]="true"
+              [autoresize]="true"
+              [render-text]="false"
+              (page-rendered)="pageRendered($event)"
+              (contextmenu)="contextmenu($event)"
+              (error)="onError($event)"
+              [src]="pdfSrc"
+              style="
+                display: flex;
+                padding: 0px;
+                background-color: #aaa;
+                box-sizing: border-box;
+                height: 88vh;
+              "
+            >
+            </pdf-viewer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      [style.display]="contextmenuOpened ? 'block' : 'none'"
+      style="background-color: #ddd; box-shadow: 1px 1px 1px 1px #ccc"
+      #contextmenuEl
+      (contextmenu)="$event.preventDefault()"
+    >
+      <div style="display: flex; flex-direction: column; gap: 0.3em; padding: 0.2em">
+        <a
+          class="cursor-pointer"
+          style="margin-bottom: 0.4em"
+          (click)="createSignaturePlaceholderComponent()"
+          >إضافة أماكن التوقيع</a
+        >
+
+        <a class="cursor-pointer" (click)="createInitiatePlaceholderComponent()"
+          >إضافة مكان التركين</a
+        >
+
+        <a class="cursor-pointer" (click)="onCreateNormalPagePlaceholderComponent()">ورقة عادية</a>
+      </div>
+    </div>
+
+    <!------------------------->
+  </form>
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button
+    class="button button-primary button-lg"
+    style="flex: 0 0 69%"
+    (click)="onSubmitSecondTab()"
+    type="button"
+    [disabled]="disableSubmitBtn"
+  >
+    {{ 'shared.approveBtn' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

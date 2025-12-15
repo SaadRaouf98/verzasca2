@@ -1,0 +1,628 @@
+<div class="row mb-3">
+  <div class="col-12 col-lg-5 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="goToLastPage()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <p class="body-bold mb-0 mx-1">
+        {{ 'ImportsExportsModule.AddImportComponent.editImport' | translate }}
+        : ({{ this.form.get('autoNumber')?.value }})
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <!-- container -->
+      <div class="col-12 col-md-4 offset-md-8 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.transaction' | translate }}
+        </p>
+        <app-select
+          formControlName="requestContainer"
+          [options]="mappedContainersList"
+          [bindLabel]="'displayText'"
+          [bindValue]="'value'"
+          [placeholder]="'ImportsExportsModule.AddImportComponent.transaction' | translate"
+          [multiple]="false"
+          [searchable]="true"
+          (searchChange)="searchOnContainers($event)"
+          [readonly]="!allowEditContainer"
+        >
+        </app-select>
+      </div>
+      <!-- End container -->
+      <!-- Title -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.title' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="title"
+          [placeholder]="'shared.title'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+
+        <div
+          *ngIf="
+            form.get('title')?.errors?.['required'] &&
+            isTouched('title')
+          "
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'shared.titleRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End Title -->
+      <!-- description -->
+      <div class="col-12 col-md-8 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.description' | translate }}
+        </p>
+        <app-input
+          formControlName="description"
+          [placeholder]="'shared.description'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- End description -->
+      <!-- physicalNumber -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.physicalNumber' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="physicalNumber"
+          [placeholder]="'ImportsExportsModule.AddImportComponent.physicalNumber'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+
+        <div
+          *ngIf=" form.get('physicalNumber')?.errors?.['required'] && isTouched('physicalNumber')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'ImportsExportsModule.AddImportComponent.physicalNumberRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End physicalNumber -->
+      <!-- foundation -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.incomingFoundation' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="foundation"
+          [options]="(foundationsList$ | async)?.data"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.incomingFoundation' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          (selectionChange)="onSelectedFoundationChanged()"
+          (searchChange)="searchOnFoundations($event)"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('foundation')?.errors?.['required'] && isTouched('foundation')"
+          class="text-danger text-small mt-1"
+        >
+          <small> {{ 'shared.foundationRequired' | translate }} </small>
+        </div>
+      </div>
+      <!-- End foundation -->
+      <!-- sub foundation -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.subFoundation' | translate }}
+        </p>
+        <app-select
+          formControlName="subFoundation"
+          [options]="(subFoundationsList$ | async)?.data"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.subFoundation' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          (searchChange)="searchOnSubFoundations($event)"
+        >
+        </app-select>
+      </div>
+      <!-- End sub foundation -->
+      <!-- concernedFoundations -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.concernedFoundations' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="concernedFoundations"
+          [options]="concernedFoundationsList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.concernedFoundations' | translate"
+          [multiple]="true"
+          [searchable]="false"
+          [showSelected]="false"
+          (searchChange)="searchOnConcernedFoundations($event)"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('concernedFoundations')?.errors?.['required'] && isTouched('concernedFoundations')"
+          class="text-danger text-small mt-1"
+        >
+          <small> {{ 'shared.foundationRequired' | translate }}</small>
+        </div>
+      </div>
+      <!-- End concernedFoundations -->
+      <!-- committeeId -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.processType' | translate }}
+        </p>
+        <app-select
+          formControlName="committeeId"
+          [options]="organizationUnitsList"
+          [bindLabel]="'committeeSymbol'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.processType' | translate"
+          [multiple]="false"
+          [searchable]="false"
+        >
+        </app-select>
+      </div>
+      <!-- End committeeId -->
+      <!-- priorityId -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.priorities' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="priorityId"
+          [options]="prioritiesList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.priorities' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          [showSelected]="false"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('priorityId')?.errors?.['required'] && isTouched('priorityId')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'ImportsExportsModule.AddImportComponent.priorityRequired' | translate }}</small
+          >
+        </div>
+      </div>
+      <!-- End priorityId -->
+      <!-- classification -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.classification' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="classificationId"
+          [options]="classificationsList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.classification' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          [showSelected]="false"
+          (selectionChange)="onClassificationChanges()"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.get('classificationId')?.errors?.['required'] && isTouched('classificationId')"
+          class="text-danger text-small mt-1"
+        >
+          <small> {{ 'shared.classificationRequired' | translate }}</small>
+        </div>
+      </div>
+      <!-- End classification -->
+
+      <!-- access -->
+      <div *ngIf="showAccessUsers" class="col-12 col-md-8 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.AddTransactionComponent.accessibility' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="users"
+          [options]="(usersList$ | async)?.data"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'TransactionsModule.AddTransactionComponent.accessibility' | translate"
+          [multiple]="true"
+          [searchable]="true"
+          (searchChange)="searchOnUsers($event)"
+          [appendTo]="'body'"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.errors?.['usersRequired'] && isTouched('users')"
+          class="text-danger text-small mt-1"
+        >
+          <small> {{ 'TransactionsModule.AddTransactionComponent.atLeastOne' | translate }}</small>
+        </div>
+      </div>
+      <!-- End access -->
+      <!-- requestType -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.requestType' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
+          formControlName="requestType"
+          [options]="(requestTypesList$ | async)?.data"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'ImportsExportsModule.AddImportComponent.requestType' | translate"
+          [multiple]="false"
+          [searchable]="false"
+          (searchChange)="searchOnRequestTypes($event)"
+        >
+        </app-select>
+
+        <div
+          *ngIf="form.errors?.['requestType'] && isTouched('requestType')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'ImportsExportsModule.AddImportComponent.requestTypeRequired' | translate }}</small
+          >
+        </div>
+      </div>
+      <!-- End requestType -->
+      <!-- deliveryNumber -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.deliveryNumber' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
+          formControlName="deliveryNumber"
+          [placeholder]="'ImportsExportsModule.AddImportComponent.deliveryNumber'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+
+        <div
+          *ngIf=" form.get('deliveryNumber')?.errors?.['required'] && isTouched('deliveryNumber')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'ImportsExportsModule.AddImportComponent.deliveryNumberRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- End deliveryNumber -->
+      <p class="body-bold mb-3">{{ 'shared.georgianDates' | translate }}</p>
+      <!--Start physicalGregorianDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.physicalGregorianDate' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-date-picker
+          [formControlName]="'physicalGregorianDate'"
+          [placeholder]="
+            'ImportsExportsModule.AddImportComponent.physicalGregorianDate' | translate
+          "
+          [range]="false"
+          (gregorianDateChange)="onPatchFormPhysicalGregorianDate($event)"
+          [maxDate]="gregorianTodayDate"
+        ></app-date-picker>
+
+        <div
+          *ngIf="
+                 form.get('physicalGregorianDate')?.errors?.['required'] &&
+                        isTouched('physicalGregorianDate')
+              "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              'TransactionsModule.ExportDocumentComponent.documentGregorianDateRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <!--End physicalGregorianDate-->
+      <!--Start availabilityGregorianDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.availabilityGregorianDate' | translate }}
+        </p>
+        <app-date-picker
+          [formControlName]="'availabilityGregorianDate'"
+          [placeholder]="
+            'ImportsExportsModule.AddImportComponent.availabilityGregorianDate' | translate
+          "
+          [range]="false"
+          (gregorianDateChange)="onPatchFormAvailabilityGregorianDate($event)"
+          [maxDate]="gregorianTodayDate"
+        ></app-date-picker>
+      </div>
+      <!--End availabilityGregorianDate-->
+      <!--Start deliveryGregorianDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.deliveryGregorianDate' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-date-picker
+          [formControlName]="'deliveryGregorianDate'"
+          [placeholder]="
+            'ImportsExportsModule.AddImportComponent.deliveryGregorianDate' | translate
+          "
+          [range]="false"
+          (gregorianDateChange)="onPatchFormDeliveryGregorianDate($event)"
+          [maxDate]="gregorianTodayDate"
+          [disabled]="true"
+        ></app-date-picker>
+
+        <div
+          *ngIf="
+                 form.get('deliveryGregorianDate')?.errors?.['required'] &&
+                        isTouched('deliveryGregorianDate')
+              "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              'TransactionsModule.ExportDocumentComponent.documentGregorianDateRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <!--End deliveryGregorianDate-->
+
+      <p class="body-bold mb-3">{{ 'shared.hijriDates' | translate }}</p>
+      <!--Start physicalHijriDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-date-picker-hijri
+          [formControlName]="'physicalHijriDate'"
+          [placeholder]="'TransactionsModule.ExportDocumentComponent.documentHijriDate' | translate"
+          [range]="false"
+          [maxDate]="gregorianTodayDate"
+          (hijriDateChange)="onPatchFormPhysicalHijriDate($event)"
+        ></app-date-picker-hijri>
+        <div
+          *ngIf="form.get('physicalHijriDate')?.invalid && form.get('physicalHijriDate')?.touched"
+          class="text-danger mt-1"
+        >
+          <small>
+            {{ 'TransactionsModule.ExportDocumentComponent.documentHijriDateRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!--End physicalHijriDate-->
+      <!--Start availabilityHijriDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.availabilityHijriDate' | translate }}
+        </p>
+        <app-date-picker-hijri
+          [formControlName]="'availabilityHijriDate'"
+          [placeholder]="
+            'ImportsExportsModule.AddImportComponent.availabilityHijriDate' | translate
+          "
+          [range]="false"
+          [maxDate]="gregorianTodayDate"
+          (hijriDateChange)="onPatchFormAvailabilityHijriDate($event)"
+        ></app-date-picker-hijri>
+      </div>
+      <!--End availabilityHijriDate-->
+      <!--Start deliveryHijriDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'ImportsExportsModule.AddImportComponent.deliveryHijriDate' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-date-picker-hijri
+          [formControlName]="'deliveryHijriDate'"
+          [placeholder]="'ImportsExportsModule.AddImportComponent.deliveryHijriDate' | translate"
+          [range]="false"
+          [maxDate]="gregorianTodayDate"
+          (hijriDateChange)="onPatchFormDeliveryHijriDate($event)"
+          [disabled]="true"
+        ></app-date-picker-hijri>
+      </div>
+      <!--End deliveryHijriDate-->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body-bold mb-0">
+          {{ 'ImportsExportsModule.AddImportComponent.costsRequestedAmount' | translate }}
+        </p>
+      </div>
+      <div class="col-12 col-md-4 offset-md-4 mb-3">
+        <p class="body-bold mb-0">
+          {{ 'ImportsExportsModule.AddImportComponent.creditsRequestedAmount' | translate }}
+        </p>
+      </div>
+      <!-- costsRequestedAmount -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.costs' | translate }}
+        </p>
+        <app-input
+          formControlName="costsRequestedAmount"
+          [appCurrencySarInput]="true"
+          [showriyalIcon]="true"
+          [placeholder]="'shared.costs'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- End costsRequestedAmount -->
+      <!-- costsApprovedAmount -->
+      <div class="col-12 col-md-4 offset-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.costs' | translate }}
+        </p>
+        <app-input
+          formControlName="costsApprovedAmount"
+          [appCurrencySarInput]="true"
+          [showriyalIcon]="true"
+          [placeholder]="'shared.costs'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- End costsApprovedAmount -->
+      <!-- creditsRequestedAmount -->
+      <div class="col-12 col-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.credits' | translate }}
+        </p>
+        <app-input
+          formControlName="creditsRequestedAmount"
+          [appCurrencySarInput]="true"
+          [showriyalIcon]="true"
+          [placeholder]="'shared.credits'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- End creditsRequestedAmount -->
+      <!-- creditsApprovedAmount -->
+      <div class="col-12 col-md-4 offset-md-4 offset-md-4 mb-3">
+        <p class="body mb-2">
+          {{ 'shared.credits' | translate }}
+        </p>
+        <app-input
+          formControlName="creditsApprovedAmount"
+          [appCurrencySarInput]="true"
+          [showriyalIcon]="true"
+          [placeholder]="'shared.credits'"
+          [showSearchIcon]="false"
+          [showFilterIcon]="false"
+        ></app-input>
+      </div>
+      <!-- End creditsApprovedAmount -->
+      <!-- start Notes -->
+      <div class="col-12 col-md-8 mb-3">
+        <p class="body mb-2">{{ 'shared.notes' | translate }}</p>
+
+        <textarea
+          class="form-control w-100 bg-white"
+          rows="3"
+          placeholder="{{ 'shared.notes' | translate }}"
+          formControlName="note"
+          id="note"
+        ></textarea>
+      </div>
+      <!-- end Notes -->
+      <!-- start attachmentDescription -->
+      <div class="col-12 col-md-8 mb-3">
+        <p class="body mb-2">{{ 'shared.attachmentsText' | translate }}</p>
+
+        <textarea
+          class="form-control w-100 bg-white"
+          rows="3"
+          placeholder="{{ 'shared.attachmentsText' | translate }}"
+          formControlName="attachmentDescription"
+          id="attachmentDescription"
+        ></textarea>
+      </div>
+      <!-- end attachmentDescription -->
+
+      <div class="col-12 mb-3">
+        <p class="body mb-2">{{ 'shared.addAttachments' | translate }}</p>
+        <app-upload-attachment
+          [multiple]="true"
+          [showBtn]="false"
+          [split]="true"
+          [initialFiles]="attachmentFiles"
+          (fileUploaded)="onFileDropped($event)"
+          (fileRemoved)="onAttachmentRemoved($event)"
+          (viewAttachment)="onViewAttachment($event)"
+          [showViewOption]="true"
+        ></app-upload-attachment>
+      </div>
+
+      <!-- <div class="col-12  pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('attachmentInput')?.errors && isTouched('attachmentInput'),
+          'mat-form-field-div-success':
+            !form.get('attachmentInput')?.errors && isTouched('attachmentInput')
+        }">
+        <div class="label-container">
+          <label for="attachmentInput">
+            {{ "shared.attachments" | translate }}
+          </label>
+        </div>
+
+        <div class="file-input-parent">
+          <mat-form-field appearance="outline" class="d-flex justify-content-between"
+            [matTooltip]="attachmentInput.value?.name">
+            <input matInput name="attachmentInput" formControlName="attachmentInput"
+              [innerText]="attachmentInput.value?.name" (click)="onAddFile()" [placeholder]="
+                'ManageDocumentsModule.AddDocumentPage.addFile' | translate
+              " #visibleFileToUpload />
+
+            <input hidden (change)="onFileChange($event)" #hiddenFileToUpload type="file" />
+          </mat-form-field>
+          <button class="insert-file-btn" (click)="onInsertFileToList()" mat-flat-button>
+            ارفاق ملف
+          </button>
+        </div>
+      </div>
+
+      <div *ngFor="let control of attachments.controls; index as i" class="col-12 col-lg-6 mat-form-field-div">
+        <div class="inserted-file-container">
+          <p>{{ control.value.fileName }}</p>
+
+          <div class="inserted-file-options">
+            <div *ngIf="getFormControlByIndex(attachments, i)?.value" (click)="onViewAttachment(i)"
+              class="d-flex align-items-center | watch-file-container">
+              <img src="assets/icons/eye-opened.png" class="eye-opened" />
+            </div>
+            <div class="d-flex align-items-center | delete-file">
+              <img src="assets/icons/delete.png" alt="Delete file ?" class="cursor-pointer" (click)="onDeleteFile(i)" />
+            </div>
+          </div>
+        </div>
+      </div>
+     -->
+    </div>
+    <div class="d-flex justify-content-end">
+      <button
+        class="button button-primary button-lg mx-3"
+        (click)="onSubmit()"
+        [disabled]="form.invalid || disableSubmitFormDetailsBtn"
+      >
+        {{ 'shared.save' | translate }}
+      </button>
+      <button class="button button-secondary button-lg" (click)="goToLastPage()">
+        {{ 'shared.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

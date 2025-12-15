@@ -1,0 +1,401 @@
+<div class="grid importCustomTabs">
+  <form autocomplete="off" [formGroup]="form">
+    <mat-tab-group
+      animationDuration="400ms"
+      (selectedTabChange)="onTabClicked($event)"
+      mat-align-tabs="start"
+      [(selectedIndex)]="selectedTabIndex"
+    >
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <svg width="1.5rem" height="1.5rem">
+            <use
+              [attr.xlink:href]="
+                selectedTabIndex === 0
+                  ? 'assets/icons/sprite.svg#new-file-fill'
+                  : 'assets/icons/sprite.svg#new-file'
+              "
+            ></use>
+          </svg>
+          <span class="body-bold mx-2">{{ 'shared.newTransaction' | translate }}</span>
+        </ng-template>
+        <ng-container *ngIf="!showImport">
+          <div class="card">
+            <div class="row">
+              <p class="body-bold mb-3">
+                {{ 'TransactionsModule.TransactionsListComponent.transactionInfo' | translate }}
+              </p>
+              <!-- Title -->
+              <div class="col-12 col-md-4 offset-md-8 mb-3">
+                <p class="body mb-2">
+                  {{ 'TransactionsModule.TransactionsListComponent.transactionTitle' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-input
+                  formControlName="title"
+                  [placeholder]="
+                    'TransactionsModule.TransactionsListComponent.transactionTitlePlaceholder'
+                  "
+                  [showSearchIcon]="false"
+                  [showFilterIcon]="false"
+                ></app-input>
+
+                <div
+                  *ngIf="form.get('title')?.errors?.['required'] && isTouched('title')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small>
+                    {{ 'shared.titleRequired' | translate }}
+                  </small>
+                </div>
+              </div>
+              <!-- End Title -->
+
+              <!-- foundation -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.incomingFoundation' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-select
+                  formControlName="foundation"
+                  [options]="(foundationsList$ | async)?.data"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.incomingFoundationPlaceholder' | translate"
+                  [multiple]="false"
+                  [searchable]="false"
+                  (selectionChange)="onSelectedFoundationChanged()"
+                >
+                </app-select>
+
+                <div
+                  *ngIf="form.get('foundation')?.errors?.['required'] && isTouched('foundation')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small> {{ 'shared.foundationRequired' | translate }} </small>
+                </div>
+              </div>
+              <!-- End foundation -->
+
+              <!-- sub foundation -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.subFoundation' | translate }}
+                </p>
+                <app-select
+                  formControlName="subFoundation"
+                  [options]="(subFoundationsList$ | async)?.data"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.incomingFoundationPlaceholder' | translate"
+                  [multiple]="false"
+                  [searchable]="false"
+                >
+                </app-select>
+              </div>
+              <!-- End sub foundation -->
+
+              <!-- concernedFoundations -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.concernedFoundations' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-select
+                  formControlName="concernedFoundations"
+                  [options]="(concernedFoundationsList$ | async)?.data"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.incomingFoundationPlaceholder' | translate"
+                  [multiple]="true"
+                  [searchable]="false"
+                >
+                </app-select>
+
+                <div
+                  *ngIf="form.get('concernedFoundations')?.errors?.['required'] && isTouched('concernedFoundations')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small> {{ 'shared.foundationRequired' | translate }}</small>
+                </div>
+              </div>
+              <!-- End concernedFoundations -->
+
+              <!-- benefitType -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.benefitType' | translate }}
+                </p>
+                <app-select
+                  formControlName="benefitType"
+                  [options]="(benefitTypesList$ | async)?.data"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.benefitTypePlaceholder' | translate"
+                  [multiple]="false"
+                  [searchable]="false"
+                >
+                </app-select>
+              </div>
+              <!-- End benefitType -->
+
+              <!-- sector -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.sector' | translate }}
+                </p>
+                <app-input
+                  formControlName="sector"
+                  [placeholder]="'shared.sector'"
+                  [showSearchIcon]="false"
+                  [showFilterIcon]="false"
+                  [readonly]="true"
+                ></app-input>
+              </div>
+              <!-- End sector -->
+
+              <!-- internalSector -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.internalSector' | translate }}
+                </p>
+                <app-input
+                  formControlName="subSector"
+                  [placeholder]="'shared.internalSector'"
+                  [showSearchIcon]="false"
+                  [showFilterIcon]="false"
+                  [readonly]="true"
+                ></app-input>
+              </div>
+              <!-- End internalSector -->
+              <!-- classification -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.classification' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-select
+                  formControlName="classificationId"
+                  [options]="classificationsList"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.classificationPlaceholder' | translate"
+                  [multiple]="false"
+                  [searchable]="false"
+                  (selectionChange)="onClassificationChanges()"
+                >
+                </app-select>
+
+                <div
+                  *ngIf="form.get('classificationId')?.errors?.['required'] && isTouched('classificationId')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small> {{ 'shared.classificationRequired' | translate }}</small>
+                </div>
+              </div>
+              <!-- End classification -->
+              <!-- priority -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{ 'shared.priorities' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-select
+                  formControlName="priorityId"
+                  [options]="prioritiesList"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="'shared.prioritiesPlaceholder' | translate"
+                  [multiple]="false"
+                  [searchable]="false"
+                >
+                </app-select>
+
+                <div
+                  *ngIf="form.get('priorityId')?.errors?.['required'] && isTouched('priorityId')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small>
+                    {{
+                      'ImportsExportsModule.AddImportComponent.priorityRequired' | translate
+                    }}</small
+                  >
+                </div>
+              </div>
+              <!-- End priority -->
+
+              <!-- referralJustification -->
+              <div class="col-12 col-md-4 mb-3">
+                <p class="body mb-2">
+                  {{
+                    'TransactionsModule.AddTransactionComponent.referralJustifications' | translate
+                  }}
+                </p>
+                <app-select
+                  formControlName="referralJustificationId"
+                  [options]="referralJustificationsList"
+                  [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'"
+                  [bindValue]="'id'"
+                  [placeholder]="
+                    'TransactionsModule.AddTransactionComponent.referralJustificationsPlaceholder'
+                      | translate
+                  "
+                  [multiple]="false"
+                  [searchable]="false"
+                >
+                </app-select>
+              </div>
+              <!-- End referralJustification -->
+
+              <!-- access -->
+              <div *ngIf="showAccessUsers" class="col-12 col-md-12 mb-3">
+                <p class="body mb-2">
+                  {{ 'TransactionsModule.AddTransactionComponent.accessibility' | translate }}
+                  <span class="text-danger text-small">*</span>
+                </p>
+                <app-select
+                  formControlName="users"
+                  [options]="(usersList$ | async)?.data"
+                  [bindLabel]="'name'"
+                  [bindValue]="'id'"
+                  [placeholder]="
+                    'TransactionsModule.AddTransactionComponent.accessibility' | translate
+                  "
+                  [multiple]="true"
+                  [searchable]="true"
+                  (searchChange)="searchOnUsers($event)"
+                  [appendTo]="'body'"
+                >
+                </app-select>
+
+                <div
+                  *ngIf="form.errors?.['usersRequired'] && isTouched('users')"
+                  class="text-danger text-small mt-1"
+                >
+                  <small>
+                    {{ 'TransactionsModule.AddTransactionComponent.atLeastOne' | translate }}</small
+                  >
+                </div>
+              </div>
+              <!-- End access -->
+
+              <!-- start description -->
+              <div class="col-12 col-md-8 mb-3">
+                <p class="body mb-2">{{ 'shared.note' | translate }}</p>
+
+                <textarea
+                  class="form-control w-100 bg-white"
+                  rows="3"
+                  placeholder="{{ 'shared.note' | translate }}"
+                  formControlName="description"
+                  id="description"
+                ></textarea>
+              </div>
+              <!-- end description -->
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div
+              class="d-flex align-items-center cursor-pointer"
+              [class.disabled]="form.invalid || disableSubmitBtn"
+              [class.cursor-not-allowed]="form.invalid || disableSubmitBtn"
+              (click)="form.valid && !disableSubmitBtn && onSubmit()"
+            >
+              <svg width="1rem" height="1rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#plus'"></use>
+              </svg>
+              <span class="body-bold mx-2">{{ 'shared.addImportInTransaction' | translate }}</span>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button
+                class="button button-primary button-lg mx-3"
+                (click)="onSubmit()"
+                [disabled]="form.invalid || disableSubmitBtn"
+              >
+                {{ 'shared.saveTransaction' | translate }}
+              </button>
+              <button class="button button-secondary button-lg" (click)="goToLastPage()">
+                {{ 'shared.cancel' | translate }}
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <svg width="1.5rem" height="1.5rem">
+            <use
+              [attr.xlink:href]="
+                selectedTabIndex === 1
+                  ? 'assets/icons/sprite.svg#add-folder-fill'
+                  : 'assets/icons/sprite.svg#add-folder'
+              "
+            ></use>
+          </svg>
+
+          <span class="body-bold mx-2">{{ 'shared.addToTransaction' | translate }}</span>
+        </ng-template>
+        <ng-container>
+          <div class="row gx-0 attach-container mt-3" *ngIf="!rowSelected">
+            <div class="col-12 col-md-4 offset-md-5 mb-2">
+              <app-input
+                [formControl]="searchKeywordControl"
+                [placeholder]="'shared.search'"
+                [showSearchIcon]="true"
+                [showFilterIcon]="false"
+                (searchName)="searchName($event)"
+              ></app-input>
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+              <div class="d-flex gap-2">
+                <app-date-picker
+                  [formControl]="fromDateControl"
+                  [placeholder]="'shared.dateFrom' | translate"
+                  [range]="false"
+                ></app-date-picker>
+                <app-date-picker
+                  [formControl]="toDateControl"
+                  [placeholder]="'shared.dateTo' | translate"
+                  [range]="false"
+                ></app-date-picker>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <app-table-list
+                [columnsConfig]="columnsConfig"
+                [columns]="columns"
+                [isError]="isTableError"
+                [isLoading]="isTableLoading"
+                [rows]="searchedTransactionsResults"
+                (filterChanged)="onTableFilterChanged($event)"
+                [hasPaginator]="true"
+                [pageSize]="pageSize"
+                [totalElements]="totalElements"
+                [currentPage]="pageNumber"
+                (pageChange)="pageChanged($event)"
+              >
+              </app-table-list>
+            </div>
+          </div>
+        </ng-container>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <svg width="1.5rem" height="1.5rem">
+            <use
+              [attr.xlink:href]="
+                selectedTabIndex === 2
+                  ? 'assets/icons/sprite.svg#file'
+                  : 'assets/icons/sprite.svg#file-fill'
+              "
+            ></use>
+          </svg>
+          <span class="body-bold mx-2">{{ 'shared.addFile' | translate }}</span>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</div>

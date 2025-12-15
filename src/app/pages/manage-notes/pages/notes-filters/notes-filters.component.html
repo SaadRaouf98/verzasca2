@@ -1,0 +1,70 @@
+<div class="form_container">
+  <form autocomplete="off" [formGroup]="filtersForm">
+    <div class="row">
+      <!-- <div class="col-12">
+        <div class="search-container">
+          <input formControlName="searchKeyword" appInputSanitizer type="text" placeholder="البحث بالرقم أو العنوان" />
+          <img src="assets/icons/search_.png" alt="Search by title." class="icon search-icon" />
+        </div>
+      </div> -->
+      <div class="col-12 mb-3 p-0">
+        <app-select appInputSanitizer formControlName="consultant" [options]="(usersList$ | async)?.data"
+          [bindLabel]="'name'" [bindValue]="'id'" [placeholder]="'shared.advisor'" [multiple]="false"
+          [searchable]="false"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="priority" [options]="prioritiesList"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [bindValue]="'id'" [placeholder]="'shared.priority'"
+          [multiple]="false" [searchable]="false"></app-select>
+      </div>
+      <!-- 
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="documentType" [options]="documentTypeOptions" [bindLabel]="'title'"
+          [bindValue]="'id'" [placeholder]="'shared.type'" [multiple]="false" [searchable]="false"></app-select>
+      </div> -->
+
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker [formControlName]="'fromDate'" [placeholder]="'shared.dateFrom' | translate" [range]="false"
+          (gregorianDateChange)="fromDateToDateSearchService.onGregorianDateChanges2(filtersForm, { fromDate: $event.gregorianDate, toDate: filtersForm.get('toDate')?.value })"></app-date-picker>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker [formControlName]="'toDate'" [placeholder]="'shared.dateTo' | translate" [range]="false"
+          (gregorianDateChange)="fromDateToDateSearchService.onGregorianDateChanges2(filtersForm, { fromDate: filtersForm.get('fromDate')?.value, toDate: $event.gregorianDate })"></app-date-picker>
+      </div>
+
+
+      <div class="col-12 col-md-6 mb-3  p-0">
+        <app-date-picker-hijri [formControlName]="'hijriFromDate'" [placeholder]="'shared.dateFrom' | translate"
+          [range]="false"
+          (hijriDateChange)="fromDateToDateSearchService.onHijriDateChanges2(filtersForm, { fromDate: $event.hijriDate, toDate: filtersForm.get('hijriToDate')?.value })"></app-date-picker-hijri>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker-hijri [formControlName]="'hijriToDate'" [placeholder]="'shared.dateTo' | translate"
+          [range]="false"
+          (hijriDateChange)="fromDateToDateSearchService.onHijriDateChanges2(filtersForm, { fromDate: filtersForm.get('hijriFromDate')?.value, toDate: $event.hijriDate })"></app-date-picker-hijri>
+      </div>
+
+
+
+      <div class="col-12 mb-3 p-0">
+        <app-select appInputSanitizer formControlName="classification" [options]="(classificationsList$ | async)?.data"
+          [bindLabel]="lang === 'ar' ? 'title' : 'titleEn'" [bindValue]="'id'" [placeholder]="'shared.classifications'"
+          [multiple]="false" [searchable]="false"></app-select>
+      </div>
+
+      <div class="col-12 mb-3 p-0">
+        <app-select formControlName="isSigned" [options]="isSignedOptions" [bindLabel]="'name'" [bindValue]="'id'"
+          [placeholder]="'shared.isSigned' | translate" [multiple]="false" [searchable]="false"></app-select>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 mt-2 ">
+    <button (click)="reset()" class="button button-lg button-secondary w-100">
+      {{ "shared.resetBtn" | translate }}
+    </button>
+  </div>
+</div>

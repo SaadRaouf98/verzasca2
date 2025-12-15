@@ -1,0 +1,60 @@
+.close-icon-container {
+  border-bottom: 1px solid #f1f1f1;
+  #close-icon {
+    padding: 0;
+    z-index: 100;
+  }
+}
+
+.modal-header {
+  position: relative;
+  top: -2em;
+  display: flex;
+  flex-direction: row-reverse;
+
+  h2 {
+    flex-grow: 1;
+    text-align: center;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 2.8em;
+  min-height: 300px;
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+.label-container {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 10px;
+  }
+  .label-container {
+    margin-bottom: 15px;
+  }
+}
+
+.submit-btn-container {
+  width: 93%;
+  .submit-btn {
+    width: 100%;
+    margin-bottom: 15px;
+
+    &:not([disabled]) {
+      background-color: #362f30 !important;
+      color: #fff;
+    }
+  }
+}

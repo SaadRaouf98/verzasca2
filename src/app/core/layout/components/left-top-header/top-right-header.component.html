@@ -1,0 +1,49 @@
+<nav class="top-nav d-flex" dir="rtl">
+  <ul class="menu">
+    <li
+      *ngFor="let item of menu"
+      (click)="toggleMenu(item, $event)"
+      [class.has-children]="item.children?.length"
+      [class.active]="activeItem === item"
+    >
+      <a *ngIf="!item.children" [routerLink]="item.route">
+        <svg class="ms-2 me-0" width="1.5rem" height="1.5rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#' + item.icon"></use>
+        </svg>
+        <span class="body">{{ item.label }}</span>
+      </a>
+
+      <ng-container *ngIf="item.children">
+        <a href="javascript:void(0)">
+          <svg class="ms-2 me-0" width="1.25rem" height="1.25rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#' + item.icon"></use>
+          </svg>
+          <span class="body">{{ item.label }}</span>
+          <svg class="mx-2 arrow" width="0.6rem" height=" 0.375rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#dropdown-arrow'"></use>
+          </svg>
+        </a>
+        <ul class="submenu" *ngIf="item.isOpen">
+          <li *ngFor="let child of item.children">
+            <a
+              [routerLink]="child.route || null"
+              (click)="child.action ? child.action() : null"
+              class="text-small"
+            >
+              <!-- <mat-radio-button
+                [checked]="selectedOption === child.label"
+                class="mr-2"
+                disableRipple
+              ></mat-radio-button> -->
+              <svg class="mx-1 arrow" width="1rem" height="1rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#' + child.icon"></use>
+              </svg>
+              <span class="body text-small mx-1">{{ child.label | translate }}</span>
+            </a>
+          </li>
+        </ul>
+      </ng-container>
+    </li>
+  </ul>
+  <!-- <app-search-filter></app-search-filter> -->
+</nav>

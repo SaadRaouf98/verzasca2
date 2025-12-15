@@ -1,0 +1,55 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'SharedModule.UploadCommitteeApprovalFileModalComponent.group' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="group"
+          [options]="requestGroups"
+          [bindLabel]="this.translateService.currentLang === 'ar' ? 'nameAr' : 'nameEn'"
+          [bindValue]="'id'"
+          [placeholder]="'SharedModule.UploadCommitteeApprovalFileModalComponent.group'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+
+        <div
+          *ngIf="form.get('group')?.invalid && form.get('group')?.touched"
+          class="text-danger mt-1"
+        >
+          <small>
+            {{ 'SharedModule.UploadCommitteeApprovalFileModalComponent.groupRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'SharedModule.UploadCommitteeApprovalFileModalComponent.document' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-upload-attachment
+          #uploadAttachment
+          [multiple]="false"
+          [showBtn]="false"
+          (fileUploaded)="onFileDropped($event)"
+        ></app-upload-attachment>
+
+        <div
+          *ngIf="form.get('document')?.invalid && form.get('document')?.touched"
+          class="text-danger mt-1"
+        >
+          <small> المرفق مطلوب </small>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

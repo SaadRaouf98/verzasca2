@@ -1,0 +1,59 @@
+<div mat-dialog-title class="modal-header">
+  <h3 class="text-secondary">
+    {{ (isError ? "shared.errorHappened" : "shared.alert") | translate }}
+  </h3>
+</div>
+
+<div mat-dialog-content>
+  <img
+    *ngIf="!isConnectionLost"
+    class="mx-auto d-block img-fluid imgSuceess"
+    [src]="isError ? 'assets/images/faill.svg' : 'assets/images/alert.svg'"
+  />
+  <p
+    style="white-space: pre-line"
+    class="p-3 text-secondary"
+    *ngIf="
+      err?.error?.Errors?.length && !hasDefaultMessage;
+      else OuterMessageBlock
+    "
+  >
+    {{ err.error.Errors[0].Message | translate }}
+  </p>
+
+  <ng-template #OuterMessageBlock>
+    <p
+      *ngIf="err?.error?.Message && !hasDefaultMessage"
+      style="white-space: pre-line"
+      class="p-3 text-secondary"
+    >
+      {{ err.error.Message }}
+    </p>
+  </ng-template>
+
+  <p class="p-3 text-secondary" *ngIf="hasDefaultMessage">
+    {{ "shared.pleaseTryInanotherTime" | translate }}
+  </p>
+  <p class="p-3 text-secondary" *ngIf="isConnectionLost">
+    {{ "shared.connectionLost" | translate }}
+  </p>
+
+  <p class="p-3 text-secondary" *ngIf="isError">عفوا ، حدث خطأ في النظام</p>
+</div>
+
+<div mat-dialog-actions class="p-4 justify-content-end">
+  <button
+    class="px-5 btnModal"
+    (click)="close()"
+    mat-flat-button
+    color="primary"
+    data-appearance="outline"
+    id="okey-btn"
+  >
+    <span *ngIf="err.status == 199; else other_content">
+      {{ "shared.done" | translate }}
+    </span>
+
+    <ng-template #other_content>{{ "shared.cancel" | translate }}</ng-template>
+  </button>
+</div>

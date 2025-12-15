@@ -1,0 +1,13 @@
+.custom-width {
+  max-width: 6rem;
+}
+.input-container {
+  app-input {
+    max-width: 30rem;
+    display: flex;
+    width: 100%;
+  }
+  ::ng-deep .shared-input {
+    width: 100%;
+  }
+}

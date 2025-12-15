@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">
+    {{ data.header }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <app-title-description-form
+    [formDataObservable]="departmentElement$"
+    [formMode]="this.data.formMode"
+    (cancel)="onCancel()"
+    (submit)="onSubmit($event)"
+  ></app-title-description-form>
+</div>

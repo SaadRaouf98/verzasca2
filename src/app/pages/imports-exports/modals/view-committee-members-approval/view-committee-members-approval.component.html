@@ -1,0 +1,115 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<!-- <div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">موافقة الاعضاء</h2>
+</div> -->
+
+<div mat-dialog-contents>
+  <ng-container *ngIf="!isLoading; else loadingBlock">
+    <div class="row">
+      <!--Start Members Approvals-->
+      <div class="col-12 | approvals-section">
+        <h2 class="mb-4">موافقة الأعضاء</h2>
+
+        <div
+          *ngFor="let element of committeeMembersApprovals"
+          class="single-approval-card"
+          [ngClass]="{
+            'bg-sign':
+              element.action &&
+              element.action.approval === MemberApprovalType.Approved,
+            'bg-conservatism':
+              element.action &&
+              element.action.approval === MemberApprovalType.Rejected,
+            'bg-no-action': !element.action
+          }"
+        >
+          <div class="d-flex justify-content-between">
+            <p class="member-name">{{ element.name }}</p>
+            <ng-container *ngIf="element.action; else NoActionBlock">
+              <p class="d-flex flex-wrap justify-content-end" style="gap: 1em">
+                <ng-container
+                  *ngIf="
+                    element.action.approval === MemberApprovalType.Approved
+                  "
+                >
+                  <span style="color: #008000"> مناسب </span>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    element.action.approval === MemberApprovalType.Rejected
+                  "
+                >
+                  <span style="color: #e40d00"> غير مناسب </span>
+                </ng-container>
+              </p>
+            </ng-container>
+
+            <ng-template #NoActionBlock>
+              <p style="color: #85898f; text-align: left">
+                {{
+                  "ManageRecordsModule.RecordsListComponent.noOpinion"
+                    | translate
+                }}
+              </p>
+            </ng-template>
+          </div>
+
+          <div
+            class="action-container mt-3"
+            [class.flex-row-reverse]="
+              !element.action || (element.action && !element.action.comment)
+            "
+          >
+            <div
+              *ngIf="element.action && element.action.comment"
+              class="comment-container"
+            >
+              <span class="cursor-pointer">
+                <img
+                  src="assets/icons/white-eye.png"
+                  (click)="onViewComment(element.action.comment)"
+                />
+              </span>
+
+              {{ "shared.note" | translate }}
+              <span class="cursor-pointer">
+                <img
+                  src="assets/icons/copy.png"
+                  (click)="onCopyNote(element.action.comment)"
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--End Members Approvals-->
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center">
+      <p *ngIf="!committeeMembersApprovals.length" class="no-rows-warning-msg">
+        لا توجد موافقات
+      </p>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingBlock>
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="width: 100%; height: 50vh"
+    >
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+  </ng-template>
+</div>

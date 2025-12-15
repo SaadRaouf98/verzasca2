@@ -1,0 +1,57 @@
+.close-icon-container {
+  #close-icon {
+    padding: 0;
+    z-index: 100;
+  }
+}
+
+.modal-header {
+  position: relative;
+  top: -2em;
+  display: flex;
+  flex-direction: row-reverse;
+
+  h2 {
+    flex-grow: 1;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 1.8em;
+  min-height: 300px;
+}
+
+div[mat-dialog-actions] {
+  padding: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .mb {
+    margin-bottom: 10px;
+  }
+}
+
+.save-btn-container {
+  gap: 1em;
+  padding: 1em;
+
+  .save-btn,
+  .back-btn {
+    padding: 1.5em;
+  }
+  .save-btn:not([disabled]) {
+    background: #3db5b5;
+    color: #fff;
+  }
+
+  .back-btn {
+    background-color: #ebf5f5;
+    color: #545961;
+  }
+}

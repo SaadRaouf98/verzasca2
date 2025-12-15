@@ -1,0 +1,32 @@
+<div>
+  <!-- <div class="d-flex justify-content-end">
+    <app-table-paginator
+      [length]="length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      (changePage)="onPaginationChange($event)"
+    ></app-table-paginator> -->
+  <app-table-list
+    [className]="'primary-table'"
+    [columnsConfig]="columnsConfig"
+    [columns]="columns"
+    [isError]="isError"
+    [isLoading]="isLoading"
+    [rows]="requestsSource"
+    (filterChanged)="onFiltersChange($event)"
+    [hasPaginator]="true"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [totalElements]="totalElements"
+    (pageChange)="onPaginationChange($event)"
+    [resetTableFilters]="resetTableFiltersFlag"
+    class="new-primary-table"
+  >
+  </app-table-list>
+  <!-- 
+  <app-table-list  [columnsConfig]="columnsConfig" [columns]="columns"
+    [isError]="isTableError" [isLoading]="isTableLoading" [rows]="items"></app-table-list> -->
+</div>
+
+<!--End table-->
+<!-- </div> -->

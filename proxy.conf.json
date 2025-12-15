@@ -1,0 +1,68 @@
+{
+  "/iframe": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/iframe": "" }
+  },
+  "/browser": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/iframe": "" },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  },
+  "/hosting/discovery": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/hosting/discovery": "" },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  },
+  "/hosting/capabilities": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/hosting/capabilities": "" },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  },
+  "/cool/*/ws": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "pathRewrite": { "^/cool/(.*)/ws$": "/cool/$1/ws" },
+    "proxyTimeout": 36000000,
+    "timeout": 36000000,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  },
+  "/cool": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/(c|l)ool": "" },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  },
+  "/cool/adminws": {
+    "target": "http://172.16.11.17",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "pathRewrite": { "^/cool/adminws": "" },
+    "proxyTimeout": 36000000,
+    "timeout": 36000000,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJmMDM0NjRjZC02MjUyLTRkNGItODc4MS1jMGQ4ZWE4ZGI0NjgiLCJ1bmlxdWVfbmFtZSI6Ik1vaGFtbWVkIEFsaSIsInJvbGUiOlsic3VwZXIgYWRtaW4iLCJWUE5Vc2VycyIsIkRvbWFpbiBVc2VycyJdLCJuYmYiOjE3MTk4NDEzNDIsImV4cCI6MTcyNDA0MTM0MiwiaWF0IjoxNzE5ODQxMzQyLCJpc3MiOiJTZmMuQXBpLjcwMzg1MWQ0LWZiNzYtNDljNy1hMzEyLTdkNjM2MDc4NTY4YyIsImF1ZCI6IlNGQyBTeXN0ZW0uIn0.b2RcLeXjKu2qMDAr-SfH_qhRNgjmYNYP2FafYto79ME"
+    }
+  }
+}

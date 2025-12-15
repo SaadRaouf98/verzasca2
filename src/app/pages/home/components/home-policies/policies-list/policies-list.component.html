@@ -1,0 +1,69 @@
+<div class="row justify-content-between align-items-center">
+  <div class="col-12 mb-3 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">{{ 'shared.main' | translate }}</span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ 'shared.policies' | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 mb-3">
+    <app-filters
+      [hasFiltersApplied]="isTableFiltered"
+      [isPendingListFilters]="false"
+      (openDialog)="onOpenSearch($event)"
+      (filtersChange)="onFiltersChange($event)"
+    ></app-filters>
+  </div>
+  <div class="col-12">
+    <ng-container *ngFor="let group of policiesData">
+      <p class="body-bold mb-3">{{ group.key }}</p>
+      <div class="policy-container row gap-3 mb-3">
+        <ng-container *ngFor="let item of group.items">
+          <div class="col-md-3 col-12 px-0">
+            <div class="selectedCategoryCard ">
+              <img
+                [src]="
+                (getImageUrl(item.thumbnail?.path) | async) || 'assets/images/default-policy.png'
+              "
+                [alt]="item.title"
+                class="mb-3"
+              />
+              <div class="d-flex align-items-center justify-content-between">
+                <p class="body mb-0">{{ item.title }}</p>
+                <div class="d-flex align-items-center">
+                  <svg
+                    class="cursor-pointer mx-2"
+                    width="1.5rem"
+                    height="1rem"
+                    (click)="onViewAttachments(item.file)"
+                  >
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                  </svg>
+                  <svg
+                    class="cursor-pointer"
+                    width="1.5rem"
+                    height="1.5rem"
+                    (click)="getDocument(item.file)"
+                  >
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

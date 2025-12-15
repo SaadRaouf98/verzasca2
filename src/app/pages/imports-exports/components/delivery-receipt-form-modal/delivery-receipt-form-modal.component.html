@@ -1,0 +1,146 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button id="close-icon" (click)="onCancel()" class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button>
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-500 fw-bold">
+    {{
+    "ImportsExportsModule.DeliveryReceiptFormModalComponent.editDetails"
+    | translate
+    }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <div class="col-12 col-lg-6 pt-2 mat-form-field-div" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('attachmentType')?.errors && isTouched('attachmentType'),
+          'mat-form-field-div-success':
+            !form.get('attachmentType')?.errors && isTouched('attachmentType')
+        }">
+        <div class="label-container">
+          <label for="attachmentType"> نوع المرفق </label>
+        </div>
+
+        <ng-select class="form-control" formControlName="attachmentType">
+          <ng-option [value]="DeliveryReceiptAttachmentType.Original">
+            {{ "DeliveryReceiptAttachmentType.original" | translate }}
+          </ng-option>
+
+          <ng-option [value]="DeliveryReceiptAttachmentType.Copy">
+            {{ "DeliveryReceiptAttachmentType.copy" | translate }}
+          </ng-option>
+
+          <ng-option [value]="DeliveryReceiptAttachmentType.USB">
+            {{ "DeliveryReceiptAttachmentType.USB" | translate }}
+          </ng-option>
+
+          <ng-option [value]="DeliveryReceiptAttachmentType.Other">
+            {{ "DeliveryReceiptAttachmentType.other" | translate }}
+          </ng-option>
+        </ng-select>
+      </div>
+
+      <div *ngIf="
+          form.get('attachmentType')?.value ===
+          DeliveryReceiptAttachmentType.Other
+        " class="col-12 col-lg-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.errors?.['otherAttachmentTypeRequired'] &&
+            isTouched('otherAttachmentType'),
+          'mat-form-field-div-success':
+            !form.errors?.['otherAttachmentTypeRequired'] &&
+            isTouched('otherAttachmentType')
+        }">
+        <div class="label-container">
+          <label for="otherAttachmentType"> نوع مرفق آخر </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="otherAttachmentType" name="otherAttachmentType" type="text" />
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                          form.errors?.['otherAttachmentTypeRequired'] &&
+                                 isTouched('otherAttachmentType')
+                           ">
+          يجب كتابة نوع المرفق
+        </span>
+      </div>
+
+      <div class="col-12 col-lg-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('attachments')?.errors && isTouched('attachments'),
+          'mat-form-field-div-success':
+            !form.get('attachments')?.errors && isTouched('attachments')
+        }">
+        <div class="label-container">
+          <label for="attachments">
+            {{ "shared.attachments" | translate }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="attachments" name="attachments" type="text" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('subFoundation')?.errors && isTouched('subFoundation'),
+          'mat-form-field-div-success':
+            !form.get('subFoundation')?.errors && isTouched('subFoundation')
+        }">
+        <div class="label-container">
+          <label for="subFoundation"> الجهة الثانوية </label>
+        </div>
+        <ng-select [bindLabel]="'name'" formControlName="subFoundation" [compareWith]="compareFn" class="form-control">
+          <ng-option [value]="OtherSubFoundation"> أخرى </ng-option>
+
+          <ng-option *ngFor="let subFoundation of (subFoundationsList$ | async)?.data" [value]="subFoundation">
+            {{ subFoundation.title }}
+          </ng-option>
+        </ng-select>
+      </div>
+
+      <div *ngIf="form.get('subFoundation')?.value === OtherSubFoundation"
+        class="col-12 col-lg-6 pt-2 mat-form-field-div mb" [ngClass]="{
+          'mat-form-field-div-error':
+             form.errors?.['otherSubFoundationRequired'] &&
+            isTouched('foundationDescription'),
+          'mat-form-field-div-success':
+            ! form.errors?.['otherSubFoundationRequired'] &&
+            isTouched('foundationDescription')
+        }">
+        <div class="label-container">
+          <label for="foundationDescription"> جهة أخرى </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="foundationDescription" name="foundationDescription" type="text" />
+        </mat-form-field>
+
+        <span class="span-error-message" *ngIf="
+                          form.errors?.['otherSubFoundationRequired'] &&
+                                 isTouched('foundationDescription')
+                           ">
+          يجب كتابة الجهة
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-actions">
+  <div class="d-flex justify-content-end save-btn-container">
+    <button class="back-btn" (click)="onCancel()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button class="save-btn" (click)="onSubmit()" mat-flat-button [disabled]="form.invalid || disableSubmitBtn">
+      {{ "shared.save" | translate }}
+    </button>
+  </div>
+</div>

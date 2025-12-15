@@ -1,0 +1,86 @@
+// Utility Mixins
+@mixin color-variant($property, $color, $shade) {
+  #{$property}: var(--#{$color}-#{$shade});
+}
+
+@mixin surface-variants($color) {
+  &-subtle {
+    @include color-variant(background-color, $color, 100);
+  }
+  &-lighter {
+    @include color-variant(background-color, $color, 200);
+  }
+  &-default {
+    @include color-variant(background-color, $color, 500);
+  }
+  &-darker {
+    @include color-variant(background-color, $color, 700);
+  }
+}
+
+@mixin border-variants($color) {
+  &-subtle {
+    @include color-variant(border-color, $color, 100);
+  }
+  &-lighter {
+    @include color-variant(border-color, $color, 200);
+  }
+  &-default {
+    @include color-variant(border-color, $color, 500);
+  }
+  &-darker {
+    @include color-variant(border-color, $color, 700);
+  }
+}
+
+@mixin text-label($color) {
+  &-label {
+    @include color-variant(color, $color, 500);
+  }
+}
+
+// Base Text Utilities
+.text {
+  &-title {
+    @include color-variant(color, gray, 950);
+  }
+  &-body {
+    @include color-variant(color, gray, 700);
+  }
+  &-subtitle {
+    @include color-variant(color, gray, 300);
+  }
+  &-caption {
+    @include color-variant(color, gray, 400);
+  }
+  &-negative {
+    @include color-variant(color, gray, 50);
+  }
+  &-disabled {
+    @include color-variant(color, gray, 100);
+  }
+}
+
+// Base Color Map
+$color-map: (
+  'gray': 'gray',
+  'primary': 'primary',
+  'error': 'red',
+  'warning': 'orange',
+  'success': 'green',
+);
+
+// Color Variations
+@each $key, $value in $color-map {
+  .#{$key} {
+    &-surface {
+      @include surface-variants($value);
+    }
+    &-border {
+      @include border-variants($value);
+    }
+    &-text {
+      @include text-label($value);
+    }
+  }
+}

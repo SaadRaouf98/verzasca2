@@ -1,0 +1,278 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">
+    {{ "shared.advancedSearch" | translate }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- start foundation -->
+      <div
+        class="col-12 col-lg-4 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('foundation')?.errors && isTouched('foundation'),
+          'mat-form-field-div-success':
+            !form.get('foundation')?.errors && isTouched('foundation')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="foundation"
+            formControlName="foundation"
+            placeholder="{{ 'shared.foundation' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('foundation')?.errors && isTouched('foundation')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('foundation')?.errors && isTouched('foundation')"
+            />
+          </div>
+        </mat-form-field>
+      </div>
+      <!-- end foundation-->
+
+      <!-- start sector -->
+      <div
+        class="col-12 col-lg-4 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('sector')?.errors && isTouched('sector'),
+          'mat-form-field-div-success':
+            !form.get('sector')?.errors && isTouched('sector')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="sector"
+            formControlName="sector"
+            placeholder="{{ 'shared.sector' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('sector')?.errors && isTouched('sector')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('sector')?.errors && isTouched('sector')"
+            />
+          </div>
+        </mat-form-field>
+      </div>
+      <!-- end sector-->
+
+      <div
+        class="col-12 col-lg-4 pt-2 mat-form-field-div"
+        style="
+          align-self: flex-end;
+          margin-bottom: 1em;
+          justify-content: center;
+          display: flex;
+        "
+      >
+        <mat-radio-group
+          formControlName="searchContentType"
+          aria-label="Select an option"
+          id="searchContentType"
+          class="content-type-radio-group"
+        >
+          <mat-radio-button [value]="AdvancedSearchContentType.Import">
+            {{ "shared.import" | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="AdvancedSearchContentType.Export">
+            {{ "shared.export" | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="AdvancedSearchContentType.StudyOutcome">
+            {{
+              "TransactionsModule.AdvancedSearchModalComponent.studyOutcome"
+                | translate
+            }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="row mb">
+      <div
+        class="col-12 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+        'mat-form-field-div-error':
+        form.get('requestContainer')?.errors && isTouched('requestContainer'),
+        'mat-form-field-div-success':
+        !form.get('requestContainer')?.errors && isTouched('requestContainer'),
+      }"
+      >
+        <ng-select
+          formControlName="requestContainer"
+          placeholder="{{ 'shared.searchForTransactionsByTitle' | translate }}"
+          [bindLabel]="'title'"
+          [compareWith]="compareFn"
+          class="form-control"
+          (search)="searchOnContainers($event)"
+        >
+          <ng-option
+            *ngFor="let container of (containersList$ | async)?.data"
+            [value]="container"
+          >
+            {{ container.title }}
+          </ng-option>
+        </ng-select>
+      </div>
+
+      <!-- start autoNumber -->
+      <div
+        class="col-12 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('autoNumber')?.errors && isTouched('autoNumber'),
+          'mat-form-field-div-success':
+            !form.get('autoNumber')?.errors && isTouched('autoNumber')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="autoNumber"
+            formControlName="autoNumber"
+            placeholder="{{ 'shared.transactionNum' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('autoNumber')?.errors && isTouched('autoNumber')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('autoNumber')?.errors && isTouched('autoNumber')"
+            />
+          </div>
+        </mat-form-field>
+      </div>
+      <!-- end autoNumber-->
+    </div>
+
+    <div class="row mb">
+      <!-- start title -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('title')?.errors && isTouched('title'),
+          'mat-form-field-div-success':
+            !form.get('title')?.errors && isTouched('title')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            name="title"
+            formControlName="title"
+            placeholder="{{ 'shared.title' | translate }}"
+          />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('title')?.errors && isTouched('title')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('title')?.errors && isTouched('title')"
+            />
+          </div>
+        </mat-form-field>
+      </div>
+      <!-- end title-->
+
+      <!-- start operator -->
+      <div
+        class="col-12 col-md-6 col-lg-6 pt-2 mat-form-field-div | operator-container"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('operator')?.errors && isTouched('operator'),
+          'mat-form-field-div-success':
+            !form.get('operator')?.errors && isTouched('operator')
+        }"
+      >
+        <mat-radio-group
+          formControlName="operator"
+          aria-label="Select an option"
+          id="operator"
+          class="operator-radio-group"
+        >
+          <mat-radio-button [value]="AdvanedSearchOperator.Or">
+            {{ "shared.or" | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="AdvanedSearchOperator.And">
+            {{ "shared.and" | translate }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <!-- end operator-->
+    </div>
+
+    <div class="row mb">
+      <!-- start Search  content -->
+      <div
+        class="col-12 col-lg-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('searchContent')?.errors && isTouched('searchContent'),
+          'mat-form-field-div-success':
+            !form.get('searchContent')?.errors && isTouched('searchContent')
+        }"
+      >
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="searchContent"
+            name="searchContent"
+            placeholder="{{
+              'TransactionsModule.AdvancedSearchModalComponent.searchContent'
+                | translate
+            }}"
+            rows="1"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <!-- end Search content -->
+    </div>
+  </form>
+</div>
+
+<div class="modal-actions">
+  <div class="d-flex justify-content-end save-btn-container">
+    <button class="back-btn" (click)="onCancel()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      (click)="onSubmit()"
+      mat-flat-button
+      [disabled]="form.invalid"
+    >
+      {{ "shared.search" | translate }}
+    </button>
+  </div>
+
+  <!--end Submit button-->
+</div>

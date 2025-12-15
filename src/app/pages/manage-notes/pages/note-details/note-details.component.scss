@@ -1,0 +1,224 @@
+@import ".././../../../../assets/scss/variables.scss";
+.mb {
+  margin-bottom: 1em;
+}
+a {
+  text-decoration: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+.link-btn {
+  img {
+    width: 15px;
+    height: 15px;
+    object-fit: cover;
+  }
+}
+
+.link-btn {
+  background-color: #362f30;
+}
+
+.animate {
+  transition: transform 250ms ease-in-out;
+}
+
+.animate:hover,
+.animate:focus-visible {
+  transform: scale(1.1);
+}
+
+.right-white-border {
+  border-right: 1px solid #fff;
+}
+
+.left-gray-border {
+  border-left: 1px solid #e6e8ed;
+}
+
+.title-color {
+  color: #249db7;
+}
+
+.amounts-paragraph {
+  display: flex;
+  width: 100%;
+  gap: 5em;
+
+  @media (max-width: 576px) {
+    & {
+      gap: 1em;
+    }
+  }
+}
+
+.grey-color {
+  color: #4b5563;
+}
+
+.import-export-btn {
+  img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+  }
+}
+
+.icon-container {
+  height: 48px;
+  width: 48px;
+  display: flex;
+  background: #ffedd5;
+  justify-content: center;
+  align-items: center;
+}
+
+.transactionSubHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-green-color {
+  //background-color: #16a34a;
+  color: #16a34a;
+  background-color: #dcfce7;
+}
+
+.bg-orange-color {
+  //background-color: #ea580c;
+  color: #ea580c;
+  background-color: #ffedd5;
+}
+
+.green-color {
+  color: green;
+}
+
+.orange-color {
+  color: #c2410c;
+}
+
+.bg-green {
+  border: 1px solid #40b674;
+  background-color: #eef8f2;
+}
+
+.edit-amounts-btn {
+  background-color: #362f30;
+}
+
+@media (max-width: 576px) {
+  #edit-amounts-container {
+    justify-content: space-around;
+  }
+
+  .import-export-btn {
+    max-height: 46px;
+  }
+}
+
+.component-header {
+  max-width: 100%;
+}
+
+.card-section {
+  padding: 2em;
+  box-shadow: 5px 9px 9px rgba(0, 0, 0, 0.1);
+  margin-top: 1em;
+  background-color: #f0f2f5;
+  border-radius: 40px;
+}
+
+.card {
+  margin-bottom: 1.5em;
+  min-width: 275px;
+
+  .import-export-content {
+    gap: 4em;
+    padding: 1em;
+  }
+
+  .title-content {
+    gap: 1.4em !important;
+    padding: 1em 1.2em;
+  }
+
+  .info-content {
+    padding: 1.5em 1.5em;
+    gap: 1.2em;
+  }
+
+  .card-content {
+    height: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+
+    .nav-item {
+      padding: 5px;
+
+      .icon {
+        object-fit: cover;
+        height: 48px;
+        width: 48px;
+        object-fit: cover;
+      }
+    }
+
+    .icon-container {
+      height: 48px;
+      width: 48px;
+      display: flex;
+      background: #ffedd5;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .label {
+      font-size: $fs-300;
+      font-weight: $fw-regular;
+      color: #4b5563;
+    }
+
+    .data,
+    .info-data {
+      color: $primary-color;
+      // font-weight: $fw-bold;
+    }
+  }
+
+  .text-align-left {
+    text-align: left;
+  }
+
+  @media (max-width: 576px) {
+    .import-export-content {
+      gap: 1em;
+    }
+  }
+
+  @media (min-width: 576px) and (max-width: 992px) {
+    .import-export-content {
+      flex-direction: column;
+      gap: 1em;
+    }
+  }
+}
+
+//////////////////////////////   Note file     ////////////////////////////
+#file-title {
+  font-size: 1rem;
+  margin-top: 0.8em;
+  margin-bottom: 8px;
+
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1.3rem;
+      margin-top: 1em;
+      margin-bottom: 10px;
+    }
+  }
+}

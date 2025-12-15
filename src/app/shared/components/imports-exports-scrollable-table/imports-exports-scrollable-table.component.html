@@ -1,0 +1,253 @@
+<app-table-list
+  [columnsConfig]="columnsConfig"
+  [columns]="columns"
+  [isError]="isError"
+  [isLoading]="isLoading"
+  [rows]="data"
+>
+</app-table-list>
+
+<!-- <div class="table-responsive">
+  <table mat-table [dataSource]="importsExportsSource" multiTemplateDataRows>
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "shared.generalNumber" | translate }}
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        (click)="view_hide_element(element)"
+      >
+        {{ element.number }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="requestType">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        (click)="view_hide_element(element)"
+        class="fw-bold"
+      >
+        <ng-container *ngIf="element.isExportDocument; else ExportType">
+          <span *ngIf="element.documentType === ExportedDocumentType.Letter">
+            {{
+              "TransactionsModule.ExportDocumentComponent.letter" | translate
+            }}
+          </span>
+          <span *ngIf="element.documentType === ExportedDocumentType.Note">
+            {{ "TransactionsModule.ExportDocumentComponent.note" | translate }}
+          </span>
+          <span *ngIf="element.documentType === ExportedDocumentType.Record">
+            {{
+              "TransactionsModule.ExportDocumentComponent.record" | translate
+            }}
+          </span>
+          <span *ngIf="element.documentType === ExportedDocumentType.Other">
+            {{ element.otherDocumentType?.title }}
+          </span>
+        </ng-container>
+
+        <ng-template #ExportType>
+          {{ element.requestType?.title }}
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isExportDocument">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <span
+          *ngIf="element.isExportDocument; else elseBlock"
+          class="d-flex align-items-center fw-regular | export-badge"
+        >
+          <mat-icon class="d-flex align-items-center">
+            <img src="assets/icons/red-envelope.png" />
+          </mat-icon>
+          {{ "shared.export" | translate }}
+        </span>
+        <ng-template #elseBlock>
+          <span
+            *ngIf="!element.isExportDocument"
+            class="d-flex align-items-center fw-regular | import-badge"
+          >
+            <mat-icon class="d-flex align-items-center">
+              <img src="assets/icons/green-envelope.png" />
+            </mat-icon>
+            {{ "shared.import" | translate }}
+          </span>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        (click)="view_hide_element(element)"
+        class="color-333"
+      >
+        <span [matTooltip]="element.title">
+          {{ element.title | summary : 80 }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element" class="color-333 ltr">
+        {{ element.date | date : "dd/MM/yyyy hh:mm a" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <div class="btns-container">
+          <div
+            *ngIf="element.viewWatchButton"
+            class="d-flex align-items-center | watch-import-export-container"
+          >
+            <a
+              [routerLink]="
+                element.isExportDocument
+                  ? [
+                      '/imports-exports/' +
+                        element.id +
+                        '/exportable-document-details'
+                    ]
+                  : ['/imports-exports/' + element.id + '/request-details']
+              "
+            >
+              <img
+                matTooltip="عرض التفاصيل"
+                src="assets/icons/eye-opened.png"
+                class="eye-opened"
+              />
+            </a>
+          </div>
+
+          <ng-container *ngIf="!element.isRestricted">
+            <a
+              *ngIf="element.isExportDocument"
+              [routerLink]="[
+                '/imports-exports/exportId/' + element.id + '/viewer'
+              ]"
+              [queryParams]="{
+                name: element.title
+              }"
+            >
+              <img
+                matTooltip="
+               عرض الملف
+            "
+                class="cursor-pointer"
+                src="assets/icons/file.png"
+              />
+            </a>
+
+            <img
+              *ngIf="!element.isExportDocument"
+              (click)="onViewFiles(element)"
+              matTooltip="
+              عرض الملفات
+            "
+              class="cursor-pointer"
+              src="assets/icons/file.png"
+            />
+          </ng-container>
+        </div>
+      </td>
+    </ng-container>
+
+    // Expanded Content Column - The detail row is made up of this one column that spans across all columns
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="displayedColumns.length"
+      >
+        <div
+          class="example-element-detail"
+          [@detailExpand]="
+            check_view_element(element) ? 'expanded' : 'collapsed'
+          "
+        >
+          <div class="example-element-description">
+            <ul class="detail-element">
+              <li>
+                <p></p>
+                <span
+                  >{{
+                    lang === "ar"
+                      ? element.requestType?.title
+                      : element.requestType?.titleEn
+                  }}
+                </span>
+              </li>
+              <li>
+                <p></p>
+                <span>{{ element.status }}</span>
+              </li>
+              <li>
+                <p></p>
+                <span>
+                  {{
+                    (lang === "ar"
+                      ? element.title
+                      : element.titleEn || element.title
+                    ) | summary
+                  }}</span
+                >
+              </li>
+
+              <li>
+                <p></p>
+                <span>
+                  {{ element.date | date : "dd/MM/yyyy hh:mm a" }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: displayedColumns"
+      class="example-element-row"
+      [ngClass]="{ 'current-request': !element.viewWatchButton }"
+    ></tr>
+
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+    ></tr>
+
+    <ng-container matColumnDef="noData">
+      <td
+        mat-footer-cell
+        *matFooterCellDef
+        [attr.colspan]="displayedColumns.length"
+      >
+        <p class="no-rows-warning-msg">
+          {{
+            "SharedModule.ImportsExportsScrollableTableComponent.noImportsNoExports"
+              | translate
+          }}
+        </p>
+      </td>
+    </ng-container>
+
+    <tr
+      mat-footer-row
+      *matFooterRowDef="['noData']"
+      [ngClass]="{ hide: importsExportsSource.data.length != 0 }"
+    ></tr>
+  </table>
+</div> -->

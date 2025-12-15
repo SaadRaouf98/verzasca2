@@ -1,0 +1,127 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'attachment.desc' | translate }}
+          <!-- <span class="text-danger">*</span> -->
+        </p>
+        <app-upload-attachment
+          #uploadAttachment
+          [multiple]="false"
+          [showBtn]="false"
+          (fileUploaded)="onFileDropped($event)"
+        ></app-upload-attachment>
+        <!-- 
+        <div
+          *ngIf="
+            form.get('attachment')?.invalid && form.get('attachment')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small> المرفق مطلوب </small>
+        </div> -->
+      </div>
+
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ data.textAreaLabel }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ data.textAreaLabel }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+      <!-- start textArea -->
+      <!-- <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('comment')?.errors && isTouched('comment'),
+          'mat-form-field-div-success':
+            !form.get('comment')?.errors && isTouched('comment')
+        }"
+      >
+        <div class="label-container">
+          <label for="comment">
+            {{ data.textAreaLabel }}
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="comment"
+            name="comment"
+            placeholder="{{ data.textAreaLabel }}"
+            id="comment"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+      </div> -->
+      <!-- end textArea -->
+    </div>
+
+    <!--           
+      <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('attachment')?.errors && isTouched('attachment'),
+          'mat-form-field-div-success':
+            !form.get('attachment')?.errors && isTouched('attachment')
+        }"
+      >
+        <div class="label-container">
+          <label for="attachment">
+            {{ "shared.attachments" | translate }}
+          </label>
+        </div>
+
+        <mat-form-field
+          appearance="outline"
+          class="d-flex justify-content-between"
+          (drop)="onFileDropped($event)"
+        >
+          <input
+            matInput
+            name="attachment"
+            formControlName="attachment"
+            (click)="onAddFile()"
+            placeholder="{{
+              'ManageDocumentsModule.AddDocumentPage.addFile' | translate
+            }}"
+            #attachment
+          />
+          <input
+            hidden
+            (change)="onFileChange($event)"
+            #fileToUpload
+            type="file"
+          />
+
+          <div
+            class="d-flex justify-content-center align-items-center| file-options"
+          >
+            <div class="d-flex align-items-center | delete-file">
+              <img
+                src="assets/icons/trash.svg"
+                alt="Delete file ?"
+                class="cursor-pointer delete-btn"
+                (click)="deleteFile()"
+              />
+            </div>
+          </div>
+        </mat-form-field>
+      </div> -->
+  </form>
+</app-base-dialog>

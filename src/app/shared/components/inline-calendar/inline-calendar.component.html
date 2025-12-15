@@ -1,0 +1,49 @@
+<div class="item-inline-calendar">
+  <div class="d-flex align-items-center justify-content-between">
+    <app-select
+      [options]="months"
+      [bindLabel]="'displayText'"
+      [bindValue]="'value'"
+      [placeholder]="'shared.month' | translate"
+      [multiple]="false"
+      [searchable]="false"
+      [(ngModel)]="currentMonth"
+      (selectionChange)="onMonthChange($event)"
+    ></app-select>
+
+    <app-select
+      [options]="years"
+      [bindLabel]="'displayText'"
+      [bindValue]="'value'"
+      [placeholder]="'shared.year' | translate"
+      [multiple]="false"
+      [searchable]="false"
+      [(ngModel)]="currentYear"
+      (selectionChange)="onYearChange($event)"
+    ></app-select>
+  </div>
+
+  <ngb-datepicker
+    [startDate]="startDateStruct"
+    [minDate]="minDateStruct"
+    [maxDate]="maxDateStruct"
+    [dayTemplate]="dayTpl"
+    (select)="onDateSelect($any($event))"
+  >
+  </ngb-datepicker>
+
+  <ng-template #dayTpl let-date="date" let-currentMonth="currentMonth">
+    <div
+      (click)="onDateSelect(date)"
+      class="custom-day"
+      [class.outside-month]="date.month !== currentMonth"
+      [class.today]="isToday(date)"
+      [class.selected]="isSelected(date)"
+      [class.in-range]="mode === 'range' && isInRange(date)"
+      [class.range-start]="mode === 'range' && isRangeStart(date)"
+      [class.range-end]="mode === 'range' && isRangeEnd(date)"
+    >
+      {{ date.day }}
+    </div>
+  </ng-template>
+</div>

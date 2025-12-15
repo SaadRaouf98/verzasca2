@@ -1,0 +1,110 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <!-- <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('delegatedTo')?.errors && isTouched('delegatedTo'),
+          'mat-form-field-div-success':
+            !form.get('delegatedTo')?.errors && isTouched('delegatedTo')
+        }"
+      >
+        <div class="label-container">
+          <label for="delegatedTo">
+            {{
+              "SharedModule.DelegateUserModalComponent.chooseDelegatedTo"
+                | translate
+            }}
+          </label>
+        </div>
+
+        <ng-select
+          formControlName="delegatedTo"
+          placeholder="{{
+            'SharedModule.DelegateUserModalComponent.chooseDelegatedTo'
+              | translate
+          }}"
+          [bindLabel]="'name'"
+          [compareWith]="compareFn"
+          class="form-control"
+          (search)="searchOnUsers($event)"
+        >
+          <ng-option
+            *ngFor="let user of (usersList$ | async)?.data"
+            [value]="user"
+          >
+            {{ user.name }}
+          </ng-option>
+        </ng-select>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                form.get('delegatedTo')?.errors?.['required'] &&
+                isTouched('delegatedTo')
+              "
+        >
+          {{
+            "SharedModule.DelegateUserModalComponent.delegatedToRequired"
+              | translate
+          }}
+        </span>
+      </div> -->
+
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{
+            "SharedModule.DelegateUserModalComponent.chooseDelegatedTo"
+              | translate
+          }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="delegatedTo"
+          [options]="(usersList$ | async)?.data || []"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="
+            'SharedModule.DelegateUserModalComponent.chooseDelegatedTo'
+          "
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+
+        <div
+          *ngIf="
+            form.get('delegatedTo')?.invalid && form.get('delegatedTo')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              "SharedModule.DelegateUserModalComponent.delegatedToRequired"
+                | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ data.textAreaLabel }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ data.textAreaLabel }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

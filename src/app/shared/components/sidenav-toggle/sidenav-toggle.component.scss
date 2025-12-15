@@ -1,0 +1,111 @@
+@import "src/assets/design-system/colors";
+
+:host ::ng-deep .custom-slide-toggle {
+  width: 2.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__track {
+  width: 2.5rem;
+  height: 1.6875rem;
+  flex-shrink: 0;
+}
+:host ::ng-deep .mdc-switch__handle {
+  display: none;
+}
+:host ::ng-deep .custom-slide-toggle .mdc-switch__handle-track {
+  width: 1.1875rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+  border: 1px solid #fff;
+  background: var(--ios-home-indicator-background-color, #fff);
+  top: 18%;
+  left: 3px;
+  right: 3px;
+}
+
+// Light mode (grey-50)
+// :host-context(.light-theme) ::ng-deep .custom-slide-toggle .mdc-switch__track {
+//   background-color: $green-500;
+//   background: $green-500;
+//   border: 1px solid #fff;
+//   width: 2.5rem;
+//   height: 1.6875rem;
+//   flex-shrink: 0;
+//   border-radius: 4rem;
+//   border: 1px solid #fff;
+// }
+
+:host ::ng-deep .mdc-switch__shadow {
+  background: #fff;
+}
+// Light theme: gray-50
+:host-context(.light-theme)
+  ::ng-deep
+  .mdc-switch:enabled
+  .mdc-switch__track::after,
+:host-context(.light-theme)
+  ::ng-deep
+  .mdc-switch:enabled:hover:not(:focus):not(:active)
+  .mdc-switch__track::after,
+:host-context(.light-theme)
+  ::ng-deep
+  .mdc-switch:enabled:focus:not(:active)
+  .mdc-switch__track::after,
+:host-context(.light-theme)
+  ::ng-deep
+  .mdc-switch:enabled:active
+  .mdc-switch__track::after {
+  background: $gray-50;
+  background-color: $gray-50;
+  width: 2.5rem;
+  height: 1.6875rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+}
+
+// Dark theme: green-500
+:host-context(.dark-theme)
+  ::ng-deep
+  .mdc-switch:enabled
+  .mdc-switch__track::before,
+:host-context(.dark-theme)
+  ::ng-deep
+  .mdc-switch:enabled:hover:not(:focus):not(:active)
+  .mdc-switch__track::before,
+:host-context(.dark-theme)
+  ::ng-deep
+  .mdc-switch:enabled:focus:not(:active)
+  .mdc-switch__track::before,
+:host-context(.dark-theme)
+  ::ng-deep
+  .mdc-switch:enabled:active
+  .mdc-switch__track::before {
+  background: $green-500;
+  background-color: $green-500;
+  width: 2.5rem;
+  height: 1.6875rem;
+  flex-shrink: 0;
+  border-radius: 4rem;
+}
+
+:host-context(.light-theme) ::ng-deep .mdc-switch__handle {
+  background: $gray-50 !important;
+  background-color: $gray-50 !important;
+}
+:host-context(.dark-theme) ::ng-deep .mdc-switch__handle {
+  background: $green-500 !important;
+  background-color: $green-500 !important;
+}
+:host ::ng-deep .mdc-switch__handle,
+:host ::ng-deep .mdc-switch__ripple {
+  top: 65%;
+}
+:host
+  ::ng-deep
+  .custom-slide-toggle
+  .mdc-switch__handle-track
+  .mdc-switch__icons {
+  display: none;
+}

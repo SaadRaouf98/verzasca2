@@ -1,0 +1,72 @@
+<div class="d-flex align-items-center justify-content-between | heading">
+  <div class="d-flex align-items-center">
+    <svg width="1.5rem" height="1.5rem" (click)="onNavigateBack()" class="cursor-pointer">
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+    </svg>
+    <p class="body-bold mb-0">
+      {{ fileName }}
+    </p>
+  </div>
+  <ng-container *ngIf="fileExtension !== '.pdf'">
+    <div class="d-flex">
+      <ng-container *ngFor="let action of iconActions; let isFirst = first">
+        <div
+          class="cursor-pointer d-flex align-items-center"
+          (click)="action.callback()"
+          [ngClass]="{ 'mx-3': isFirst }"
+          matTooltip="{{ action.label | translate }}"
+        >
+          <svg width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#' + action.icon"></use>
+          </svg>
+          <span class="caption mx-1">{{ action.label | translate }}</span>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- 
+    <span
+      class="print-icon up"
+      (click)="onPrintFile()"
+      matTooltip="{{ 'shared.print' | translate }}"
+    >
+      <mat-icon>print</mat-icon>
+    </span>
+    <span
+      class="download-icon up"
+      (click)="onDownloadFile()"
+      matTooltip="{{ 'shared.download' | translate }}"
+    >
+      <mat-icon>cloud_download</mat-icon>
+    </span> -->
+  </ng-container>
+</div>
+
+<section>
+  <div *ngIf="fileExtension === '.pdf'" class="pdf-viewer-container">
+    <iframe
+      [src]="pdfFileToView.pdfSrc"
+      style="width: 99%; height: 100vh; display: block; margin: auto"
+    ></iframe>
+  </div>
+
+  <div
+    *ngIf="fileExtension === '.png' || fileExtension === '.jpg' || fileExtension === '.jpeg'"
+    class="pdf-viewer-container"
+  >
+    <img [src]="imageUrl" />
+  </div>
+
+  <div>
+    <app-editor
+      *ngIf="
+        fileExtension !== '.pdf' &&
+        fileExtension !== '.png' &&
+        fileExtension !== '.jpg' &&
+        fileExtension !== '.jpeg'
+      "
+      [editorFileId]="attachmentId"
+      [allowEdit]="false"
+    ></app-editor>
+  </div>
+</section>

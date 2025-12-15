@@ -1,0 +1,1349 @@
+/* You can add global styles to this file, and also import other style files */
+// Required
+@use 'assets/design-system' as ds;
+@import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
+@import './assets/scss/reset.scss';
+@import './assets/scss/variables.scss';
+@import './assets/scss/classes.scss';
+
+@import '~@ng-select/ng-select/themes/default.theme.css';
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;900&display=swap");
+ */
+/* Variables */
+
+:root {
+  --color-background: #f8fafc;
+  --color-white: #ffffff;
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+
+  --color-blue-100: #dbeafe;
+  --color-blue-500: #3b82f6;
+  --color-blue-800: #1e40af;
+
+  --color-green-100: #dcfce7;
+  --color-green-500: #22c55e;
+  --color-green-800: #166534;
+
+  --color-amber-500: #f59e0b;
+  --color-red-500: #ef4444;
+  --color-red-800: rgba(239, 68, 68, 0.1);
+
+  --border-radius-sm: 0.25rem;
+  --border-radius: 0.5rem;
+  --border-radius-lg: 0.75rem;
+
+  --box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  --transition-default: all 0.2s ease-in-out;
+}
+
+.app-en {
+  *:not(mat-icon):not(.fc-icon) {
+    font-family: $english-font-family-primary !important;
+  }
+}
+
+//for material icons to show properly
+mat-icon {
+  font-family: 'Material Icons' !important;
+}
+
+/***********  Utility classes **************/
+
+.text-primary {
+  color: $primary-color !important;
+}
+
+.text-black {
+  color: $black-color !important;
+}
+
+.text-white {
+  color: $white-color !important;
+}
+
+.text-light-black {
+  color: $light-black-color !important;
+}
+
+.text-light-grey {
+  color: $light-grey-color !important;
+}
+
+.text-gray-900 {
+  color: $gray-900-color !important;
+}
+
+.text-gray-500 {
+  color: $gray-500-color !important;
+}
+
+.text-dark-grey {
+  color: $dark-grey-color !important;
+}
+
+.secondary-darker-color {
+  color: $secondary-darker-color !important;
+}
+
+.text-slate-700 {
+  color: $slate-700-color !important;
+}
+
+.text-slate-900 {
+  color: $slate-900-color !important;
+}
+
+.text-main-darker {
+  color: $main-darker-color !important;
+}
+
+.bg-primary {
+  background-color: $primary-color !important;
+}
+
+.bg-black {
+  background-color: $black-color !important;
+}
+
+.bg-white {
+  background-color: $white-color !important;
+}
+
+.bg-light-black {
+  background-color: $light-black-color !important;
+}
+
+.bg-light-grey {
+  background-color: $light-grey-color !important;
+}
+
+.bg-gray-900 {
+  background-color: $gray-900-color !important;
+}
+
+.bg-gray-500 {
+  background-color: $gray-500-color !important;
+}
+
+.bg-dark-grey {
+  background-color: $dark-grey-color !important;
+}
+
+.bg-slate-700 {
+  background-color: $slate-700-color !important;
+}
+
+.bg-slate-900 {
+  background-color: $slate-900-color !important;
+}
+
+.bg-main-darker {
+  background-color: $main-darker-color !important;
+}
+
+.fw-light {
+  font-weight: $fw-light !important;
+}
+
+.fw-regular {
+  font-weight: $fw-regular !important;
+}
+
+.fw-medium {
+  font-weight: $fw-medium !important;
+}
+
+.fw-bold {
+  font-weight: $fw-bold !important;
+}
+
+.fw-bolder {
+  font-weight: $fw-bolder !important;
+}
+
+.fs-200 {
+  font-size: $fs-200 !important;
+}
+
+.fs-300 {
+  font-size: $fs-300 !important;
+}
+
+.fs-400 {
+  font-size: $fs-400 !important;
+}
+
+.fs-450 {
+  font-size: $fs-450 !important;
+}
+
+.fs-500 {
+  font-size: $fs-500 !important;
+}
+
+.fs-600 {
+  font-size: $fs-600 !important;
+}
+
+.fs-650 {
+  font-size: $fs-650 !important;
+}
+
+.fs-700 {
+  font-size: $fs-700 !important;
+}
+
+.fs-800 {
+  font-size: $fs-800 !important;
+}
+
+.fs-900 {
+  font-size: $fs-900 !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.delete-color {
+  color: red !important;
+}
+
+/*******************Global styles*********************/
+
+.app-en {
+  .username-icon-container {
+    right: 0.9em;
+    left: unset !important;
+  }
+
+  .password-icon-container {
+    right: 0.6em;
+    left: unset !important;
+  }
+}
+
+app-login,
+app-verify-otp {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+app-container {
+  width: 100%;
+  display: flex;
+}
+
+/*** Breadcrumb **/
+.breadcrumb {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  border-radius: 0.25rem;
+  width: 100%;
+  min-width: 385px;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: #6c757d;
+    content: '>';
+  }
+
+  @media (max-width: 576px) {
+    .breadcrumb-item + .breadcrumb-item::before {
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .breadcrumb-item.active {
+      span {
+        padding: 2px;
+      }
+    }
+  }
+
+  li.active {
+    color: $primary-color;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 700;
+
+    span {
+      background-color: #fffbeb;
+      padding: 7px;
+      border-radius: 10px;
+      border: 1px solid #fffbeb;
+    }
+  }
+
+  a {
+    color: $gray-500-color;
+    font-size: 16px;
+    line-height: 20px;
+    text-decoration: none;
+    background-color: transparent;
+  }
+}
+
+.span-error-message {
+  color: #ba1b22;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px !important;
+}
+
+.flag-div {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 4px;
+    width: 20px;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+@media (max-width: 576px) {
+  .cdk-global-overlay-wrapper .cdk-overlay-pane {
+    width: 95vw;
+  }
+}
+
+/* Pages Section and its header **/
+
+.mb {
+  margin-bottom: 0.7em;
+
+  @media (min-width: 1332px) {
+    & {
+      margin-bottom: 1.2em;
+    }
+  }
+}
+
+.heading {
+  gap: 10px;
+  align-items: center;
+
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: $fs-600;
+  }
+}
+
+.rotate-arrow {
+  transform: rotate(180deg);
+}
+
+/********** ng-select  ***********/
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: none;
+  box-shadow: none; // inset 0 1px 1px rgba(0, 0, 0, 0.075),
+  //0 0 0 3px rgba(0, 126, 255, 0.1);
+}
+
+// .mat-form-field-div-success .ng-select-container {
+//   border: 2px solid #008037 !important;
+// }
+
+// .mat-form-field-div-error .ng-select-container {
+//   border: 2px solid #ba1b22 !important;
+// }
+
+.ng-select-container {
+  height: auto;
+  min-height: 3rem !important;
+
+  @media (min-width: 1332px) {
+    & {
+      min-height: 3rem !important;
+    }
+  }
+
+  .ng-placeholder {
+    line-height: 2.5rem;
+  }
+
+  .ng-value-label {
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
+
+.ng-select {
+  &.form-control {
+    padding: 0;
+    border-width: 0;
+  }
+
+  .ng-arrow-wrapper {
+    padding-right: 17px !important;
+    padding-left: 0 !important;
+  }
+}
+
+[dir='rtl'] .ng-select .ng-arrow-wrapper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+[dir='rtl'] .ng-select .ng-select-container .ng-value-container {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 0;
+}
+::ng-deep .ng-select .ng-select-container .ng-value-container .ng-input {
+  margin-top: 9px !important;
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  padding-bottom: 0;
+}
+[dir='rtl'] .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-input {
+  margin-right: 0;
+  padding: 0;
+  height: 20px;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+  margin-top: 9px !important;
+}
+
+/*Calendar icon in the datepicker*/
+.calendar-icon {
+  margin-right: 8px;
+}
+
+/****      Dialog        ****/
+
+.mdc-dialog__title {
+  padding: 0 1px 3px 19px !important;
+}
+
+/***     Options eye                 ****/
+.options-eye {
+  img {
+    width: 25px;
+    height: 25px;
+    object-fit: fill;
+  }
+}
+
+.no-rows-warning-msg {
+  margin: auto !important;
+  width: fit-content;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 1rem;
+  color: #9f6000;
+  background-color: #feefb3;
+  font-size: 14px;
+
+  @media (min-width: 1332px) {
+    font-size: 1rem;
+  }
+}
+
+.no-data {
+  color: #858d95;
+  font-size: 14px;
+  @media (min-width: 1332px) {
+    font-size: 1rem;
+  }
+}
+
+/**************** Form input when it is disabled **********************/
+.mdc-text-field--outlined.mdc-text-field--disabled .mdc-text-field__input {
+  color: black !important;
+}
+
+/***************************     Scrollbar   *************************************/
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+  overflow-y: scroll;
+  background: transparent;
+  box-shadow: inset 0 0 4px #ffff;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:horizontal {
+  background: #c4d7ed;
+  border-radius: 10px;
+}
+
+::ng-deep .custom-dialog-container .mat-mdc-dialog-surface {
+  scrollbar-width: thin !important; /* Thin scrollbar */
+}
+
+.eye-opened {
+  cursor: pointer;
+  width: 26px;
+  height: 24px;
+  object-fit: fill;
+}
+
+/**************************  TimeLine  *********************************/
+
+/**************************** tx-document-editor *************************/
+tx-document-editor {
+  direction: ltr;
+  display: block !important;
+  margin: auto;
+  border: 2px solid black;
+}
+
+div.txui-dialog {
+  direction: ltr;
+  z-index: 9999;
+}
+
+/**************************** Mat tabs group *************************/
+app-study-project-modal mat-tab-header,
+app-statement-request-modal mat-tab-header {
+  margin-bottom: 1em;
+}
+
+.button-group-gap {
+  gap: 12px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.component-header {
+  width: 100%;
+  padding: 0.6em;
+  position: relative;
+
+  &:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: #fff;
+    inset-inline: 0;
+    position: absolute;
+    bottom: -2px;
+  }
+
+  @media (min-width: 1332px) {
+    & {
+      padding: 1em;
+    }
+  }
+}
+
+.bg-light-blue {
+  background-color: #e4ecf4;
+}
+
+.component-header_title {
+  @extend .fs-500, .fw-medium;
+  margin-bottom: 0;
+}
+
+.data-card {
+  padding: 1rem;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: -2px 3px 5px -5px rgb(0 0 0 / 100%);
+
+  .info-data {
+    @extend .text-black;
+    margin-bottom: 0;
+    font-size: 14px;
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1rem !important;
+      }
+    }
+  }
+
+  .label {
+    margin-bottom: 5px;
+    font-weight: $fw-regular;
+    color: #4b5563;
+    font-size: 14px;
+    @media (min-width: 1332px) {
+      & {
+        font-size: 1rem !important;
+      }
+    }
+  }
+
+  .divider {
+    background: #dee1e7;
+    border-width: 0;
+    height: 1px;
+    margin-block: 0.5em;
+  }
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  font-size: 14px;
+
+  @media (min-width: 1332px) {
+    & {
+      font-size: 1rem;
+    }
+  }
+}
+
+.list-group {
+  &_devider {
+    list-style: none;
+
+    li {
+      padding-block: 10px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #dee1e7;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+
+      &:first-child {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+[dir='rtl'] ngx-mat-calendar .mat-calendar-previous-button,
+[dir='rtl'] ngx-mat-calendar .mat-calendar-next-button {
+  transform: none !important;
+}
+
+.error {
+  color: #ff4146;
+  text-align: center;
+}
+
+//////////////////////////////////////////////////////////
+///
+///
+///
+///
+///
+///
+///
+///
+///
+
+/******************************** ng-bootstrap datepicker **************************************/
+// Right-To-Left layout for the Islamic Calendars
+ngb-datepicker {
+  direction: rtl;
+  z-index: 99999 !important;
+}
+
+ngb-datepicker ngb-datepicker-navigation-select select.form-select {
+  background-position: left 0.25rem center;
+}
+
+ngb-datepicker .ngb-dp-arrow-next .ngb-dp-navigation-chevron {
+  transform: rotate(-135deg);
+  margin: 0 0 0 0.25rem;
+}
+
+ngb-datepicker .ngb-dp-arrow-prev .ngb-dp-navigation-chevron {
+  transform: rotate(45deg);
+  margin: 0 0.25rem 0 0;
+}
+
+ngb-datepicker {
+  .ngb-dp-day {
+    width: 2.75rem;
+    height: 2.75rem;
+    line-height: 1rem;
+  }
+
+  .ngb-dp-weekday {
+    width: 2.75rem;
+  }
+}
+
+app-hijri-calendar-modal .ngb-dp-navigation-select {
+  flex: 5 3 10rem !important;
+}
+
+.label-container {
+  margin-bottom: 7px;
+  @media (min-width: 1332px) {
+    & {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+app-dropzone {
+  width: 100%;
+}
+
+app-view-image-modal {
+  background: white; /* Ensure a consistent background */
+}
+
+/************ Tooltip hovered span  **************/
+.tooltip-hovered-content {
+  position: relative;
+  z-index: 2;
+  cursor: default;
+}
+
+// 1. Margin Utility Classes
+@for $i from 0 through 100 {
+  .custom-m-#{$i} {
+    margin: #{$i}px !important;
+  }
+  .custom-mt-#{$i} {
+    margin-top: #{$i}px !important;
+  }
+  .custom-mr-#{$i} {
+    margin-right: #{$i}px !important;
+  }
+  .custom-mb-#{$i} {
+    margin-bottom: #{$i}px !important;
+  }
+  .custom-ml-#{$i} {
+    margin-left: #{$i}px !important;
+  }
+  .custom-mx-#{$i} {
+    margin-left: #{$i}px !important;
+    margin-right: #{$i}px !important;
+  }
+  .custom-my-#{$i} {
+    margin-top: #{$i}px !important;
+    margin-bottom: #{$i}px !important;
+  }
+}
+
+// 2. Padding Utility Classes
+@for $i from 0 through 100 {
+  .custom-p-#{$i} {
+    padding: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 20 {
+        padding: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-pt-#{$i} {
+    padding-top: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-top: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-pr-#{$i} {
+    padding-right: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-right: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-pb-#{$i} {
+    padding-bottom: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-bottom: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-pl-#{$i} {
+    padding-left: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-left: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-px-#{$i} {
+    padding-left: #{$i}px;
+    padding-right: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-left: #{$i / 2}px;
+        padding-right: #{$i / 2}px;
+      }
+    }
+  }
+  .custom-py-#{$i} {
+    padding-top: #{$i}px;
+    padding-bottom: #{$i}px;
+    @media (max-width: 1499px) {
+      @if $i > 19 {
+        padding-top: #{$i / 2}px;
+        padding-bottom: #{$i / 2}px;
+      }
+    }
+  }
+}
+
+// 3. Font Size Utility Classes
+@for $i from 8 through 48 {
+  .fs-#{$i} {
+    font-size: #{$i}px !important;
+  }
+}
+
+// Define a list of hex color values (without the #)
+$colors: '0099cc', 'ffcc00', 'ff0000', '00ff00', '000000', '9E9E9E', '5BBDF6', '5F616B', '007AFF';
+
+// Function to prepend # to the hex color
+@function hex-color($hex) {
+  @return unquote('#{$hex}');
+}
+
+// Loop to create the classes
+@each $hex in $colors {
+  .color-#{$hex} {
+    color: hex-color('#' + $hex) !important;
+  }
+
+  .bg-#{$hex} {
+    background-color: hex-color('#' + $hex) !important;
+  }
+}
+
+body.light-theme mat-sidenav p {
+  color: #000; // or your light color
+}
+
+body.dark-theme mat-sidenav p {
+  color: #fff; // or your dark color
+}
+
+body.light-theme mat-sidenav svg:not(.btn svg),
+body.light-theme mat-sidenav p:not(.btn p) {
+  color: #000;
+  fill: #000;
+}
+body.dark-theme mat-sidenav p:not(.btn p),
+body.dark-theme mat-sidenav svg:not(.btn svg) {
+  color: #fff;
+  fill: #fff;
+}
+
+/* Always keep .btn-primary svg and p white */
+.btn-primary svg,
+.btn-primary p {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+body.light-theme mat-sidenav p.active {
+  color: inherit !important;
+}
+
+// body.dark-theme p:hover,
+// body.dark-theme p.active {
+//   color: inherit !important;
+// }
+
+body.light-theme .side-nav-container .nav-list li:not(.add-new).active,
+body.light-theme .side-nav-container .nav-list li:not(:has(button)):has(> a.active) {
+  background: $color-primary-surface-default !important;
+  color: #fff !important;
+
+  p,
+  svg {
+    color: #fff !important;
+    fill: #fff !important;
+    stroke: #fff !important;
+  }
+}
+body.light-theme .side-nav-container .nav-list li:not(.add-new):hover {
+  background: #7e7e7e66;
+  .me-auto {
+    color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+  }
+}
+.logo-dark {
+  display: none;
+}
+.logo-light {
+  display: block;
+}
+
+body.dark-theme .logo-dark {
+  display: block;
+}
+body.dark-theme .logo-light {
+  display: none;
+}
+
+[dir='rtl'] .mdc-switch--selected .mdc-switch__handle-track,
+.mdc-switch--selected .mdc-switch__handle-track[dir='rtl'] {
+  right: 0 !important;
+}
+
+.menu-same-width {
+  display: flex;
+  padding: 0.875rem 0.5625rem 0.875rem 0.5625rem;
+  align-items: center;
+  border-radius: 0.5rem !important;
+  background: #fff;
+  min-width: 12.75rem !important;
+  box-shadow: 0 2px 4px 0 rgba(62, 52, 69, 0.04) !important;
+  margin-top: 0.7rem;
+  max-height: 13rem;
+  overflow-y: auto;
+}
+.menu-same-width .mat-mdc-menu-content {
+  padding: 0 !important;
+  width: 100%;
+  max-height: 13rem;
+}
+.menu-same-width .mat-mdc-menu-item {
+  width: 100%;
+  border-bottom: 1px solid $gray-100;
+}
+.menu-same-width .mat-mdc-menu-item:last-child {
+  border-bottom: 0;
+}
+.mdc-radio__outer-circle {
+  border-width: 2px !important;
+  border-color: $gray-300 !important;
+}
+.link {
+  color: #007aff;
+  text-decoration-line: underline !important;
+  text-decoration-style: solid !important;
+  cursor: pointer;
+}
+.home-section {
+  // border-radius: 0.75rem;
+  // // padding: 0.75rem;
+  // // background-color: #F5F5F5;
+  // margin-top: 0.9rem;
+}
+.home-section-bg {
+  padding: 0.75rem;
+  background-color: #f5f5f5;
+  margin-top: 0.75rem;
+  border-radius: 0.75rem;
+}
+.body p {
+  margin-bottom: 0;
+}
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  border-color: #addefa;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.mat-expansion-panel {
+  box-shadow: none !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #f5f5f5;
+  background: #f5f5f5 !important;
+  padding: 0;
+  margin-top: 0.75rem !important;
+}
+.mat-expansion-panel-header {
+  background-color: transparent !important;
+}
+
+.mat-expansion-indicator {
+  display: none;
+}
+.mat-expansion-panel-header,
+.mat-expansion-panel-body {
+  padding: 0.25rem 0.9375rem !important;
+}
+.mat-expansion-panel-body {
+  padding-bottom: 1rem !important;
+}
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
+  max-width: fit-content;
+  display: inline-flex;
+  margin: 0 !important;
+}
+.mat-content {
+  justify-content: space-between;
+}
+.mat-mdc-table .mat-sort-header-arrow {
+  color: #7f404f !important;
+}
+.hide-target .target-circle-bg,
+.hide-target .target-circle,
+.hide-target .target-label,
+.hide-target .target-value {
+  display: none !important;
+}
+.hide-target .total {
+  font-size: 14px !important;
+  font-weight: bolder;
+}
+.hide-target.complete .total {
+  fill: #4caf50 !important;
+}
+.late.hide-target .total {
+  fill: #d32f2f !important;
+}
+.hasTime.hide-target .total {
+  fill: #7f404f !important;
+}
+
+.late.hide-target svg rect {
+  fill: #d32f2f !important;
+}
+.late {
+  color: #d32f2f !important;
+  font-weight: bolder !important;
+}
+.hasTime.hide-target svg rect {
+  fill: #7f404f !important;
+}
+.hasTime {
+  color: #7f404f !important;
+  font-weight: bolder !important;
+}
+.hide-target.complete svg rect {
+  fill: rgb(76, 175, 80) !important;
+}
+.complete {
+  color: #4caf50 !important;
+  font-weight: bolder !important;
+}
+.gray-700 {
+  color: #5e5e5e;
+}
+.gray-400 {
+  color: #b3b3b3;
+}
+.primary-500 {
+  color: #043049;
+}
+.primary-200 {
+  color: #5bbdf6;
+}
+.secondary-500 {
+  color: #a38a5f;
+  font-size: 14px !important;
+}
+.dialog-box {
+  padding: 1.5rem;
+  gap: 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #d9d9d9;
+}
+// textarea {
+//   background-color: #f5f5f5 !important;
+// }
+::placeholder {
+  font-size: 14px !important;
+}
+.nowrap {
+  white-space: nowrap !important;
+}
+.download-container {
+  border-radius: 0.5rem;
+  background: #ece7df;
+  padding: 0.93556rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mat-mdc-checkbox .mdc-checkbox__background {
+  border-radius: 0.25rem;
+  border: 1px solid #c4c4c4;
+  background: #fff;
+}
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled
+  ~ .mdc-checkbox__background
+  .mdc-checkbox__checkmark {
+  width: 75%;
+  margin: auto;
+}
+.text-danger {
+  color: #d32f2f;
+}
+app-table-list {
+  // min-height: 80vh !important;
+  display: block;
+}
+mat-paginator .mat-mdc-text-field-wrapper {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.body-bold {
+  font-weight: bold !important;
+}
+.custom-modal-header {
+  padding: 0.75rem;
+  padding-bottom: 0;
+}
+.custom-modal-body {
+  padding: 0 0.75rem !important;
+  overflow: auto !important;
+  max-height: 83vh !important;
+  min-height: 12vh;
+}
+.float-footer .custom-modal-footer {
+  position: absolute !important;
+}
+.custom-modal-footer {
+  padding: 0.75rem !important;
+  // padding-top: 0 !important;
+  margin-top: auto !important;
+
+  width: 100%;
+  bottom: 0;
+  background: #fff;
+  z-index: 99999999;
+}
+.mat-mdc-dialog-surface {
+  border-radius: 10px !important;
+}
+
+.ng-select .ng-clear-wrapper {
+  right: 17px;
+}
+app-footer {
+  margin-top: auto;
+}
+.col-md-7 .transaction-card {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.15);
+}
+.transaction-card.active {
+  border: 1px solid #5bbdf6 !important;
+  position: relative !important;
+}
+.transaction-card.active::before {
+  position: absolute;
+  content: '';
+  top: 20px;
+  left: -13px;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  border-right: 13px solid #5bbdf6;
+}
+
+.transaction-card.active::after {
+  position: absolute;
+  content: '';
+  top: 22px;
+  left: -11px;
+  width: 0;
+  height: 0;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-right: 11px solid #f5f5f5;
+}
+.filters-dialog-panel {
+  position: relative !important;
+  overflow: visible;
+}
+
+.filters-dialog-panel::before {
+  position: absolute;
+  content: '';
+  top: -10px;
+  left: 170px;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 30px solid #fff;
+  z-index: 999;
+}
+.custom-shadow {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+}
+.mat-mdc-menu-item:not([disabled]):hover {
+  background-color: #f5faff !important;
+}
+
+.ng-select .mdc-checkbox .mdc-checkbox__background {
+  top: 0;
+  left: 0;
+  margin-left: 2px;
+}
+.content-body > * {
+  font-weight: 500 !important;
+}
+
+.mat-form-field-div-success .mat-mdc-text-field-wrapper,
+.mat-form-field-div-success .mat-mdc-text-field-wrapper:hover,
+.mat-form-field-div-success .mat-mdc-text-field-wrapper:focus {
+  border-radius: 0.5rem !important;
+}
+.mdc-text-field--outlined,
+.mat-mdc-form-field,
+.mat-mdc-form-field-type-mat-input {
+  --mdc-outlined-text-field-container-shape: 0.5rem !important;
+  border-radius: 0.5rem !important;
+}
+.mdc-switch:enabled:not(:focus):not(:active) .mdc-switch__track::after {
+  background: #4caf50 !important;
+}
+.ng-select .ng-clear-wrapper {
+  right: 15px !important;
+}
+
+.line {
+  opacity: 0.5;
+  color: $gray-300;
+  margin: 0.75rem 0;
+  height: 0.0625rem;
+}
+.ng-dropdown-panel-items.scroll-host {
+  border: 1px solid #addefa;
+}
+
+.gray-500 {
+  color: #9e9e9e;
+}
+
+.Section-header {
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 1rem 0;
+}
+
+.Text {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0.5rem 0;
+}
+.mb-3 {
+  margin-bottom: 0.75rem !important;
+}
+.mt-3 {
+  margin-top: 0.75rem !important;
+}
+.gx-3 {
+  --bs-gutter-x: 12px !important;
+}
+.listingPageCard {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: #f5f5f5;
+}
+.mat-expansion-panel-header {
+  height: 60px !important;
+}
+.mat-mdc-tab-header {
+  margin-bottom: 12px;
+}
+.h-60 {
+  height: 60px;
+}
+.mat-expansion-panel-spacing {
+  margin: 12px 0 !important;
+}
+.mat-expansion-panel.mt-0 {
+  margin-top: 0 !important;
+}
+.h-fit {
+  height: fit-content;
+}
+.green-500 {
+  color: #4caf50;
+}
+
+[dir='rtl'] .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  background-color: transparent;
+}
+.scale-2 {
+  transform: scale(1.2);
+}
+@media (min-width: 1024px) and (max-width: 1500px) {
+  .scale-2 {
+    transform: scale(1);
+  }
+}
+.scale-1 {
+  transform: scale(1) !important;
+}

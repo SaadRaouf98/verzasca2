@@ -1,0 +1,226 @@
+.add-btn {
+  img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+  }
+}
+
+.add-btn {
+  background-color: #3db5b5;
+}
+
+@media (max-width: 576px) {
+  .add-btn {
+    max-height: 46px;
+  }
+  .mt-s {
+    margin-top: 1em;
+  }
+}
+
+.table-actions {
+  margin: 0;
+  padding: 0;
+
+  height: 45px;
+  overflow: hidden;
+  background: transparent; //#f0f5fa;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #c4d7ed;
+
+  > div {
+    padding: 0;
+    height: 100%;
+    position: relative;
+  }
+
+  /** search */
+  .search-container {
+    width: 100% !important;
+    font-size: 15px;
+    height: 100%;
+    border-radius: 2px;
+    border-right: solid 0.5px #c4d7ed;
+    border-left: solid 0.5px #c4d7ed;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    @media screen and (max-width: 767px) {
+      width: 100% !important;
+    }
+
+    input {
+      opacity: 0.8;
+      border: 0;
+      outline: none;
+      background: none;
+      height: 40px;
+      width: 100%;
+    }
+  }
+
+  ::ng-deep {
+    .mat-paginator {
+      background: none;
+    }
+
+    .mat-paginator-container {
+      height: 60px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .table-actions {
+    display: none;
+  }
+}
+
+/**************** Table ********************/
+::ng-deep app-foundations-list .mat-mdc-table {
+  thead {
+    background-color: #20545f !important;
+  }
+}
+
+table {
+  margin-top: -10px;
+  width: 100%;
+  tr {
+    border-bottom: 1px solid #c4d7ed;
+  }
+
+  .mat-column-title {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+  }
+  .mat-column-actions {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+  }
+}
+
+tr.example-detail-row {
+  height: 0;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media only screen and (max-width: 991px) {
+  tr.example-detail-row {
+    height: 0;
+    display: contents;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+tr.example-element-row:not(.example-expanded-row):hover:has(.bg-hover),
+tr.example-element-row:not(.example-expanded-row):active:has(.bg-hover) {
+  .mat-mdc-cell {
+    background-color: #f1e8e8 !important;
+  }
+}
+
+/*.bg-hover {
+  tr.example-element-row:not(.example-expanded-row) {
+    .mat-mdc-cell {
+      background-color: #f1e8e8 !important;
+    }
+  }
+}*/
+/* td.mat-column-title:hover,
+td.mat-column-titleEn:hover {
+  cursor: pointer;
+} */
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flow-root;
+}
+
+ul.detail-element {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 0 5px;
+
+    p {
+      font-size: 13px;
+      color: #808080;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+.example-element-description {
+  padding: 12px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+::ng-deep {
+  .mat-paginator {
+    background: none;
+  }
+  @media only screen and (max-width: 360px) {
+    .mat-button-wrapper {
+      font-size: 13px;
+    }
+  }
+  .mat-paginator-container {
+    height: 60px;
+    @media only screen and (max-width: 1200px) {
+      justify-content: center !important;
+    }
+  }
+}
+
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1;
+  background: rgb(0 0 0 / 43%);
+}
+
+::ng-deep .cdk-overlay-transparent-backdrop,
+.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+  opacity: 1 !important;
+}
+::ng-deep .mat-paginator-page-size.ng-star-inserted {
+  display: none;
+}
+
+.options-btn {
+  background-color: #3db5b5;
+  height: 40px;
+}
+
+.options-eye {
+  width: 44px;
+  padding: 9px;
+  background: #f3f4f6;
+  border-radius: 50%;
+}

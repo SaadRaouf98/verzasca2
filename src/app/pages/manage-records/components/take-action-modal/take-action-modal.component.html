@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold">
+    {{ 'ManageRecordsModule.TakeActionModalComponent.expressByPhone' | translate }}</span
+  >
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<div class="custom-modal-body" mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12">
+        <mat-radio-group
+          formControlName="actionType"
+          aria-label="Select an option"
+          id="actionType"
+          class="action-type-radio-group"
+        >
+          <mat-radio-button class="ms-5" [value]="ExportableDocumentActionType.Sign">
+            {{ 'ManageRecordsModule.TakeActionModalComponent.sign' | translate }}
+          </mat-radio-button>
+          <mat-radio-button class="ms-5" [value]="ExportableDocumentActionType.Conservatism">
+            {{ 'ManageRecordsModule.TakeActionModalComponent.conservatism' | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="ExportableDocumentActionType.OpinionRefrain">
+            {{ 'ManageRecordsModule.RecordsListComponent.opinionRefrain' | translate }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- start textArea -->
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ 'shared.notes' | translate }}
+        </p>
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ 'shared.note' | translate }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+        <div
+          *ngIf=" form?.errors?.['commentRequired'] && isTouched('comment')"
+          class="text-danger text-small mt-1"
+        >
+          <small>
+            {{ 'ManageRecordsModule.TakeActionModalComponent.commentRequired' | translate }}
+          </small>
+        </div>
+      </div>
+      <!-- end textArea -->
+    </div>
+  </form>
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button class="button button-primary button-lg" style="flex: 0 0 69%" (click)="onSubmit()">
+    {{ 'shared.confirm' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

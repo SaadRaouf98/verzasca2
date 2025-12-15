@@ -1,0 +1,55 @@
+#close-icon {
+  padding: 0;
+  z-index: 100;
+}
+
+.modal-header {
+  position: relative;
+  top: -2em;
+  display: flex;
+}
+
+.copy-container {
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #ebf5f5;
+  border-radius: 10px;
+  padding: 0.3em;
+
+  @media (min-width: 1332px) {
+    & {
+      padding: 0.4em;
+      gap: 8px;
+    }
+  }
+  .comment-img {
+    width: 29px;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+div[mat-dialog-contents],
+div[mat-dialog-title] {
+  padding: 0 24px 9px !important;
+}
+
+div[mat-dialog-contents] {
+  position: relative;
+  bottom: 1.8em;
+  min-height: 150px;
+}
+
+span,
+p {
+  font-size: 14px !important;
+
+  @media (min-width: 1332px) {
+    & {
+      font-size: 16px !important;
+    }
+  }
+}

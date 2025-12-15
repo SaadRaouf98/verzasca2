@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold"> {{ 'shared.moveReport' | translate }}</span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<div mat-dialog-contents class="custom-modal-body">
+  <p class="caption mb-3">
+    نقل التقرير سيؤدي الي انتقال التقرير الي مجلد اخر وحذفه من المجلد الحالي
+  </p>
+  <p class="body mb-3" *ngIf="data?.node">
+    المجلد الحالي :
+    <span class="body-bold" *ngIf="folderTitle"> {{ folderTitle }}</span>
+  </p>
+
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row rest-fields-container">
+      <div class="col-12">
+        <p class="body-bold mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.selectFolder' | translate }}
+        </p>
+        <app-select
+          formControlName="folderId"
+          [options]="reportFolders"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          [placeholder]="'RegularReportsModule.AddRegularReportComponent.pleaseSelectFolder'"
+          [multiple]="false"
+          [searchable]="false"
+          [appendTo]="'body'"
+        ></app-select>
+
+        <span
+          class="text-danger text-small mt-1"
+          *ngIf="
+            form.get('folderId')?.errors?.['required'] && isTouched('folderId')
+          "
+        >
+          {{ 'shared.folderRequired' | translate }}
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button
+    class="button button-primary button-lg"
+    style="flex: 0 0 83%"
+    (click)="onSubmit()"
+    [disabled]="!form.valid || disableSubmitBtn"
+  >
+    {{ 'shared.save' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 15%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
+</div>

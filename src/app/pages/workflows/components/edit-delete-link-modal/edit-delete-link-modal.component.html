@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-600 fw-bold">
+    {{ "WorkflowsModule.EditDeleteLinkModalComponent.header" | translate }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off"></form>
+</div>
+
+<div class="d-flex justify-content-center">
+  <!--start Submit button-->
+  <div class="d-flex justify-content-around mt-s | submit-btn-container">
+    <button
+      mat-fab
+      extended
+      class="d-flex align-items-center fw-bold fs-500 bg-primary | submit-btn"
+      (click)="onSubmit(WorkflowLinkUserAction.Edit)"
+    >
+      {{ "shared.edit" | translate }}
+    </button>
+    <button
+      mat-fab
+      extended
+      class="d-flex align-items-center fw-bold fs-500 | submit-btn delete-btn"
+      (click)="onSubmit(WorkflowLinkUserAction.Delete)"
+    >
+      {{ "shared.delete" | translate }}
+    </button>
+  </div>
+  <!--end Submit button-->
+</div>

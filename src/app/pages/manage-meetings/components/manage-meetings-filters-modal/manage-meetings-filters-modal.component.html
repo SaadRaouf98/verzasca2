@@ -1,0 +1,82 @@
+<div class="modal-container">
+  <div mat-dialog-title class="modal-header">
+    <h2 class="fs-400 fw-bold | header">
+      {{
+        "PendingTransactionsModule.ModalPendingTransactionsFiltersComponent.header"
+          | translate
+      }}
+    </h2>
+    <p class="fs-300 | sub-header">
+      {{
+        "PendingTransactionsModule.ModalPendingTransactionsFiltersComponent.subHeader"
+          | translate
+      }}
+    </p>
+
+    <button (click)="onCancel()" class="dismiss-btn" mat-icon-button>
+      <img src="assets/icons/close.svg" alt="Click to close filters window." />
+    </button>
+  </div>
+
+  <div mat-dialog-content class="modal-content | px-4 px-lg-5 px-xl-5">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-12">
+          <div class="label-container">
+            <label>{{ "shared.gregorianPeriodTime" | translate }}</label>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-date-range-input
+              (click)="picker.open()"
+              [rangePicker]="picker"
+            >
+              <input
+                matStartDate
+                formControlName="fromDate"
+                [placeholder]="placeholder | translate"
+              />
+              <input
+                matEndDate
+                formControlName="toDate"
+                [placeholder]="placeholder | translate"
+                (dateChange)="onGregorianDateChanges()"
+              />
+            </mat-date-range-input>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <img
+              src="assets/icons/calendar.svg"
+              (click)="picker.open()"
+              class="calendar-icon"
+              matSuffix
+              alt="Click to open calendar."
+            />
+          </mat-form-field>
+        </div>
+
+        <!--Start hijri date range-->
+        <app-hijri-date-range
+          [date]="hijriDateCalendarInput"
+          (submit)="patchFormHijriDate($event)"
+        ></app-hijri-date-range>
+        <!--End hijri date range-->
+      </div>
+    </form>
+  </div>
+
+  <div
+    mat-dialog-actions
+    class="mt-4 justify-content-between modal-footer mat-dialog-actions-buttons"
+  >
+    <button mat-flat-button class="reset" (click)="onResetForm()">
+      {{ "shared.resetFilters" | translate }}
+    </button>
+    <button
+      (click)="onApplyFilters()"
+      class="px-5"
+      mat-flat-button
+      color="primary"
+    >
+      {{ "shared.apply" | translate }}
+    </button>
+  </div>
+</div>

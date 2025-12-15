@@ -1,0 +1,135 @@
+<div
+  class="row justify-content-between align-items-center component-header"
+  *ngIf="!isLoading"
+>
+  <div class="col-12 col-sm-6 d-flex align-items-center | heading">
+    <a class="cursor-pointer" (click)="onNavigateBack()">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+    <h2 class="component-header_title">
+      <ng-container
+        *ngIf="
+          noteDetails && noteDetails.documentType === ExportedDocumentType.Note
+        "
+      >
+        {{ "ManageNotesModule.NoteDetailsComponent.noteHeader" | translate }}
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          noteDetails &&
+          noteDetails.documentType === ExportedDocumentType.Letter
+        "
+      >
+        {{ "ManageNotesModule.NoteDetailsComponent.letterHeader" | translate }}
+      </ng-container>
+    </h2>
+  </div>
+  <div class="col-12 col-sm-6 d-flex justify-content-end"
+       *ngxPermissionsOnly="[PermissionsObj.RecordPhoneApprovalAction]">
+    <button *ngIf="noteDetails.hasSignatureAction" class="mr-auto" mat-raised-button
+            (click)="onOpenTelephoneConsentModal()">
+      <span class="d-flex gap-1">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="#50abab"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+        <path d="M5 3h6l1 2h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-6l-1 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+        <polyline points="10 14 12 16 16 12"/>
+      </svg>
+        الموافقه الهاتفيه</span>
+
+
+    </button>
+  </div>
+</div>
+
+<section *ngIf="!isLoading; else elseBlock">
+  <!--Start 2 tabs filters -->
+  <div class="tabs-container">
+    <mat-tab-group animationDuration="400ms" mat-align-tabs="start">
+      <mat-tab label=" {{ 'shared.details' | translate }}">
+        <section>
+          <div class="row">
+            <div class="col-12">
+              <div class="data-card bg-white">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="transactionSubHeader">
+                      <p class="label">
+                        {{
+                          "ManageNotesModule.NoteDetailsComponent.title"
+                            | translate
+                        }}
+                      </p>
+
+                      <p class="title-color">
+                        {{ noteDetails?.title }}
+                      </p>
+                    </div>
+                  </div>
+                  <hr class="divider"/>
+                  <div class="col-6 left-gray-border">
+                    <p class="label">
+                      {{ "shared.advisor" | translate }}
+                    </p>
+                    <p class="info-data">
+                      {{ noteDetails?.consultant?.name || "-" }}
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p class="label">
+                      {{
+                        "TransactionsModule.ExportDocumentComponent.exportedNumber"
+                          | translate
+                      }}
+                    </p>
+
+                    <p class="info-data">
+                      {{ noteDetails?.exportNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <mat-tab
+          [label]="
+            noteDetails &&
+            noteDetails.documentType === ExportedDocumentType.Note
+              ? ('ManageNotesModule.NotesListComponent.note' | translate)
+              : ('ManageNotesModule.NotesListComponent.letter' | translate)
+          "
+        >
+          <p id="file-title">{{ noteFile.name }}</p>
+
+          <iframe
+            [src]="noteFile.pdfSrc"
+            style="width: 100%; height: 100vh"
+          ></iframe>
+        </mat-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>
+<ng-template #elseBlock>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="width: 100%; height: 89vh"
+  >
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</ng-template>

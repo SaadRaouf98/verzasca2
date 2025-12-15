@@ -1,0 +1,113 @@
+<div class="d-flex justify-content-end | close-icon-container">
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup."/>
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-400 fw-bold">
+    {{ "ManageNotesModule.NoteDetailsComponent.telephoneConsent" | translate }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <!--Start acceess users-->
+
+      <div
+        class="col-12 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('users')?.errors && isTouched('users'),
+          'mat-form-field-div-success':
+            !form.get('users')?.errors && isTouched('users')
+        }"
+      >
+        <div class="label-container">
+          <label>
+            {{
+              "ManageNotesModule.NoteDetailsComponent.telephoneConsent"
+                | translate
+            }}
+          </label>
+        </div>
+
+        <!--        <app-user-search-->
+        <!--          [multiple]="true"-->
+        <!--          [placeholder]="'shared.searchForUsers'"-->
+        <!--          [value]="form.get('users')?.value"-->
+        <!--          (emitValue)="form.get('users')?.setValue($event)"-->
+        <!--          (touched)="onSetIfUserIsTouched($event)"-->
+        <!--        ></app-user-search>-->
+        <ng-select
+          formControlName="users"
+          placeholder="{{ 'shared.searchForUsers' | translate }}"
+          [bindLabel]="'name'"
+          [compareWith]="compareFn"
+          class="form-control"
+          [multiple]="false"
+        >
+          <ng-option
+            *ngFor="let user of (usersList$ | async)"
+            [value]="user"
+          >
+            {{ user.name }}
+          </ng-option>
+        </ng-select>
+        <span
+          class="span-error-message"
+          *ngIf="
+            form.get('users')?.errors?.['required'] && isTouched('users')
+    "
+        >
+          {{
+            "ActionsModule.AddClassificationComponent.atLeastOneUserRequired" | translate
+          }}
+        </span>
+
+      </div>
+      <div class="col-12 pt-2 mat-form-field-div mt-2">
+        <mat-form-field appearance="outline">
+          <textarea
+            matInput
+            formControlName="comment"
+            name="descriptionAr"
+            placeholder="{{ 'shared.comment' | translate }}"
+            rows="4"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <!--end acceess users-->
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="justify-content-end">
+  <button
+    (click)="onSubmit()"
+    [disabled]="form.invalid"
+    class="save-btn btnMd"
+    mat-flat-button
+  >
+    {{ "shared.save" | translate }}
+    <div *ngIf="isLoading"  class="spinner-border spinner-grow-sm me-1" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </button>
+
+  <button
+    (click)="onCancel()"
+    class="btnSmall"
+    mat-flat-button
+    data-appearance="outline"
+    id="cancel-btn"
+  >
+    {{ "shared.cancel" | translate }}
+  </button>
+</div>

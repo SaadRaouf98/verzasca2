@@ -1,0 +1,105 @@
+<form autocomplete="off" [formGroup]="form">
+  <div class="row rest-fields-container">
+    <div
+      class="col-12 col-lg-4 pt-2 mat-form-field-div"
+      [ngClass]="{
+        'mat-form-field-div-error':
+          form.get('attachmentInput')?.errors && isTouched('attachmentInput'),
+        'mat-form-field-div-success':
+          !form.get('attachmentInput')?.errors && isTouched('attachmentInput')
+      }"
+    >
+      <div class="label-container">
+        <label for="attachmentInput">
+          {{ "shared.attachments" | translate }}
+        </label>
+      </div>
+
+      <div class="file-input-parent">
+        <mat-form-field
+          appearance="outline"
+          class="d-flex justify-content-between"
+          [matTooltip]="attachmentInput.value?.name"
+          (drop)="onFileDropped($event)"
+        >
+          <input
+            matInput
+            name="attachmentInput"
+            formControlName="attachmentInput"
+            [innerText]="attachmentInput.value?.name"
+            (click)="onAddFile()"
+            [placeholder]="
+              'ManageDocumentsModule.AddDocumentPage.addFile' | translate
+            "
+            #visibleFileToUpload
+          />
+
+          <input
+            hidden
+            (change)="onFileChange($event)"
+            #hiddenFileToUpload
+            type="file"
+          />
+        </mat-form-field>
+        <button
+          class="insert-file-btn"
+          (click)="onInsertFileToList()"
+          mat-flat-button
+        >
+          إرفاق ملف
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row rest-fields-container">
+    <div
+      *ngFor="let control of attachments.controls; index as i"
+      class="col-12 col-lg-6 mat-form-field-div"
+    >
+      <div class="inserted-file-container">
+        <p>{{ control.value.fileName }}</p>
+
+        <div class="inserted-file-options">
+          <div
+            *ngIf="getFormControlByIndex(attachments, i)?.value"
+            (click)="onViewAttachment(i)"
+            class="d-flex align-items-center | watch-file-container"
+          >
+            <img src="assets/icons/eye-opened.png" class="eye-opened" />
+          </div>
+          <div class="d-flex align-items-center | delete-file">
+            <img
+              src="assets/icons/delete.png"
+              alt="Delete file ?"
+              class="cursor-pointer"
+              (click)="onDeleteFile(i)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row rest-fields-container save-btn-container">
+    <div class="d-flex justify-content-end">
+      <button
+        class="save-btn"
+        mat-flat-button
+        (click)="onSubmit()"
+        [disabled]="form.invalid || disableSubmitBtn"
+      >
+        {{ "shared.saveAndFinish" | translate }}
+      </button>
+    </div>
+  </div>
+</form>
+
+<app-global-progress-spinner
+  color="primary"
+  mode="indeterminate"
+  [value]="50"
+  [backdropEnabled]="true"
+  [positionGloballyCenter]="true"
+  [displayProgressSpinner]="displayProgressSpinner"
+></app-global-progress-spinner>

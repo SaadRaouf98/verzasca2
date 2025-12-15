@@ -1,0 +1,311 @@
+<div class="row justify-content-between align-items-center" *ngIf="!isLoading">
+  <div class="row justify-content-between align-items-center" *ngIf="!isLoading">
+    <div class="col-12 col-lg-5 mb-3 d-flex flex-column">
+      <div class="d-flex align-items-center">
+        <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+        </svg>
+        <div class="mx-2">
+          <div class="d-flex align-items-center">
+            <span class="body text-small gray-400">
+              {{ 'shared.importsExports' | translate }}
+            </span>
+            <span class="body text-small gray-400 mx-2">/</span>
+            <span class="body-bold">
+              {{ 'ImportsExportsModule.RequestDetailsComponent.titleExport' | translate }}
+              {{ exportableDocumentDetails?.exportNumber || '-' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Overlay -->
+    <div
+      *ngIf="showRescheduleConfirmation || showResignConfirmation"
+      class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+      style="background-color: rgba(0, 0, 0, 0.5); z-index: 9999"
+    >
+      <div class="bg-white rounded p-4 d-flex flex-column align-items-center">
+        <svg class="mb-2" width="2.5rem" height="2.5rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#confirm-meeting'"></use>
+        </svg>
+        <span class="body-bold">
+          {{
+            showRescheduleConfirmation
+              ? ('dialogs.rescheduleMeeting.confirm' | translate)
+              : ('dialogs.resignMeeting.confirm' | translate)
+          }}
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="col-12 col-lg-7 d-flex justify-content-end align-items-center button-group-gap component-header_actions"
+    >
+      <ng-container *ngFor="let action of iconActions">
+        <div
+          class="cursor-pointer d-flex align-items-center"
+          (click)="action.callback($event)"
+          matTooltip="{{ action.label | translate }}"
+          *ngIf="action.icon !== 'settings'"
+        >
+          <svg width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#' + action.icon"></use>
+          </svg>
+          <span class="caption mx-1">{{ action.label | translate }}</span>
+        </div>
+        <div
+          (click)="action.callback($event)"
+          matTooltip="{{ action.label | translate }}"
+          *ngIf="action.icon === 'settings'"
+        >
+          <div
+            *ngxPermissionsOnly="[PermissionsObj.ResetRequestWorkflowSteps]"
+            class="cursor-pointer d-flex align-items-center"
+          >
+            <svg width="1.5rem" height="1.5rem">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#' + action.icon"></use>
+            </svg>
+            <span class="caption mx-1">{{ action.label | translate }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <section *ngIf="!isLoading; else elseBlock">
+    <div class="grid">
+      <div class="row">
+        <div class="col-12 col-md-9">
+          <mat-tab-group
+            animationDuration="400ms"
+            (selectedTabChange)="onTabClicked($event)"
+            mat-align-tabs="start"
+            [(selectedIndex)]="selectedTabIndex"
+          >
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <svg width="1.5rem" height="1.5rem">
+                  <use
+                    [attr.xlink:href]="
+                      selectedTabIndex === 0
+                        ? 'assets/icons/sprite.svg#details-tab-fill'
+                        : 'assets/icons/sprite.svg#details-tab'
+                    "
+                  ></use>
+                </svg>
+                <span class="body-bold mx-2"> {{ 'shared.details' | translate }}</span>
+              </ng-template>
+              <!--Start container details -->
+              <app-exportal-info-details
+                [requestDetails]="exportableDocumentDetails"
+              ></app-exportal-info-details>
+              <!-- End container details -->
+
+              <!------------------- Start Proposed study details ---------------------------->
+              <section
+                *ngIf="requestExportRecommendation"
+                style="width: 100%; margin: 1em 0"
+              ></section>
+              <!------------------- END Proposed study details ---------------------------->
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <svg width="1.5rem" height="1.5rem">
+                  <use
+                    [attr.xlink:href]="
+                      selectedTabIndex === 1
+                        ? 'assets/icons/sprite.svg#attach-tab-fill'
+                        : 'assets/icons/sprite.svg#attach-tab'
+                    "
+                  ></use>
+                </svg>
+                <span class="body-bold mx-2"> {{ 'shared.ExportFile' | translate }}</span>
+              </ng-template>
+              <!------------------- Start Time Line ---------------------------->
+
+              <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+              <!------------------- End Time Line ---------------------------->
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <svg width="1.5rem" height="1.5rem">
+                  <use
+                    [attr.xlink:href]="
+                      selectedTabIndex === 2
+                        ? 'assets/icons/sprite.svg#import-tab-fill'
+                        : 'assets/icons/sprite.svg#import-tab'
+                    "
+                  ></use>
+                </svg>
+
+                <span class="body-bold mx-2">
+                  {{
+                    'TransactionsModule.TransactionDetailsComponent.importsAndExports' | translate
+                  }}</span
+                >
+              </ng-template>
+              <!--End importsAndExports -->
+              <section *ngIf="!tabsLoading.tab2; else elseTab1Block" class="mx-0">
+                <div class="grid">
+                  <div class="row">
+                    <div class="col-12">
+                      <app-exporta-import-details
+                        [requestContainerDetails]="exportableDocumentDetails"
+                        [data]="importsExports"
+                      ></app-exporta-import-details>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <ng-template #elseTab1Block>
+                <div
+                  class="d-flex justify-content-center align-items-center"
+                  style="width: 100%; height: 50vh"
+                >
+                  <mat-spinner [diameter]="50"></mat-spinner>
+                </div>
+              </ng-template>
+              <!--End importsAndExports -->
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div class="col-12 col-md-3">
+          <mat-accordion>
+            <mat-expansion-panel
+              [expanded]="true"
+              (opened)="panelProcedureState = true"
+              (closed)="panelProcedureState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="body-bold">
+                    {{
+                      'ImportsExportsModule.RequestDetailsComponent.procedures' | translate
+                    }}</span
+                  >
+                </mat-panel-title>
+                <mat-panel-description>
+                  <svg
+                    width="1.5rem"
+                    height="1.5rem"
+                    [style.transform]="panelProcedureState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                    style="transition: transform 0.3s"
+                  >
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                  </svg>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <!-- <div class="procedureContainer">
+                <div
+                  (click)="onSelectDelete()"
+                  class="cursor-pointer d-flex mb-3 d-flex align-items-center"
+                >
+                  <svg width="1.5rem" height="1.5rem" style="transition: transform 0.3s">
+                    <use
+                      [attr.xlink:href]="
+                        selectedForDelete
+                          ? 'assets/icons/sprite.svg#active-radio'
+                          : 'assets/icons/sprite.svg#inactive-radio'
+                      "
+                    ></use>
+                  </svg>
+                  <span class="body mx-2">حذف المعاملة</span>
+                </div>
+              </div> -->
+              <button
+                class="button button-primary button-xl w-100"
+                [disabled]="!selectedForDelete"
+                (click)="deleteItem()"
+              >
+                {{ 'ImportsExportsModule.RequestDetailsComponent.procedureApproved' | translate }}
+              </button>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelExportableDocument = true"
+              (closed)="panelExportableDocument = false"
+              *ngIf="
+                exportableDocumentDetails?.attachments &&
+                exportableDocumentDetails?.attachments.length
+              "
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="body-bold"> {{ 'shared.attachments' | translate }}</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <svg
+                    width="1.5rem"
+                    height="1.5rem"
+                    [style.transform]="panelExportableDocument ? 'rotate(180deg)' : 'rotate(0deg)'"
+                    style="transition: transform 0.3s"
+                  >
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                  </svg>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="procedureContainer">
+                <ng-template [ngIf]="exportableDocumentDetails?.attachments.length">
+                  <div
+                    *ngFor="let attach of exportableDocumentDetails?.attachments"
+                    (click)="onSelectAction(action)"
+                    class="cursor-pointer d-flex mb-3 d-flex align-items-center"
+                  >
+                    <div
+                      class="col-12 d-flex mb-3"
+                      style="gap: 15px; justify-content: space-between; align-items: center"
+                    >
+                      <p class="body-bold custom-file-name">
+                        <img
+                          _ngcontent-ng-c3762408586=""
+                          alt="custom image"
+                          class="cursor-pointer"
+                          src="assets/icons/pdf_icon.svg"
+                        />
+                        <span class="truncate-text">
+                          {{ attach.name || '-' }}
+                        </span>
+                      </p>
+
+                      <ds-button
+                        (click)="onViewAttachment(attach)"
+                        icon
+                        size="50 px"
+                        matTooltip="{{ 'shared.viewDetails' | translate }}"
+                      >
+                        <svg width="1rem" height="1rem">
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                        </svg>
+                      </ds-button>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <div class="d-flex justify-content-between mb-3">
+            <button
+              class="button button-primary button-lg full-width mt-3"
+              (click)="addAttachDialog()"
+            >
+              {{ 'ImportsExportsModule.RequestDetailsComponent.addAttach' | translate }}
+              <svg width="1.5rem" height="1.5rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#attach'"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ng-template #elseBlock>
+    <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 89vh">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+  </ng-template>
+
+  <!-- <app-global-progress-spinner color="primary" mode="indeterminate" [value]="50" [backdropEnabled]="true"
+  [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner"></app-global-progress-spinner> -->
+</div>

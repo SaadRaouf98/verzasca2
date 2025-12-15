@@ -1,0 +1,6 @@
+@use 'src/assets/design-system/colors' as *;
+.table-bg {
+  border-radius: 0.75rem;
+  background: $gray-50;
+  padding: 0.5rem;
+}

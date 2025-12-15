@@ -1,0 +1,159 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12 col-md-5 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'SharedModule.SignatureFormatModalComponent.chooseCommitteeSignature' | translate }}
+          <span class="text-danger">*</span>
+        </p>
+        <app-select
+          formControlName="committeeSignature"
+          [options]="(committeeSignaturesList$ | async)?.data"
+          [bindLabel]="'title'"
+          [bindValue]="'id'"
+          (searchChange)="searchOnCommitteeSignatures($event)"
+          (selectionChange)="onCommitteeSignatureSelected($event)"
+          [placeholder]="'SharedModule.SignatureFormatModalComponent.chooseCommitteeSignature'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+
+        <div
+          *ngIf="form.get('committeeSignature')?.invalid && form.get('committeeSignature')?.touched"
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              'SharedModule.SignatureFormatModalComponent.committeeSignatureRequired' | translate
+            }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Start signatureRequireAttendance -->
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{
+            'SharedModule.SignatureFormatModalComponent.isSignatureRequireAttendance' | translate
+          }}
+          <span class="text-danger">*</span>
+        </p>
+
+        <!-- <mat-radio-group formControlName="signatureRequireAttendance" aria-label="Select an option"
+            id="signatureRequireAttendance">
+            <mat-radio-button [value]="YesNo.Yes">
+              {{ "shared.yes" | translate }}
+            </mat-radio-button>
+            <mat-radio-button [value]="YesNo.No">
+              {{ "shared.no" | translate }}
+            </mat-radio-button>
+          </mat-radio-group> -->
+
+        <div class="d-flex align-items-center">
+          <div
+            *ngFor="let radio of radioText; let i = index"
+            (click)="onSelectAction(radio.id)"
+            class="cursor-pointer d-flex d-flex align-items-center"
+            [ngClass]="{ 'ms-2': i === 0 }"
+          >
+            <svg width="1.5rem" height="1.5rem" style="transition: transform 0.3s">
+              <use
+                [attr.xlink:href]="
+                  selectedRadioId === radio.id
+                    ? 'assets/icons/sprite.svg#active-radio'
+                    : 'assets/icons/sprite.svg#inactive-radio'
+                "
+              ></use>
+            </svg>
+            <span class="body mx-2">{{ radio.title }}</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            form.get('signatureRequireAttendance')?.invalid &&
+            form.get('signatureRequireAttendance')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          <small>
+            {{
+              'SharedModule.SignatureFormatModalComponent.signatureRequireAttendanceRequired'
+                | translate
+            }}
+          </small>
+        </div>
+      </div>
+      <!-- End signatureRequireAttendance -->
+
+      <!-- Start Drag and Drop First version-->
+      <div class="playground-container" *ngIf="layout.length">
+        <div class="mb-2 d-flex align-items-center">
+          <svg width="1.25rem" height="1.25rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#grab'"></use>
+          </svg>
+          <p class="body-bold text-small mb-0 mx-1">
+            {{ 'SharedModule.SignatureFormatModalComponent.grabText' | translate }}
+          </p>
+        </div>
+
+        <div class="grid-container">
+          <ktd-grid
+            [cols]="cols"
+            [rowHeight]="rowHeight"
+            [layout]="layout"
+            [compactType]="compactType"
+            [preventCollision]="preventCollision"
+            [scrollableParent]="autoScroll ? document : null"
+            scrollSpeed="4"
+            (dragStarted)="onDragStarted($event)"
+            (resizeStarted)="onResizeStarted($event)"
+            (dragEnded)="onDragEnded($event)"
+            (resizeEnded)="onResizeEnded($event)"
+            (layoutUpdated)="onLayoutUpdated($event)"
+          >
+            <ktd-grid-item
+              *ngFor="let item of layout; trackBy: trackById"
+              [id]="item.id"
+              [transition]="currentTransition"
+              [dragStartThreshold]="dragStartThreshold"
+              [draggable]="!disableDrag"
+              [resizable]="!disableResize"
+            >
+              <div class="grid-item-content">
+                <svg width="1.25rem" height="1.25rem" class="ms-1">
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#grab-menu'"></use>
+                </svg>
+                <p *ngIf="getMemberById(item.id)?.memberTitle" class="body-bold text-small mb-0">
+                  {{ getMemberById(item.id)?.memberTitle }}
+                </p>
+                <p *ngIf="getMemberById(item.id)?.name" class="body-bold text-small mb-0">
+                  {{ getMemberById(item.id)?.name }}
+                </p>
+              </div>
+              <ng-template ktdGridItemPlaceholder>
+                <div class="grid-item-content custom-placeholder custom-placeholder-1"></div>
+              </ng-template>
+            </ktd-grid-item>
+          </ktd-grid>
+        </div>
+        <p
+          *ngIf="form.get('committeeSignature')?.value && !isLoading && layout.length === 0"
+          class="no-rows-warning-msg"
+        >
+          {{
+            'SystemSettingsModule.AddCommitteeSignaturesComponent.noSignaturesDefinedYet'
+              | translate
+          }}
+        </p>
+      </div>
+      <!-- End Drag and Drop First version-->
+    </div>
+  </form>
+</app-base-dialog>

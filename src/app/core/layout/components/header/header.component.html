@@ -1,0 +1,78 @@
+<mat-toolbar class="bg-white top-header">
+  <div class="header-container">
+    <div class="d-flex" style="gap: 6px">
+      <!--      <button-->
+      <!--        *ngIf="isLoggedIn"-->
+      <!--        mat-icon-button-->
+      <!--        class="example-icon"-->
+      <!--        aria-label="Example icon-button with menu icon"-->
+      <!--        (click)="inputSideNav.toggle()"-->
+      <!--      >-->
+      <!--        <mat-icon class="text-black">menu</mat-icon>-->
+      <!--      </button>-->
+      <app-top-right-header></app-top-right-header>
+    </div>
+    <app-left-top-header [avatarUrl]="'./assets/icons/user.svg'" [userName]="currentUserName" [userEmail]="user.email"
+      [hasNotification]="user.hasUnread"></app-left-top-header>
+    <div class="header-icons-container d-none">
+      <!--start language-->
+      <!--    <div class="d-flex align-items-center justify-content-end editLanguage">
+        <div class="lang-switcher">
+          <mat-form-field class="no-border w-100 pt-1 app-mat-no-padding">
+            <img class="mx-1" matPrefix src="assets/icons/language.svg" />
+            <mat-select
+              class="text-uppercase"
+              (selectionChange)="onChangeLang()"
+              [(ngModel)]="selectedLang"
+              name="selectedLang"
+            >
+              <mat-option
+                class="text-uppercase"
+                *ngFor="let lang of langs"
+                [value]="lang"
+              >
+                <span>{{ lang }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div> -->
+      <!--end language-->
+
+      <!-- <img
+        *ngIf="showToggleButton"
+        src="assets/icons/notifications.png"
+        class="notifications-img"
+        alt="Notifications."
+      /> -->
+
+      <app-notifications-menu *ngIf="isLoggedIn"></app-notifications-menu>
+
+      <!--Start logout-->
+
+      <button *ngIf="isLoggedIn" mat-icon-button matBadgeEmpty matBadgeColor="warn" [matMenuTriggerFor]="logoutMenu">
+        <img src="../../../../../assets/icons/accMenu.svg" />
+      </button>
+      <mat-menu #logoutMenu="matMenu">
+        <div class="cart-menu">
+          <div class="cursor-pointer | cart-container" (click)="onNavigateToUserProfile()">
+            <mat-icon> person_pin</mat-icon>
+
+            <button mat-menu-item [disableRipple]="true" class="cart-item-btn">
+              {{ currentUserName }}
+            </button>
+          </div>
+
+          <div class="cart-container">
+            <img style="width: 8%" src="../../../../../assets/icons/logout.svg" />
+            <button mat-menu-item [disableRipple]="true" class="cart-item-btn" (click)="onLogout()">
+              {{ "LayoutModule.HeaderComponent.logout" | translate }}
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+
+      <!--End logout-->
+    </div>
+  </div>
+</mat-toolbar>

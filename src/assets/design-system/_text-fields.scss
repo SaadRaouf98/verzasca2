@@ -1,0 +1,86 @@
+@use "typography" as *;
+@use "colors" as *;
+@use "rtl" as *;
+
+// Shared mixins
+@mixin field-base {
+  display: flex;
+  @include padding-inline(0.75rem);
+  flex-direction: column;
+  @include text-align-end;
+  align-self: stretch;
+  border-radius: 0.5rem;
+  border: 1px solid $gray-300; // #C4C4C4
+  background: $gray-50; // #FFF
+  color: $gray-950; // #000
+}
+
+@mixin field-typography {
+  font-family: $font-family-primary;
+  font-size: $font-size-sm;
+  font-style: normal;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-normal;
+}
+
+@mixin field-states {
+  &:focus {
+    border: 1px solid $blue-400; // #128CB5
+    box-shadow: 0 0 0 2px rgba(8, 101, 155, 0.3);
+  }
+
+  &:disabled {
+    border: 1px solid $gray-300; // #C4C4C4
+    background: #ebebeb;
+  }
+
+  &::placeholder {
+    color: $gray-300; // #C4C4C4
+    @include field-typography;
+  }
+}
+
+.text-field {
+  &-label {
+    color: $gray-950; // #0F0F0F
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+    font-style: normal;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-normal;
+  }
+
+  &-input {
+    @include field-base;
+    @include field-typography;
+    @include field-states;
+    height: 3.4375rem;
+    justify-content: center;
+  }
+
+  &-textarea {
+    @include field-base;
+    @include field-typography;
+    @include field-states;
+    min-height: 6.25rem;
+    flex: 1 0 0;
+    resize: vertical;
+  }
+
+  &-helper {
+    color: $blue-400; // #128CB5
+    @include field-typography;
+  }
+
+  &-error {
+    .text-field-input,
+    .text-field-textarea {
+      border: 1px solid $red-500; // #D32F2F
+      box-shadow: 0 0 0 2px rgba(233, 28, 37, 0.3);
+    }
+
+    .text-field-helper {
+      color: $red-500; // #D32F2F
+    }
+  }
+}

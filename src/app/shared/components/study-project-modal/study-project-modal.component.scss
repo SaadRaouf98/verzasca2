@@ -1,0 +1,58 @@
+@use "src/assets/design-system/colors" as *;
+
+.green-500 {
+  color: #4caf50;
+}
+.no-border {
+  border-bottom: none !important;
+}
+
+// Target all textarea elements within this component
+:host ::ng-deep textarea {
+  background-color: #fff !important;
+}
+
+// Custom styling for app-input components
+.orange-color {
+  color: $orange-500 !important;
+}
+:host ::ng-deep .orange-input-style {
+  input {
+    border-color: $orange-500 !important;
+
+    &::placeholder {
+      color: $orange-500 !important; // Custom placeholder color (gray)
+    }
+
+    &:focus {
+      border-color: $orange-500 !important; // Darker blue on focus
+      box-shadow: none !important;
+    }
+  }
+}
+.green-color {
+  color: $green-400 !important;
+}
+:host ::ng-deep .green-input-style {
+  input {
+    border-color: $green-400 !important;
+
+    &::placeholder {
+      color: $green-400 !important; // Custom placeholder color (gray)
+    }
+
+    &:focus {
+      border-color: $green-400 !important; // Darker blue on focus
+      box-shadow: none !important;
+    }
+  }
+}
+
+.custom-border-left {
+  border-left: 1px solid $gray-200;
+}
+.custom-border-bottom {
+  border-bottom: 1px solid $gray-100;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}

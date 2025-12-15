@@ -1,0 +1,643 @@
+<div class="row justify-content-between align-items-center mb-3" *ngIf="!isLoading">
+  <div class="col-12 col-lg-5 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">
+            {{
+              fromImports
+                ? ('shared.importsExports' | translate)
+                : ('PendingTransactionsModule.PendingTransactionsListPage.pendingTransactions'
+                  | translate)
+            }}
+          </span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ 'ImportsExportsModule.RequestDetailsComponent.title' | translate }}
+            {{ requestDetails?.importNumber || '-' }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <p class="body me-5 mt-2 mb-0 text-small" *ngIf="requestDetails?.assignedUser">
+      {{ 'ImportsExportsModule.RequestDetailsComponent.operationOwner' | translate }}
+      / {{ requestDetails?.assignedUser?.name || '-' }}
+    </p>
+  </div>
+
+  <!-- Confirmation Overlay -->
+  <div
+    *ngIf="showRescheduleConfirmation || showResignConfirmation"
+    class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+    style="background-color: rgba(0, 0, 0, 0.5); z-index: 9999"
+  >
+    <div class="bg-white rounded p-4 d-flex flex-column align-items-center">
+      <svg class="mb-2" width="2.5rem" height="2.5rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#confirm-meeting'"></use>
+      </svg>
+      <span class="body-bold">
+        {{
+          showRescheduleConfirmation
+            ? ('dialogs.rescheduleMeeting.confirm' | translate)
+            : ('dialogs.resignMeeting.confirm' | translate)
+        }}
+      </span>
+    </div>
+  </div>
+
+  <div
+    class="col-12 col-lg-7 d-flex justify-content-end align-items-center button-group-gap component-header_actions"
+  >
+    <!-- <button
+      mat-raised-button
+      (click)="onPrintBarcode(false)"
+      matTooltip="طباعة الباركود بدون خلفية"
+    >
+      <img src="assets/icons/print.png" />
+    </button>
+
+    <button
+      mat-raised-button
+      (click)="onPrintBarcode()"
+      class="print-template-btn"
+      matTooltip="{{ 'shared.printBarcode' | translate }}"
+    >
+      <img src="assets/icons/print.png" />
+    </button>
+
+    <button
+      mat-raised-button
+      (click)="onLinkTransaction()"
+      matTooltip="ربط مع معاملة أخرى"
+    >
+      <mat-icon class="d-flex align-items-center">
+        <img src="assets/icons/add-link.png" />
+      </mat-icon>
+    </button>
+
+    <button
+      *ngxPermissionsOnly="[PermissionsObj.ResetRequestWorkflowSteps]"
+      mat-raised-button
+      (click)="onResetRequest()"
+    >
+      <span class="d-flex align-items-center" style="gap: 4px">
+        <mat-icon class="d-flex align-items-center">
+          <img src="assets/icons/reset.png" />
+        </mat-icon>
+        <span> اعادة ضبط </span>
+      </span>
+    </button> -->
+
+    <ng-container *ngFor="let action of iconActions; let i = index">
+      <div
+        class="cursor-pointer d-flex align-items-center"
+        (click)="action.callback($event)"
+        matTooltip="{{ action.label | translate }}"
+        *ngIf="action.icon !== 'settings'"
+        [ngClass]="activeIconIndex === i && action.classActive ? action.classActive : ''"
+      >
+        <svg [attr.width]="action.width" [attr.height]="action.height">
+          <use
+            [attr.xlink:href]="
+              'assets/icons/sprite.svg#' +
+              (activeIconIndex === i && action.iconActive ? action.iconActive : action.icon)
+            "
+          ></use>
+        </svg>
+        <span
+          class="caption mx-1"
+          [ngClass]="activeIconIndex === i && action.classActive ? action.classActive : ''"
+          >{{ action.label | translate }}</span
+        >
+      </div>
+      <div
+        (click)="action.callback($event)"
+        matTooltip="{{ action.label | translate }}"
+        *ngIf="action.icon === 'settings'"
+      >
+        <div
+          *ngxPermissionsOnly="[PermissionsObj.ResetRequestWorkflowSteps]"
+          class="cursor-pointer d-flex align-items-center"
+        >
+          <svg width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#' + action.icon"></use>
+          </svg>
+          <span class="caption mx-1">{{ action.label | translate }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<section *ngIf="!isLoading; else elseBlock">
+  <!------------------- Start TimeLine ---------------------------->
+  <app-time-line [data]="requestTimeLine" *ngIf="requestTimeLine?.length > 0"></app-time-line>
+  <!------------------- End TimeLine ---------------------------->
+
+  <div class="grid">
+    <div class="row gx-3">
+      <div class="col-12 col-md-9">
+        <mat-tab-group
+          animationDuration="400ms"
+          (selectedTabChange)="onTabClicked($event)"
+          mat-align-tabs="start"
+          [(selectedIndex)]="selectedTabIndex"
+        >
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 0
+                      ? 'assets/icons/sprite.svg#details-tab-fill'
+                      : 'assets/icons/sprite.svg#details-tab'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2"> {{ 'shared.details' | translate }}</span>
+            </ng-template>
+            <!--Start container details -->
+            <app-details
+              [requestDetails]="requestDetails"
+              [requestContainerDetails]="requestContainerDetails"
+              [lang]="lang"
+              [RequestStatus]="RequestStatus"
+              [RequestContainerStatus]="RequestContainerStatus"
+              [statusTranslationMap]="statusTranslationMap"
+              [data]="requestExportRecommendation"
+              [requestId]="elementId"
+              *ngIf="requestDetails"
+            ></app-details>
+            <!-- End container details -->
+
+            <!------------------- Start Proposed study details ---------------------------->
+            <section *ngIf="requestExportRecommendation" style="width: 100%; margin: 1em 0">
+              <!-- <h2 class="mb">
+          {{
+            "ImportsExportsModule.RequestDetailsComponent.proposedStudyDetails"
+              | translate
+          }}
+        </h2> -->
+              <!-- <app-proposed-study-details
+                [data]="requestExportRecommendation"
+                [requestId]="elementId"
+                [lang]="lang"
+              ></app-proposed-study-details> -->
+            </section>
+            <!------------------- END Proposed study details ---------------------------->
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 1
+                      ? 'assets/icons/sprite.svg#import-tab-fill'
+                      : 'assets/icons/sprite.svg#import-tab'
+                  "
+                ></use>
+              </svg>
+
+              <span class="body-bold mx-2">
+                {{
+                  'TransactionsModule.TransactionDetailsComponent.importsAndExports' | translate
+                }}</span
+              >
+            </ng-template>
+            <!--End importsAndExports -->
+            <section *ngIf="!tabsLoading.tab1; else elseTab1Block" class="mx-0">
+              <div class="grid">
+                <div class="row">
+                  <div class="col-12">
+                    <!-- <app-imports-exports-scrollable-table
+                      [data]="importsExports"
+                      [isError]="isErrorImport"
+                      [isLoading]="isLoadingImport"
+                    ></app-imports-exports-scrollable-table> -->
+                    <app-related-requests-scrollable-table
+                      [data]="importsExports"
+                      [elementId]="elementId"
+                      (requestId)="onChangeUrlOfRequestId($event)"
+                      [requestContainerDetails]="requestContainerDetails"
+                      [pageType]="'import'"
+                      *ngIf="importsExports?.length > 0"
+                    >
+                    </app-related-requests-scrollable-table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <ng-template #elseTab1Block>
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="width: 100%; height: 50vh"
+              >
+                <!-- <mat-spinner [diameter]="50"></mat-spinner> -->
+              </div>
+            </ng-template>
+            <!--End importsAndExports -->
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 2
+                      ? 'assets/icons/sprite.svg#transaction-tab-fill'
+                      : 'assets/icons/sprite.svg#transaction-tab'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2">
+                {{
+                  'TransactionsModule.TransactionDetailsComponent.relatedTransactions' | translate
+                }}</span
+              >
+            </ng-template>
+            <!--Start relatedTransactions -->
+            <section *ngIf="!tabsLoading.tab2; else elseTab2Block" class="mx-0">
+              <app-related-requests-scrollable-table
+                [data]="relatedRequests"
+                [elementId]="elementId"
+                (requestId)="onChangeUrlOfRequestId($event)"
+                [requestContainerDetails]="requestContainerDetails"
+                [pageType]="'transaction'"
+              >
+              </app-related-requests-scrollable-table>
+            </section>
+
+            <ng-template #elseTab2Block>
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="width: 100%; height: 50vh"
+              >
+                <!-- <mat-spinner [diameter]="50"></mat-spinner> -->
+              </div>
+            </ng-template>
+
+            <!--End relatedTransactions -->
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <svg width="1.5rem" height="1.5rem">
+                <use
+                  [attr.xlink:href]="
+                    selectedTabIndex === 3
+                      ? 'assets/icons/sprite.svg#attach-tab-fill'
+                      : 'assets/icons/sprite.svg#attach-tab'
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold mx-2"> {{ 'shared.attachments' | translate }}</span>
+            </ng-template>
+            <!------------------- Start Time Line ---------------------------->
+            <section *ngIf="!tabsLoading.tab3; else elseTab3Block" class="mx-0">
+              <div class="grid">
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <div class="info">
+                      <div class="row">
+                        <div class="col-12">
+                          <span class="body">
+                            {{
+                              'TransactionsModule.TransactionsListComponent.transactionSubject'
+                                | translate
+                            }}
+                            :
+                          </span>
+
+                          <span class="body-bold">
+                            {{ requestContainerDetails?.title || '-' }}
+                          </span>
+                        </div>
+                      </div>
+                      <hr class="gold-line" />
+                      <div class="row">
+                        <div class="col-12 col-md-4">
+                          <span class="body">
+                            {{ 'shared.transactionNum' | translate }}
+                            :
+                          </span>
+
+                          <span class="body-bold">
+                            {{ requestContainerDetails?.transactionNumber || '-' }}
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <span class="body">
+                            {{ 'shared.priority' | translate }}
+                            :
+                          </span>
+
+                          <span
+                            class="body-bold"
+                            [ngStyle]="{
+                              color: requestContainerDetails?.duration?.color || '#000'
+                            }"
+                          >
+                            {{
+                              requestContainerDetails?.priority
+                                ? lang === 'ar'
+                                  ? requestContainerDetails?.priority?.title
+                                  : requestContainerDetails?.priority?.titleEn
+                                : '-'
+                            }}
+                          </span>
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <span class="body">
+                            {{ 'shared.benefitType' | translate }}
+                            :
+                          </span>
+
+                          <span class="body-bold">
+                            {{
+                              requestContainerDetails?.benefitType
+                                ? lang === 'ar'
+                                  ? requestContainerDetails.benefitType?.title || '-'
+                                  : requestContainerDetails.benefitType?.titleEn || '-'
+                                : '-'
+                            }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex mt-3 justify-content-center p-2 align-items-center flex-column"
+                    *ngIf="items?.length == 0"
+                  >
+                    <img
+                      class="w-25 mb-3"
+                      src="../assets/images/Illustration_found.svg"
+                      alt="under construction"
+                    />
+                    <div class="body-bold noData">
+                      {{ 'shared.noData' | translate }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row gx-0 attach-container" *ngIf="items?.length > 0">
+                  <div class="col-12 col-md-4 mb-2">
+                    <app-input
+                      [formControl]="attachmentSearchControl"
+                      [placeholder]="'shared.search'"
+                      [showSearchIcon]="true"
+                      [showFilterIcon]="false"
+                      (searchName)="searchName($event)"
+                    ></app-input>
+                  </div>
+
+                  <div class="col-12">
+                    <app-table-list
+                      [columnsConfig]="columnsConfig"
+                      [columns]="columns"
+                      [isError]="isTableError"
+                      [isLoading]="isTableLoading"
+                      [rows]="items"
+                    >
+                    </app-table-list>
+                  </div>
+                </div>
+              </div>
+              <div class="info-data">
+                <ng-template #noAttachments>
+                  <p class="no-rows-warning-msg">
+                    {{ 'shared.noAttachments' | translate }}
+                  </p>
+                </ng-template>
+              </div>
+            </section>
+
+            <ng-template #elseTab3Block>
+              <div
+                class="d-flex justify-content-center align-items-center"
+                style="width: 100%; height: 50vh"
+              >
+                <!-- <mat-spinner [diameter]="50"></mat-spinner> -->
+              </div>
+            </ng-template>
+
+            <!------------------- End Time Line ---------------------------->
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div class="col-12 col-md-3">
+        <!-- <div class="d-flex justify-content-between align-items-center mb-3 h-60">
+          <div>
+            <div class="d-flex align-items-center mb-1">
+              <span class="body">
+                {{ 'ImportsExportsModule.RequestDetailsComponent.currentStatus' | translate }}
+                :
+              </span>
+              <svg class="mx-1" width="1.25rem" height="1.25rem">
+                <use
+                  [attr.xlink:href]="
+                    'assets/icons/sprite.svg#status-' +
+                    (requestContainerDetails?.containerStatus || 'default')
+                  "
+                ></use>
+              </svg>
+              <span class="body-bold" *ngIf="requestContainerDetails?.containerStatus">
+                {{ statusTranslationMap?.[requestContainerDetails?.containerStatus] | translate }}
+              </span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <svg width="1rem" height="1rem">
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#calender-sm'"></use>
+              </svg>
+              <span class="body text-small mx-1">
+                {{ (requestDetails?.deliveryDate | date : 'h:mma . dd/MM/yyyy') || '-' }}
+              </span>
+            </div>
+          </div>
+        </div> -->
+
+        <mat-accordion multi>
+          <mat-expansion-panel
+            class="mt-0"
+            [expanded]="true"
+            (opened)="panelProcedureState = true"
+            (closed)="panelProcedureState = false"
+            *ngIf="requestDetails?.actions && requestDetails?.actions?.length > 0"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold">
+                  {{ 'ImportsExportsModule.RequestDetailsComponent.procedures' | translate }}</span
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="panelProcedureState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="procedureContainer">
+              <ng-template [ngIf]="requestDetails?.actions?.length">
+                <div
+                  *ngFor="let action of requestDetails?.actions; trackBy: trackByIndex"
+                  (click)="onSelectAction(action)"
+                  class="cursor-pointer d-flex mb-3 d-flex align-items-center"
+                >
+                  <svg width="1.5rem" height="1.5rem" style="transition: transform 0.3s">
+                    <use
+                      [attr.xlink:href]="
+                        selectedActionId === action?.id
+                          ? 'assets/icons/sprite.svg#active-radio'
+                          : 'assets/icons/sprite.svg#inactive-radio'
+                      "
+                    ></use>
+                  </svg>
+                  <span class="body mx-2">{{
+                    action ? (lang === 'ar' ? action?.title || '-' : action?.titleEn || '-') : '-'
+                  }}</span>
+                </div>
+              </ng-template>
+              <!-- <div
+                (click)="onSelectDelete()"
+                class="cursor-pointer d-flex mb-3 d-flex align-items-center"
+              >
+                <svg width="1.5rem" height="1.5rem" style="transition: transform 0.3s">
+                  <use
+                    [attr.xlink:href]="
+                      selectedForDelete
+                        ? 'assets/icons/sprite.svg#active-radio'
+                        : 'assets/icons/sprite.svg#inactive-radio'
+                    "
+                  ></use>
+                </svg>
+                <span class="body mx-2">حذف المعاملة</span>
+              </div> -->
+            </div>
+            <button
+              class="button button-primary button-xl w-100"
+              [disabled]="!selectedActionId && !selectedForDelete"
+              (click)="onActionClicked(selectedAction)"
+            >
+              {{ 'ImportsExportsModule.RequestDetailsComponent.procedureApproved' | translate }}
+            </button>
+          </mat-expansion-panel>
+          <mat-expansion-panel
+            *ngIf="committeeMembersApprovals?.length > 0"
+            (opened)="panelApprovalState = true"
+            (closed)="panelApprovalState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold">
+                  {{ 'ImportsExportsModule.RequestDetailsComponent.approvals' | translate }}</span
+                >
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="panelApprovalState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-members-approval
+              [isCommitteeApprovalStep]="requestDetails?.isCommitteeApprovalStep"
+              [committeeMembersApprovals]="committeeMembersApprovals"
+              [requestId]="requestDetails?.id"
+              *ngIf="committeeMembersApprovals?.length > 0"
+            >
+            </app-members-approval>
+          </mat-expansion-panel>
+          <mat-expansion-panel
+            class="scroll-body"
+            *ngIf="requestActions?.length > 0"
+            (opened)="panelTimelineState = true"
+            (closed)="panelTimelineState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="body-bold d-flex align-items-center">
+                  {{ 'ImportsExportsModule.RequestDetailsComponent.times' | translate }}
+                  <span class="sort_btn" (click)="onToggleSort(); $event.stopPropagation()">
+                    <svg
+                      width="1.25rem"
+                      height="1.25rem"
+                      *ngIf="panelTimelineState"
+                      [style.transform]="sortAsc ? 'rotate(0deg)' : 'rotate(180deg)'"
+                    >
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#sorting'"></use>
+                    </svg>
+                  </span>
+                </span>
+              </mat-panel-title>
+              <mat-panel-description>
+                <svg
+                  width="1.5rem"
+                  height="1.5rem"
+                  [style.transform]="isDescSorting ? 'rotate(180deg)' : 'rotate(0deg)'"
+                  style="transition: transform 0.3s"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#accordion-arrow'"></use>
+                </svg>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-timeline
+              [data]="requestActions"
+              [requestId]="requestDetails?.id"
+              *ngIf="requestActions?.length > 0"
+            ></app-timeline>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <button class="button button-primary button-xl w-100 mt-3" (click)="addAttachDialog()">
+          {{ 'ImportsExportsModule.RequestDetailsComponent.addAttach' | translate }}
+          <svg width="1.5rem" height="1.5rem">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#attach'"></use>
+          </svg>
+        </button>
+        <button
+          *ngIf="requestDetails?.allowAssign && !requestDetails?.assignedUser"
+          (click)="updateAssignedUser()"
+          class="button button-secondary button-xl w-100 mt-3"
+        >
+          {{ 'ImportsExportsModule.RequestDetailsComponent.taketransaction' | translate }}
+        </button>
+
+        <button
+          *ngIf="
+            requestDetails?.allowAssign && currentUser?.id === requestDetails?.assignedUser?.id
+          "
+          (click)="deleteAssignedUser()"
+          class="button button-secondary button-xl w-100 mt-3"
+        >
+          {{ 'ImportsExportsModule.RequestDetailsComponent.cancelTransaction' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #elseBlock>
+  <div class="d-flex justify-content-center align-items-center" style="width: 100%; height: 89vh">
+    <!-- <mat-spinner [diameter]="50"></mat-spinner> -->
+  </div>
+</ng-template>
+
+<!-- <app-global-progress-spinner
+  color="primary"
+  mode="indeterminate"
+  [value]="50"
+  [backdropEnabled]="true"
+  [positionGloballyCenter]="true"
+  [displayProgressSpinner]="displayProgressSpinner"
+></app-global-progress-spinner> -->

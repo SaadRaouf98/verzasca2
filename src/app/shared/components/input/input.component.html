@@ -1,0 +1,75 @@
+<!-- src/app/shared/input/input.component.html -->
+<div class="shared-input position-relative">
+  <label *ngIf="label" class="shared-input__label">{{ label }}</label>
+
+  <div class="input-wrapper">
+    <svg
+      *ngIf="showSearchIcon"
+      class="input-icon input-icon-right"
+      width="1.25rem"
+      height="1.25rem"
+    >
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#search'"></use>
+    </svg>
+    <!-- (input)="onInput($event)" -->
+    <ng-container *ngIf="!appCurrencySarInput">
+      <input
+        class="shared-input__control"
+        [type]="type"
+        [placeholder]="placeholder | translate"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [value]="value"
+        (blur)="onBlur()"
+        [style.paddingRight]="showSearchIcon ? '2rem' : ''"
+        [style.paddingLeft]="showFilterIcon ? '2.5rem' : ''"
+        (input)="changeValue($event)"
+      />
+    </ng-container>
+
+    <ng-container *ngIf="appCurrencySarInput">
+      <input
+        class="shared-input__control"
+        [type]="type"
+        [placeholder]="placeholder | translate"
+        [disabled]="disabled"
+        appCurrencySarInput="appCurrencySarInput"
+        [readonly]="readonly"
+        [value]="value"
+        (blur)="onBlur()"
+        [style.paddingRight]="showSearchIcon ? '2rem' : ''"
+        [style.paddingLeft]="showFilterIcon ? '2.5rem' : ''"
+        (input)="changeValue($event)"
+      />
+    </ng-container>
+    <svg
+      (click)="filterIconClick.emit($event)"
+      *ngIf="showFilterIcon"
+      class="input-icon input-icon-left"
+      width="2.25rem"
+      height="2.25rem"
+      [class.clicked]="clicked"
+    >
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#filter'"></use>
+    </svg>
+    <svg
+      class="input-icon input-icon-left"
+      *ngIf="showriyalIcon"
+      width="1.5rem"
+      height="1.5rem"
+      [class.clicked]="clicked"
+    >
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#riyal'"></use>
+    </svg>
+  </div>
+
+  <!-- validation errors -->
+  <div
+    class="shared-input__errors"
+    *ngIf="control?.invalid && (control?.touched || control?.dirty)"
+  >
+    <small *ngFor="let msg of errorMessages" class="shared-input__error">
+      {{ msg }}
+    </small>
+  </div>
+</div>

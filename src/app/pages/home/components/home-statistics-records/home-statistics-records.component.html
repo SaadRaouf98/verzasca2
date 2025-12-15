@@ -1,0 +1,90 @@
+<section class="row mb-0 h-100">
+  <div class="col-12 col-md-12 col-lg-6 m-0 custom-pl-0 custom-pr-0">
+    <div class="statistics-wrapper">
+      <div class="statistics-item w-100">
+        <div class="top custom-mb-12">
+          <div class="info">
+            <p class="value fs-25 fw-bold mb-0">
+              {{ getActiveRecordsCount() + getInActiveRecordsCount() }}
+            </p>
+            <p class="label fs-16 fw-regular">
+              {{ 'HomeModule.DashboardPage.activeInactiveStats' | translate }}
+            </p>
+          </div>
+          <canvas
+            class="customCanvas"
+            baseChart
+            [datasets]="stackedBarChartData"
+            [labels]="stackedBarChartLabels"
+            [options]="stackedBarChartOptions"
+            [type]="stackedBarChartType"
+          >
+          </canvas>
+        </div>
+        <!-- Legend -->
+        <div class="legends row">
+          <div class="legend col-xxl-6 col-12">
+            <span class="box done"></span>
+            <span class="text">
+              {{ 'HomeModule.DashboardPage.activeRecords' | translate }} ({{
+                getActiveRecordsCount()
+              }})
+            </span>
+          </div>
+          <div class="legend col-xxl-6 col-12">
+            <span class="box scheduled"></span>
+            <span class="text">
+              {{ 'HomeModule.DashboardPage.inactiveRecords' | translate }} ({{
+                getInActiveRecordsCount()
+              }})
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-12 col-lg-6 m-0 custom-pl-0 custom-pr-12">
+    <div class="statistics-wrapper">
+      <div class="statistics-item w-100">
+        <div class="top custom-mb-12">
+          <div class="info">
+            <p class="value fs-25 fw-bold mb-0">
+              {{ getHandOverRecordsCount() + getMeetingsRecordsCount() }}
+            </p>
+            <p class="label fs-16 fw-regular">
+              {{ 'HomeModule.DashboardPage.handoverMeetingStats' | translate }}
+            </p>
+          </div>
+          <canvas
+            class="customCanvas"
+            baseChart
+            [datasets]="groupedBarChartData"
+            [labels]="groupedBarChartLabels"
+            [options]="groupedBarChartOptions"
+            [type]="groupedBarChartType"
+          >
+          </canvas>
+        </div>
+        <!-- Legend -->
+        <div class="legends row">
+          <div class="legend col-xxl-6 col-12">
+            <span class="box done"></span>
+            <span class="text">
+              {{ 'HomeModule.DashboardPage.handoverRecords' | translate }} ({{
+                getHandOverRecordsCount()
+              }})
+            </span>
+          </div>
+          <div class="legend col-xxl-6 col-12">
+            <span class="box scheduled"></span>
+            <span class="text">
+              {{ 'HomeModule.DashboardPage.meetingRecords' | translate }} ({{
+                getMeetingsRecordsCount()
+              }})
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

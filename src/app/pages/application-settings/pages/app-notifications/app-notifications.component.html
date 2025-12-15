@@ -1,0 +1,132 @@
+<section>
+  <div class="row justify-content-between | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a routerLink="/system-management/application-settings">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="fs-600 text-gray-900 fw-bold">
+        {{
+          "ApplicationSettingsModule.ApplicationSettingsComponent.applicationsNotificaions"
+            | translate
+        }}
+      </h1>
+    </div>
+  </div>
+
+  <div>
+    <form autocomplete="off" [formGroup]="form">
+      <mat-radio-group
+        formControlName="categoryId"
+        aria-label="Select an option"
+        id="categoryId"
+        (change)="onSelectedCategoryChanges($event)"
+      >
+        <mat-radio-button [value]="NotificationCategory.Requests">
+          {{ "shared.transactions" | translate }}
+        </mat-radio-button>
+
+        <mat-radio-button [value]="NotificationCategory.Inquiries">
+          {{
+            "ApplicationSettingsModule.AppNotificationsComponent.inquiries"
+              | translate
+          }}
+        </mat-radio-button>
+
+        <mat-radio-button [value]="NotificationCategory.Records">
+          {{ "shared.records" | translate }}
+        </mat-radio-button>
+
+        <mat-radio-button [value]="NotificationCategory.Notes">
+          {{
+            "ApplicationSettingsModule.AppNotificationsComponent.notes"
+              | translate
+          }}
+        </mat-radio-button>
+
+        <mat-radio-button [value]="NotificationCategory.Letters">
+          {{
+            "ApplicationSettingsModule.AppNotificationsComponent.letters"
+              | translate
+          }}
+        </mat-radio-button>
+
+        <!--   <mat-radio-button [value]="NotificationCategory.Documents">
+          {{
+            "ApplicationSettingsModule.AppNotificationsComponent.documents"
+              | translate
+          }}
+        </mat-radio-button> -->
+
+        <mat-radio-button [value]="NotificationCategory.Reports">
+          {{ "shared.reports" | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <div class="row mb mt-3">
+        <div *ngIf="!isLoadingData; else loadingBlock" class="col-12 col-lg-8">
+          <div class="label-container">
+            <label for="consultant">
+              {{ "shared.users" | translate }}
+            </label>
+          </div>
+
+          <ng-select
+            formControlName="users"
+            placeholder="{{ 'shared.searchForUsers' | translate }}"
+            [bindLabel]="'name'"
+            [compareWith]="compareFn"
+            [multiple]="true"
+            (search)="usersSearchService.searchOnUsers($event)"
+            class="form-control"
+          >
+            <ng-option
+              *ngFor="let user of (usersSearchService.usersList$ | async)?.data"
+              [value]="user"
+            >
+              {{ user.name }}
+            </ng-option>
+          </ng-select>
+        </div>
+
+        <ng-template #loadingBlock>
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 100%; height: 89vh"
+          >
+            <mat-spinner [diameter]="50"></mat-spinner>
+          </div>
+        </ng-template>
+      </div>
+
+      <!--start button actions -->
+      <div class="row | footer-container">
+        <div class="col-6 d-none d-sm-block"></div>
+        <div class="col-6 | btn-container">
+          <button
+            class="cancel-btn"
+            (click)="onCancel()"
+            mat-flat-button
+            color="primary"
+            data-appearance="outline"
+          >
+            {{ "shared.cancel" | translate }}
+          </button>
+          <button
+            class="save-btn"
+            (click)="onSubmit()"
+            mat-flat-button
+            [disabled]="form.invalid || disableSubmitBtn"
+          >
+            {{ "shared.save" | translate }}
+          </button>
+        </div>
+      </div>
+      <!--End button actions-->
+    </form>
+  </div>
+</section>

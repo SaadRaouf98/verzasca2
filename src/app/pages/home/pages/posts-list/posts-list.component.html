@@ -1,0 +1,98 @@
+<!-- home-news.component.html -->
+<div class="home-news home-section">
+  <!-- <div class="header">
+    <h2>{{ "HomeModule.DashboardPage.news" | translate }}</h2>
+
+  </div> -->
+  <div class="col-12 col-lg-5 mb-3 d-flex flex-column">
+    <div class="d-flex align-items-center">
+      <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
+      </svg>
+      <div class="mx-2">
+        <div class="d-flex align-items-center">
+          <span class="body text-small gray-400">{{ 'shared.home' | translate }}</span>
+          <span class="body text-small gray-400 mx-2">/</span>
+          <span class="body-bold">
+            {{ 'shared.allNews' | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cards row">
+    <!-- featured card on the right -->
+    <div class="large-card px-0 col-lg-6 col-12" *ngIf="featured">
+      <div class="news-card large">
+        <img
+          [src]="
+            environment.apiUrl +
+            '/api/v1/newsposts/images/' +
+            featured.imagePath +
+            '?access_token=' +
+            token
+          "
+          alt=""
+          class="thumb-large"
+          (error)="$event.target.src = 'assets/images/news-default-large.png'"
+        />
+        <div class="content">
+          <h3 class="title">{{ featured.title }}</h3>
+          <div *ngIf="featured.date" class="date d-flex align-items-center mb-2">
+            <i class="hgi hgi-stroke hgi-calendar-03"></i>
+            <span class="fs-14"> {{ featured.date | date : 'dd MMM yyyy' }}</span>
+          </div>
+          <!-- full HTML content as excerpt -->
+          <div class="body content-body" [innerHTML]="featured.content"></div>
+        </div>
+      </div>
+    </div>
+    <!-- small cards on the left     -->
+    <div class="cards-container pe-0 ps-1  col-lg-6 col-12">
+      <div class="small-cards">
+        <ng-container *ngFor="let post of latestNews">
+          <div class="news-card small" (click)="featured = post">
+            <img
+              width="147"
+              height="115"
+              [src]="
+              environment.apiUrl +
+              '/api/v1/newsposts/images/' +
+              post.imagePath +
+              '?access_token=' +
+              token
+            "
+              alt=""
+              class="thumb"
+              (error)="$event.target.src = 'assets/images/news-default-small.png'"
+            />
+            <div class="text">
+              <h3 class="title">{{ post.title }}</h3>
+              <div *ngIf="post.date" class="date d-flex align-items-center">
+                <i class="hgi hgi-stroke hgi-calendar-03"></i>
+                <span class="fs-14 fw-regular custom-mr-4 d-inline-block">
+                {{ post.date | date : 'dd MMM yyyy' }}</span
+                >
+              </div>
+              <div class="definition" *ngIf="post.definition">
+                {{ post.definition |slice: 0 : (screenWidth <= 1200? 80 : 290) }}
+                {{ post.definition?.length > (screenWidth <= 1200? 80 : 290) ? '...' : '' }}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<div class="d-flex justify-content-end">-->
+<!--  <mat-paginator-->
+<!--    [length]="length"-->
+<!--    [pageIndex]="pageIndex"-->
+<!--    [pageSize]="pageSize"-->
+<!--    [pageSizeOptions]="[20, 30, 40, 50]"-->
+<!--    (page)="pageEvent = $event; onPaginationChange($event)"-->
+<!--    showFirstLastButtons-->
+<!--  >-->
+<!--  </mat-paginator>-->
+<!--</div>-->

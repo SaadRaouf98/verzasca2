@@ -1,0 +1,25 @@
+<app-base-dialog
+  [data]="data"
+  [disableSubmitBtn]="disableSubmitBtn"
+  [formValid]="form.valid"
+  (submitted)="onSubmit()"
+  (cancelled)="onCancel()"
+>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb">
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ data.textAreaLabel }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ data.textAreaLabel }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+</app-base-dialog>

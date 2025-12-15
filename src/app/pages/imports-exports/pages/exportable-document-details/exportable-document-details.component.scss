@@ -1,0 +1,104 @@
+@use 'src/assets/design-system/colors' as *;
+@import '.././../../../../assets/scss/variables.scss';
+@import '.././../../../../assets/scss/shared-details.scss';
+@import '.././../../../../assets/scss/shared-modal-tabs.scss';
+
+.component-header {
+  max-width: 100%;
+}
+
+.watch-file-container {
+  gap: 5px;
+  width: 113px;
+  height: 34px;
+  background: #f2f4f5;
+  padding: 6px;
+  border-radius: 18px;
+  border: 1px solid #f2f4f5;
+  cursor: pointer;
+  pointer-events: all !important;
+}
+
+.bg-green {
+  border: 1px solid #40b674;
+  background-color: #eef8f2;
+}
+
+.cdk-virtual-scroll-data-source-example .example-viewport {
+  height: 200px;
+  width: 200px;
+  border: 1px solid black;
+}
+
+.cdk-virtual-scroll-data-source-example .example-viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.cdk-virtual-scroll-data-source-example .example-item {
+  width: 50px;
+  height: 100%;
+  writing-mode: vertical-lr;
+}
+
+:host {
+  padding: 0;
+}
+
+aside {
+  .label {
+    text-align: center;
+  }
+}
+
+.attachments-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.bg-3DB5B5 {
+  background-color: #3db5b5;
+  &:hover {
+    background-color: rgba(61, 181, 181, 0.96);
+  }
+}
+
+.procedureContainer {
+  max-height: 20rem;
+  overflow: auto;
+}
+textarea {
+  border-radius: 0.5rem;
+  border: 1px solid #d9d9d9;
+  background: $gray-50;
+}
+.scroll-body ::ng-deep .mat-expansion-panel-body {
+  max-height: 44rem;
+  overflow: hidden;
+}
+.full-width {
+  width: 100%;
+}
+.custom-file-name {
+  gap: 3px;
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  margin: 0;
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 3px;
+  width: 200px; /* Or any defined width */
+}
+mat-accordion mat-expansion-panel:first-child {
+  margin-top: 0 !important;
+}
+::ng-deep mat-tab-header .mdc-tab:hover {
+  background-color: #ffffff6b !important;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}

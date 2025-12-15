@@ -1,0 +1,37 @@
+<!-- src/app/shared/page-header/page-header.component.html -->
+<div class="page-header">
+  <div class="d-flex align-items-center">
+    <button
+      *ngIf="showBack"
+      class="page-header__back"
+      (click)="onBack()"
+    >
+      <i [class]="backIcon"></i>
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+      />
+    </button>
+
+    <h2 class="page-header__title">
+      {{ title }}
+      <span *ngIf="count !== undefined" class="page-header__count">
+      ({{ count }})
+    </span>
+    </h2>
+
+  </div>
+
+  <div class="page-header__actions">
+    <button
+      *ngFor="let btn of actions"
+      (click)="onAction(btn.id)"
+      [ngClass]="{ 'primary': btn.primary }"
+      class="page-header__btn"
+    >
+      <i *ngIf="btn.icon" [class]="btn.icon"></i>
+      {{ btn.label }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,212 @@
+<svg width="26" height="12">
+  <use [attr.xlink:href]="'assets/icons/sprite.svg#dialog-arrow'"></use>
+</svg>
+<div class="grid">
+  <form [formGroup]="form">
+    <div
+      class="selected-pills"
+      *ngIf="
+        selectedTypes.length ||
+        selectedFoundations.length ||
+        selectedPriority ||
+        selectedNextStep ||
+        selectedProposal ||
+        selectedConsultant ||
+        selectedFromDate ||
+        selectedToDate
+      "
+    >
+      <span *ngFor="let item of selectedTypes" class="pill caption">
+        {{ item[translate.currentLang === 'ar' ? 'title' : 'titleEn'] }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeType(item.id)">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngFor="let item of selectedFoundations" class="pill caption">
+        {{ item[translate.currentLang === 'ar' ? 'title' : 'titleEn'] }}
+        <svg
+          width="0.5rem"
+          height="0.5rem"
+          class="cursor-pointer"
+          (click)="removeFoundation(item.id)"
+        >
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedPriority" class="pill caption">
+        {{ selectedPriority[translate.currentLang === 'ar' ? 'title' : 'titleEn'] }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removePriority()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedNextStep" class="pill caption">
+        {{ selectedNextStep[translate.currentLang === 'ar' ? 'title' : 'titleEn'] }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeNextStep()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedProposal" class="pill caption">
+        {{ selectedProposal.name }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeProposal()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedConsultant" class="pill caption">
+        {{ selectedConsultant.name }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeConsultant()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedFromDate" class="pill caption">
+        {{ 'shared.from' | translate }}: {{ selectedFromDate }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeFromDate()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+      <span *ngIf="selectedToDate" class="pill caption">
+        {{ 'shared.To' | translate }}: {{ selectedToDate }}
+        <svg width="0.5rem" height="0.5rem" class="cursor-pointer" (click)="removeToDate()">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pill-close-gold'"></use>
+        </svg>
+      </span>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-3 p-0">
+        <app-multi-select
+          formControlName="requestType"
+          [options]="requestTypesList"
+          [bindLabel]="translate.currentLang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.type'"
+          [multiple]="true"
+          [searchable]="false"
+          [showSelected]="true"
+        ></app-multi-select>
+      </div>
+      <div class="col-12 mb-3 p-0">
+        <app-multi-select
+          formControlName="foundation"
+          [options]="foundationsList"
+          [bindLabel]="translate.currentLang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.incomingFoundation'"
+          [multiple]="true"
+          [searchable]="false"
+          [showSelected]="true"
+        ></app-multi-select>
+      </div>
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="priority"
+          [options]="prioritiesList"
+          [bindLabel]="translate.currentLang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.priority'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="nextStep"
+          [options]="nextStepsList"
+          [bindLabel]="translate.currentLang === 'ar' ? 'title' : 'titleEn'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.nextStep'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="proposal"
+          [options]="studyProposals"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.studyProposal'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+      <div class="col-12 mb-3 p-0">
+        <app-select
+          formControlName="consultant"
+          [options]="usersList"
+          [bindLabel]="'name'"
+          [bindValue]="'id'"
+          [placeholder]="'shared.advisor'"
+          [multiple]="false"
+          [searchable]="false"
+        ></app-select>
+      </div>
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker
+          [formControlName]="'fromDate'"
+          [placeholder]="'shared.dateFrom' | translate"
+          [range]="false"
+          (gregorianDateChange)="
+            fromDateToDateSearchService.onGregorianDateChanges2(form, {
+              fromDate: $event.gregorianDate,
+              toDate: form.get('toDate')?.value
+            })
+          "
+        ></app-date-picker>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker
+          [formControlName]="'toDate'"
+          [placeholder]="'shared.dateTo' | translate"
+          [range]="false"
+          (gregorianDateChange)="
+            fromDateToDateSearchService.onGregorianDateChanges2(form, {
+              fromDate: form.get('fromDate')?.value,
+              toDate: $event.gregorianDate
+            })
+          "
+        ></app-date-picker>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker-hijri
+          [formControlName]="'hijriFromDate'"
+          [placeholder]="'shared.dateFrom' | translate"
+          [range]="false"
+          (hijriDateChange)="
+            fromDateToDateSearchService.onHijriDateChanges2(form, {
+              fromDate: $event.hijriDate,
+              toDate: form.get('hijriToDate')?.value
+            })
+          "
+        ></app-date-picker-hijri>
+      </div>
+
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker-hijri
+          [formControlName]="'hijriToDate'"
+          [placeholder]="'shared.dateTo' | translate"
+          [range]="false"
+          (hijriDateChange)="
+            fromDateToDateSearchService.onHijriDateChanges2(form, {
+              fromDate: form.get('hijriFromDate')?.value,
+              toDate: $event.hijriDate
+            })
+          "
+        ></app-date-picker-hijri>
+      </div>
+      <!-- <div class="col-12 col-md-6 mb-3 p-0 ps-md-2">
+        <app-date-picker [formControlName]="'from'" [placeholder]="'shared.dateFrom' | translate"
+          [range]="false"></app-date-picker>
+      </div>
+      <div class="col-12 col-md-6 mb-3 p-0">
+        <app-date-picker [formControlName]="'to'" [placeholder]="'shared.dateTo' | translate"
+          [range]="false"></app-date-picker>
+      </div> -->
+      <div class="col-12 p-0">
+        <button (click)="reset()" class="button button-lg button-secondary w-100">
+          {{ 'shared.resetBtn' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,185 @@
+@use 'src/assets/design-system/colors' as *;
+@import '../../../../../assets/scss/variables.scss';
+
+/* home-news.component.scss */
+.home-news {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+  }
+
+  .cards {
+    display: flex;
+    gap: 12px;
+
+    .small-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      justify-content: space-between;
+      .news-card.small {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        padding: 8px;
+        background: #fff;
+        border-radius: 0.5rem;
+        min-height: 10.5rem;
+
+        .thumb {
+          min-width: 12.17013rem;
+          width: 25%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 6px;
+          min-height: 9rem;
+        }
+
+        .text {
+          flex: 1;
+          margin: 0 0.7rem;
+
+          .title {
+            font-size: 0.9rem;
+            margin: 0 0 4px;
+            line-height: 1.2;
+          }
+
+          .meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+
+            .icon-calendar {
+              margin-left: 4px;
+            }
+          }
+        }
+      }
+    }
+
+    .large-card {
+      flex: 1;
+
+      .news-card.large {
+        // display: flex;
+        background: #fff;
+        overflow: hidden;
+        text-decoration: none;
+        flex-wrap: wrap;
+        color: inherit;
+        height: 100%;
+        padding: 0.75rem;
+        background: #fff;
+        border-radius: 0.5rem;
+
+        .content {
+          margin-top: 0.8rem;
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+
+          .title {
+            font-size: 1rem !important;
+            margin: 0 0 8px;
+            font-weight: bold;
+          }
+
+          .meta {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 12px;
+
+            .icon-calendar {
+              margin-left: 4px;
+            }
+          }
+
+          .excerpt {
+            //flex: 1;
+            font-size: 14px;
+            color: $color-primary-surface-more-darker;
+            //color: #444;
+            margin-bottom: 12px;
+          }
+
+          .read-more {
+            align-self: flex-start;
+          }
+        }
+
+        .thumb-large {
+          object-fit: cover;
+          border-radius: 6px;
+          width: 100%;
+          margin: 0;
+          height: 21.5rem;
+          flex-direction: row;
+          justify-content: center;
+          display: flex;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .home-news {
+    .cards {
+      flex-direction: column;
+
+      .large-card,
+      .small-cards .news-card.small {
+        width: 100%;
+      }
+    }
+  }
+}
+.date {
+  color: #043049;
+}
+.body {
+  line-height: normal !important;
+}
+.title {
+  font-weight: bolder !important;
+}
+.date {
+  width: 100%;
+  margin-bottom: 10x;
+}
+
+.read-more {
+  background-color: #043049;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-top: 15px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 11.0625rem;
+  height: 2.5rem;
+  text-decoration: none !important;
+}
+.news-card img {
+  margin: 0;
+}

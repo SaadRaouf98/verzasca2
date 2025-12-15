@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold"> </span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="dismiss()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
+
+<div class="custom-modal-body" mat-dialog-contents>
+  <img
+    src="{{ image }}"
+    style="max-width: 100%; max-height: 100%; transition: transform 0.3s ease-in-out; cursor: grab"
+    [style.transform]="transform"
+  />
+</div>
+
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <mat-card-actions>
+    <button mat-icon-button (click)="zoomIn()" aria-label="Zoom In" matTooltip="Zoom In">
+      <mat-icon>zoom_in</mat-icon>
+    </button>
+    <button mat-icon-button (click)="zoomOut()" aria-label="Zoom Out" matTooltip="Zoom Out">
+      <mat-icon>zoom_out</mat-icon>
+    </button>
+    <button mat-icon-button (click)="resetZoom()" aria-label="Reset Zoom" matTooltip="Reset Zoom">
+      <mat-icon>fullscreen</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      (click)="toggleFullscreen()"
+      aria-label="Toggle Fullscreen"
+      [matTooltip]="isFullscreen ? 'Exit Full Screen' : 'Full Screen'"
+    >
+      <mat-icon *ngIf="!isFullscreen">zoom_out_map </mat-icon>
+      <mat-icon *ngIf="isFullscreen">fullscreen_exit</mat-icon>
+    </button>
+  </mat-card-actions>
+</div>

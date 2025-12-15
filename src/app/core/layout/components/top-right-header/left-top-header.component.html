@@ -1,0 +1,18 @@
+<div class="left-top-header" dir="rtl">
+  <div class="cursor-pointer user-info" (click)="onNavigateToUserProfile()">
+    <div class="avatar">
+      <!-- <img [src]="avatarUrl" alt="Avatar of {{ userName }}" /> -->
+      <svg width="1.3rem" height="1.3rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#user-info'"></use>
+      </svg>
+    </div>
+    <div class="text d-flex flex-column">
+      <span class="name">{{ userName }}</span>
+      <span class="email">{{ userEmail }}</span>
+    </div>
+  </div>
+
+  <button type="button" class="notification-btn" (click)="onBellClick()" aria-label="Notifications">
+    <app-notifications-menu *ngIf="isLoggedIn"></app-notifications-menu>
+  </button>
+</div>

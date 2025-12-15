@@ -1,0 +1,249 @@
+@use 'src/assets/design-system/colors' as *;
+@import '../../../../../assets/scss/variables';
+
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+mat-sidenav-container {
+  flex: 1;
+}
+
+mat-sidenav {
+  background-color: #fff;
+  border-left-style: none !important;
+  border-right-style: none !important;
+  width: 150px;
+}
+
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  //margin: auto;
+  display: block;
+}
+
+p {
+  text-align: center;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7vh;
+}
+
+.nav-list {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 1332px) {
+    & {
+      gap: 13px;
+    }
+  }
+
+  li {
+    border-radius: 23px;
+    padding: 7px 14px;
+
+    @media (min-width: 1332px) {
+      & {
+        padding: 8px 16px;
+      }
+    }
+  }
+
+  .active,
+  li:hover,
+  li:has(> a.active) {
+    background: #ecfdf5;
+  }
+
+  a {
+    text-decoration: none;
+    color: $gray-900-color;
+  }
+}
+.li-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--Spacing-Spacing-1rem, 1rem);
+  align-self: stretch;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  a {
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    position: relative;
+  }
+}
+.number-container {
+  position: relative;
+
+  .number,
+  .holding-number {
+    position: absolute;
+    color: #fff;
+    border-radius: 100%;
+    padding: 1px 5px;
+    left: -11px;
+    bottom: 7px;
+    aspect-ratio: 1 / 1;
+    min-width: 22px;
+    display: flex;
+    place-content: center;
+    align-items: center;
+    font-size: 12px;
+    line-height: 13px;
+    font-weight: 400;
+  }
+
+  .number {
+    background: #dc2626;
+  }
+
+  .holding-number {
+    background: #f97316;
+    right: 0;
+    bottom: 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-container {
+    margin-top: 0;
+  }
+
+  .nav-list {
+    margin-top: 0;
+  }
+}
+mat-sidenav-content {
+  background-color: #fff;
+  //margin-right: 134px !important;
+}
+
+.subMenu {
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+.subMenu a {
+  background-color: transparent;
+  border-right: 1px solid $gray-400;
+  padding: 0.5rem 1rem;
+  border-right: 1px solid $gray-400;
+  display: flex;
+  align-items: center;
+}
+:host-context(.dark-theme) .subMenu a {
+  color: #fff;
+}
+:host-context(.light-theme) .subMenu a {
+  color: $gray-700;
+}
+
+.activeCustom {
+  border-right: 3px solid $primary-500 !important;
+}
+:host-context(.dark-theme) .activeCustom {
+  border-right: 3px solid $secondary-500 !important;
+}
+a p {
+  margin-bottom: 0;
+}
+.activeCustom p {
+  font-weight: 700 !important;
+  margin: 0 0.5rem;
+}
+:host-context(.dark-theme) .activeCustom p {
+  color: $secondary-500 !important;
+}
+:host-context(.light-theme) .activeCustom p {
+  color: $primary-700 !important;
+}
+
+.subSvg {
+  display: none;
+}
+
+.activeCustom .subSvg {
+  display: block;
+}
+
+.subIcon {
+  color: #fff;
+}
+
+:host-context(.dark-theme) .activeCustom .subIcon {
+  color: $secondary-500;
+}
+
+:host-context(.light-theme) .activeCustom .subIcon {
+  color: $primary-500;
+}
+
+
+:host-context(.dark-theme) .subSvg {
+  color: $secondary-500;
+}
+
+
+.counter {
+  display: flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.625rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 1.5rem;
+  background: #d32f2f;
+  color: #fff;
+  font-size: 12px;
+}
+.activeCustom .counter {
+  display: flex;
+}
+.rotate-90 {
+  transform: rotate(-90deg);
+  transition: transform 0.3s;
+}
+.number,
+.holding-number {
+  position: absolute;
+  color: #fff;
+  border-radius: 100%;
+  padding: 1px 5px;
+  left: -11px;
+  bottom: 9px;
+  aspect-ratio: 1 / 1;
+  min-width: 22px;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  font-size: 12px;
+  line-height: 13px;
+  font-weight: 400;
+}
+
+.number {
+  background: #dc2626;
+}

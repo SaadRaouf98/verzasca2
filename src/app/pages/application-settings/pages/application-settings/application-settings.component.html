@@ -1,0 +1,103 @@
+<section>
+  <div class="row justify-content-between text-primary | mb">
+    <div class="col-12 col-md-6 d-flex align-items-center | heading mb">
+      <a class="cursor-pointer" routerLink="../">
+        <img
+          src="assets/icons/right-arrow.png"
+          alt="Navigation back."
+          class="arrow-icon"
+          [class.rotate-arrow]="lang === 'en'"
+        />
+      </a>
+      <h1 class="col-11 fs-800 text-gray-900 fw-bold">
+        {{ "SystemManagementModule.SystemManagementPage.app" | translate }}
+      </h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-4 | card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ManageNotificationPreferences]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="notifications-preferences"
+        >
+          <img
+            src="assets/icons/notifications-icon-1.png"
+            class="icon"
+            alt="'ApplicationSettingsModule.ApplicationSettingsComponent.notificationPreferences' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="notifications-preferences"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{
+              "ApplicationSettingsModule.ApplicationSettingsComponent.notificationPreferences"
+                | translate
+            }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ManageNotificationCategories]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="app-notifications"
+        >
+          <img
+            src="assets/icons/notifications-icon-2.png"
+            class="icon"
+            alt="'ApplicationSettingsModule.ApplicationSettingsComponent.applicationsNotificaions' | translate"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="app-notifications"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            {{
+              "ApplicationSettingsModule.ApplicationSettingsComponent.applicationsNotificaions"
+                | translate
+            }}
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4 | card">
+      <div
+        *ngxPermissionsOnly="[PermissionsObj.ManageNotificationCategories]"
+        class="d-flex flex-column justify-content-around align-items-center | card-content"
+      >
+        <a
+          class="d-flex flex-column justify-content-center align-items-center | nav-item animate"
+          routerLink="app-versions-list"
+        >
+          <img
+            src="assets/icons/notifications-icon-3.png"
+            class="icon"
+            alt="اصدارات التطبيق"
+          />
+        </a>
+        <p>
+          <a
+            routerLink="app-versions-list"
+            class="fs-600 text-gray-900 fw-bold d-block | animate"
+          >
+            إصدارات التطبيق
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

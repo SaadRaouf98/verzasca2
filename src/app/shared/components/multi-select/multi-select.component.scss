@@ -1,0 +1,63 @@
+@use "src/assets/design-system/colors" as *;
+.ng-select .ng-select-container {
+  display: flex;
+
+  height: 3rem;
+  padding: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  align-self: stretch;
+  border-radius: 0.5rem;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  // display: flex;
+  padding: 0.875rem 0.5rem 1.1875rem 1.0625rem;
+  justify-content: flex-end;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(62, 52, 69, 0.04);
+  border-color: none;
+}
+.ng-dropdown-panel.ng-select-bottom {
+  border: none;
+}
+.mat-mdc-radio-button .mdc-radio {
+  padding: 0;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  padding: 0;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  padding: 0 1rem;
+}
+.option-custom {
+  padding: 0.5rem 0;
+}
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option:not(:last-child)
+  .option-custom {
+  border-bottom: 1px solid $gray-100;
+}
+ng-select {
+  max-height: 3rem;
+}
+.selected-count {
+  color: $secondary-500;
+  padding: 0 0.5rem;
+}
+
+.custom-multi-select .ng-has-value .ng-placeholder {
+  display: block;
+}
+.custom-multi-select .ng-has-value .ng-value {
+  display: none;
+}
+.multiplle .ng-placeholder{
+display: none !important;
+}

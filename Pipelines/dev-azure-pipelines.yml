@@ -1,0 +1,78 @@
+# Start this pipeline after pushing to `master` branch.
+trigger:
+  branches:
+    include:
+      - master
+
+variables:
+  - group: SharedGroup
+  - name: environment
+    value: 'development'
+  - name: nodeVersion
+    value: '22.x'
+  - name: outputDir
+    value: '$(Build.ArtifactStagingDirectory)'
+  - name: artifactName
+    value: '$(DevelopmentPortalArtifact)'
+
+stages:
+- stage: Building
+  pool: Pool
+  jobs:
+  - job: BuildingAngular
+    displayName: 'Building project'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: '$(nodeVersion)'
+
+    - task: UseNode@1
+      displayName: 'Use Node.js $(nodeVersion)'
+      inputs:
+        version: '$(nodeVersion)'
+
+    - task: PowerShell@2
+      displayName: 'Install Angular CLI'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "▶ Installing Angular CLI globally"
+          npm install -g @angular/cli --loglevel verbose
+
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "❌ Failed to install Angular CLI"
+              exit $LASTEXITCODE
+          }
+          Write-Host "✅ CLI installed."
+
+    - task: PowerShell@2
+      displayName: 'Install Dependencies'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "🔍 Current path: $(Get-Location)"
+
+          npm install --verbose --force
+
+          if ($LASTEXITCODE -ne 0) {
+              Write-Error "❌ Failed to install dependencies"
+              exit $LASTEXITCODE
+          }
+
+          Write-Host "✅ All installs completed"
+
+    - script: |
+        @echo on 
+        ng build --configuration $(environment) --output-path="$(outputDir)\SFC.Web"
+        if ($LASTEXITCODE -ne 0) {
+          Write-Error "❌ Angular build failed with exit code $LASTEXITCODE"
+          exit $LASTEXITCODE
+        }
+      displayName: 'Build Angular app'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: $(outputDir)
+        ArtifactName: $(artifactName)
+        publishLocation: 'Container'

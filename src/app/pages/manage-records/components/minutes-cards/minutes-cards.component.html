@@ -1,0 +1,285 @@
+<div class="arabic-interface">
+  <div class="container-fluid p-0">
+    <!-- Cards Grid -->
+    <div class="cards-grid" *ngIf="hasItemsForCommittee">
+      <ng-container *ngFor="let item of data; let i = index;">
+        <!-- Card 1 -->
+        <div [routerLink]="['./', item.id]" class="card border-0 cursor-pointer"
+             *ngIf="committeeId.includes(item.committee.id)  " data-id="rec-001">
+          <div>
+            <!-- Card Header -->
+            <div class="card-header border-bottom-0 pb-0">
+              <div class="document-id">
+                <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"-->
+                <!--                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+                <!--                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>-->
+                <!--                  <polyline points="14 2 14 8 20 8"></polyline>-->
+                <!--                  <line x1="16" y1="13" x2="8" y2="13"></line>-->
+                <!--                  <line x1="16" y1="17" x2="8" y2="17"></line>-->
+                <!--                  <polyline points="10 9 9 9 8 9"></polyline>-->
+                <!--                </svg>-->
+                <span [routerLink]="['./', item.id]">{{ item?.exportNumber }}#</span>
+              </div>
+              <!--              <span [ngClass]="!item.isExported ? 'status-green' : 'status-red'" class="status-badge">-->
+              <!--                         <ng-container *ngIf="item.isExported; else elseBlock">-->
+              <!--              <span style="color: red">-->
+              <!--                {{-->
+              <!--                  "RegularReportsModule.RegularReportsListComponent.inactive"-->
+              <!--                    | translate-->
+              <!--                }}-->
+              <!--              </span>-->
+              <!--            </ng-container>-->
+              <!--            <ng-template #elseBlock>-->
+              <!--              <span style="color: green">-->
+              <!--                {{-->
+              <!--                  "RegularReportsModule.RegularReportsListComponent.active"-->
+              <!--                    | translate-->
+              <!--                }}-->
+              <!--              </span>-->
+              <!--            </ng-template>-->
+              <!--                </span>-->
+            </div>
+
+            <!-- Card Content -->
+            <div class="card-content pt-0 pb-2">
+              <span class="document-title m-2 d-inline-block"
+                    [matTooltip]="item.title">{{ item.title | summary : 90 }}</span>
+
+              <div class="metadata-grid">
+                <div class="metadata-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <div>
+                    <div class="metadata-label"> {{ "shared.priorities" | translate }}</div>
+                    <span class="importance-badge importance-blue"
+                          [routerLink]="['./', item.id]">{{ item?.priority?.title }}</span>
+                  </div>
+                </div>
+
+                <div class="metadata-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <div>
+                    <div class="metadata-label"> {{ "shared.isInitiated" | translate }}</div>
+                    <span class="urgency-badge urgency-amber">
+                      <ng-container *ngIf="item.isInitiated; else emptyBlock">
+                    <span class="d-flex justify-content-center">
+                      <img src="assets/icons/check-circle.png"/>
+                    </span>
+                   </ng-container>
+                    <ng-template #emptyBlock>
+                      <span class="d-flex justify-content-center text-black"
+                      >--</span>
+                    </ng-template>
+
+                    </span>
+                  </div>
+                </div>
+
+                <!--                <div class="metadata-item">-->
+                <!--                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"-->
+                <!--                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+                <!--                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>-->
+                <!--                  </svg>-->
+                <!--                  <div>-->
+                <!--                    <div class="metadata-label"> {{ "shared.classification" | translate }}</div>-->
+                <!--                    <div class="restriction-value">{{ item.classification.title }}</div>-->
+                <!--                  </div>-->
+                <!--                </div>-->
+
+                <div class="metadata-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  <div>
+                    <div class="metadata-label">{{ "shared.processType" | translate }}</div>
+                    <div class="processing-value"
+                         [routerLink]="['./', item.id]"> {{ item?.committee?.committeeSymbol || "--" }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <hr class="mt-0 mb-0 pb-2 border-top border-secondary">
+            <!-- Reviewer section - open by default -->
+            <div class="reviewers-section pt-0">
+<!--              <h6 class="fs-300 text-slate-700 fw-bold mb-2">التوقيعات</h6>-->
+              <div class="reviewers-list flex-column">
+                <div class="reviewer-item" *ngFor="let member of item?.members">
+                  <!--                  {{item| json}}-->
+
+
+                  <div class="reviewer-info d-flex align-items-center">
+                    <!--                    <div class="reviewer-name">معالي الأستاذ محمد بن عبدالله الجدعان</div>-->
+                    <div
+                      class="d-flex align-items-center justify-content-between gap-2"
+                      [ngClass]="{
+                          'bg-sign':
+                            member.action &&
+                            member.action.type ===
+                              ExportableDocumentActionType.Sign,
+                          'bg-conservatism':
+                            member.action &&
+                            member.action.type ===
+                              ExportableDocumentActionType.Conservatism,
+                          'bg-opinion-refrain':
+                            member.action &&
+                            member.action.type ===
+                              ExportableDocumentActionType.OpinionRefrain,
+                          'bg-no-action': !member.action
+                        }"
+                    >
+                      <img
+                        class="d-inline-block ms-1"
+                        *ngIf="member.action && member.action.isPhoneAction &&    member.action.type ===
+                              ExportableDocumentActionType.Sign"
+                        [matTooltip]="'ManageRecordsModule.RecordsListComponent.signed' | translate"
+                        src="assets/icons/confirm-phone-action.png"
+                      />
+                      <img
+                        class="d-inline-block ms-1"
+                        [matTooltip]="'ManageRecordsModule.RecordsListComponent.conservation' | translate"
+                        *ngIf="member.action && member.action.isPhoneAction && member.action.type ===
+                              ExportableDocumentActionType.Conservatism"
+                        src="assets/icons/rejecet-phone.png"
+                      />
+
+
+                      <ng-container *ngIf="member.action; else NoAction">
+
+                        <span
+                          *ngIf="
+                              member.action.type ===
+                              ExportableDocumentActionType.Sign && !member.action.isPhoneAction
+                            "
+                          style="color: #008000"
+                        >
+                          <div class="reviewer-status">
+                          <span [matTooltip]="'ManageRecordsModule.RecordsListComponent.signed' | translate"
+                                class="d-flex justify-content-center">
+                            <img src="assets/icons/Check-Circle--Streamline-Solar.svg.png"/>
+                         </span>
+                        </div>
+                          </span>
+
+                        <span
+                          *ngIf="
+                              member.action.type ===
+                              ExportableDocumentActionType.Conservatism && !member.action.isPhoneAction
+                            "
+                          style="color: #e40d00"
+                        >
+                           <img [matTooltip]="'ManageRecordsModule.RecordsListComponent.conservation' | translate"
+                                class="d-inline-block ms-1" src="assets/icons/alert.png"/>
+                          <!--                          {{-->
+                          <!--                            "ManageRecordsModule.RecordsListComponent.conservation"-->
+                          <!--                              | translate-->
+                          <!--                          }}-->
+                          </span>
+
+                        <span
+                          *ngIf="
+                              member.action.type ===
+                              ExportableDocumentActionType.OpinionRefrain && !member.action.isPhoneAction
+                            "
+                          style="color: #ff9501"
+                        >
+                          <img [matTooltip]="'ManageRecordsModule.RecordsListComponent.opinionRefrain' | translate"
+                               class="d-inline-block ms-1" src="assets/icons/alert.png"/>
+                          <!--                            {{-->
+                          <!--                            "ManageRecordsModule.RecordsListComponent.opinionRefrain"-->
+                          <!--                              | translate-->
+                          <!--                          }}-->
+                          </span>
+                      </ng-container>
+
+                      <ng-template #NoAction>
+                        <ng-container
+                          *ngIf="
+                              item && item.isExported;
+                              else NoOpinionExpressed
+                            "
+                        >
+                          <p
+                            *ngIf="member.isOnVacation"
+                            style="color: #85898f; margin-bottom: 0"
+                          >
+                            {{
+                              "ManageRecordsModule.RecordDetailsComponent.onHoliday"
+                                | translate
+                            }}
+                          </p>
+
+                          <p
+                            *ngIf="!member.isOnVacation"
+                            style="color: #85898f; margin-bottom: 0"
+                          >
+                            <img
+                              [matTooltip]="'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet' | translate"
+                              src="assets/icons/waiting.png" class="d-inline-block ms-1"/>
+                            <!--                            {{-->
+                            <!--                              "ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet"-->
+                            <!--                                | translate-->
+                            <!--                            }}-->
+                          </p>
+                        </ng-container>
+
+                        <ng-template #NoOpinionExpressed>
+                          <p style="color: #85898f; margin-bottom: 0">
+                            {{
+                              ""
+                                | translate
+                            }}
+                            <img
+                              [matTooltip]="'ManageRecordsModule.RecordsListComponent.noOpinion' | translate"
+                              src="assets/icons/waiting.png"
+                              class="d-inline-block ms-1"/>
+                          </p>
+                        </ng-template>
+                      </ng-template>
+                      <span clas style="color: #111827">{{ member.name }}</span>
+                      <span
+                        *ngIf="member.action?.comment"
+                        (click)="onViewComment(member.action?.comment);  $event.stopPropagation(); $event.preventDefault()"
+                        class="cursor-pointer"
+                      >
+                            <img
+                              src="assets/icons/white-eye.png"
+                            />
+                          </span>
+                      <span
+                        *ngIf="member.action?.comment"
+                        class="cursor-pointer"
+                        (click)="onCopyNote(member.action?.comment); $event.stopPropagation(); $event.preventDefault()"
+                      >
+                            <img
+                              src="assets/icons/copy.png"
+
+                            />
+                          </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <ng-container>
+      <div class="empty-state-simple" *ngIf="!hasItemsForCommittee" dir="rtl">
+        <i class="fas fa-file-alt empty-state__icon"></i>
+        <p class="empty-state__msg">{{ "لا توجد محاضر نشطة" | translate }}</p>
+      </div>
+    </ng-container>
+  </div>
+</div>

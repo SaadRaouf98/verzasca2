@@ -1,0 +1,147 @@
+<div
+  class="row justify-content-between align-items-center component-header mb-4"
+>
+  <div class="col-12 col-lg-7 d-flex align-items-center | heading">
+    <a class="cursor-pointer" (click)="navigateToTablePage()">
+      <img
+        src="assets/icons/right-arrow.png"
+        alt="Navigation back."
+        class="arrow-icon"
+        [class.rotate-arrow]="lang === 'en'"
+      />
+    </a>
+
+    <h2 class="component-header_title">تحديث اجباري</h2>
+  </div>
+
+  <div
+    class="col-12 col-lg-5 d-flex justify-content-end align-items-center button-group-gap"
+  >
+    <button class="cancel-btn" (click)="navigateToTablePage()" mat-flat-button>
+      {{ "shared.cancel" | translate }}
+    </button>
+
+    <button
+      class="save-btn"
+      [disabled]="form.invalid || disableSubmitBtn"
+      (click)="onSubmit()"
+      mat-flat-button
+    >
+      حفظ وإرسال
+    </button>
+  </div>
+</div>
+
+<section class="">
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row mb parent-card">
+      <!-- start version -->
+      <div
+        class="col-12 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('version')?.errors && isTouched('version'),
+          'mat-form-field-div-success':
+            !form.get('version')?.errors && isTouched('version')
+        }"
+      >
+        <div class="label-container">
+          <label for="version"> اسم النسخة </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput name="version" formControlName="version" />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('version')?.errors && isTouched('version')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('version')?.errors && isTouched('version')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+                    form.get('version')?.errors?.['required'] &&
+                    isTouched('version')
+                  "
+        >
+          يجب إدخال رقم الاصدار
+        </span>
+      </div>
+      <!-- end version-->
+
+      <!-- start link -->
+      <div
+        class="col-12 col-lg-6 pt-2 mat-form-field-div"
+        [ngClass]="{
+          'mat-form-field-div-error':
+            form.get('link')?.errors && isTouched('link'),
+          'mat-form-field-div-success':
+            !form.get('link')?.errors && isTouched('link')
+        }"
+      >
+        <div class="label-container">
+          <label for="link"> لينك الإصدار </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <input matInput name="link" formControlName="link" />
+          <div class="flag-div">
+            <img
+              src="assets/icons/success-input.svg"
+              *ngIf="!form.get('link')?.errors && isTouched('link')"
+            />
+            <img
+              src="assets/icons/error-input.svg"
+              *ngIf="form.get('link')?.errors && isTouched('link')"
+            />
+          </div>
+        </mat-form-field>
+
+        <span
+          class="span-error-message"
+          *ngIf="
+            form.get('link')?.errors?.['required'] && isTouched('link')
+          "
+        >
+          يجب ادخال لينك الإصدار
+        </span>
+      </div>
+      <!-- end link-->
+
+      <div class="col-12 col-sm-6 d-flex align-items-end mt-3 | child-card">
+        <div
+          class="d-flex align-items-end justify-content-between | info-content card-content"
+        >
+          <p class="label">إصدار إلزامي ؟</p>
+
+          <p class="info-data">
+            <mat-slide-toggle name="status" formControlName="isForceUpdate">
+              <ng-container
+                *ngIf="form.get('isForceUpdate')?.value; then Yes; else No"
+              ></ng-container>
+
+              <ng-template #Yes> نعم </ng-template>
+              <ng-template #No> لا </ng-template>
+            </mat-slide-toggle>
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 mt-3">
+        <div class="label-container">
+          <label for="version"> التطبيق </label>
+        </div>
+        <app-select
+          [formControlName]="'app'"
+          [placeholder]="'اختر التطبيق'"
+          [bindLabel]="'label'"
+          [bindValue]="'value'"
+          [options]="appOptions"
+        ></app-select>
+      </div>
+    </div>
+  </form>
+</section>

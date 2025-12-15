@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-end mt-3">
+  <div
+    class="cursor-pointer | copy-container"
+    (click)="onCopyNote()"
+    mat-icon-button
+  >
+    <span>
+      {{ "shared.copy" | translate }}
+    </span>
+    <img src="assets/icons/copy.png" class="comment-img" />
+  </div>
+
+  <button
+    id="close-icon"
+    (click)="onCancel()"
+    class="d-flex justify-content-center align-items-center cursor-pointer"
+    mat-icon-button
+  >
+    <img src="assets/icons/close-ico.svg" alt="Click to close popup." />
+  </button>
+</div>
+
+<div mat-dialog-title class="modal-header">
+  <h2 class="fs-500 fw-bold">
+    {{ "shared.viewNote" | translate }}
+  </h2>
+</div>
+
+<div mat-dialog-contents>
+  <div class="d-flex">
+    <p>
+      {{ this.data.comment }}
+    </p>
+  </div>
+</div>
