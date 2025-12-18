@@ -174,14 +174,14 @@ export class UserWorkInfoCardComponent implements OnInit {
       // maxWidth: '95vw',
       // height: isSmallDeviceWidthForPopup() ? '100vh' : '80vh',
       // autoFocus: false,
-      // disableClose: true,
+      // disableClose: false,
       // panelClass: 'calendar_filter',\
       minWidth: '31.25rem',
       maxWidth: '31.25rem',
       maxHeight: '44.3125rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {

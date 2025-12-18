@@ -2,26 +2,33 @@
   <div class="row" style="width: 100%; margin: 0">
     <div *ngIf="isCommitteeApprovalStep" class="col-12 p-0">
       <div *ngFor="let element of committeeMembersApprovals" class="single-approval-card mb-2">
-        <p class="body-bold mb-2">{{ element.name }}</p>
+        <p class="body-bold mb-0">{{ element.name }}</p>
 
-        <div class="d-flex align-items-center justify-content-between mt-2">
+        <div class="d-flex align-items-center justify-content-between mt-2 responsive-flex-column">
           <div>
             <div *ngIf="element.action; else NoActionBlock">
-              <div class="d-flex align-items-center" *ngIf="element.action.approval === MemberApprovalType.Approved">
+              <div
+                class="d-flex align-items-center"
+                *ngIf="element.action.approval === MemberApprovalType.Approved"
+              >
                 <svg width="1.25rem" height="1.25rem">
                   <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
                 </svg>
                 <span class="approved body-bold text-small mx-2">
-                  {{ "shared.isSigned" | translate }}
+                  {{ 'shared.isSigned' | translate }}
                 </span>
               </div>
 
-              <div class="d-flex align-items-center" *ngIf="element.action.approval === MemberApprovalType.Rejected">
+              <div
+                class="d-flex align-items-center"
+                *ngIf="element.action.approval === MemberApprovalType.Rejected"
+              >
                 <svg width="1.25rem" height="1.25rem">
                   <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
                 </svg>
                 <span class="rejected body-bold text-small mx-2">
-                  {{ "shared.conservatism" | translate }}</span>
+                  {{ 'shared.conservatism' | translate }}</span
+                >
               </div>
             </div>
 
@@ -31,40 +38,42 @@
                   <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
                 </svg>
                 <span class="noAnswer body-bold text-small mx-2">
-                  {{
-                  "ManageRecordsModule.RecordsListComponent.noOpinion" | translate
-                  }}
+                  {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
                 </span>
               </div>
             </ng-template>
-            <div class="d-flex align-items-center mt-2" *ngIf="element.action && element.action.comment">
+            <div
+              class="d-flex align-items-center mt-2"
+              *ngIf="element.action && element.action.comment"
+            >
               <svg width="1rem" height="1rem">
                 <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
               </svg>
               <span class="comment body-bold text-small mx-2">
-                {{element.action.comment}}
+                {{ element.action.comment }}
               </span>
             </div>
           </div>
-
-          <div *ngxPermissionsOnly="[PermissionsObj.CommitteePhoneApprovals]">
-            <button class="button button-secondary button-sm" (click)="onTakeActionViaPhone(element)">
-              <span>
-                {{
-                "ManageRecordsModule.RecordDetailsComponent.editThroughPhone"
-                | translate
-                }}
-              </span>
-              <svg width="1rem" height="1rem">
-                <use [attr.xlink:href]="'assets/icons/sprite.svg#approvalCall'"></use>
-              </svg>
-            </button>
-          </div>
+          <ng-container *ngIf="element?.action?.approval !== MemberApprovalType.Approved">
+            <div *ngxPermissionsOnly="[PermissionsObj.CommitteePhoneApprovals]">
+              <button
+                class="button button-secondary button-sm"
+                (click)="onTakeActionViaPhone(element)"
+              >
+                <span>
+                  {{ 'ManageRecordsModule.RecordDetailsComponent.editThroughPhone' | translate }}
+                </span>
+                <svg width="1rem" height="1rem">
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#approvalCall'"></use>
+                </svg>
+              </button>
+            </div>
+          </ng-container>
         </div>
-
       </div>
     </div>
-    <span *ngIf="!isCommitteeApprovalStep" class="body-bold text-small text-center">{{ "shared.noData" | translate
-      }}</span>
+    <span *ngIf="!isCommitteeApprovalStep" class="body-bold text-small text-center">{{
+      'shared.noData' | translate
+    }}</span>
   </div>
 </div>

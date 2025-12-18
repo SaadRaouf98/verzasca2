@@ -41,7 +41,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         // matDialog.open(ErrorDialogComponent, {
         //   width: '600px',
         //   autoFocus: false,
-        //   disableClose: true,
+        //   disableClose: false,
         //   data: err,
         // });
         console.log(err);

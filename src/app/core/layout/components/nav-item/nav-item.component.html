@@ -15,7 +15,7 @@
             [attr.width]="item.width"
             [attr.height]="item.height"
             [attr.aria-label]="item.labelKey | translate"
-            [matTooltip]="item.labelKey | translate"
+            [matTooltip]="isCollapsed? (item.labelKey | translate) : null"
           >
             <use
               [attr.xlink:href]="
@@ -31,7 +31,7 @@
           [attr.width]="item.width"
           [attr.height]="item.height"
           [attr.aria-label]="item.labelKey | translate"
-          [matTooltip]="item.labelKey | translate"
+          [matTooltip]="isCollapsed? (item.labelKey | translate) : null"
         >
           <use
             [attr.xlink:href]="
@@ -40,7 +40,7 @@
           ></use>
         </svg>
       </ng-template>
-      <p class="body mx-3 mb-0" [ngClass]="{ 'body-bold': link.isActive }">
+      <p class="body me-3 mb-0" [ngClass]="{ 'body-bold': link.isActive }">
         {{ item.labelKey | translate }}
       </p>
       <span [ngClass]="isCollapsed ? 'number' : 'counter'" *ngIf="countValue > 0">
@@ -65,9 +65,9 @@
   <ng-container *ngIf="!isCollapsed">
     <div class="subMenu" *ngIf="item.subRoutes?.length && openSub">
       <a
-        *ngFor="let sub of item.subRoutes"
+        *ngFor="let sub of item.subRoutes; trackBy: trackBySubRoute"
         [routerLink]="sub.route"
-        [class.activeCustom]="isActive(sub.route)"
+        [class.activeCustom]="isChildActive(sub.route)"
       >
         <svg class="subSvg" width="1rem" height="1rem">
           <use [attr.xlink:href]="'assets/icons/sprite.svg#menu-arrow-left'"></use>
@@ -86,65 +86,69 @@
         [routerLink]="item.route ? item.route : null"
         #link="routerLinkActive"
         routerLinkActive="active"
-        class="d-flex w-100"
+        class="d-flex justify-content-between w-100"
         [queryParamsHandling]="queryParamsHandling"
         (click)="
           item.labelKey === 'shared.signOut' ? logout() :
           openMenuFn(item.hasSubMenu || false)
         "
       >
-        <ng-container *ngIf="item.countProp; else noCount2">
-          <div class="number-container d-flex align-items-center">
+        <div class="d-flex">
+          <ng-container *ngIf="item.countProp; else noCount2">
+            <div class="number-container d-flex align-items-center">
+              <svg
+                [attr.width]="item.width"
+                [attr.height]="item.height"
+                [attr.aria-label]="item.labelKey | translate"
+                [matTooltip]="isCollapsed? (item.labelKey | translate) : null"
+              >
+                <use
+                  [attr.xlink:href]="
+                  'assets/icons/sprite.svg#' +
+                  (link.isActive ? item.iconFill || item.icon : item.icon)
+                "
+                ></use>
+              </svg>
+            </div>
+          </ng-container>
+          <ng-template #noCount2>
             <svg
               [attr.width]="item.width"
               [attr.height]="item.height"
               [attr.aria-label]="item.labelKey | translate"
-              [matTooltip]="item.labelKey | translate"
+              [matTooltip]="isCollapsed? (item.labelKey | translate) : null"
             >
               <use
                 [attr.xlink:href]="
-                  'assets/icons/sprite.svg#' +
-                  (link.isActive ? item.iconFill || item.icon : item.icon)
-                "
-              ></use>
-            </svg>
-          </div>
-        </ng-container>
-        <ng-template #noCount2>
-          <svg
-            [attr.width]="item.width"
-            [attr.height]="item.height"
-            [attr.aria-label]="item.labelKey | translate"
-            [matTooltip]="item.labelKey | translate"
-          >
-            <use
-              [attr.xlink:href]="
                 'assets/icons/sprite.svg#' +
                 (link.isActive ? item.iconFill || item.icon : item.icon)
               "
-            ></use>
-          </svg>
-        </ng-template>
-        <p class="body mx-3 mb-0" [ngClass]="{ 'body-bold': link.isActive }">
-          {{ item.labelKey | translate }}
-        </p>
-        <span [ngClass]="isCollapsed ? 'number' : 'counter'" *ngIf="countValue > 0">
-          {{ countValue }}
-        </span>
-        <svg
-          *ngIf="item.hasSubMenu && !isCollapsed"
-          [attr.width]="item.width"
-          [attr.height]="item.height"
-          [attr.aria-label]="item.labelKey | translate"
-          [ngClass]="openSub ? 'rotate-90' : ''"
-          class="me-auto"
-        >
-          <use
-            [attr.xlink:href]="
+              ></use>
+            </svg>
+          </ng-template>
+          <p class="body me-3 mb-0" [ngClass]="{ 'body-bold': link.isActive }">
+            {{ item.labelKey | translate }}
+          </p>
+        </div>
+        <div class="d-flex align-items-center">
+          <span [ngClass]="isCollapsed ? 'number' : 'counter'" *ngIf="countValue > 0">
+            {{ countValue }}
+          </span>
+          <svg
+            *ngIf="item.hasSubMenu && !isCollapsed"
+            [attr.width]="item.width"
+            [attr.height]="item.height"
+            [attr.aria-label]="item.labelKey | translate"
+            [ngClass]="openSub ? 'rotate-90' : ''"
+            class="me-auto"
+          >
+            <use
+              [attr.xlink:href]="
               'assets/icons/sprite.svg#' + (isLightTheme ? 'arrow-left-black' : 'arrow-left')
             "
-          ></use>
-        </svg>
+            ></use>
+          </svg>
+        </div>
       </a>
     </li>
     <ng-container *ngIf="!isCollapsed">

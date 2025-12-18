@@ -84,3 +84,19 @@ textarea {
     background-color: #ece7df;
   }
 }
+::ng-deep .mat-mdc-menu-content {
+  padding: 0 8px;
+}
+::ng-deep .mat-elevation-z8 {
+  border-radius: 6px;
+  border: 1px solid $gray-100;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+::ng-deep .mat-mdc-menu-item {
+  padding: 8px 0;
+  min-height: fit-content;
+  border-bottom: 1px solid $gray-100;
+}
+::ng-deep .mat-mdc-menu-item:last-child {
+  border-bottom: none;
+}

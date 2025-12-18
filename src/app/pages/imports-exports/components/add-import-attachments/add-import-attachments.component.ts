@@ -201,7 +201,7 @@ export class AddImportAttachmentsComponent {
               .open(EditFileWithBarcodeModalComponent, {
                 minWidth: '95vw',
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileBlob: res,
                   fileType: attachment.fileType, //.pdf
@@ -222,7 +222,7 @@ export class AddImportAttachmentsComponent {
           minWidth: '95vw',
           maxHeight: '95vh',
           autoFocus: false,
-          disableClose: true,
+          disableClose: false,
           panelClass: ['action-modal', 'float-footer'],
           data: {
             fileBlob: attachment.fileBlob,

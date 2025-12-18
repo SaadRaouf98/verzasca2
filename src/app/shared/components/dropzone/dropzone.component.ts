@@ -163,7 +163,7 @@ export class DropzoneComponent implements OnInit, OnChanges {
     this.matDialog.open(ViewImageModalComponent, {
       width: '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: this.selectedFile || this.existedFileUrl,
     });
   }
@@ -410,7 +410,7 @@ export class DropzoneComponent implements OnInit, OnChanges {
     this.matDialog.open(ViewImageModalComponent, {
       width: '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: this.selectedFile || this.existedFileUrl,
     });
   }

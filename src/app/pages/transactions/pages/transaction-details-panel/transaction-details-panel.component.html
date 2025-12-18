@@ -27,9 +27,9 @@
               </svg>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <hr class="line" />
+          <hr class="line mt-0" />
           <div class="row">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
               <p class="body gray-700 mb-2">
                 {{ 'shared.concernedFoundations' | translate }}
               </p>
@@ -42,7 +42,7 @@
                 }}
               </span>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
               <p class="body gray-700 mb-2">
                 {{ 'shared.sector' | translate }}
               </p>
@@ -58,7 +58,20 @@
           </div>
           <hr class="line" />
           <div class="row">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.incomingFoundation' | translate }}
+              </p>
+
+              <span class="body-bold">
+                {{
+                  lang === 'ar'
+                    ? requestContainerDetails.foundation?.title
+                    : requestContainerDetails.foundation?.titleEn
+                }}
+              </span>
+            </div>
+            <div class="col-12 col-md-6">
               <p class="body gray-700 mb-2">
                 {{ 'shared.benefitType' | translate }}
               </p>
@@ -71,8 +84,20 @@
                 }}
               </span>
             </div>
+          </div>
+          <hr class="line" />
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <p class="body gray-700 mb-2">
+                {{ 'shared.referralJustifications' | translate }}
+              </p>
 
-            <div class="col-12 col-md-4">
+              <span class="body-bold">
+                {{ requestContainerDetails.referralJustification?.title }}
+              </span>
+            </div>
+
+            <div class="col-12 col-md-6">
               <p class="body gray-700 mb-2">
                 {{ 'shared.timeCreated' | translate }}
               </p>
@@ -110,7 +135,7 @@
               </svg>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <hr class="line" />
+          <hr class="line mt-0" />
           <div class="row">
             <div class="col-12 col-md-6">
               <p class="body-bold">
@@ -196,7 +221,7 @@
               </svg>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <hr class="line" />
+          <hr class="line mt-0" />
           <div class="row">
             <div class="col-12 col-md-4" *ngIf="data?.exportType">
               <p class="body gray-700 mb-2">
@@ -219,7 +244,7 @@
                 {{ 'shared.treatmentMechanism' | translate }}
               </p>
               <span class="body-bold">
-                {{ data.committee.committeeSymbol || '-' }}
+                {{ data.committee?.committeeSymbol || '-' }}
               </span>
             </div>
           </div>

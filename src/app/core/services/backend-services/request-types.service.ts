@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, filter } from 'rxjs';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
 import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
 import {
@@ -27,11 +28,7 @@ export class RequestTypesService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
     if (filtersData?.classificationId) {
       url += `&classificationId=${filtersData.classificationId}`;
@@ -62,7 +59,8 @@ export class RequestTypesService {
       isTransaction?: boolean;
     },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllRequestTypes> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -70,6 +68,12 @@ export class RequestTypesService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 

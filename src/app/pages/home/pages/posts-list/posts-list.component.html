@@ -22,7 +22,7 @@
   </div>
   <div class="cards row">
     <!-- featured card on the right -->
-    <div class="large-card px-0 col-lg-6 col-12" *ngIf="featured">
+    <div class="large-card px-0 col-xxl-8 col-lg-6 col-12" *ngIf="featured">
       <div class="news-card large">
         <img
           [src]="
@@ -36,11 +36,11 @@
           class="thumb-large"
           (error)="$event.target.src = 'assets/images/news-default-large.png'"
         />
-        <div class="content">
-          <h3 class="title">{{ featured.title }}</h3>
-          <div *ngIf="featured.date" class="date d-flex align-items-center mb-2">
-            <i class="hgi hgi-stroke hgi-calendar-03"></i>
-            <span class="fs-14"> {{ featured.date | date : 'dd MMM yyyy' }}</span>
+        <div class="content px-0">
+          <h3 class="title mb-1">{{ featured.title }}</h3>
+          <div *ngIf="featured.createdOn" class="date d-flex align-items-center my-2">
+            <i class="hgi hgi-stroke hgi-calendar-03 ms-1"></i>
+            <span class="fs-14 d-ltr"> {{ featured.createdOn | date : 'dd MMM yyyy' }}</span>
           </div>
           <!-- full HTML content as excerpt -->
           <div class="body content-body" [innerHTML]="featured.content"></div>
@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- small cards on the left     -->
-    <div class="cards-container pe-0 ps-1  col-lg-6 col-12">
+    <div class="cards-container pe-0 ps-1 col-xxl-4 col-lg-6 col-12">
       <div class="small-cards">
         <ng-container *ngFor="let post of latestNews">
           <div class="news-card small" (click)="featured = post">
@@ -66,17 +66,16 @@
               class="thumb"
               (error)="$event.target.src = 'assets/images/news-default-small.png'"
             />
-            <div class="text">
-              <h3 class="title">{{ post.title }}</h3>
-              <div *ngIf="post.date" class="date d-flex align-items-center">
+            <div class="text py-0 ps-0 pe-2">
+              <h3 class="title content-max-length">{{ post.title }}</h3>
+              <div *ngIf="post.createdOn" class="my-2 date d-flex align-items-center">
                 <i class="hgi hgi-stroke hgi-calendar-03"></i>
-                <span class="fs-14 fw-regular custom-mr-4 d-inline-block">
-                {{ post.date | date : 'dd MMM yyyy' }}</span
+                <span class="fs-14 fw-regular custom-mr-4 d-inline-block d-ltr">
+                {{ post.createdOn | date : 'dd MMM yyyy' }}</span
                 >
               </div>
-              <div class="definition" *ngIf="post.definition">
-                {{ post.definition |slice: 0 : (screenWidth <= 1200? 80 : 290) }}
-                {{ post.definition?.length > (screenWidth <= 1200? 80 : 290) ? '...' : '' }}
+              <div class="definition content-max-length" *ngIf="post.definition">
+                {{ post.definition }}
               </div>
             </div>
           </div>

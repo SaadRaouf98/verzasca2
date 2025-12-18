@@ -1,12 +1,11 @@
-<section class="listingPageCard">
+<section class="">
   <div class="row justify-content-between">
     <div class="col-12 col-md-6 d-flex align-items-center">
-      <!-- <a class="cursor-pointer" routerLink="../">
-        <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
-          [class.rotate-arrow]="lang === 'en'" />
-      </a> -->
-      <p class="body-bold mb-3">
-        {{ 'shared.transactions' | translate }}
+      <p class="mb-3 d-flex align-items-center">
+        <svg width="1.25rem" height="1.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-operations-dark'"></use>
+        </svg>
+        <span class="body-bold mx-2"> {{ 'shared.transactions' | translate }} </span>
       </p>
     </div>
 
@@ -22,7 +21,7 @@
     </div>
   </div>
 
-  <div>
+  <div class="listingPageCard">
     <!--Start table-->
     <ng-container *ngIf="showAdvancedSearchTable; else regularTable">
       <!--Start advanced search table-->
@@ -114,6 +113,7 @@
         [prioritiesList]="prioritiesList"
         (openDialog)="onOpenSearch($event)"
         (filtersChange)="onFiltersChange($event)"
+        (resetFilters)="onResetFilters()"
       ></app-filters>
 
       <!--End filters-->
@@ -152,7 +152,7 @@
         (mouseleave)="onPopupMouseLeave()"
       >
         <div
-          class="example-element-description"
+          class="hover-card"
           [ngStyle]="{
             position: 'sticky',
             zIndex: 9999999,
@@ -161,47 +161,50 @@
           }"
         >
           <div class="row flex-wrap justify-content-around" id="first-row">
-            <div class="col-12 | single-card">
+            <div class="col-12 single-card">
               <div class="d-flex align-items-center | title-content card-content">
                 <div
                   class="d-flex align-items-center justify-content-start | info-content card-content"
                 >
-                  <p class="label mb-0">{{ 'shared.title' | translate }} :</p>
+                  <span class="body gray-700 text-small">{{ 'shared.title' | translate }} :</span>
 
-                  <p class="info-data mb-0" [class.orange-color]="1 === 1">
+                  <span class="body-bold text-small" [class.orange-color]="1 === 1">
                     {{ transactionTargetedElement?.title }}
-                  </p>
+                  </span>
                 </div>
               </div>
             </div>
+            <hr class="line" />
           </div>
 
           <div class="row flex-wrap justify-content-around | rest-details-container">
-            <div class="col-12 col-sm-6 | single-card">
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.transactionNum' | translate }} :</p>
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.transactionNum' | translate }} :</span
+                >
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   {{
                     transactionTargetedElement?.transactionNumber ||
                       transactionTargetedElement?.autoNumber | transactionNumberFormatter
                   }}
-                </p>
+                </span>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 | single-card">
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">
+                <span class="body gray-700 text-small">
                   {{ 'TransactionsModule.TransactionsListComponent.transactionStatus' | translate }}
                   :
-                </p>
+                </span>
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   <ng-container
                     *ngIf="
                       transactionTargetedElement.containerStatus === RequestContainerStatus.Open
@@ -249,138 +252,147 @@
                   >
                     {{ 'TransactionsModule.TransactionsListComponent.forceClose' | translate }}
                   </ng-container>
-                </p>
+                </span>
               </div>
             </div>
-
-            <div class="col-12 col-sm-6 | single-card">
+            <hr class="line" />
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.incomingFoundation' | translate }} :</p>
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.incomingFoundation' | translate }} :</span
+                >
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   {{ transactionTargetedElement?.foundation?.title }}
 
-                  <span *ngIf="!transactionTargetedElement?.foundation" class="no-data">
+                  <span
+                    *ngIf="!transactionTargetedElement?.foundation"
+                    class="body-bold gray-700 text-small"
+                  >
                     لا يوجد</span
                   >
-                </p>
+                </span>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 | single-card">
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.subFoundation' | translate }} :</p>
-
-                <p class="info-data">
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.subFoundation' | translate }} :</span
+                >
+                <span class="body-bold text-small">
                   {{ transactionTargetedElement?.subFoundation?.title }}
-                  <span *ngIf="!transactionTargetedElement?.subFoundation" class="no-data">
+                  <span
+                    *ngIf="!transactionTargetedElement?.subFoundation"
+                    class="body-bold gray-700 text-small"
+                  >
                     لا يوجد</span
                   >
-                </p>
+                </span>
               </div>
             </div>
-
-            <div class="col-12 col-sm-6 | single-card">
+            <hr class="line" />
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.sector' | translate }} :</p>
+                <span class="body gray-700 text-small">{{ 'shared.sector' | translate }} :</span>
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   {{ transactionTargetedElement?.sector?.title }}
-                  <span *ngIf="!transactionTargetedElement?.sector" class="no-data"> لا يوجد</span>
-                </p>
+                  <span
+                    *ngIf="!transactionTargetedElement?.sector"
+                    class="body-bold gray-700 text-small"
+                  >
+                    لا يوجد</span
+                  >
+                </span>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 | single-card">
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.benefitType' | translate }} :</p>
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.benefitType' | translate }} :</span
+                >
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   {{ transactionTargetedElement?.benefitType?.title }}
-                  <span *ngIf="!transactionTargetedElement?.benefitType" class="no-data">
+                  <span
+                    *ngIf="!transactionTargetedElement?.benefitType"
+                    class="body-bold gray-700 text-small"
+                  >
                     لا يوجد</span
                   >
-                </p>
+                </span>
               </div>
             </div>
-
-            <div class="col-12 col-sm-6 | single-card">
+            <hr class="line" />
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.treatmentMechanism' | translate }} :</p>
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.treatmentMechanism' | translate }} :</span
+                >
 
-                <p class="info-data">
+                <span class="body-bold text-small">
                   {{ transactionTargetedElement.committee?.committeeSymbol }}
-                  <span *ngIf="!transactionTargetedElement?.committee" class="no-data">
+                  <span
+                    *ngIf="!transactionTargetedElement?.committee"
+                    class="body-bold gray-700 text-small"
+                  >
                     لا يوجد</span
                   >
-                </p>
+                </span>
               </div>
             </div>
 
-            <div class="col-12 col-sm-6 | single-card">
+            <div class="col-6 single-card">
               <div
                 class="d-flex align-items-center justify-content-start | info-content card-content"
               >
-                <p class="label">{{ 'shared.priority' | translate }} :</p>
+                <span class="body gray-700 text-small">{{ 'shared.priority' | translate }} :</span>
 
-                <p
-                  class="info-data"
+                <span
+                  class="body-bold text-small"
                   [ngStyle]="{
                     color: transactionTargetedElement.duration?.color
                   }"
                 >
                   {{ transactionTargetedElement.priority?.title }}
-                  <span *ngIf="!transactionTargetedElement?.priority" class="no-data">
+                  <span
+                    *ngIf="!transactionTargetedElement?.priority"
+                    class="body-bold gray-700 text-small"
+                  >
                     لا يوجد</span
                   >
-                </p>
+                </span>
               </div>
             </div>
-
-            <div class="col-12 mb-0 | single-card">
+            <hr class="line" />
+            <div class="col-12 single-card">
               <div
                 *ngIf="!transactionTargetedElement.isExtendRequest"
-                class="d-flex align-items-center mt-2 | title-content card-content"
+                class="d-flex align-items-center title-content card-content"
               >
                 <div class="transactionSubHeader">
-                  <p class="body-bold">
+                  <!-- <span class="body-bold text-small mb-1">
                     {{ 'ImportsExportsModule.AddImportComponent.costsRequestedAmount' | translate }}
-                  </p>
+                  </span> -->
 
-                  <p class="data amounts-paragraph" [class.orange-color]="1 === 1">
-                    <span>
-                      <span class="grey-color">{{ 'shared.totalAllocations' | translate }} : </span>
-                      <span style="display: block">
-                        {{
-                          transactionTargetedElement?.creditsApprovedAmount != null
-                            ? (transactionTargetedElement?.creditsApprovedAmount
-                              | currency : ' ' : 'symbol' : '1.2-2')
-                            : '0.00'
-                        }}
-                        <img
-                          src="assets/icons/new-sar.svg"
-                          style="width: 24px; height: 24px; display: inline-block"
-                        />
+                  <span class="row">
+                    <div class="col-6">
+                      <span class="body text-small grey-color mb-1"
+                        >{{ 'shared.totalCosts' | translate }} :
                       </span>
-
-                      <!-- <span *ngIf="element?.creditsRequestedAmount === null" class="no-data">
-                        لايوجد</span
-                      > -->
-                    </span>
-
-                    <span>
-                      <span class="grey-color">{{ 'shared.totalCosts' | translate }} : </span>
-                      <span style="display: block">
+                      <span class="body-bold text-small" style="display: block">
                         {{
                           transactionTargetedElement?.costsApprovedAmount != null
                             ? (transactionTargetedElement?.costsApprovedAmount
@@ -389,11 +401,32 @@
                         }}
                         <img
                           src="assets/icons/new-sar.svg"
-                          style="width: 24px; height: 24px; display: inline-block"
+                          style="width: 14px; height: 14px; display: inline-block"
                         />
                       </span>
-                    </span>
-                  </p>
+                    </div>
+                    <div class="col-6">
+                      <span class="body text-small grey-color mb-1"
+                        >{{ 'shared.totalAllocations' | translate }} :
+                      </span>
+                      <span class="body-bold text-small" style="display: block">
+                        {{
+                          transactionTargetedElement?.creditsApprovedAmount != null
+                            ? (transactionTargetedElement?.creditsApprovedAmount
+                              | currency : ' ' : 'symbol' : '1.2-2')
+                            : '0.00'
+                        }}
+                        <img
+                          src="assets/icons/new-sar.svg"
+                          style="width: 14px; height: 14px; display: inline-block"
+                        />
+                      </span>
+
+                      <!-- <span *ngIf="element?.creditsRequestedAmount === null" class="no-data">
+                        لايوجد</span
+                      > -->
+                    </div>
+                  </span>
                 </div>
               </div>
             </div>

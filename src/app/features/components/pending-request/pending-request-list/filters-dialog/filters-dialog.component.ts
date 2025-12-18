@@ -238,6 +238,21 @@ export class FiltersDialogComponent implements OnInit {
   }
   @Output() resetRequested = new EventEmitter<void>(); // Add this line
 
+  get hasActiveFilters(): boolean {
+    const formValue = this.form?.value;
+    if (!formValue) return false;
+
+    return Object.keys(formValue).some((key) => {
+      const value = formValue[key];
+      return (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        (!Array.isArray(value) || value.length > 0)
+      );
+    });
+  }
+
   reset() {
     this.form.reset();
     this.resetRequested.emit(); // Add this line to emit reset event

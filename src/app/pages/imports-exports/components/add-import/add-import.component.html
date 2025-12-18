@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid mt-3">
   <div class="card">
     <div class="col-12 mb-3">
       <div *ngIf="cardData !== null && cardData !== undefined" class="info">
@@ -103,6 +103,7 @@
             [placeholder]="'ImportsExportsModule.AddImportComponent.physicalNumberPlaceholder'"
             [showSearchIcon]="false"
             [showFilterIcon]="false"
+            [type]="'number'"
           ></app-input>
 
           <div
@@ -343,6 +344,7 @@
             [placeholder]="'ImportsExportsModule.AddImportComponent.deliveryNumberPlaceholder'"
             [showSearchIcon]="false"
             [showFilterIcon]="false"
+            [type]="'number'"
           ></app-input>
 
           <div
@@ -620,11 +622,8 @@
     </form>
   </div>
   <div class="d-flex justify-content-end mt-3">
-    <button
-      class="button button-primary button-lg mx-3"
-      (click)="onSubmit()"
-      [disabled]="form.invalid || disableSubmitFormDetailsBtn"
-    >
+    <button class="button button-primary button-lg mx-3" (click)="onSubmit()">
+      <!-- [disabled]="form.invalid || disableSubmitFormDetailsBtn" -->
       {{ 'shared.saveImport' | translate }}
     </button>
     <button class="button button-secondary button-lg" (click)="goToLastPage()">

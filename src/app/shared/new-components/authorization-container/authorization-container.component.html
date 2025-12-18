@@ -1,0 +1,15 @@
+<div class="grid auth-container">
+  <div class="row">
+    <div class="col-12 d-flex align-items-center flex-column">
+      <svg width="3.125rem" height="4.02038rem" class="mb-4">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#error-auth'"></use>
+      </svg>
+      <p class="h3-bold mb-2">{{ 'shared.authErrorTitle' | translate }}</p>
+
+      <p class="body mb-4">{{ 'shared.authErrorMessage' | translate }}</p>
+      <button class="button button-primary button-lg" style="width: 70%" (click)="action()">
+        {{ 'shared.goToHome' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

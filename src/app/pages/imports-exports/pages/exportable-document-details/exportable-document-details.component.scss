@@ -6,7 +6,9 @@
 .component-header {
   max-width: 100%;
 }
-
+.w-80 {
+  width: 80%;
+}
 .watch-file-container {
   gap: 5px;
   width: 113px;
@@ -97,8 +99,27 @@ textarea {
 mat-accordion mat-expansion-panel:first-child {
   margin-top: 0 !important;
 }
+
+// =============== Tab Styling (Exportable Document Details) ===============
+// Color variant for rose/pink theme - matches request details
+::ng-deep mat-tab-header .mat-mdc-tab-labels {
+  background: $rose-300;
+  color: $rose-100;
+}
+::ng-deep mat-tab-header .mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: $rose-100 !important;
+}
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active {
+  background: $rose-500 !important;
+}
 ::ng-deep mat-tab-header .mdc-tab:hover {
-  background-color: #ffffff6b !important;
-  border-radius: 5px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  background: $rose-200;
+}
+::ng-deep mat-tab-header .mdc-tab:not(.mdc-tab--active):hover .mdc-tab__text-label {
+  color: #fff;
+}
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:focus .mdc-tab__text-label,
+::ng-deep mat-tab-header .mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
+  color: #fff !important;
 }

@@ -17,8 +17,8 @@
   }
 
   .cards {
-    display: flex;
     gap: 12px;
+    padding: 0 12px;
 
     .small-cards {
       display: flex;
@@ -26,31 +26,44 @@
       gap: 12px;
       flex: 1;
       justify-content: space-between;
+
+      .news-card {
+        transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+          transform: translateY(-2px);
+        }
+      }
       .news-card.small {
         display: flex;
         align-items: center;
         background: #fff;
-        border-radius: 8px;
         overflow: hidden;
         text-decoration: none;
         color: inherit;
         padding: 8px;
-        background: #fff;
         border-radius: 0.5rem;
         min-height: 10.5rem;
 
         .thumb {
-          min-width: 12.17013rem;
-          width: 25%;
-          height: 100%;
+          @media only screen and (max-width: 1333px) {
+            height: 150px;
+            min-width: 150px;
+            max-width: 150px;
+          }
+          min-width: 200px;
+          max-width: 200px;
+          height: 160px;
           object-fit: cover;
           border-radius: 6px;
-          min-height: 9rem;
         }
 
         .text {
           flex: 1;
           margin: 0 0.7rem;
+          min-width: 0;
 
           .title {
             font-size: 0.9rem;
@@ -72,27 +85,42 @@
       }
     }
 
+    .head {
+      transition: color 0.2s ease;
+    }
+    .head:hover {
+      cursor: pointer;
+      color: $primary-hover;
+    }
+
     .large-card {
       flex: 1;
 
       .news-card.large {
-        // display: flex;
         background: #fff;
         overflow: hidden;
         text-decoration: none;
         flex-wrap: wrap;
         color: inherit;
         height: 100%;
-        padding: 0.75rem;
-        background: #fff;
         border-radius: 0.5rem;
+        padding: 12px;
 
         .content {
+
+
           margin-top: 0.8rem;
           flex: 1;
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
+
+          .definition{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 107px;
+          }
 
           .title {
             font-size: 1rem !important;
@@ -113,10 +141,8 @@
           }
 
           .excerpt {
-            //flex: 1;
             font-size: 14px;
             color: $color-primary-surface-more-darker;
-            //color: #444;
             margin-bottom: 12px;
           }
 
@@ -126,11 +152,14 @@
         }
 
         .thumb-large {
+          @media only screen and (max-width: 1333px) {
+            height: 330px;
+          }
           object-fit: cover;
           border-radius: 6px;
           width: 100%;
           margin: 0;
-          height: 21.5rem;
+          height: 366px;
           flex-direction: row;
           justify-content: center;
           display: flex;
@@ -140,31 +169,21 @@
   }
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-  .home-news {
-    .cards {
-      flex-direction: column;
-
-      .large-card,
-      .small-cards .news-card.small {
-        width: 100%;
-      }
-    }
-  }
-}
 .date {
   color: #043049;
 }
+
 .body {
   line-height: normal !important;
 }
+
 .title {
   font-weight: bolder !important;
 }
+
 .date {
   width: 100%;
-  margin-bottom: 10x;
+  margin-bottom: 7px;
 }
 
 .read-more {
@@ -180,6 +199,7 @@
   height: 2.5rem;
   text-decoration: none !important;
 }
+
 .news-card img {
   margin: 0;
 }

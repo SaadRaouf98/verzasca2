@@ -22,6 +22,7 @@ import { HomeNextEventsComponent } from '@pages/home/components/home-next-events
 import { MinutesToReadableTimePipe } from '../../shared/pipes/minutesToReadableTime.pipe';
 import { InputComponent } from '@shared/components/input/input.component';
 import { HomePoliciesComponent } from './components/home-policies/home-policies.component';
+import { TruncatePipe } from '@shared/pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { HomePoliciesComponent } from './components/home-policies/home-policies.
     MinutesToReadableTimePipe,
     InputComponent,
     HomePoliciesComponent,
+    TruncatePipe,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, // Ensure the locale matches the desired format

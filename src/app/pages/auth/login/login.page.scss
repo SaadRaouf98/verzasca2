@@ -172,3 +172,18 @@ form {
 .bg-5BBDF6 {
   background-color: #043049 !important;
 }
+
+@media (min-width: 1024px) and (max-width: 1500px) {
+  .card-header img {
+    width: 80%;
+  }
+  .mb-5 {
+    margin-bottom: 1rem !important;
+  }
+  .card-body {
+    margin-top: 0.9rem;
+    .subHeader {
+      margin-bottom: 0.7em;
+    }
+  }
+}

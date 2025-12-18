@@ -1,17 +1,5 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-} from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RequestAction } from '@core/models/request-action.model';
@@ -35,16 +23,11 @@ import { RequestProgressType } from '@core/enums/request-progress-type.enum';
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
 })
-export class TransactionTimelineScrollableTableComponent
-  implements OnInit, OnChanges
-{
+export class TransactionTimelineScrollableTableComponent implements OnInit, OnChanges {
   requestActions!: RequestAction[];
   lang: string = 'ar';
   RequestProgressType = RequestProgressType;
@@ -69,20 +52,18 @@ export class TransactionTimelineScrollableTableComponent
   }
 
   onDownloadFile(file: Attachment): void {
-    this.manageSharedService.requestsService
-      .getRequestSingleAttachment(file.id)
-      .subscribe({
-        next: (res) => {
-          downloadBlobOrFile(file.name, res);
-        },
-      });
+    this.manageSharedService.requestsService.getRequestSingleAttachment(file.id).subscribe({
+      next: (res) => {
+        downloadBlobOrFile(file.name, res);
+      },
+    });
   }
 
   onViewAttachments(attachments: Attachment[]): void {
     this.dialog.open(ViewAttachmentsModalComponent, {
       width: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         attachments,
       },
@@ -94,7 +75,7 @@ export class TransactionTimelineScrollableTableComponent
       this.dialog.open(ViewCommitteeMembersApprovalComponent, {
         width: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: {
           stepId,
           requestId: this.requestId || requestId,
@@ -104,9 +85,7 @@ export class TransactionTimelineScrollableTableComponent
   }
   formatHijriDate(hijriDate: string): string {
     if (hijriDate) {
-      return `${hijriDate.split('/')[2]}/${hijriDate.split('/')[1]}/${
-        hijriDate.split('/')[0]
-      }`;
+      return `${hijriDate.split('/')[2]}/${hijriDate.split('/')[1]}/${hijriDate.split('/')[0]}`;
     }
     return '';
   }

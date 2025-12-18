@@ -1,22 +1,12 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { RequestProgressType } from '@core/enums/request-progress-type.enum';
 import { RequestAction } from '@core/models/request-action.model';
 import { Attachment } from '@core/models/request.model';
-import {
-  ViewCommitteeMembersApprovalComponent,
-} from '@pages/imports-exports/modals/view-committee-members-approval/view-committee-members-approval.component';
-import {
-  ViewAttachmentsModalComponent,
-} from '@shared/components/view-attachments-modal/view-attachments-modal.component';
+import { ViewCommitteeMembersApprovalComponent } from '@pages/imports-exports/modals/view-committee-members-approval/view-committee-members-approval.component';
+import { ViewAttachmentsModalComponent } from '@shared/components/view-attachments-modal/view-attachments-modal.component';
 import {
   downloadBlobOrFile,
   isSmallDeviceWidthForPopup,
@@ -62,9 +52,8 @@ export class TimelineComponent implements OnInit, OnChanges {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private manageSharedService: ManageSharedService,
-    private dialog: MatDialog,
-  ) {
-  }
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.lang = this.langugaeService.language;
@@ -81,8 +70,7 @@ export class TimelineComponent implements OnInit, OnChanges {
   }
 
   get flattenedCards() {
-    const cards: { date: string; hijriDate: string; item: RequestAction }[] =
-      [];
+    const cards: { date: string; hijriDate: string; item: RequestAction }[] = [];
     for (const group of this.groupedActions) {
       for (const item of group.items) {
         cards.push({
@@ -121,13 +109,11 @@ export class TimelineComponent implements OnInit, OnChanges {
   }
 
   onDownloadFile(file: Attachment): void {
-    this.manageSharedService.requestsService
-      .getRequestSingleAttachment(file.id)
-      .subscribe({
-        next: (res) => {
-          downloadBlobOrFile(file.name, res);
-        },
-      });
+    this.manageSharedService.requestsService.getRequestSingleAttachment(file.id).subscribe({
+      next: (res) => {
+        downloadBlobOrFile(file.name, res);
+      },
+    });
   }
 
   onGoToViewAttachments(attachment: Attachment): void {
@@ -140,7 +126,7 @@ export class TimelineComponent implements OnInit, OnChanges {
     this.dialog.open(ViewAttachmentsModalComponent, {
       width: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         attachments,
       },
@@ -149,9 +135,7 @@ export class TimelineComponent implements OnInit, OnChanges {
 
   formatHijriDate(hijriDate: string): string {
     if (hijriDate) {
-      return `${hijriDate.split('/')[2]}/${hijriDate.split('/')[1]}/${
-        hijriDate.split('/')[0]
-      }`;
+      return `${hijriDate.split('/')[2]}/${hijriDate.split('/')[1]}/${hijriDate.split('/')[0]}`;
     }
     return '';
   }

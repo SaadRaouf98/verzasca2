@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { Entity, AllEntities } from '@core/models/entity.model';
 import { SortDirection } from '@angular/material/sort';
 import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
@@ -19,11 +20,7 @@ export class ReferralJustificationsService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
     if (filtersData?.searchKeyword) {
       url += `&Filter=[["title", "contains", "${filtersData.searchKeyword}"], "or", ["titleEn", "contains", "${filtersData.searchKeyword}"]]`;
     }
@@ -34,7 +31,8 @@ export class ReferralJustificationsService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData?: { searchKeyword?: string },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllEntities> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -42,6 +40,12 @@ export class ReferralJustificationsService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 

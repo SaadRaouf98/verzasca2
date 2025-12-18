@@ -12,13 +12,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav-item.component.scss'],
 })
 export class NavItemComponent implements OnInit {
+  openSub: boolean = false;
+  subActive: boolean = false;
   @Input() item!: NavItem;
   @Input() statistics!: StatisticsSummary;
   @Input() mergeFn!: (route: string) => any;
   @Input() isLightTheme: boolean = false;
   @Input() isCollapsed: boolean = false;
-  openSub: boolean = false;
-  subActive: boolean = false;
+
 
   PermissionsObj = PermissionsObj;
   authService = inject(AuthService);
@@ -33,16 +34,22 @@ export class NavItemComponent implements OnInit {
   get queryParamsHandling() {
     return this.item.queryParamsMerge ? this.mergeFn(this.item.route) : null;
   }
+
   openMenuFn(check: boolean) {
     if (check) {
       this.openSub = !this.openSub;
+    } else {
+      this.openSub = false;
     }
+  }
+
+  trackBySubRoute(index: number, sub: any): string {
+    return sub.route;
   }
 
   isChildActive(url: string): boolean {
     const currentUrl = this.router.url.split('?')[0];
-    this.subActive = url.includes('active');
-    return currentUrl === url;
+    return currentUrl.startsWith(url);
   }
 
   logout() {

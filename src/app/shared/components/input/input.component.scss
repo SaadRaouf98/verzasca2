@@ -1,4 +1,4 @@
-@use "src/assets/design-system/colors" as *;
+@use 'src/assets/design-system/colors' as *;
 // Add styles for readonly/disabled input
 .shared-input__control[readonly],
 .shared-input__control[disabled],
@@ -37,16 +37,24 @@
     border: 1px solid #d9d9d9;
     background: #fff;
     width: 100%;
-    // padding-right: 2.25rem;
+
+    &::placeholder {
+      font-weight: 400;
+      color: #999;
+    }
+
+    &:not(:placeholder-shown) {
+      font-weight: 700;
+    }
 
     &.ng-invalid.ng-touched {
       border-color: #e53e3e;
     }
 
     &:focus {
-      outline: none;
-      border-color: var(--theme-color1, #3182ce);
-      box-shadow: 0 0 0 2px rgba(var(--theme-color1-rgb, 49, 130, 206), 0.2);
+      // outline: none;
+      // border-color: var(--theme-color1, #3182ce);
+      // box-shadow: 0 0 0 2px rgba(var(--theme-color1-rgb, 49, 130, 206), 0.2);
     }
 
     // Remove focus styles if disabled or readonly

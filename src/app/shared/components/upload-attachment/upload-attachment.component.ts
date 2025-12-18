@@ -82,6 +82,37 @@ export class UploadAttachmentComponent implements OnInit, OnChanges {
     return file?.size || file?.length || 0;
   }
 
+  // Helper method to get the icon based on file type
+  getFileIcon(file: any): string {
+    let fileName = '';
+    if (file instanceof File) {
+      fileName = file.name || '';
+    } else {
+      fileName = file?.name || file?.originalName || '';
+    }
+
+    const ext = fileName.split('.').pop()?.toLowerCase() || '';
+
+    // Image extensions
+    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) {
+      return 'image';
+    }
+    // PDF
+    else if (ext === 'pdf') {
+      return 'pdf';
+    }
+    // Document extensions
+    else if (['doc', 'docx', 'txt'].includes(ext)) {
+      return 'pdf';
+    }
+    // Excel extensions
+    else if (['xls', 'xlsx'].includes(ext)) {
+      return 'pdf';
+    }
+    // Default to pdf icon
+    return 'pdf';
+  }
+
   ngOnInit(): void {
     this.setInitialFiles(this.initialFiles);
   }

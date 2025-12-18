@@ -11,6 +11,6 @@ import { CommonModule } from '@angular/common';
 export class CustomToastrComponent {
   @Input() message: string = '';
   @Input() title: string = '';
-  @Input() type: 'success' | 'error' | 'warning' = 'success';
+  @Input() type: 'success' | 'error' | 'warning' | 'info' = 'success';
   @Input() onClose: () => void = () => {};
 }

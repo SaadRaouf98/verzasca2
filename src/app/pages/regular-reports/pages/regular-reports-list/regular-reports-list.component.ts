@@ -323,7 +323,7 @@ export class RegularReportsListComponent implements OnDestroy {
         Feedback: true,
         isTextCenter: true,
       },
-      disableClose: true,
+      disableClose: false,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {
@@ -630,7 +630,7 @@ export class RegularReportsListComponent implements OnDestroy {
       minHeight: '55vh',
       maxHeight: '95vh',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       panelClass: ['action-modal', 'float-footer'],
       data: {
         id: document.id,
@@ -700,13 +700,12 @@ export class RegularReportsListComponent implements OnDestroy {
 
   addFolder(node?: RegularReport, isForEdit?: boolean) {
     const filtersDialogRef = this.matDialog.open(AddReportFolderDialogComponent, {
-      minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '30vw',
-      width: '30vw',
-      minHeight: '55vh',
-      maxHeight: '95vh',
+      maxWidth: '31.25rem',
+      maxHeight: '44.3125rem',
+
       autoFocus: false,
-      disableClose: true,
-      panelClass: ['action-modal', 'float-footer'],
+      disableClose: false,
+      panelClass: ['action-modal'],
       data: {
         node: node,
         isForEdit: isForEdit,
@@ -730,7 +729,7 @@ export class RegularReportsListComponent implements OnDestroy {
       minHeight: '30vh',
       maxHeight: '95vh',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       panelClass: ['action-modal', 'float-footer'],
       data: {
         node: node,
@@ -768,7 +767,7 @@ export class RegularReportsListComponent implements OnDestroy {
         message: `${this.translateService.instant('unauthorized.youDoNotHavePermission')} `,
         authorizationInside: false,
       },
-      disableClose: true,
+      disableClose: false,
     });
   }
 
@@ -793,7 +792,7 @@ export class RegularReportsListComponent implements OnDestroy {
           'RegularReportsModule.AddRegularReportComponent.deletePopupMessage'
         )} `,
       },
-      disableClose: true,
+      disableClose: false,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {
@@ -836,7 +835,7 @@ export class RegularReportsListComponent implements OnDestroy {
       this.matDialog.open(ViewImageModalComponent, {
         width: '800px',
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: e.src,
       });
     }

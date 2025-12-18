@@ -1,6 +1,5 @@
-@use "src/assets/design-system/colors" as *;
-@import "../../../../../assets/scss/variables.scss";
-
+@use 'src/assets/design-system/colors' as *;
+@import '../../../../../assets/scss/variables.scss';
 
 .div-card {
   border-radius: 14px;
@@ -11,7 +10,6 @@
 
   @media (min-width: 1332px) {
     & {
-      
       margin: 8px;
       margin-top: 0;
     }
@@ -130,43 +128,43 @@ button {
     color: #3db5b5;
   }
 }
-.component-header{
+.component-header {
   padding-bottom: 0 !important;
   position: relative;
 }
-.body-bold,p{
-   font-size: 14px !important;
+.body-bold,
+p {
+  font-size: 14px !important;
 }
-.component-header_title{
+.component-header_title {
   margin-bottom: 10px;
   font-size: 16px !important;
 }
-.wrapper{
+.wrapper {
   overflow-x: hidden;
 }
-::ng-deep .mat-mdc-text-field-wrapper{
-height: 50px !important;
+::ng-deep .mat-mdc-text-field-wrapper {
+  height: 50px !important;
 }
-::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
-padding-top: 0px !important;
-padding-bottom: 8px !important;
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 0px !important;
+  padding-bottom: 8px !important;
 }
-::ng-deep .mat-mdc-form-field-infix{
+::ng-deep .mat-mdc-form-field-infix {
   min-height: 50px !important;
 }
-.close_btn{
-    position: absolute;
-    left: 0;
-    top: 20px;
-    cursor: pointer;
-    width: auto;
+.close_btn {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  cursor: pointer;
+  width: auto;
 }
-
-
 
 :host ::ng-deep .custom-slide-toggle {
   width: 2.5rem;
-  height: 1.5rem;
+  // height: 1.5rem;
+  height: auto;
   flex-shrink: 0;
 }
 :host ::ng-deep .custom-slide-toggle .mdc-switch__track {
@@ -190,32 +188,21 @@ padding-bottom: 8px !important;
   right: 3px;
 }
 
-:host ::ng-deep  .mdc-switch:enabled .mdc-switch__track::before , :host ::ng-deep   {
-      background: $gray-50 !important;
+:host ::ng-deep .mdc-switch:enabled .mdc-switch__track::before,
+:host ::ng-deep {
+  background: $gray-50 !important;
 }
 
 :host ::ng-deep .mdc-switch__shadow {
   background: #fff;
 }
 
-
 // Dark theme: green-500
 
-  ::ng-deep
-  .mdc-switch:enabled
-  .mdc-switch__track::after,
-
-  ::ng-deep
-  .mdc-switch:enabled:hover:not(:focus):not(:active)
-  .mdc-switch__track::after,
-
-  ::ng-deep
-  .mdc-switch:enabled:focus:not(:active)
-  .mdc-switch__track::after,
-
-  ::ng-deep
-  .mdc-switch:enabled:active
-  .mdc-switch__track::after {
+::ng-deep .mdc-switch:enabled .mdc-switch__track::after,
+::ng-deep .mdc-switch:enabled:hover:not(:focus):not(:active) .mdc-switch__track::after,
+::ng-deep .mdc-switch:enabled:focus:not(:active) .mdc-switch__track::after,
+::ng-deep .mdc-switch:enabled:active .mdc-switch__track::after {
   background: $green-500;
   background-color: $green-500;
   width: 2.5rem;
@@ -236,15 +223,11 @@ padding-bottom: 8px !important;
 :host ::ng-deep .mdc-switch__ripple {
   top: 65%;
 }
-:host
-  ::ng-deep
-  .custom-slide-toggle
-  .mdc-switch__handle-track
-  .mdc-switch__icons {
+:host ::ng-deep .custom-slide-toggle .mdc-switch__handle-track .mdc-switch__icons {
   display: none;
 }
-mat-slide-toggle ::ng-deep .mdc-label{
-display: inline-block;
-    min-width: 200px;
-    padding-inline-start: 10px;
+mat-slide-toggle ::ng-deep .mdc-label {
+  display: inline-block;
+  min-width: 200px;
+  padding-inline-start: 10px;
 }

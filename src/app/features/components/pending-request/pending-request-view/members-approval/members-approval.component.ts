@@ -32,7 +32,7 @@ export class MembersApprovalComponent {
       maxHeight: '44.3125rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestId: this.requestId,
         committeeApproval: committeeApproval,

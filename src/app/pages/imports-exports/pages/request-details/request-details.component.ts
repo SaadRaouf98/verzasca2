@@ -3,7 +3,7 @@ import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { DeletePopupComponent } from '@shared/new-components/delete-popup/delete-popup.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
   RequestContainerStatus,
   statusTranslationMap,
@@ -39,14 +39,14 @@ import { AcceptanceActionModalComponent } from '@shared/components/acceptance-ac
 import { TranslateService } from '@ngx-translate/core';
 import { ConsultantsAssignmentModalComponent } from '@shared/components/consultants-assignment-modal/consultants-assignment-modal.component';
 import { ManageImportsExportsService } from '@pages/imports-exports/services/manage-imports-exports.service';
-import { Location } from '@angular/common';
+import { Location, ViewportScroller } from '@angular/common';
 import { DelegateUserModalComponent } from '@shared/components/delegate-user-modal/delegate-user-modal.component';
 import { SelectRecommendationTypeModalComponent } from '@shared/components/select-recommendation-type-modal/select-recommendation-type-modal.component';
 import { SelectBenefitTypeModalComponent } from '@shared/components/select-benefit-type-modal/select-benefit-type-modal.component';
 import { SelectProcessTypeModalComponent } from '@shared/components/select-process-type-modal/select-process-type-modal.component';
 import { CommentModalComponent } from '@shared/components/comment-modal/comment-modal.component';
 import { Transaction } from '@core/models/transaction.model';
-import { Observable, map, forkJoin, catchError, of, tap, switchMap, takeUntil } from 'rxjs';
+import { Observable, map, forkJoin, catchError, of, tap, switchMap, takeUntil, filter } from 'rxjs';
 import { StudyProjectModalComponent } from '@shared/components/study-project-modal/study-project-modal.component';
 import { StatementRequestModalComponent } from '@shared/components/statement-request-modal/statement-request-modal.component';
 import { SignatureFormatModalComponent } from '@shared/components/signature-format-modal/signature-format-modal.component';
@@ -80,6 +80,8 @@ import { AddAttachmentComponent } from '@features/components/pending-request/pen
 import { TransactionNumberPipe } from '@shared/pipes/transaction-number.pipe';
 import { RescheduleMeetingComponent } from '@features/components/pending-request/pending-request-view/reschedule-meeting/reschedule-meeting.component';
 import { CustomToastrService } from '@core/services/custom-toastr.service';
+import { AddBarcodeExportableDocumentComponent } from '@pages/imports-exports/components/add-barcode-exportable-document/add-barcode-exportable-document.component';
+import { ViewImageModalComponent } from '@shared/components/view-image-modal/view-image-modal.component';
 
 @Component({
   selector: 'app-request-details',
@@ -200,14 +202,17 @@ export class RequestDetailsComponent implements OnInit {
     private location: Location,
     private clipboard: Clipboard,
     private cdr: ChangeDetectorRef,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit(): void {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      window.scrollTo(0, 0);
+    });
     this.activatedRoute.params.subscribe((params) => {
       this.elementId = params['id'];
       this.selectedTabIndex = 0; // Reset to first tab on ID change
-      window.scrollTo({ top: 0, behavior: 'smooth' });
       this.initializePageData();
     });
     this.activatedRoute.queryParams.subscribe((queryParams) => {
@@ -234,7 +239,7 @@ export class RequestDetailsComponent implements OnInit {
           'RegularReportsModule.AddRegularReportComponent.deletePopupMessage'
         )} `,
       },
-      disableClose: true,
+      disableClose: false,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {
@@ -266,8 +271,9 @@ export class RequestDetailsComponent implements OnInit {
     this.columnsConfig = [
       {
         label: 'shared.name',
-        type: 'textWithDetails',
+        type: 'textWithDetailsIcon',
         subTitle: ['contentType', 'length'],
+        icon: 'icon',
       },
       {
         label: 'shared.by',
@@ -283,9 +289,7 @@ export class RequestDetailsComponent implements OnInit {
             actionName: 'shared.viewFile',
             icon: 'menu-view',
             onClick: (element: any) => {
-              this.router.navigate(['/imports-exports/attachments/' + element.id], {
-                queryParams: { name: element.name },
-              });
+              this.onViewAttachment(element);
             },
           },
           {
@@ -365,6 +369,71 @@ export class RequestDetailsComponent implements OnInit {
           .subscribe();
       }
     });
+  }
+  onViewAttachment(e?: any): void {
+    // If a file is passed as parameter (from upload component), use it
+    // Otherwise, get the main document file from form (for backward compatibility)
+    const file: File & {
+      id: string;
+      name: string;
+      path: string;
+      contentType: string;
+    } = e;
+
+    if (!file) {
+      this.toastr.error('No file selected to view');
+      return;
+    }
+
+    if (file.id) {
+      const fileName = file.name ? file.name.toLowerCase() : '';
+      const filePath = file.path;
+
+      if (fileName.match(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i)) {
+        // Fetch image using getFileByPath
+        this.manageImportsExportsService.wopiFilesService.getFileByPath(filePath).subscribe({
+          next: (res) => {
+            const imageUrl = URL.createObjectURL(res);
+            this.dialog
+              .open(ViewImageModalComponent, {
+                data: imageUrl,
+                minWidth: '62.5rem',
+                maxWidth: '62.5rem',
+                maxHeight: '95vh',
+                height: '95vh',
+                panelClass: ['action-modal', 'float-footer'],
+                autoFocus: false,
+                disableClose: false,
+              })
+              .afterClosed()
+              .subscribe(() => URL.revokeObjectURL(imageUrl));
+          },
+        });
+      } else if (fileName.endsWith('.pdf')) {
+        this.manageImportsExportsService.requestsService
+          .getNewRequestSingleAttachment(file.id)
+          .subscribe({
+            next: (res) => {
+              const newFile = new File([res], file.name);
+              const dialogRef = this.dialog.open(AddBarcodeExportableDocumentComponent, {
+                minWidth: '62.5rem',
+                maxWidth: '62.5rem',
+                maxHeight: '95vh',
+                height: '95vh',
+                panelClass: ['action-modal', 'float-footer'],
+                autoFocus: false,
+                disableClose: false,
+                data: {
+                  file: newFile,
+                  attachmentId: file.id,
+                  hideHint: true,
+                  showBarcode: false,
+                },
+              });
+            },
+          });
+      }
+    }
   }
   addAttachDialog() {
     const dialogRef = this.dialog.open(AddAttachmentComponent, {
@@ -476,6 +545,8 @@ export class RequestDetailsComponent implements OnInit {
           forkJoin(requests).subscribe({
             next: (res) => {
               this.isLoading = false;
+              // Refresh timeline actions after page data is loaded
+              this.getTimelineData();
             },
             error: (err) => {
               this.isLoading = false;
@@ -486,13 +557,15 @@ export class RequestDetailsComponent implements OnInit {
               }
             },
             complete: () => {
-              /* 
+              /*
                 '------------------------- ALL COMPLETED -----------------------------'
               ); */
             },
           });
         } else {
           this.isLoading = false;
+          // Refresh timeline actions when no secondary requests
+          this.getTimelineData();
         }
       },
       error: (err) => {
@@ -620,7 +693,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           textAreaLabel: this.translateService.instant('shared.note'),
@@ -643,7 +716,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           textAreaLabel: this.translateService.instant('shared.note'),
@@ -684,7 +757,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           buttonLabel: this.translateService.instant('shared.confirm'),
@@ -706,7 +779,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           buttonLabel: this.translateService.instant('shared.confirm'),
@@ -728,7 +801,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           textAreaLabel: this.translateService.instant('shared.note'),
@@ -751,7 +824,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           buttonLabel: this.translateService.instant('shared.confirm'),
@@ -773,7 +846,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '26.5rem',
         maxHeight: '14rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           title: this.translateService.instant('dialogs.rescheduleMeeting.title'),
           desc: this.translateService.instant('dialogs.rescheduleMeeting.description'),
@@ -807,7 +880,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           actionType: action.actionType,
@@ -854,7 +927,7 @@ export class RequestDetailsComponent implements OnInit {
         maxHeight: '95vh',
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        disableClose: false,
         autoFocus: false,
         data: {
           header: action.title,
@@ -889,9 +962,9 @@ export class RequestDetailsComponent implements OnInit {
         autoFocus: false,
         minWidth: '31.25rem',
         maxWidth: '31.25rem',
-        maxHeight: '44.3125rem',
+        // maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           buttonLabel: this.translateService.instant('shared.save'),
@@ -915,7 +988,7 @@ export class RequestDetailsComponent implements OnInit {
         minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
         maxWidth: '95vw',
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -954,7 +1027,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '62.5rem',
         maxHeight: '95vh',
         panelClass: ['action-modal'],
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -978,7 +1051,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '26.5rem',
         maxHeight: '14rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           title: this.translateService.instant('dialogs.resignMeeting.title'),
           desc: this.translateService.instant('dialogs.resignMeeting.description'),
@@ -1008,7 +1081,7 @@ export class RequestDetailsComponent implements OnInit {
         maxHeight: '95vh',
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1035,7 +1108,7 @@ export class RequestDetailsComponent implements OnInit {
         maxHeight: '95vh',
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1059,7 +1132,7 @@ export class RequestDetailsComponent implements OnInit {
         maxHeight: '95vh',
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1089,12 +1162,10 @@ export class RequestDetailsComponent implements OnInit {
       }
 
       const dialogRef = this.dialog.open(AuditingModalComponent, {
-        minWidth: '62.5rem',
-        maxWidth: '62.5rem',
-        maxHeight: '95vh',
-        height: '95vh',
-        panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        minWidth: '31.25rem',
+        maxWidth: '31.25rem',
+        panelClass: ['action-modal'],
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1130,7 +1201,7 @@ export class RequestDetailsComponent implements OnInit {
         maxHeight: '95vh',
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1166,7 +1237,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1190,7 +1261,7 @@ export class RequestDetailsComponent implements OnInit {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           header: action.title,
           requestId: this.requestDetails.id,
@@ -1219,7 +1290,7 @@ export class RequestDetailsComponent implements OnInit {
       height: '95vh',
       panelClass: ['action-modal', 'float-footer'],
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestId: this.elementId,
       },
@@ -1402,6 +1473,7 @@ export class RequestDetailsComponent implements OnInit {
           this.tabsLoading.tab3 = false;
           this.items = res.map((attachment: any) => ({
             ...attachment,
+            icon: 'docs',
             length: this.formatFileSize(attachment.length), // Format file size with KB
           }));
           this.cdr.markForCheck(); // Trigger change detection
@@ -1492,7 +1564,7 @@ export class RequestDetailsComponent implements OnInit {
       // OLD APPROACH: Made two sequential API calls (getRelatedRequestsList -> getRelatedTransactions)
       // This was inefficient as only relatedRequests data was being used
       // Commented out to prevent duplicate API calls
-      /* 
+      /*
       this.manageImportsExportsService.requestsService
         .getRelatedRequestsList(
           {
@@ -1548,7 +1620,7 @@ export class RequestDetailsComponent implements OnInit {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         comment,
       },
@@ -1565,7 +1637,7 @@ export class RequestDetailsComponent implements OnInit {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestId: this.requestDetails.id,
         committeeApproval: committeeApproval,

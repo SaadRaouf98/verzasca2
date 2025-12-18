@@ -54,6 +54,7 @@ import { ExportalInfoDetailsComponent } from './pages/exportable-document-detail
 import { ExportalBasicInfoComponent } from './pages/exportable-document-details/exportal-basic-info/exportal-basic-info.component';
 import { ExportImportDetailsComponent } from './pages/exportable-document-details/exporta-import-details/exporta-import-details.component';
 import { AuthorizationPopupComponent } from '@shared/new-components/authorization-popp/authorization-popup.component';
+import { AuthorizationContainerComponent } from '@shared/new-components/authorization-container/authorization-container.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { AuthorizationPopupComponent } from '@shared/new-components/authorizatio
     FiltersComponent,
     UploadAttachmentComponent,
     AuthorizationPopupComponent,
+    AuthorizationContainerComponent,
   ],
   providers: [
     DatePipe,

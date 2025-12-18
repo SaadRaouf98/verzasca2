@@ -20,11 +20,7 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
-import {
-  DateAdapter,
-  MAT_DATE_LOCALE,
-  MAT_DATE_FORMATS,
-} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import * as moment from 'moment';
 
 export const CUSTOM_DATE_FORMATS = {
@@ -141,4 +137,3 @@ export class DatePickerComponent implements ControlValueAccessor {
     return parent instanceof FormGroup ? parent : null;
   }
 }
-

@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   DestroyRef,
   inject,
+  HostListener,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -189,6 +190,17 @@ export class AddTransactionComponent {
     this.fromDateControl.valueChanges.subscribe(() => this.onDateChanged());
     this.toDateControl.valueChanges.subscribe(() => this.onDateChanged());
   }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onPageRefresh(event: BeforeUnloadEvent): string | void {
+    if (this.form && this.form.dirty) {
+      // Return a string to show the browser's confirmation dialog
+      event.preventDefault();
+      event.returnValue = true;
+      return this.translateService.instant('shared.unsavedChanges');
+    }
+  }
+
   onDateChanged(): void {
     const fromDate = this.fromDateControl.value
       ? this.datePipe.transform(this.fromDateControl.value, 'yyyy-MM-dd')
@@ -212,12 +224,8 @@ export class AddTransactionComponent {
   }
   getUsersAccessibility(requestContainerId: string): void {
     this.manageTransactionsService.requestContainersService
-      .getUsersAccessibilityList({ hasAccess: true }, requestContainerId)
+      .getUsersAccessibilityList({ hasAccess: true }, requestContainerId, true)
       .subscribe((accessibleUsers) => {
-        // this.usersList$ = of({
-        //   data: accessibleUsers.data,
-        //   totalCount: accessibleUsers.data.length,
-        // });
         this.form.patchValue({
           users: accessibleUsers.data,
         });
@@ -416,7 +424,7 @@ export class AddTransactionComponent {
   }
   getSectorsByFoundation(): void {
     this.manageTransactionsService.foundationsService
-      .getSectorsByFoundationsId(this.form.get('foundation')?.value)
+      .getSectorsByFoundationsId(this.form.get('foundation')?.value, true)
       .subscribe((res) => {
         this.setSector(res);
       });
@@ -442,7 +450,13 @@ export class AddTransactionComponent {
 
   getAllSectors() {
     this.manageActionsService.sectorsService
-      .getSectorsList({ pageIndex: 0, pageSize: 1000 }, { parentId: null })
+      .getSectorsList(
+        { pageIndex: 0, pageSize: 1000 },
+        { parentId: null },
+        undefined,
+        undefined,
+        true
+      )
       .subscribe((res) => {
         this.allSectors = res.data;
         this.initializeColumnConfig();
@@ -458,7 +472,8 @@ export class AddTransactionComponent {
         parentId: null,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
     this.foundationsList$.subscribe((res) => {
       if (res && Array.isArray(res.data)) {
@@ -476,7 +491,8 @@ export class AddTransactionComponent {
           parentId: null,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       );
 
     this.benefitTypesList$ = this.manageTransactionsService.benefitTypesService.getBenefitTypesList(
@@ -486,7 +502,8 @@ export class AddTransactionComponent {
       },
       undefined,
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
 
     this.sectorsList$ = this.manageTransactionsService.sectorsService.getSectorsList(
@@ -498,7 +515,8 @@ export class AddTransactionComponent {
         parentId: null,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
 
     this.manageTransactionsService.classificationsService
@@ -509,7 +527,8 @@ export class AddTransactionComponent {
         },
         undefined,
         undefined,
-        this.dropDownPropertiesClass
+        this.dropDownPropertiesClass,
+        true
       )
       .subscribe((res) => {
         this.classificationsList = res.data;
@@ -524,7 +543,8 @@ export class AddTransactionComponent {
         },
         undefined,
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       )
       .subscribe((res) => {
         this.prioritiesList = res.data;
@@ -538,7 +558,10 @@ export class AddTransactionComponent {
         },
         {
           type: OrganizationUnitType.Committee,
-        }
+        },
+        undefined,
+        undefined,
+        true
       )
       .subscribe((res) => {
         this.organizationUnitsList = res.data;
@@ -551,7 +574,9 @@ export class AddTransactionComponent {
           pageIndex: 0,
         },
         undefined,
-        undefined
+        undefined,
+        undefined,
+        true
       );
 
     this.manageTransactionsService.referralJustificationsService
@@ -562,7 +587,8 @@ export class AddTransactionComponent {
         },
         undefined,
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       )
       .subscribe((res) => {
         this.referralJustificationsList = res.data;
@@ -575,7 +601,8 @@ export class AddTransactionComponent {
       },
       undefined,
       undefined,
-      ['id', 'name']
+      ['id', 'name'],
+      true
     );
   }
 
@@ -603,7 +630,8 @@ export class AddTransactionComponent {
             parentId: foundation,
           },
           undefined,
-          this.dropDownProperties
+          this.dropDownProperties,
+          true
         );
 
       this.subFoundationsList$.subscribe((res) => {
@@ -641,7 +669,8 @@ export class AddTransactionComponent {
           parentId: sector.id,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       );
     }
   }
@@ -714,45 +743,32 @@ export class AddTransactionComponent {
       .subscribe({
         next: (res) => {
           this.requestContainerId = res.id;
-          this.toastr.success(this.translateService.instant('shared.dataCreatedSuccessfully'));
 
-          const dialogRef = this.dialog.open(SuccessModalComponent, {
-            minWidth: '31.25rem',
-            maxWidth: '31.25rem',
-            maxHeight: '44.3125rem',
-            panelClass: 'action-modal',
-            autoFocus: false,
-            disableClose: true,
-            data: {
-              title: 'shared.processDone',
-              content: this.translateService.instant('shared.serialNumberIs'),
-              specialContent: ` (${res.autoNumber})`,
+          const sectorObj = this.allSectors.find((s) => s.id === this.sectorId);
+          const cardData = {
+            title: title,
+            transactionNumber: res.autoNumber,
+            sector: sectorObj || { id: this.sectorId, title: '', titleEn: '' },
+            classification: this.classificationsList.find((c) => c.id === classificationId),
+          };
+
+          this.toastr.success(
+            `${this.translateService.instant('shared.serialNumberIs')} (${res.autoNumber})`,
+            this.translateService.instant('shared.processDone')
+          );
+
+          this.onGoToNextStep({
+            showImport: true,
+            requestContainerId: res.id,
+            requestContainerData: {
+              foundation: foundation,
+              subFoundation: subFoundation,
+              concernedFoundations: concernedFoundations,
+              classificationId,
+              users,
             },
+            cardData: cardData,
           });
-
-          dialogRef
-            .afterClosed()
-            .subscribe((dialogResult: { statusCode: ModalStatusCode; status: string }) => {
-              const sectorObj = this.allSectors.find((s) => s.id === this.sectorId);
-              const cardData = {
-                title: title,
-                transactionNumber: res.autoNumber,
-                sector: sectorObj || { id: this.sectorId, title: '', titleEn: '' },
-                classification: this.classificationsList.find((c) => c.id === classificationId),
-              };
-              this.onGoToNextStep({
-                showImport: true,
-                requestContainerId: res.id,
-                requestContainerData: {
-                  foundation: foundation,
-                  subFoundation: subFoundation,
-                  concernedFoundations: concernedFoundations,
-                  classificationId,
-                  users,
-                },
-                cardData: cardData,
-              });
-            });
         },
         error: (err: HttpErrorResponse) => {
           if (err.status === 400) {
@@ -779,7 +795,6 @@ export class AddTransactionComponent {
       classificationId: transaction.classification.id,
       users: this.allowedUsers.length > 0 ? this.allowedUsers : transaction.users,
     });
-
     const proceedToNextStep = (transaction: any) => {
       const cardData = {
         title: transaction.title,
@@ -787,10 +802,11 @@ export class AddTransactionComponent {
         sector: transaction.sector,
         classification: transaction.classification,
       };
+      console.log(transaction);
       this.onGoToNextStep({
+        showImport: true,
         requestContainerId: transaction.id,
         requestContainerData: buildRequestContainerData(transaction),
-        showImport: true,
         cardData: cardData,
       });
     };
@@ -798,7 +814,7 @@ export class AddTransactionComponent {
     if (checkedTransaction.classification.classificationLevel === ClassificationLevel.Restricted) {
       this.getUsersAccessibility(checkedTransaction.id);
       this.manageTransactionsService.requestContainersService
-        .getUsersAccessibilityList({ hasAccess: true }, checkedTransaction.id)
+        .getUsersAccessibilityList({ hasAccess: true }, checkedTransaction.id, true)
         .subscribe(() => proceedToNextStep(checkedTransaction));
     } else {
       proceedToNextStep(checkedTransaction);
@@ -832,7 +848,8 @@ export class AddTransactionComponent {
         searchKeyword: event.term,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
   }
 
@@ -851,7 +868,8 @@ export class AddTransactionComponent {
             searchKeyword: event.term,
           },
           undefined,
-          this.dropDownProperties
+          this.dropDownProperties,
+          true
         );
     }
   }
@@ -868,7 +886,8 @@ export class AddTransactionComponent {
           searchKeyword: event.term,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       );
   }
 
@@ -882,7 +901,8 @@ export class AddTransactionComponent {
         searchKeyword: event.term,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
   }
 
@@ -897,7 +917,8 @@ export class AddTransactionComponent {
         searchKeyword: event.term,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
   }
 
@@ -915,7 +936,8 @@ export class AddTransactionComponent {
           searchKeyword: event.term,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       );
     }
   }
@@ -931,7 +953,8 @@ export class AddTransactionComponent {
           searchKeyword: event.term,
         },
         undefined,
-        undefined
+        undefined,
+        true
       );
   }
 
@@ -943,7 +966,10 @@ export class AddTransactionComponent {
       },
       {
         searchKeyword: event.term,
-      }
+      },
+      undefined,
+      undefined,
+      true
     );
   }
 
@@ -956,7 +982,7 @@ export class AddTransactionComponent {
     // Instead of using res.classificationLevel, get the classification object from the list
     const classificationObj = this.classificationsList.find((c) => c.id === classificationId);
     this.manageTransactionsService.classificationsService
-      .getClassificationUsersById(classificationId)
+      .getClassificationUsersById(classificationId, true)
       .subscribe((res) => {
         this.showAccessUsers =
           classificationObj?.classificationLevel === ClassificationLevel.Restricted ? true : false;

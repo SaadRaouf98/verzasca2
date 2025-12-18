@@ -574,36 +574,31 @@ export class StudyProjectModalComponent implements OnInit {
       costsRequestedAmount,
       costsApprovedAmount,
     } = this.data.formFields;
+
+    // Format amounts with currency pipe (number format only, no SAR symbol)
+    const formattedCreditsRequested = creditsRequestedAmount
+      ? this.currencyPipe.transform(creditsRequestedAmount, '', '', '1.3-2')
+      : null;
+    const formattedCreditsApproved = creditsApprovedAmount
+      ? this.currencyPipe.transform(creditsApprovedAmount, '', '', '1.3-2')
+      : null;
+    const formattedCostsRequested = costsRequestedAmount
+      ? this.currencyPipe.transform(costsRequestedAmount, '', '', '1.3-2')
+      : null;
+    const formattedCostsApproved = costsApprovedAmount
+      ? this.currencyPipe.transform(costsApprovedAmount, '', '', '1.3-2')
+      : null;
+
     this.form.patchValue({
       basicsTab: {
         committeeId,
         exportType,
       },
       amountsTab: {
-        // creditsRequestedAmount: this.currencyPipe.transform(
-        //   (creditsRequestedAmount + '').replace(/[^0-9.]/g, ''),
-        //   'SAR ',
-        //   'symbol',
-        //   '1.2-2'
-        // ),
-        // creditsApprovedAmount: this.currencyPipe.transform(
-        //   (creditsApprovedAmount + '').replace(/[^0-9.]/g, ''),
-        //   'SAR ',
-        //   'symbol',
-        //   '1.2-2'
-        // ),
-        // costsRequestedAmount: this.currencyPipe.transform(
-        //   (costsRequestedAmount + '').replace(/[^0-9.]/g, ''),
-        //   'SAR ',
-        //   'symbol',
-        //   '1.2-2'
-        // ),
-        // costsApprovedAmount: this.currencyPipe.transform(
-        //   (costsApprovedAmount + '').replace(/[^0-9.]/g, ''),
-        //   'SAR ',
-        //   'symbol',
-        //   '1.2-2'
-        // ),
+        creditsRequestedAmount: formattedCreditsRequested || null,
+        creditsApprovedAmount: formattedCreditsApproved || null,
+        costsRequestedAmount: formattedCostsRequested || null,
+        costsApprovedAmount: formattedCostsApproved || null,
       },
     });
 
@@ -660,6 +655,13 @@ export class StudyProjectModalComponent implements OnInit {
             });
           },
         });
+    } else {
+      // No requestExportRecommendation means file upload is required
+      // Show upload component and disable submit button until file is uploaded
+      this.showUpload = true;
+      this.disableSubmitBtn = true;
+      this.isFileUploaded = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -938,7 +940,7 @@ export class StudyProjectModalComponent implements OnInit {
       maxWidth: '31.25rem',
       maxHeight: '44.3125rem',
       panelClass: 'action-modal',
-      disableClose: true,
+      disableClose: false,
       data: {
         msg: 'هل انت متأكد من الاستكمال وتأكيد العملية ؟',
       },
@@ -1233,6 +1235,8 @@ export class StudyProjectModalComponent implements OnInit {
       }
     }
     this.isFileUploaded = true;
+    this.disableSubmitBtn = false;
+    this.showUpload = false;
 
     this.cdr.detectChanges();
   }
@@ -1249,6 +1253,9 @@ export class StudyProjectModalComponent implements OnInit {
     this.attachmentsTab.patchValue({
       uploadedFile: null,
     });
+
+    this.isFileUploaded = false;
+    this.disableSubmitBtn = true;
   }
 
   /////////////////////////////////////////////////////////
@@ -1285,8 +1292,9 @@ export class StudyProjectModalComponent implements OnInit {
     this.attachmentsTab.patchValue({
       uploadedFile: null,
     });
-    this.attachmentsTab.patchValue({ uploadedFile: null });
     this.showUpload = true;
+    this.isFileUploaded = false;
+    this.disableSubmitBtn = true;
     this.cdr.detectChanges();
   }
   onDeleteFile(index: number): void {

@@ -1,91 +1,57 @@
-<div class="wrapper">
-  <div class="row align-items-center component-header">
-    <span class="close_btn" (click)="onCancel()">
-      <img src="assets/icons/close-circle.svg" />
-    </span>
+<!-- Standard Header -->
+<div class="d-flex justify-content-between align-items-center mb-1 custom-modal-header">
+  <span class="body-bold">
+    {{ 'RegularReportsModule.AddRegularReportComponent.addNewFolder' | translate }}
+  </span>
+  <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
+    <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
+  </svg>
+</div>
 
-    <h2 class="component-header_title col-12 d-flex body-bold">
+<div class="custom-modal-body" mat-dialog-contents>
+  <form autocomplete="off" [formGroup]="form">
+    <div class="row">
+      <div class="col-12">
+        <p class="caption mb-3">
+          {{ 'RegularReportsModule.AddRegularReportComponent.slogan' | translate }}
+        </p>
+        <p class="body text-small mb-2" *ngIf="data?.node">
+          {{ 'shared.mainREport' | translate }} :
+          <span class="body-bold text-small"> {{ data?.node?.title }}</span>
+        </p>
+      </div>
 
-      {{ "RegularReportsModule.AddRegularReportComponent.addNewFolder" | translate }}
-    </h2>
-    <p class="col-12">
-      {{
-      "RegularReportsModule.AddRegularReportComponent.slogan" | translate}}
-
-
-
-    </p>
-    <p class="col-12" *ngIf="data?.node">
-      {{
-      "shared.mainREport" | translate}} :
-      <span class="body-bold"> {{ data?.node?.title }}</span>
-
-
-    </p>
-  </div>
-
-  <div class="div-card">
-    <form autocomplete="off" [formGroup]="form">
-      <div class="row rest-fields-container ">
-        <!-- start title -->
-        <div class="col-12  pt-2 mat-form-field-div" [ngClass]="{
-          'mat-form-field-div-error':
-            form.get('title')?.errors && isTouched('title'),
-          'mat-form-field-div-success':
-            !form.get('title')?.errors && isTouched('title')
-        }">
-          <div class="label-container">
-            <label for="title" class="body-bold">
-              {{ "RegularReportsModule.AddRegularReportComponent.enterFolderName" | translate }}
-            </label>
-          </div>
-          <!-- <mat-form-field appearance="outline">
-            <input matInput name="title"
-              placeholder="{{'RegularReportsModule.AddRegularReportComponent.pleaseEnterFolderName' | translate}}"
-              formControlName="title" />
-
-          </mat-form-field> -->
-               <app-input
+      <!-- Title -->
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.enterFolderName' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-input
           formControlName="title"
           [placeholder]="'RegularReportsModule.AddRegularReportComponent.pleaseEnterFolderName'"
           [showSearchIcon]="false"
           [showFilterIcon]="false"
         ></app-input>
 
-          <!-- <span class="span-error-message" *ngIf="
-            form.get('title')?.errors?.['required'] && isTouched('title')
-          ">
-            {{ "RegularReportsModule.AddRegularReportComponent.FolderNameRequired" | translate }}
-          </span> -->
-            <div
-          *ngIf=" form.get('title')?.errors?.['required'] && isTouched('title')"
+        <div
+          *ngIf="form.get('title')?.errors?.['required'] &&  isTouched('title')"
           class="text-danger text-small mt-1"
         >
           <small>
             {{ 'RegularReportsModule.AddRegularReportComponent.FolderNameRequired' | translate }}
           </small>
         </div>
-        </div>
-        <!-- end title-->
+      </div>
+      <!-- End Title -->
 
-
-        <!-- start Committee-->
-        <div class="col-12  pt-2 mat-form-field-div" [ngClass]="{
-          'mat-form-field-div-error':
-            form.get('committeesIds')?.errors && isTouched('committeesIds'),
-          'mat-form-field-div-success':
-            !form.get('committeesIds')?.errors && isTouched('committeesIds')
-        }">
-          <div class="label-container">
-            <label for="committeesIds" class="body-bold">
-              {{ "RegularReportsModule.AddRegularReportComponent.committees" | translate }}
-            </label>
-          </div>
-          <!-- <ng-select [placeholder]="'RegularReportsModule.AddRegularReportComponent.pleaseSelectCommittees' | translate"
-            formControlName="committeesIds" [multiple]="true" [items]="organizationUnitsList"
-            bindLabel="committeeSymbol" bindValue="id" class="form-control">
-          </ng-select> -->
-              <app-select
+      <!-- start Committee-->
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.committees' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
+        <app-select
           formControlName="committeesIds"
           [options]="organizationUnitsList"
           [bindLabel]="'committeeSymbol'"
@@ -93,14 +59,9 @@
           [placeholder]="'RegularReportsModule.AddRegularReportComponent.pleaseSelectCommittees'"
           [multiple]="true"
           [searchable]="false"
+          [appendTo]="'body'"
         >
         </app-select>
-          <!-- <span class="span-error-message" *ngIf="
-            form.get('committeesIds')?.errors?.['required'] && isTouched('committeesIds')
-          ">
-            {{ "shared.committeeRequired" | translate }}
-          </span> -->
-          
         <div
           *ngIf="form.get('committeesIds')?.errors?.['required'] && isTouched('committeesIds')"
           class="text-danger text-small mt-1"
@@ -109,48 +70,44 @@
             {{ 'shared.committeeRequired' | translate }}
           </small>
         </div>
-
-        </div>
-        <!-- end Committee -->
-        <div class="col-12  pt-2 mat-form-field-div">
-          <div class="label-container">
-            <label for="isActive" class="body-bold">
-              {{ "RegularReportsModule.AddRegularReportComponent.folderstatus" | translate }}
-            </label>
-          </div>
-
-          <mat-slide-toggle name="isActive" formControlName="isActive" class="custom-slide-toggle">
-            <ng-container *ngIf="form.get('isActive')?.value; then Yes; else No"></ng-container>
-
-            <ng-template #Yes class="sctivation_span"> {{"RegularReportsModule.RegularReportsListComponent.active" | translate}} </ng-template>
-            <ng-template #No class="sctivation_span"> {{"RegularReportsModule.RegularReportsListComponent.inactive" | translate}} </ng-template>
-          </mat-slide-toggle>
-          <!-- <mat-slide-toggle formControlName="isActive" class="custom-slide-toggle">
-          </mat-slide-toggle> -->
-          <!-- <span>{{form.get('isActive')?.value ? }}</span> -->
-        </div>
-
       </div>
+      <!-- end Committee -->
 
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ 'RegularReportsModule.AddRegularReportComponent.folderstatus' | translate }}
+          <span class="text-danger text-small">*</span>
+        </p>
 
+        <mat-slide-toggle name="isActive" formControlName="isActive" class="custom-slide-toggle">
+          <ng-container *ngIf="form.get('isActive')?.value; then Yes; else No"></ng-container>
 
-
-
-      <!--start button actions -->
-      <div class="row | rest-fields-container">
-        <div class="d-flex justify-content-end save-btn-container">
-          <button class="button button-lg button-primary w-100" (click)="onSubmit()" mat-flat-button
-            [disabled]="!form.valid || disableSubmitBtn">
-            {{ "shared.approveBtn" | translate }}
-          </button>
-
-          <button class="cancel-btn" (click)="onCancel()" mat-flat-button color="primary" data-appearance="outline">
-            {{ "shared.cancel" | translate }}
-          </button>
-
-        </div>
+          <ng-template #Yes class="sctivation_span mx-2">
+            {{ 'RegularReportsModule.RegularReportsListComponent.active' | translate }}
+          </ng-template>
+          <ng-template #No class="sctivation_span mx-2">
+            {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
+          </ng-template>
+        </mat-slide-toggle>
       </div>
-      <!--End button actions-->
-    </form>
-  </div>
+    </div>
+  </form>
+</div>
+
+<!-- Standard Footer -->
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
+  <button
+    class="button button-primary button-lg"
+    style="flex: 0 0 69%"
+    (click)="onSubmit()"
+    [disabled]="!form.valid || disableSubmitBtn"
+  >
+    {{ 'shared.confirm' | translate }}
+  </button>
+  <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
+    {{ 'shared.cancel' | translate }}
+  </button>
 </div>

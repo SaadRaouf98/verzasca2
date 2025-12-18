@@ -26,6 +26,8 @@
           height="1.25rem"
           viewBox="0 0 24 24"
           fill="none"
+          [disabled]="disabled"
+          [style.opacity]="disabled ? 0.5 : 1"
         >
           <use [attr.xlink:href]="'assets/icons/sprite.svg#calendar'"></use>
         </svg>
@@ -46,7 +48,15 @@
     />
     <!-- For single date picker -->
     <mat-datepicker-toggle matIconSuffix [for]="pickerSingle">
-      <svg matDatepickerToggleIcon width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none">
+      <svg
+        [disabled]="disabled"
+        matDatepickerToggleIcon
+        width="1.25rem"
+        height="1.25rem"
+        viewBox="0 0 24 24"
+        fill="none"
+        [style.opacity]="disabled ? 0.5 : 1"
+      >
         <use [attr.xlink:href]="'assets/icons/sprite.svg#calendar'"></use>
       </svg>
     </mat-datepicker-toggle>

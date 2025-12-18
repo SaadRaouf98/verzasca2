@@ -53,7 +53,7 @@ export class ViewCommitteeMembersApprovalComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         comment,
       },
@@ -70,7 +70,7 @@ export class ViewCommitteeMembersApprovalComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestId: this.data.requestId,
         committeeApproval: committeeApproval,

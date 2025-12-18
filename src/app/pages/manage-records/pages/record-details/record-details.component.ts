@@ -107,6 +107,10 @@ export class RecordDetailsComponent implements OnInit {
     });
   }
 
+  goBack() {
+    this.location.back();
+  }
+
   intializePageData(): void {
     this.isLoading = true;
 
@@ -277,7 +281,7 @@ export class RecordDetailsComponent implements OnInit {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         comment,
       },
@@ -296,7 +300,7 @@ export class RecordDetailsComponent implements OnInit {
       maxHeight: '44.3125rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         recordId: this.recordDetails.id,
         memberId: member.id,
@@ -308,7 +312,7 @@ export class RecordDetailsComponent implements OnInit {
     this.dialog.open(ConfirmationModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         headerTranslationRef: this.translateService.instant(
           'ManageRecordsModule.RecordDetailsComponent.confirmDeletion'

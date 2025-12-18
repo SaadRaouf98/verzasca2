@@ -89,7 +89,7 @@ export class NoteDetailsComponent {
     this.dialog.open(TelephoneConsentModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         noteId: this.noteId,
       },

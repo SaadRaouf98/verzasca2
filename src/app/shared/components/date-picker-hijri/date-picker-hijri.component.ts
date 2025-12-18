@@ -19,11 +19,7 @@ import {
   MomentDateAdapter,
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
-import {
-  DateAdapter,
-  MAT_DATE_LOCALE,
-  MAT_DATE_FORMATS,
-} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import 'moment/locale/ar';
 import * as moment from 'moment-hijri';
@@ -38,7 +34,7 @@ export const CUSTOM_DATE_FORMATS = {
     dateInput: 'D/M/YYYY', // Parsing format
   },
   display: {
-    dateInput: 'D/M/YYYY', // Input display format
+    dateInput: 'D MMMM YYYY', // Input display format (no comma)
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'D/M/YYYY',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -70,7 +66,7 @@ export const CUSTOM_DATE_FORMATS = {
       useClass: NgxAngularMaterialHijriAdapterService,
     },
     // Change the format by using `MOMENT_HIJRI_DATE_FORMATS` for Dates and `MOMENT_HIJRI_DATE_TIME_FORMATS` for date/time.
-    { provide: MAT_DATE_FORMATS, useValue: MOMENT_HIJRI_DATE_FORMATS },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
     // Change the localization to arabic by using `AR_SA` not `AR` only and `EN_US` not `EN` only.
     { provide: MAT_DATE_LOCALE, useValue: DateLocaleKeys.AR_SA },
   ],

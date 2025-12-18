@@ -67,7 +67,7 @@ export class DeliveryReceiptComponent implements OnInit {
       width: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: element,
     });
 

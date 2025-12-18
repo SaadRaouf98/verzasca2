@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
-import {
-  AllUsers,
-  DetailedUser,
-  UserPermissions,
-} from '@core/models/user.model';
+import { AllUsers, DetailedUser, UserPermissions } from '@core/models/user.model';
 import { Observable } from 'rxjs';
 import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
 
@@ -23,11 +20,7 @@ export class UsersService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
     if (filtersData && Object.keys(filtersData).length) {
       url += '&Filter=[';
@@ -60,7 +53,8 @@ export class UsersService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData?: { searchKeyword?: string; userId?: string },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllUsers> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -68,6 +62,12 @@ export class UsersService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 
@@ -117,13 +117,7 @@ export class UsersService {
     return this.apiService.get(`${this.apiUrl}/${userId}/permissions`);
   }
 
-  updateUserPermissions(
-    userId: string,
-    permissions: string[]
-  ): Observable<null> {
-    return this.apiService.put(
-      `${this.apiUrl}/${userId}/permissions`,
-      permissions
-    );
+  updateUserPermissions(userId: string, permissions: string[]): Observable<null> {
+    return this.apiService.put(`${this.apiUrl}/${userId}/permissions`, permissions);
   }
 }

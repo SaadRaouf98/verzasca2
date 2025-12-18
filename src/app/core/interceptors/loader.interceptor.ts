@@ -19,7 +19,9 @@ export class LoaderInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    if (req.headers.has('X-Skip-Loader')) {
+    // Check for X-Skip-Loader header
+    const skipLoaderHeader = req.headers.get('X-Skip-Loader');
+    if (skipLoaderHeader === 'true' || req.headers.has('X-Skip-Loader')) {
       return next.handle(req);
     }
 

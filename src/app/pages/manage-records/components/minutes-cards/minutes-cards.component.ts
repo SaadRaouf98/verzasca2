@@ -32,7 +32,7 @@ export class MinutesCardsComponent implements OnInit {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         comment,
       },

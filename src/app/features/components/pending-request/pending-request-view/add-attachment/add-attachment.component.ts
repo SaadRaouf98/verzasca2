@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, forkJoin } from 'rxjs';
 import { ManageImportsExportsService } from '@pages/imports-exports/services/manage-imports-exports.service';
+import { ModalStatusCode } from '@shared/enums/modal-status-code.enum';
 
 @Component({
   selector: 'app-add-attachment',
@@ -51,5 +52,8 @@ export class AddAttachmentComponent {
 
   onUploadAndClose() {
     this.dialogRef.close(this.attachmentIds);
+  }
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }

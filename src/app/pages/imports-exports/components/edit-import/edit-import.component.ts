@@ -135,7 +135,8 @@ export class EditImportComponent implements OnInit {
       ['id', 'name']
     );
     this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(
-      `${this.gregorianToday.year}/${this.gregorianToday.month}/${this.gregorianToday.day}`
+      `${this.gregorianToday.year}/${this.gregorianToday.month}/${this.gregorianToday.day}`,
+      true
     ).subscribe({
       next: (res) => {
         this.hijriToday = {
@@ -410,7 +411,10 @@ export class EditImportComponent implements OnInit {
 
     const dateString = `${hijriDate.year}/${hijriDate.month}/${hijriDate.day}`;
 
-    this.manageImportsExportsService.UmAlQuraCalendarService[serviceMethod](dateString).subscribe({
+    this.manageImportsExportsService.UmAlQuraCalendarService[serviceMethod](
+      dateString,
+      true
+    ).subscribe({
       next: (res: string) => {
         const [y, m, d] = res.split('/');
         this.form.patchValue(
@@ -442,13 +446,16 @@ export class EditImportComponent implements OnInit {
 
     const dateString = `${date.year}/${date.month}/${date.day}`;
 
-    this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(dateString).subscribe({
+    this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(
+      dateString,
+      true
+    ).subscribe({
       next: (res: string) => {
         const [hy, hm, hd] = res.split('/');
         this.form.patchValue(
           {
             [hijriKey]: `${hy}-${hm}-${hd}`,
-            [gregKey]: `${date.year}-${date.month}-${date.day}`,
+            [gregKey]: { year: date.year, month: date.month, day: date.day },
           },
           { emitEvent: false }
         );
@@ -519,17 +526,36 @@ export class EditImportComponent implements OnInit {
   patchHijriDates(data: { physicalDate: string; deliveryDate: string; availabilityDate: string }) {
     if (data.physicalDate) {
       const { y, m, d } = this.extractYMD(data.physicalDate);
-      this.onPatchFormPhysicalGregorianDate({ gregorianDate: { year: y, month: m, day: d } });
+      const hijriDate = this.formatHijriFromDate(data.physicalDate);
+      const [hy, hm, hd] = hijriDate.split('/');
+      this.form.patchValue(
+        {
+          physicalHijriDate: `${hy}-${hm}-${hd}`,
+        },
+        { emitEvent: false }
+      );
     }
 
     if (data.deliveryDate) {
-      const { y, m, d } = this.extractYMD(data.deliveryDate);
-      this.onPatchFormDeliveryGregorianDate({ gregorianDate: { year: y, month: m, day: d } });
+      const hijriDate = this.formatHijriFromDate(data.deliveryDate);
+      const [hy, hm, hd] = hijriDate.split('/');
+      this.form.patchValue(
+        {
+          deliveryHijriDate: `${hy}-${hm}-${hd}`,
+        },
+        { emitEvent: false }
+      );
     }
 
     if (data.availabilityDate) {
-      const { y, m, d } = this.extractYMD(data.availabilityDate);
-      this.onPatchFormAvailabilityGregorianDate({ gregorianDate: { year: y, month: m, day: d } });
+      const hijriDate = this.formatHijriFromDate(data.availabilityDate);
+      const [hy, hm, hd] = hijriDate.split('/');
+      this.form.patchValue(
+        {
+          availabilityHijriDate: `${hy}-${hm}-${hd}`,
+        },
+        { emitEvent: false }
+      );
     }
   }
 
@@ -724,7 +750,18 @@ export class EditImportComponent implements OnInit {
     this.toastr.error(this.translateService.instant('shared.SomethingWentWrong'));
   }
 
-  mapDate(date: string): any {
+  mapDate(date: any): any {
+    // If date is an NgbDateStruct object, convert to YYYY-MM-DD format
+    if (typeof date === 'object' && date.year && date.month && date.day) {
+      return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(
+        2,
+        '0'
+      )}`;
+    }
+    // If it's a string, return as is
+    if (typeof date === 'string') {
+      return date;
+    }
     return this.datePipe.transform(date, 'yyyy-MM-dd');
   }
 
@@ -891,7 +928,7 @@ export class EditImportComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileBlob: res,
                   fileType: attachment.fileType, //.pdf
@@ -911,7 +948,7 @@ export class EditImportComponent implements OnInit {
         .open(EditFileWithBarcodeModalComponent, {
           minWidth: '95vw',
           autoFocus: false,
-          disableClose: true,
+          disableClose: false,
           data: {
             fileBlob: attachment.fileBlob,
             fileType: attachment.fileType, //.doc

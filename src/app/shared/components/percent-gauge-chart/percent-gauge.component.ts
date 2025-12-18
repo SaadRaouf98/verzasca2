@@ -52,7 +52,7 @@ export class PercentGaugeChart implements OnInit, OnChanges {
             this.colorScheme.domain = ['#4CAF50', '#4CAF50', '#4CAF50', '#4CAF50'];
             this.customCssClass = 'complete';
             this.statusChange.emit(this.customCssClass);
-            this.value = 100;
+            this.value = 0;
             this.displayChart = true;
             return;
 

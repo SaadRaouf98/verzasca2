@@ -49,6 +49,18 @@
       color: $orange-500;
     }
   }
+
+  &.toast-info {
+    border: 1px solid $blue-500;
+    background: $blue-100;
+    .toast-title {
+      color: $blue-500;
+    }
+
+    .toast-message {
+      color: $blue-500;
+    }
+  }
 }
 .toast-content {
   margin: 0 0.75rem;

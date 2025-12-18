@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
 import { SortDirection } from '@angular/material/sort';
+import { HttpHeaders } from '@angular/common/http';
 import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
 import { AllSectors, Sector } from '@core/models/sector.model';
 
@@ -19,11 +20,7 @@ export class SectorsService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
     if (filtersData && Object.keys(filtersData).length) {
       url += '&Filter=[';
@@ -32,9 +29,7 @@ export class SectorsService {
     let isFirstFilter = true;
 
     url += `["parentId", "=",  ${
-      filtersData.parentId
-        ? '"' + filtersData.parentId + '"'
-        : filtersData.parentId
+      filtersData.parentId ? '"' + filtersData.parentId + '"' : filtersData.parentId
     }]`;
     isFirstFilter = false;
 
@@ -57,7 +52,8 @@ export class SectorsService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData: { parentId: string | null; searchKeyword?: string },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllSectors> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -65,6 +61,12 @@ export class SectorsService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 

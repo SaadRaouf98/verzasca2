@@ -52,7 +52,11 @@
     </div>
   </form>
   <div class="col-12 mt-2 p-0">
-    <button (click)="reset()" class="button button-lg button-secondary w-100">
+    <button
+      (click)="reset()"
+      [disabled]="!hasActiveFilters"
+      class="button button-lg button-secondary w-100"
+    >
       {{ 'shared.resetBtn' | translate }}
     </button>
   </div>

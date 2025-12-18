@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
 import {
   AddOrganizationUnitCommand,
@@ -44,9 +45,9 @@ export class OrganizationUnitsService {
 
     return url;
   }
-getRegularReportsFolders(){
+  getRegularReportsFolders() {
     return this.apiService.get('/api/v1/regularreports/folders');
-}
+  }
   getOrganizationUnitsList(
     queryData: { pageSize: number; pageIndex: number },
     filtersData: {
@@ -54,7 +55,8 @@ getRegularReportsFolders(){
       searchKeyword?: string;
     },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllOrganizationUnits> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -62,6 +64,12 @@ getRegularReportsFolders(){
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 
@@ -114,15 +122,11 @@ getRegularReportsFolders(){
     return this.apiService.delete(`${this.apiUrl}/${id}`);
   }
 
-  updateOrganizationUnitUsers(
-    data: UpdateOrganizationUnitUsersCommand
-  ): Observable<any> {
+  updateOrganizationUnitUsers(data: UpdateOrganizationUnitUsersCommand): Observable<any> {
     return this.apiService.put(`${this.apiUrl}/users`, data);
   }
 
-  getOrganizationUnitUsers(
-    organizationUnitId: string
-  ): Observable<OganizationUnitMembers> {
+  getOrganizationUnitUsers(organizationUnitId: string): Observable<OganizationUnitMembers> {
     return this.apiService.get(`${this.apiUrl}/${organizationUnitId}/users`);
   }
 
@@ -130,16 +134,11 @@ getRegularReportsFolders(){
     return this.apiService.get(`${this.apiUrl}/secretariate-departments`);
   }
 
-  getDepartmentsForMember(
-    memberId: string
-  ): Observable<OrganizationDepartmentLookUp[]> {
+  getDepartmentsForMember(memberId: string): Observable<OrganizationDepartmentLookUp[]> {
     return this.apiService.get(`${this.apiUrl}/users/${memberId}/departments`);
   }
 
-  updateMainDepartmentForMember(
-    userId: string,
-    departmentId: string
-  ): Observable<null> {
+  updateMainDepartmentForMember(userId: string, departmentId: string): Observable<null> {
     return this.apiService.put(
       `${this.apiUrl}/users/${userId}/main-department/${departmentId}`,
       {}
@@ -152,8 +151,6 @@ getRegularReportsFolders(){
     committeeId: string,
     memberId: string
   ): Observable<HisExcellencyDepartments[]> {
-    return this.apiService.get(
-      `${this.apiUrl}/${committeeId}/users/${memberId}`
-    );
+    return this.apiService.get(`${this.apiUrl}/${committeeId}/users/${memberId}`);
   }
 }

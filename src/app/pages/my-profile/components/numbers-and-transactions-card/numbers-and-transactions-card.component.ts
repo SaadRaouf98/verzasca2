@@ -68,7 +68,7 @@ export class NumbersAndTransactionsCardComponent implements OnInit {
       maxHeight: '44.3125rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {

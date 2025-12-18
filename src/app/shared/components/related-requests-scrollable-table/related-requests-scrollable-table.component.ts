@@ -77,6 +77,7 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
   @Output() requestId: EventEmitter<string> = new EventEmitter();
   @Output() updateTableOnDelete: EventEmitter<boolean> = new EventEmitter();
   activeCardId: string | null = null;
+  showAuthorizationContainer: boolean = false; // Track 403 error state
   exportableDocument: {
     pdfSrc: string | Uint8Array | PDFSource | undefined;
     fileBlob: Blob | undefined;
@@ -123,8 +124,13 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
   }
 
   onCardClick(data: any) {
+    // Skip if clicking the same card (but allow first load when activeCardId is null)
+    if (this.activeCardId !== null && this.activeCardId === data.id) {
+      return;
+    }
     this.activeCardId = data.id;
     this.details = data;
+    this.showAuthorizationContainer = false; // Reset authorization container flag
     if (data.isExportDocument) {
       this.loadFile(data.id);
     } else {
@@ -138,14 +144,28 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
   }
   getRequestDetails(id: string): void {
     if (this.pageType === 'import') {
-      this.manageTransactionsService.requestsService.getPreview(id).subscribe((res: any) => {
-        this.details = res;
-        this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+      this.manageTransactionsService.requestsService.getPreview(id).subscribe({
+        next: (res: any) => {
+          this.details = res;
+          this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+        },
+        error: (err: any) => {
+          if (err.status === 403) {
+            this.showAuthorizationContainer = true;
+          }
+        },
       });
     } else if (this.pageType === 'transaction') {
-      this.manageTransactionsService.requestsService.getFullPreview(id).subscribe((res: any) => {
-        this.details = res;
-        this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+      this.manageTransactionsService.requestsService.getFullPreview(id).subscribe({
+        next: (res: any) => {
+          this.details = res;
+          this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+        },
+        error: (err: any) => {
+          if (err.status === 403) {
+            this.showAuthorizationContainer = true;
+          }
+        },
       });
     }
   }
@@ -162,7 +182,6 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
     observ$.subscribe({
       next: (blobFile) => {
         this.exportableDocument.fileBlob = blobFile;
-
         this.exportableDocument.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
           URL.createObjectURL(blobFile)
         );
@@ -170,6 +189,8 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
       error: (err) => {
         if (err.status === 404) {
           this.toastr.error('عفوا هذا الملف غير موجود');
+        } else if (err.status === 403) {
+          this.showAuthorizationContainer = true;
         }
       },
     });
@@ -195,7 +216,7 @@ export class RelatedRequestsScrollableTableComponent implements OnInit, OnChange
         const dialogRef = this.dialog.open(ConfirmationModalComponent, {
           minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px', // Responsive width
           autoFocus: false, // Avoid focusing to prevent mobile zoom issues
-          disableClose: true, // Force the user to make a choice (no outside click dismiss)
+          disableClose: false, // Force the user to make a choice (no outside click dismiss)
           data: {
             headerTranslationRef:
               translations[

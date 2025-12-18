@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, finalize, map, tap, Observable, of } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Attachment } from '@core/models/request.model';
+import { Attachment, RequestsFiltersForm } from '@core/models/request.model';
 import { ApiService } from '@core/services/api.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { environment } from '@env/environment';
@@ -34,6 +34,7 @@ export class PoliciesListComponent implements OnInit {
   policiesData: any[] = [];
   selectedTabIndex: number = 0;
   token: string = '';
+  lang = 'ar';
   private globalClickUnlisten: (() => void) | null = null;
   clicked = false;
   isTableFiltered: boolean = false;
@@ -69,6 +70,7 @@ export class PoliciesListComponent implements OnInit {
       )
       .subscribe();
   }
+
   getDocument(file: Attachment) {
     this.manageImportsExportsService.wopiFilesService
       .getFileByPath(file?.path)
@@ -79,6 +81,7 @@ export class PoliciesListComponent implements OnInit {
       )
       .subscribe();
   }
+
   getImageUrl(path: string): Observable<string> {
     if (!path) {
       return of('assets/images/default-policy.png');
@@ -133,7 +136,7 @@ export class PoliciesListComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileBlob: res,
                   fileType: attachment.fileType, //.pdf
@@ -157,7 +160,7 @@ export class PoliciesListComponent implements OnInit {
           height: '95vh',
           panelClass: ['action-modal', 'float-footer'],
           autoFocus: false,
-          disableClose: true,
+          disableClose: false,
           data: {
             fileBlob: attachment.fileBlob,
             fileType: attachment.fileType, //.doc
@@ -186,79 +189,106 @@ export class PoliciesListComponent implements OnInit {
     if (this.filtersDialogRef) {
       return;
     }
-    this.clicked = true;
-    const svgRect = (event.target as HTMLElement).getBoundingClientRect();
+
+    Promise.resolve().then(() => {
+      this.clicked = true;
+    });
+
+    const triggerEl = event.target as HTMLElement;
+    const svgRect = triggerEl.getBoundingClientRect();
+
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
     const dialogWidth = 23.625 * rem;
-    let top = svgRect.bottom + window.scrollY;
-    let left = svgRect.left + window.scrollX + svgRect.width / 2 - dialogWidth / 2;
+
+    const top = svgRect.bottom + window.scrollY;
+    let left =
+      svgRect.left +
+      window.scrollX +
+      svgRect.width / 2 -
+      dialogWidth / 2;
+
     this.filtersDialogRef = this.dialog.open(PoliciesFilterComponent, {
-      // height: '450px',
       width: '23.625rem',
       hasBackdrop: false,
+      disableClose: false,
       position: {
         top: `${top}px`,
         left: `${left}px`,
       },
-      disableClose: false,
       panelClass: 'filters-dialog-panel',
+       data: {
+        lang: this.lang,
+        filtersData: this.filteredData,
+      },
     });
 
     this.filtersDialogRef.afterOpened().subscribe(() => {
       const dialogComponent = this.filtersDialogRef!.componentInstance;
-      dialogComponent.filtersChange.subscribe((dialogFilters: { categoryId: string }) => {
-        this.onFiltersChange(dialogFilters);
-      });
-    });
-    setTimeout(() => {
-      const dialogContainer = document.querySelector('.mat-mdc-dialog-container') as HTMLElement;
-      if (dialogContainer) {
-        const actualWidth = dialogContainer.offsetWidth;
-        const actualHeight = dialogContainer.offsetHeight;
 
-        left = svgRect.left + window.scrollX + svgRect.width / 2 - actualWidth / 2;
-        dialogContainer.style.left = `${left}px`;
-        dialogContainer.style.top = `${top}px`;
-      }
-
-      // Listen for clicks outside the dialog
-      this.globalClickUnlisten = this.renderer.listen(
-        'document',
-        'mousedown',
-        (evt: MouseEvent) => {
-          const dialogOverlay = document.querySelector('.cdk-overlay-container');
-          const datepickerPopup = document.querySelector(
-            '.mat-datepicker-content, .mat-mdc-datepicker-content'
-          );
-          const ngSelectDropdown = document.querySelector('.ng-dropdown-panel');
-          const trigger = event.target as HTMLElement;
-
-          if (
-            (dialogOverlay && dialogOverlay.contains(evt.target as Node)) ||
-            (datepickerPopup && datepickerPopup.contains(evt.target as Node)) ||
-            (ngSelectDropdown && ngSelectDropdown.contains(evt.target as Node)) ||
-            trigger.contains(evt.target as Node)
-          ) {
-            // Do nothing, click is inside dialog, popup, ng-select dropdown, or trigger
-            return;
-          }
-
-          // Otherwise, close the dialog
-          this.filtersDialogRef?.close();
+      dialogComponent.filtersChange.subscribe(
+        (dialogFilters: { categoryId: string }) => {
+          this.onFiltersChange(dialogFilters);
         }
       );
+
+      setTimeout(() => {
+        const dialogContainer = document.querySelector(
+          '.mat-mdc-dialog-container'
+        ) as HTMLElement;
+
+        if (!dialogContainer) {
+          return;
+        }
+
+        const actualWidth = dialogContainer.offsetWidth;
+        left =
+          svgRect.left +
+          window.scrollX +
+          svgRect.width / 2 -
+          actualWidth / 2;
+
+        dialogContainer.style.left = `${left}px`;
+        dialogContainer.style.top = `${top}px`;
+      });
     });
+
+    this.globalClickUnlisten = this.renderer.listen(
+      'document',
+      'mousedown',
+      (evt: MouseEvent) => {
+        const dialogOverlay = document.querySelector('.cdk-overlay-container');
+        const datepickerPopup = document.querySelector(
+          '.mat-datepicker-content, .mat-mdc-datepicker-content'
+        );
+        const ngSelectDropdown = document.querySelector('.ng-dropdown-panel');
+
+        if (
+          dialogOverlay?.contains(evt.target as Node) ||
+          datepickerPopup?.contains(evt.target as Node) ||
+          ngSelectDropdown?.contains(evt.target as Node) ||
+          triggerEl.contains(evt.target as Node)
+        ) {
+          return;
+        }
+
+        this.filtersDialogRef?.close();
+      }
+    );
 
     this.filtersDialogRef.afterClosed().subscribe(() => {
       this.filtersDialogRef = null;
-      this.clicked = false;
-      this.changeDetectorRef.detectChanges();
+
+      Promise.resolve().then(() => {
+        this.clicked = false;
+      });
+
       if (this.globalClickUnlisten) {
         this.globalClickUnlisten();
         this.globalClickUnlisten = null;
       }
     });
   }
+
   onNavigateBack(): void {
     this.location.back();
   }

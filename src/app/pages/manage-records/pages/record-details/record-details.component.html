@@ -4,8 +4,10 @@
       <svg width="1.5rem" height="1.5rem" class="cursor-pointer" (click)="onNavigateBack()">
         <use [attr.xlink:href]="'assets/icons/sprite.svg#arrow-right'"></use>
       </svg>
-      <div class="mx-2 d-flex align-items-end">
-        <span class="body gray-400 text-small">{{ 'shared.allRecords' | translate }}</span>
+      <div class="mx-2 d-flex align-items-center">
+        <span class="body gray-400 text-small cursor-pointer"
+              (click)="goBack()"
+        >{{ 'shared.allRecords' | translate }}</span>
         <span class="body gray-400 mx-2 text-small">/</span>
         <p class="body-bold mb-0">
           {{ 'ManageRecordsModule.RecordDetailsComponent.record' | translate }}
@@ -40,7 +42,7 @@
 
 <section *ngIf="!isLoading; else elseBlock">
   <div class="grid">
-    <div class="row">
+    <div class="row gx-3">
       <div class="col-12 col-md-9">
         <!--Start 2 tabs filters -->
         <mat-tab-group
@@ -63,6 +65,7 @@
               <span class="body-bold mx-2"> {{ 'shared.record' | translate }}</span>
             </ng-template>
             <iframe
+              class="mt-3"
               [src]="recordFile.pdfSrc"
               style="width: 100%; height: 100%; min-height: 100vh"
             ></iframe>
@@ -81,7 +84,7 @@
               </svg>
               <span class="body-bold mx-2"> {{ 'shared.recordDetails' | translate }}</span>
             </ng-template>
-            <div class="grid">
+            <div class="grid mt-3">
               <div class="row">
                 <div class="col-12">
                   <mat-accordion [multi]="true">
@@ -172,7 +175,7 @@
                           <svg
                             width="1.5rem"
                             height="1.5rem"
-                            [style.transform]="detailsState ? 'rotate(180deg)' : 'rotate(0deg)'"
+                            [style.transform]="dateState ? 'rotate(180deg)' : 'rotate(0deg)'"
                             style="transition: transform 0.3s"
                           >
                             <use
@@ -450,7 +453,11 @@
 
       <div class="col-12 col-md-3">
         <mat-accordion>
-          <mat-expansion-panel (opened)="signaturesState = true" (closed)="signaturesState = false">
+          <mat-expansion-panel
+            [expanded]="true"
+            (opened)="signaturesState = true"
+            (closed)="signaturesState = false"
+          >
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <span class="body-bold">
@@ -468,53 +475,90 @@
                 </svg>
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <div class="row">
-              <div *ngFor="let element of membersSource.data" class="single-approval-card mb-2">
-                <div class="d-flex justify-content-between">
-                  <p class="body-bold mb-2">{{ element.name }}</p>
-                  <ng-container *ngIf="element.action">
-                    <svg
-                      class="cursor-pointer"
-                      width="1.25rem"
-                      height="1.25rem"
-                      *ngxPermissionsOnly="[PermissionsObj.RemoveRecordMemberAction]"
-                      (click)="onDeleteAction(element)"
+            <div
+              *ngFor="let element of membersSource.data; let last = last"
+              [ngClass]="{ 'single-approval-card': true, 'mb-2': !last }"
+            >
+              <div class="d-flex justify-content-between">
+                <p class="body-bold mb-2">{{ element.name }}</p>
+                <ng-container *ngIf="element.action">
+                  <svg
+                    class="cursor-pointer"
+                    width="1.25rem"
+                    height="1.25rem"
+                    *ngxPermissionsOnly="[PermissionsObj.RemoveRecordMemberAction]"
+                    (click)="onDeleteAction(element)"
+                  >
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#delete-sm'"></use>
+                  </svg>
+                </ng-container>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <div *ngIf="element.action; else NoActionBlock">
+                    <div
+                      class="d-flex align-items-center"
+                      *ngIf="element.action.type === ExportableDocumentActionType.Sign"
                     >
-                      <use [attr.xlink:href]="'assets/icons/sprite.svg#delete-sm'"></use>
-                    </svg>
-                  </ng-container>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mt-2">
-                  <div>
-                    <div *ngIf="element.action; else NoActionBlock">
-                      <div
-                        class="d-flex align-items-center"
-                        *ngIf="element.action.type === ExportableDocumentActionType.Sign"
+                      <svg width="1.25rem" height="1.25rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
+                      </svg>
+                      <span class="approved body-bold text-small mx-2">
+                        {{ 'shared.isSigned' | translate }}
+                      </span>
+                    </div>
+
+                    <div
+                      class="d-flex align-items-center"
+                      *ngIf="element.action.type === ExportableDocumentActionType.Conservatism"
+                    >
+                      <svg width="1.25rem" height="1.25rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
+                      </svg>
+                      <span class="rejected body-bold text-small mx-2">
+                        {{ 'shared.conservatism' | translate }}</span
                       >
+                    </div>
+
+                    <div
+                      class="d-flex align-items-center"
+                      *ngIf="element.action.type === ExportableDocumentActionType.OpinionRefrain"
+                    >
+                      <svg width="1.25rem" height="1.25rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                      </svg>
+                      <span class="noAnswer body-bold text-small mx-2">
+                        {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ng-template #NoActionBlock>
+                    <ng-container
+                      *ngIf="recordDetails && recordDetails.isExported; else NoOpinionExpressed"
+                    >
+                      <div class="d-flex align-items-center">
                         <svg width="1.25rem" height="1.25rem">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
+                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
                         </svg>
-                        <span class="approved body-bold text-small mx-2">
-                          {{ 'shared.isSigned' | translate }}
+                        <span
+                          *ngIf="element.isOnVacation"
+                          class="noAnswer body-bold text-small mx-2"
+                        >
+                          {{ 'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate }}
+                        </span>
+                        <span
+                          *ngIf="!element.isOnVacation"
+                          class="noAnswer body-bold text-small mx-2"
+                        >
+                          {{
+                            'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet' | translate
+                          }}
                         </span>
                       </div>
-
-                      <div
-                        class="d-flex align-items-center"
-                        *ngIf="element.action.type === ExportableDocumentActionType.Conservatism"
-                      >
-                        <svg width="1.25rem" height="1.25rem">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
-                        </svg>
-                        <span class="rejected body-bold text-small mx-2">
-                          {{ 'shared.conservatism' | translate }}</span
-                        >
-                      </div>
-
-                      <div
-                        class="d-flex align-items-center"
-                        *ngIf="element.action.type === ExportableDocumentActionType.OpinionRefrain"
-                      >
+                    </ng-container>
+                    <ng-template #NoOpinionExpressed>
+                      <div class="d-flex align-items-center">
                         <svg width="1.25rem" height="1.25rem">
                           <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
                         </svg>
@@ -522,76 +566,38 @@
                           {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
                         </span>
                       </div>
-                    </div>
-
-                    <ng-template #NoActionBlock>
-                      <ng-container
-                        *ngIf="recordDetails && recordDetails.isExported; else NoOpinionExpressed"
-                      >
-                        <div class="d-flex align-items-center">
-                          <svg width="1.25rem" height="1.25rem">
-                            <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
-                          </svg>
-                          <span
-                            *ngIf="element.isOnVacation"
-                            class="noAnswer body-bold text-small mx-2"
-                          >
-                            {{ 'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate }}
-                          </span>
-                          <span
-                            *ngIf="!element.isOnVacation"
-                            class="noAnswer body-bold text-small mx-2"
-                          >
-                            {{
-                              'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet'
-                                | translate
-                            }}
-                          </span>
-                        </div>
-                      </ng-container>
-                      <ng-template #NoOpinionExpressed>
-                        <div class="d-flex align-items-center">
-                          <svg width="1.25rem" height="1.25rem">
-                            <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
-                          </svg>
-                          <span class="noAnswer body-bold text-small mx-2">
-                            {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
-                          </span>
-                        </div>
-                      </ng-template>
                     </ng-template>
-                    <div
-                      class="d-flex align-items-center mt-2"
-                      *ngIf="element.action && element.action.comment"
-                    >
-                      <svg width="1rem" height="1rem">
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
-                      </svg>
-                      <span class="comment body-bold text-small mx-2">
-                        {{ element.action.comment }}
-                      </span>
-                    </div>
+                  </ng-template>
+                  <div
+                    class="d-flex align-items-center mt-2"
+                    *ngIf="element.action && element.action.comment"
+                  >
+                    <svg width="1rem" height="1rem">
+                      <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
+                    </svg>
+                    <span class="comment body-bold text-small mx-2">
+                      {{ element.action.comment }}
+                    </span>
                   </div>
-
-                  <ng-container *ngIf="recordDetails.allowPhoneAction">
-                    <div *ngxPermissionsOnly="[PermissionsObj.CommitteePhoneApprovals]">
-                      <button
-                        class="button button-secondary button-sm"
-                        (click)="onTakeActionViaPhone(element)"
-                      >
-                        <span>
-                          {{
-                            'ManageRecordsModule.RecordDetailsComponent.editThroughPhone'
-                              | translate
-                          }}
-                        </span>
-                        <svg width="1rem" height="1rem">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#approvalCall'"></use>
-                        </svg>
-                      </button>
-                    </div>
-                  </ng-container>
                 </div>
+
+                <ng-container *ngIf="recordDetails.allowPhoneAction">
+                  <div *ngxPermissionsOnly="[PermissionsObj.CommitteePhoneApprovals]">
+                    <button
+                      class="button button-secondary button-sm"
+                      (click)="onTakeActionViaPhone(element)"
+                    >
+                      <span>
+                        {{
+                          'ManageRecordsModule.RecordDetailsComponent.editThroughPhone' | translate
+                        }}
+                      </span>
+                      <svg width="1rem" height="1rem">
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#approvalCall'"></use>
+                      </svg>
+                    </button>
+                  </div>
+                </ng-container>
               </div>
             </div>
           </mat-expansion-panel>

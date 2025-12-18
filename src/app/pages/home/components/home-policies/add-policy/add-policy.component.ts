@@ -321,7 +321,7 @@ export class AddPolicyComponent {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
               })
               .afterClosed()
               .subscribe(() => URL.revokeObjectURL(imageUrl));
@@ -350,7 +350,7 @@ export class AddPolicyComponent {
                   height: '95vh',
                   panelClass: ['action-modal', 'float-footer'],
                   autoFocus: false,
-                  disableClose: true,
+                  disableClose: false,
                   data: {
                     fileBlob: res,
                     fileType: attachment.fileType,

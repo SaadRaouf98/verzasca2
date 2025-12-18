@@ -955,7 +955,7 @@ export class ExportTemplateModalComponent {
         maxWidth: '31.25rem',
         maxHeight: '44.3125rem',
         panelClass: 'action-modal',
-        disableClose: true,
+        disableClose: false,
         data: {
           msg: 'عفوا لاتوجد توقيعات. هل انت متأكد من الاستكمال وتأكيد العملية ؟',
         },

@@ -474,7 +474,7 @@ export class AddCommitteeSignaturesComponent {
     const dialogRef = this.dialog.open(TitleModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         label: `${this.translateService.instant(
           'SystemSettingsModule.AddCommitteeSignaturesComponent.insertTitle'

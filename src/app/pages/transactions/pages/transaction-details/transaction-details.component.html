@@ -9,8 +9,8 @@
           <span class="body text-small gray-400">{{ 'shared.transactions' | translate }}</span>
           <span class="body text-small gray-400 mx-2">/</span>
           <span class="body-bold">
-            {{ 'TransactionsModule.TransactionDetailsComponent.transaction' | translate }}
-            ({{ requestContainerDetails?.transactionNumber! || '-' }})
+            {{ 'shared.transactionNumber' | translate }}
+            {{ requestContainerDetails?.transactionNumber! || '-' }}
           </span>
         </div>
       </div>
@@ -55,7 +55,7 @@
   <app-time-line [data]="requestContainerTimeLine"></app-time-line>
   <!------------------- End TimeLine ---------------------------->
   <div class="grid">
-    <div class="row">
+    <div class="row gx-3">
       <div class="col-12 col-md-9">
         <mat-tab-group
           animationDuration="400ms"
@@ -207,6 +207,7 @@
             </button>
           </mat-expansion-panel> -->
           <mat-expansion-panel
+            [expanded]="true"
             (opened)="panelTimelineState = true"
             (closed)="panelTimelineState = false"
           >

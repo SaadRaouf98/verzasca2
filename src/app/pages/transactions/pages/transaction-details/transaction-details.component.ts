@@ -44,6 +44,7 @@ export class TransactionDetailsComponent implements OnInit {
   PermissionsObj = PermissionsObj;
   RequestContainerStatus = RequestContainerStatus;
   sortAsc = true;
+  selectedTabIndex: number = 0;
   tabsLoading: {
     tab1: boolean;
     tab2: boolean;
@@ -139,11 +140,11 @@ export class TransactionDetailsComponent implements OnInit {
     this.dialog.open(UpdateAccessibilityModalComponent, {
       minWidth: '62.5rem',
       maxWidth: '62.5rem',
-      maxHeight: '95vh',
-      height: '95vh',
-      panelClass: ['action-modal', 'float-footer'],
+      // maxHeight: '95vh',
+      // height: '95vh',
+      panelClass: ['action-modal'],
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestContainerId: this.elementId,
       },
@@ -177,6 +178,8 @@ export class TransactionDetailsComponent implements OnInit {
     // });
   }
   onTabClicked(event: MatTabChangeEvent): void {
+    this.selectedTabIndex = event.index;
+
     if (event.index === 0) {
       return;
     }
@@ -273,7 +276,7 @@ export class TransactionDetailsComponent implements OnInit {
           'RegularReportsModule.AddRegularReportComponent.deletePopupMessage'
         )} `,
       },
-      disableClose: true,
+      disableClose: false,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {

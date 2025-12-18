@@ -4,8 +4,14 @@
       <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
         [class.rotate-arrow]="lang === 'en'" />
     </a> -->
-    <p class="body-bold">
-      {{ directoryName ? directoryName : ('shared.reports' | translate) }}
+
+    <p class="mb-3 d-flex align-items-center">
+      <svg width="1.25rem" height="1.25rem">
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-reports'"></use>
+      </svg>
+      <span class="body-bold mx-2">
+        {{ directoryName ? directoryName : ('shared.reports' | translate) }}
+      </span>
     </p>
   </div>
 
@@ -22,22 +28,13 @@
   <form [formGroup]="searchForm">
     <div class="row mb-3 justify-content-between">
       <div class="col-8 d-flex">
-        <button class="sorting_btn asc_btn" [class.selectedSort]="isAsc" (click)="setSort()">
+        <button class="sorting_btn" [class.selectedSort]="true" (click)="setSort()">
           <img
             width="26"
             height="26"
-            [src]="isAsc ? 'assets/icons/sorting-enabled.svg' : 'assets/icons/sorting-disabled.svg'"
-            alt="ms-excel"
-          />
-        </button>
-        <button class="sorting_btn desc_btn" [class.selectedSort]="!isAsc" (click)="setSort()">
-          <img
-            width="26"
-            height="26"
-            [src]="
-              !isAsc ? 'assets/icons/sorting-enabled.svg' : 'assets/icons/sorting-disabled.svg'
-            "
-            alt="ms-excel"
+            [class.rotate-180]="!isAsc"
+            src="assets/icons/sorting-enabled.svg"
+            alt="sorting"
           />
         </button>
         <div class="col-md-6 col-9">
@@ -76,7 +73,7 @@
     </div>
   </form>
 
-  <div class="row" *ngIf="dataSource?.data.length > 0; else noData">
+  <div class="row gx-3" *ngIf="dataSource?.data.length > 0; else noData">
     <div class="col-md-5 fixed_height position-relative">
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" dir="rtl">
         <div>
@@ -118,14 +115,24 @@
                 class="w-100"
                 [class.bold-body]="node.boardType != RegularReportBoardType.File"
               >
-                {{ node.title }}
+                <span class="text-truncate-2lines">{{ node.title }}</span>
               </button>
-              <button extended [matMenuTriggerFor]="optionsMenu" mat-icon-button class="menu_btn">
-                <mat-icon>more_vert</mat-icon>
+              <button
+                extended
+                #menuTrigger1="matMenuTrigger"
+                [matMenuTriggerFor]="optionsMenu"
+                mat-icon-button
+                class="menu_btn"
+              >
+                <div class="svg-menu-open" [class.active]="menuTrigger1.menuOpen">
+                  <svg class="cursor-pointer" width="16" height="3">
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#report-dots'"></use>
+                  </svg>
+                </div>
               </button>
             </div>
 
-            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn" xPosition="before">
+            <mat-menu #optionsMenu="matMenu" class="reports-dropdown-menu-btn" xPosition="before">
               <button
                 mat-menu-item
                 *ngIf="!node.parentId"
@@ -249,15 +256,25 @@
                   alt="Navigation back."
                   class="report_main_folder folder"
                 />
-                {{ node.title }}
+                <span class="text-truncate-2lines">{{ node.title }}</span>
               </button>
 
-              <button extended [matMenuTriggerFor]="optionsMenu" mat-icon-button class="menu_btn">
-                <mat-icon>more_vert</mat-icon>
+              <button
+                extended
+                #menuTrigger2="matMenuTrigger"
+                [matMenuTriggerFor]="optionsMenu"
+                mat-icon-button
+                class="menu_btn"
+              >
+                <div class="svg-menu-open" [class.active]="menuTrigger2.menuOpen">
+                  <svg class="cursor-pointer" width="16" height="3">
+                    <use [attr.xlink:href]="'assets/icons/sprite.svg#report-dots'"></use>
+                  </svg>
+                </div>
               </button>
             </div>
 
-            <mat-menu #optionsMenu="matMenu" class="dropdown-menu-btn" xPosition="before">
+            <mat-menu #optionsMenu="matMenu" class="reports-dropdown-menu-btn" xPosition="before">
               <button
                 mat-menu-item
                 *ngIf="!node.parentId"

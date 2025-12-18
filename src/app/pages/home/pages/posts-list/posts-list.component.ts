@@ -5,7 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { VisibleNewsPost } from '@core/models/news-posts.model';
 import { AuthService } from '@core/services/auth/auth.service';
@@ -13,6 +13,7 @@ import { LanguageService } from '@core/services/language.service';
 import { environment } from '@env/environment';
 import { Post } from '@pages/home/components/home-news/home-news.component';
 import { ManageHomeService } from '@pages/home/services/manage-home.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-posts-list',
@@ -29,9 +30,11 @@ import { ManageHomeService } from '@pages/home/services/manage-home.service';
     ]),
   ],
 })
-export class PostsListComponent {
+
+export class PostsListComponent implements OnInit {
   latestNews: VisibleNewsPost[] = [];
   pageIndex: number = 0;
+  postId: string;
   screenWidth: number = 1200;
   pageSize: number = 20;
   length: number = 100000;
@@ -45,42 +48,30 @@ export class PostsListComponent {
     private languageService: LanguageService,
     private manageHomeService: ManageHomeService,
     private authService: AuthService,
+    private _activatedRoute: ActivatedRoute,
   ) {
     this.screenWidth = window.innerWidth;
   }
 
   ngOnInit(): void {
+    this._activatedRoute.queryParams.subscribe(params => {
+      this.postId = params['id'];
+      this.postId ? this.getNewsPosts(this.postId) : '';
+    });
     this.lang = this.languageService.language;
     this.token = this.authService.getToken();
-
-    this.getNewsPosts();
   }
 
-  getNewsPosts(): void {
+  getNewsPosts(id: string): void {
     this.manageHomeService.latestNewsService
-      .getVisibleNewsPostsList({
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-      })
+      .getNewsById(id)
       .subscribe({
         next: (res) => {
           this.latestNews = res.data;
-          this.length = res.totalCount;
-          this.featured = this.latestNews.length ? this.latestNews[0] : null;
+          this.featured = this.latestNews.filter((item:any)=> item.isSelected)[0];
         },
       });
   }
-
-  onPaginationChange(pageInformation: {
-    pageSize: number;
-    pageIndex: number;
-  }): void {
-    this.pageSize = pageInformation.pageSize;
-    this.pageIndex = pageInformation.pageIndex;
-
-    this.getNewsPosts();
-  }
-
 
   onNavigateBack(): void {
     window.history.back();

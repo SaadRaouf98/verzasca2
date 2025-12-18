@@ -1,16 +1,6 @@
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalStatusCode } from '@shared/enums/modal-status-code.enum';
 import { isSmallDeviceWidthForPopup, isTouched } from '@shared/helpers/helpers';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
@@ -64,7 +54,7 @@ export class CommentModalComponent implements OnInit {
   //       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
   //       maxWidth: '95vw',
   //       autoFocus: false,
-  //       disableClose: true,
+  //       disableClose: false,
   //       data: {
   //         bodyMessage:
   //           this.data.actionType === ActionType.Archiving

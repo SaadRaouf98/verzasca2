@@ -259,6 +259,21 @@ export class ExportsFiltersComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  get hasActiveFilters(): boolean {
+    const formValue = this.filtersForm?.value;
+    if (!formValue) return false;
+
+    return Object.keys(formValue).some((key) => {
+      const value = formValue[key];
+      return (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        (!Array.isArray(value) || value.length > 0)
+      );
+    });
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }

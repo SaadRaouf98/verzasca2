@@ -105,7 +105,7 @@ export class HisExcellencyRelatedDepartmentsListComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         formMode: FormMode.View,
         header: this.translateService.instant(
@@ -129,7 +129,7 @@ export class HisExcellencyRelatedDepartmentsListComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         formMode: FormMode.Modify,
         header: this.translateService.instant('shared.addDepartment'),
@@ -154,7 +154,7 @@ export class HisExcellencyRelatedDepartmentsListComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         formMode: FormMode.Modify,
         header: this.translateService.instant(
@@ -187,7 +187,7 @@ export class HisExcellencyRelatedDepartmentsListComponent {
     this.dialog.open(ConfirmationModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         headerTranslationRef: this.translateService.instant(
           'CommitteesModule.HisExcellencyRelatedDepartmentsListComponent.confirmDeletion'

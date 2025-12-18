@@ -28,36 +28,41 @@
   <div class="col-12">
     <ng-container *ngFor="let group of policiesData">
       <p class="body-bold mb-3">{{ group.key }}</p>
-      <div class="policy-container row gap-3 mb-3">
+      <div class="policy-container row gx-3 pb-0 px-2">
         <ng-container *ngFor="let item of group.items">
-          <div class="col-md-3 col-12 px-0">
-            <div class="selectedCategoryCard ">
-              <img
-                [src]="
-                (getImageUrl(item.thumbnail?.path) | async) || 'assets/images/default-policy.png'
-              "
-                [alt]="item.title"
-                class="mb-3"
-              />
-              <div class="d-flex align-items-center justify-content-between">
-                <p class="body mb-0">{{ item.title }}</p>
-                <div class="d-flex align-items-center">
-                  <svg
-                    class="cursor-pointer mx-2"
-                    width="1.5rem"
-                    height="1rem"
-                    (click)="onViewAttachments(item.file)"
-                  >
-                    <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
-                  </svg>
-                  <svg
-                    class="cursor-pointer"
-                    width="1.5rem"
-                    height="1.5rem"
-                    (click)="getDocument(item.file)"
-                  >
-                    <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
-                  </svg>
+          <div class="col-xxl-3 col-xl-4 col-md-6 col-12 mb-3">
+            <div class="card border-radius-md border-none">
+              <div class="card-body p-1">
+                <div class="selectedCategoryCard">
+                  <img
+                    [src]="(getImageUrl(item.thumbnail?.path) | async) ||
+                    'assets/images/default-policy.png'"
+                    [alt]="item.title"
+                    class="mb-3"
+                  />
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h1 class="body mb-0 title-max-length" style="max-width: 75% !important">
+                      {{ item.title }}
+                    </h1>
+                    <div class="d-flex align-items-center">
+                      <svg
+                        class="cursor-pointer mx-2"
+                        width="1.5rem"
+                        height="1rem"
+                        (click)="onViewAttachments(item.file)"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                      </svg>
+                      <svg
+                        class="cursor-pointer"
+                        width="1.5rem"
+                        height="1.5rem"
+                        (click)="getDocument(item.file)"
+                      >
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

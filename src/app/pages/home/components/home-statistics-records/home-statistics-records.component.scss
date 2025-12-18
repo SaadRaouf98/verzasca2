@@ -61,7 +61,12 @@
         height: 32px;
         margin-right: 12px;
       }
-
+      @media (min-width: 1024px) and (max-width: 1500px) {
+        .icon {
+          width: 24px;
+          height: 24px;
+        }
+      }
       .info {
         margin-bottom: 12px;
         .value {

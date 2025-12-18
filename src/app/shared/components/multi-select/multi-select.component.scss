@@ -27,7 +27,7 @@
   border: none;
 }
 .mat-mdc-radio-button .mdc-radio {
-  padding: 0;
+  padding: 0 !important;
 }
 .ng-dropdown-panel .ng-dropdown-panel-items {
   padding: 0;
@@ -60,4 +60,9 @@ ng-select {
 }
 .multiplle .ng-placeholder{
 display: none !important;
+}
+
+// Make search input text bold
+.ng-select .ng-input > input {
+  font-weight: 700 !important;
 }

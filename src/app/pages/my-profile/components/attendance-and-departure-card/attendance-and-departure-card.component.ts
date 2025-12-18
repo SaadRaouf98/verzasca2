@@ -321,7 +321,7 @@ export class AttendanceAndDepartureCardComponent implements OnInit {
   //     maxWidth: '95vw',
   //     height: isSmallDeviceWidthForPopup() ? '100vh' : '80vh',
   //     autoFocus: false,
-  //     disableClose: true,
+  //     disableClose: false,
   //     panelClass: 'calendar_filter'
   //   });
   // }

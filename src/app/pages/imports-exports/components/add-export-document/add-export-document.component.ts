@@ -554,7 +554,7 @@ export class AddExportDocumentComponent implements OnInit {
               maxWidth: '31.25rem',
               panelClass: 'action-modal',
               autoFocus: false,
-              disableClose: true,
+              disableClose: false,
               data: {
                 title: 'shared.processDone',
                 content: this.translateService.instant('shared.exportSerialNumberIs'),
@@ -975,7 +975,7 @@ export class AddExportDocumentComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileId: fileId,
                   file: newFile,
@@ -1021,7 +1021,7 @@ export class AddExportDocumentComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileId: fileId,
                   file: newFile,
@@ -1061,7 +1061,7 @@ export class AddExportDocumentComponent implements OnInit {
         height: '95vh',
         panelClass: ['action-modal', 'float-footer'],
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: {
           file: file,
           fileId: file.id,

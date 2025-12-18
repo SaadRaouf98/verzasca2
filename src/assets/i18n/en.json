@@ -298,6 +298,7 @@
     "sector": "Sector",
     "internalSector": "Internal sector",
     "cancel": "Cancel",
+    "unsavedChanges": "You have unsaved changes. Do you want to leave this page?",
     "transactionNum": "Transaction number",
     "transactionTitle": "Transaction title",
     "requestingFoundation": "Requesting Foundation",

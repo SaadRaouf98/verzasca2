@@ -10,15 +10,15 @@
           [class.active]="activeCardId === element.id"
           (click)="onCardClick(element)"
         >
-          <div>
+          <div class="d-flex align-items-center">
             <span class="body gray-700 text-small">{{ 'shared.title' | translate }} : </span>
-            <span class="body-bold">{{ element.title }}</span>
+            <span class="body-bold mx-1"> {{ element.title }}</span>
           </div>
           <hr class="line" />
           <div class="d-flex align-items-center row">
-            <div class="d-flex nowrap col-sm-6 col-12">
+            <div class="d-flex nowrap col-sm-6 col-12 d-flex align-items-center">
               <span class="body gray-700 text-small">{{ 'shared.type' | translate }} : </span>
-              <span class="body-bold d-flex nowrap">
+              <span class="body-bold d-flex nowrap mx-1">
                 <img
                   style="margin-inline-end: 5px"
                   [src]="
@@ -34,18 +34,18 @@
                 }}
               </span>
             </div>
-            <div class="col-sm-6 col-12">
+            <div class="col-sm-6 col-12 d-flex align-items-center">
               <span class="body gray-700 text-small"
-                >{{ 'shared.categorization' | translate }} :
+                >{{ 'shared.categorization' | translate }}:
               </span>
-              <span class="body-bold">{{ element.requestType?.title || '-' }}</span>
+              <span class="body-bold mx-1"> {{ element.requestType?.title || '-' }}</span>
             </div>
           </div>
           <hr class="line" />
           <div class="d-flex align-items-center justify-content-between">
-            <div>
+            <div class="d-flex align-items-center">
               <span class="body gray-700 text-small">{{ 'shared.date' | translate }} : </span>
-              <span class="body-bold" [style.color]="element.priority?.id | priorityColor">
+              <span class="body-bold mx-1" [style.color]="element.priority?.id | priorityColor">
                 {{ element.date | date : 'dd/MM/yyyy' }}
               </span>
             </div>
@@ -54,7 +54,13 @@
       </ng-container>
     </div>
     <div class="col-md-7 col-12 scroll-cards">
-      <div class="transaction-card" *ngIf="isExportDocument && activeCardId">
+      <div class="transaction-card" *ngIf="showAuthorizationContainer">
+        <app-authorization-container></app-authorization-container>
+      </div>
+      <div
+        class="transaction-card"
+        *ngIf="isExportDocument && activeCardId && !showAuthorizationContainer"
+      >
         <div class="row">
           <div class="col-12">
             <!-- <app-pdf-viewer [previewType]="'iframe'" [src]="exportableDocument.pdfSrc"></app-pdf-viewer> -->
@@ -74,8 +80,11 @@
         </div>
       </div>
 
-      <div class="transaction-card" *ngIf="!isExportDocument && activeCardId">
-        <span class="body-bold mt-5 d-block">
+      <div
+        class="transaction-card"
+        *ngIf="!isExportDocument && activeCardId && !showAuthorizationContainer"
+      >
+        <span class="body-bold d-block" [class.mt-5]="isExportDocument && activeCardId">
           {{ 'ImportsExportsModule.RequestDetailsComponent.importData' | translate }}
         </span>
         <hr class="line" />
@@ -259,7 +268,7 @@
     </div> -->
 
     <div
-      class="d-flex justify-content-center p-2 align-items-center flex-column"
+      class="d-flex justify-content-center p-2 align-items-center flex-column request-no-data"
       *ngIf="data?.length == 0"
     >
       <img

@@ -26,7 +26,7 @@
     </svg>
   </ng-template>
   <ng-template ng-clear-icon>
-    <span class="ng-clear-custom" title="Clear" (mousedown)="$event.stopPropagation()">
+    <span   class="ng-clear-custom" title="Clear" (mousedown)="$event.stopPropagation()">
       <svg
         width="1em"
         height="1em"
@@ -52,7 +52,7 @@
         disableRipple
         [checked]="isChecked(item)"
       ></mat-checkbox>
-      <span class="mx-2 body text-small">
+      <span class="mx-2 body-bold text-small">
         {{ item[bindLabel] }}
       </span>
     </div>

@@ -1,50 +1,56 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <span class="body-bold"> {{
-    "ManageRecordsModule.TakeActionModalComponent.expressByPhone" | translate
-    }}</span>
+<div class="d-flex justify-content-between align-items-center mb-3 custom-modal-header">
+  <span class="body-bold">
+    {{ 'ManageRecordsModule.TakeActionModalComponent.expressByPhone' | translate }}</span
+  >
   <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
     <use [attr.xlink:href]="'assets/icons/sprite.svg#circle-close'"></use>
   </svg>
 </div>
 
-
-
-
-<div mat-dialog-contents>
+<div class="custom-modal-body" mat-dialog-contents>
   <form autocomplete="off" [formGroup]="form">
     <div class="row">
       <div class="col-12 mb-3">
-        <mat-radio-group formControlName="approval" aria-label="Select an option" id="approval"
-          class="action-type-radio-group">
+        <mat-radio-group
+          formControlName="approval"
+          aria-label="Select an option"
+          id="approval"
+          class="action-type-radio-group"
+        >
           <mat-radio-button class="ms-5" [value]="MemberApprovalType.Approved">
             مناسب
           </mat-radio-button>
-          <mat-radio-button [value]="MemberApprovalType.Rejected">
-            غير مناسب
-          </mat-radio-button>
+          <mat-radio-button [value]="MemberApprovalType.Rejected"> غير مناسب </mat-radio-button>
         </mat-radio-group>
       </div>
-
 
       <!-- start textArea -->
       <div class="col-12">
         <p class="body-bold text-small mb-2">
-          {{ "shared.notes" | translate }}
+          {{ 'shared.notes' | translate }}
         </p>
 
-        <textarea class="form-control w-100" rows="3" placeholder="{{ 'shared.note' | translate }}"
-          formControlName="comment" id="comment"></textarea>
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ 'shared.note' | translate }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
       </div>
       <!-- end textArea -->
     </div>
   </form>
 </div>
 
-<div mat-dialog-actions class="d-flex justify-content-between align-items-center p-0 mt-5">
+<div
+  mat-dialog-actions
+  class="d-flex justify-content-between align-items-center mt-4 custom-modal-footer"
+>
   <button class="button button-primary button-lg" style="flex: 0 0 69%" (click)="onSubmit()">
-    {{ "shared.confirm" | translate }}
+    {{ 'shared.confirm' | translate }}
   </button>
   <button class="button button-secondary button-lg" style="flex: 0 0 29%" (click)="onCancel()">
-    {{ "shared.cancel" | translate }}
+    {{ 'shared.cancel' | translate }}
   </button>
 </div>

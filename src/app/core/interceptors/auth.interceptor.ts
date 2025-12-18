@@ -81,7 +81,12 @@ export class AuthInterceptor implements HttpInterceptor {
           });
           return throwError(() => error);
         } else if (error instanceof HttpErrorResponse && error.status === 403) {
-          // Only handle 403 Forbidden here
+          // Check if request is from preview endpoint - don't show popup for those
+          // Let the component handle it instead
+          if (req.url.includes('preview') || req.url.includes('exportablePdfDocument')) {
+            return throwError(() => error);
+          }
+          // Only handle 403 Forbidden here for other requests
           this.noPermission();
           return throwError(() => error);
         } else {
@@ -95,12 +100,17 @@ export class AuthInterceptor implements HttpInterceptor {
   noPermission() {
     console.log(document);
     const filtersDialogRef = this.dialog.open(AuthorizationPopupComponent, {
+      minWidth: '36.25rem',
+      maxWidth: '36.25rem',
+      maxHeight: '44.3125rem',
+      panelClass: 'action-modal',
+      autoFocus: false,
+      disableClose: false,
       data: {
         title: this.translateService.instant('unauthorized.accessDenied'),
         message: `${this.translateService.instant('unauthorized.youDoNotHavePermission')} `,
         authorizationInside: true,
       },
-      disableClose: true,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {

@@ -40,9 +40,11 @@ export class TransactionsFiltersComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   @Output() filtersChange: EventEmitter<RequestContainersFiltersForm2> =
     new EventEmitter<RequestContainersFiltersForm2>();
+  @Output() resetRequested = new EventEmitter<void>();
 
   filtersForm!: FormGroup;
   RequestContainerStatus = RequestContainerStatus;
+  hasActiveFilters: boolean = false;
 
   compareFn = compareFn;
 
@@ -101,10 +103,10 @@ export class TransactionsFiltersComponent implements OnInit {
     });
 
     const sub = this.manageSharedService.searchFormValue.subscribe((filters: any) => {
-      console.log('Received filters in NotesFiltersComponent:', filters);
-      this.filtersForm.patchValue({ ...filters }, { emitEvent: false });
-      // if(filters?.priorityId)
-      //   this.filtersForm.controls['priority'].setValue(filters?.priorityId, { emitEvent: false });
+      if (filters && Object.keys(filters).length > 0) {
+        console.log('Received filters in NotesFiltersComponent:', filters);
+        this.filtersForm.patchValue({ ...filters }, { emitEvent: false });
+      }
     });
     this.subscriptions.push(sub);
 
@@ -156,12 +158,30 @@ export class TransactionsFiltersComponent implements OnInit {
 
   reset() {
     this.filtersForm.reset();
+    this.hasActiveFilters = false;
     this.manageSharedService.searchFormValue = null;
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.filtersChange.emit({} as RequestContainersFiltersForm2);
+    this.resetRequested.emit();
     this.dialogRef.close();
   }
   detectFiltersChanges(): void {
-    this.filtersChange.emit(this.filtersForm.value as RequestContainersFiltersForm2);
-    this.manageSharedService.searchFormValue = this.filtersForm.value;
+    // Filter out null, undefined, and empty string values
+    const filteredValues = Object.keys(this.filtersForm.value).reduce((acc: any, key: string) => {
+      const value = this.filtersForm.value[key];
+      if (value !== null && value !== undefined && value !== '') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    // Update hasActiveFilters based on whether there are any filter values
+    this.hasActiveFilters = Object.keys(filteredValues).length > 0;
+
+    this.filtersChange.emit(filteredValues as RequestContainersFiltersForm2);
+    // Only update shared service if there are actual filter values
+    if (Object.keys(filteredValues).length > 0) {
+      this.manageSharedService.searchFormValue = filteredValues;
+    }
   }
 }

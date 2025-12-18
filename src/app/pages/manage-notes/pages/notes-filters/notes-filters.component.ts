@@ -55,6 +55,7 @@ export class NotesFiltersComponent implements OnInit, OnChanges {
 
   destroyRef = inject(DestroyRef);
   @Output() filtersChange: EventEmitter<NotesFiltersForm> = new EventEmitter<NotesFiltersForm>();
+  @Output() resetRequested = new EventEmitter<void>();
   filtersForm!: FormGroup;
   usersList$: Observable<{
     data: {
@@ -140,7 +141,6 @@ export class NotesFiltersComponent implements OnInit, OnChanges {
     // Clean up filters when dialog closes
     this.dialogRef.afterClosed().subscribe(() => {
       this.dialogClosed = true;
-      this.manageSharedService.searchFormValue = null;
       this.subscriptions.forEach((sub) => sub.unsubscribe());
     });
   }
@@ -209,8 +209,30 @@ export class NotesFiltersComponent implements OnInit, OnChanges {
     this.filtersForm.reset();
     this.manageSharedService.searchFormValue = null;
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.filtersChange.emit({} as NotesFiltersForm);
+    this.resetRequested.emit();
     this.dialogRef.close();
   }
+
+  get hasActiveFilters(): boolean {
+    const formValue = this.filtersForm?.value;
+    if (!formValue) return false;
+
+    // Check only user-selectable fields, excluding documentType which is set automatically
+    return Object.keys(formValue).some((key) => {
+      // Skip documentType as it's set automatically by the parent component
+      if (key === 'documentType') return false;
+
+      const value = formValue[key];
+      return (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        (!Array.isArray(value) || value.length > 0)
+      );
+    });
+  }
+
   detectFiltersChanges(): void {
     let filteedData = {
       searchKeyword: this.filtersForm.value.searchKeyword,
@@ -227,7 +249,20 @@ export class NotesFiltersComponent implements OnInit, OnChanges {
       hijriFromDate: this.filtersForm.value.hijriFromDate,
       hijriToDate: this.filtersForm.value.hijriToDate,
     };
-    this.filtersChange.emit(filteedData as NotesFiltersForm);
-    this.manageSharedService.searchFormValue = filteedData;
+
+    // Filter out null, undefined, and empty string values
+    const filteredData = Object.keys(filteedData).reduce((acc: any, key: string) => {
+      const value = filteedData[key as keyof typeof filteedData];
+      if (value !== null && value !== undefined && value !== '') {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+
+    this.filtersChange.emit(filteredData as NotesFiltersForm);
+    // Only update shared service if there are actual filter values
+    if (Object.keys(filteredData).length > 0) {
+      this.manageSharedService.searchFormValue = filteredData;
+    }
   }
 }

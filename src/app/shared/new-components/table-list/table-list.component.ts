@@ -49,6 +49,7 @@ import { ExportedDocumentType } from '@core/enums/exported-docuemnt-type.enum';
 import { PendingRequestsFiltersForm } from '@core/models/pending-request.model';
 import { PriorityColorPipe } from '@shared/pipes/priorityColor.pipe';
 import { RequestContainerStatus } from '@core/enums/request-container-status.enum';
+import { RequestStatus, RequestStatusTranslationMap } from '@core/enums/request-status.enum';
 import { PercentGaugeChart } from '@shared/components/percent-gauge-chart/percent-gauge.component';
 import { ClassificationLevel } from '@core/enums/classification-level.enum';
 import { PermissionsObj } from '@core/constants/permissions.constant';
@@ -99,6 +100,7 @@ import { SuccessModalComponent } from '@shared/components/success-modal/success-
 })
 export class TableListComponent {
   ExportableDocumentActionType = ExportableDocumentActionType;
+  RequestStatusTranslationMap = RequestStatusTranslationMap;
   @Output() customHoverShow = new EventEmitter<{
     event: MouseEvent;
     element: any;
@@ -506,6 +508,12 @@ export class TableListComponent {
     return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
   }
 
+  isTextTruncated(text: string | null | undefined, maxLength: number = 90): boolean {
+    if (!text) return false;
+    const str = String(text);
+    return str.length > maxLength;
+  }
+
   getFullText(text: string | null | undefined): string {
     return text ? String(text) : '-';
   }
@@ -844,22 +852,31 @@ export class TableListComponent {
     element.statusClass = event;
   }
 
-  // Returns true if columnsConfig has a 'view' action
+  // Returns true if columnsConfig has a 'view' or 'openLink' action
   get hasViewAction(): boolean {
     return this.columnsConfig?.some(
-      (col) => col.type === 'actions' && col.actions?.some((a) => a.action === 'view')
+      (col) =>
+        col.type === 'actions' &&
+        col.actions?.some((a) => a.action === 'view' || a.action === 'openLink')
     );
   }
 
-  // Handles row click: if 'view' action exists, call its handler, else emit rowClicked
+  // Handles row click: if 'view' or 'openLink' action exists, call its handler, else emit rowClicked
   handleRowClick(row: any) {
+    // Don't allow navigation for restricted elements
+    if (row?.isRestricted) {
+      return;
+    }
+
     if (this.hasViewAction) {
-      // Search through ALL action columns to find the one with 'view' action
+      // Search through ALL action columns to find the one with 'view' or 'openLink' action
       for (const col of this.columnsConfig) {
         if (col.type === 'actions' && Array.isArray(col.actions)) {
-          const viewAction = col.actions.find((a) => a.action === 'view');
-          if (viewAction && typeof viewAction.onClick === 'function') {
-            viewAction.onClick(row);
+          const actionToExecute = col.actions.find(
+            (a) => a.action === 'view' || a.action === 'openLink'
+          );
+          if (actionToExecute && typeof actionToExecute.onClick === 'function') {
+            actionToExecute.onClick(row);
             return;
           }
         }
@@ -918,7 +935,7 @@ export class TableListComponent {
       maxWidth: '31.25rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         title: 'shared.comment',
         content: comment,

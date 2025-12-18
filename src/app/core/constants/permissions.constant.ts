@@ -2008,4 +2008,7 @@ export const PermissionsObj = {
   CreateRegulatoryDocuments: 'CreateRegulatoryDocuments',
   UpdateRegulatoryDocuments: 'UpdateRegulatoryDocuments',
   DeleteRegulatoryDocuments: 'DeleteRegulatoryDocuments',
+
+  ManageMeetingSettings: 'ManageMeetingSettings',
+  ManageMeetingTopics: 'ManageMeetingTopics',
 };

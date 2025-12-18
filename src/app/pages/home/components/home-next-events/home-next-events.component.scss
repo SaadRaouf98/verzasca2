@@ -52,14 +52,18 @@
 
   .item {
     display: flex;
+    height: 83px;
     align-items: flex-start;
     background-color: $primary-50; /* light primary */
     border-radius: 6px;
-    padding: 20px;
     position: relative;
 
-    &.neutral-bg {
-      background-color: $secondary-50;
+    &.neutral-bg-first {
+      background-color: $gray-50-color;
+    }
+
+    &.neutral-bg-second {
+      background-color: $secondary-50-color;
     }
 
     .menu-btn {
@@ -72,8 +76,6 @@
 
     .details {
       width: 100%;
-      padding: 0 1.5rem 0 0; /* space for menu button */
-
       .title {
         font-size: 1rem;
         font-weight: 500;
@@ -107,9 +109,4 @@
   text-align: center;
   line-height: 1.5 !important;
 }
-.title {
-  max-width: 90%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+

@@ -223,7 +223,7 @@
   overflow-x: auto;
   overflow-y: auto;
   scroll-behavior: smooth;
-  border-radius: 12px;
+  // border-radius: 12px;
   transition: scroll-behavior 0.5s ease-in-out;
   // min-height: 21rem;
   // height: 400px;
@@ -544,6 +544,10 @@ th mat-menu {
 ::ng-deep .mat-mdc-select-arrow-wrapper {
   height: auto;
 }
+::ng-deep .mat-mdc-paginator {
+  background: transparent;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
 ::ng-deep .mat-mdc-paginator-container {
   display: flex;
   align-items: center;
@@ -706,30 +710,33 @@ th mat-menu {
   background: transparent;
 }
 .focused {
-  background: #ead6db;
+  background: $secondary-100;
   position: absolute;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .booleanText {
   font-weight: 700 !important ;
 }
-.focused::before {
-  position: absolute;
-  right: 0;
-  content: '';
-  top: 30%;
-  width: 0;
-  height: 0;
-  /* border-top: 50px solid transparent; */
-  /* border-bottom: 50px solid transparent; */
-  /* border-left: 100px solid green; */
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-right: 13px solid #fff;
-}
+// .focused::before {
+//   position: absolute;
+//   right: 0;
+//   content: '';
+//   top: 30%;
+//   width: 0;
+//   height: 0;
+//   /* border-top: 50px solid transparent; */
+//   /* border-bottom: 50px solid transparent; */
+//   /* border-left: 100px solid green; */
+//   border-top: 6px solid transparent;
+//   border-bottom: 6px solid transparent;
+//   border-right: 13px solid #fff;
+// }
 
 .custom-direction {
   direction: ltr;
@@ -838,7 +845,7 @@ svg {
   flex-shrink: 0;
   display: flex !important;
   justify-content: center !important;
-  .mdc-form-field{
+  .mdc-form-field {
     display: flex !important;
     justify-content: space-between !important;
     width: 65%;
@@ -880,7 +887,7 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 10px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -888,7 +895,7 @@ svg {
 /* Expandable row styles */
 :host ::ng-deep .example-element-detail {
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 0;
 }
 
 :host ::ng-deep .example-element-diagram {
@@ -917,22 +924,22 @@ svg {
 
 :host ::ng-deep .example-expanded-row {
   height: 64px;
-  background-color: $rose-50 !important; /* Pink background */
+  background-color: $secondary-100 !important; /* Pink background */
 }
 
 :host ::ng-deep {
   .example-expanded-row td {
-    background-color: rgba(245, 235, 237, 0.5) !important;
+    background-color: $secondary-100 !important;
     svg {
-      transform: scale(0.75);
+      transform: scale(0.8);
     }
   }
   .example-detail-row td {
     background-color: $rose-50 !important;
   }
-  .example-expanded-row > .mat-column-expandedDetail {
-    padding: 0.375rem 0.75rem !important;
-  }
+  // .example-expanded-row > .mat-column-expandedDetail {
+  //   padding: 0.375rem 0.75rem !important;
+  // }
   /* Detail row - always visible but empty when collapsed */
   .example-detail-row {
     height: 0;
@@ -958,12 +965,16 @@ svg {
   }
 
   .expanded-box {
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-    background: #fff;
+    padding: 0.75rem;
+    border-radius: 0;
+    background: $secondary-50;
+    border-top: 1px solid #dad0be;
   }
 }
-
+.member-seperator {
+  margin: 8px 0;
+  color: $secondary-200;
+}
 :host ::ng-deep .example-element-diagram pre {
   margin: 0;
   padding: 12px;
@@ -991,4 +1002,21 @@ svg {
   background-color: $gray-200;
   margin: 0.5rem 0;
   opacity: 0.1;
+}
+.test {
+  border-bottom: 1px solid #ece7df;
+}
+::ng-deep .no-paginator {
+  .mat-mdc-table {
+    border-radius: 0.75rem;
+  }
+  .mat-mdc-table tr:last-child td,
+  .mat-mdc-table tr:nth-last-child(2) td {
+    border-bottom: none;
+  }
+}
+
+/* Remove borders from rows with only example-expanded-row class */
+tr.example-expanded-row:not(.example-detail-row) td {
+  border: none;
 }

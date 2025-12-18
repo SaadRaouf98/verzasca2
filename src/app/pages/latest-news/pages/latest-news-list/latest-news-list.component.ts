@@ -89,7 +89,7 @@ export class LatestNewsListComponent implements OnInit {
     const lang = this.languageService.language;
 
     const filtersDialogRef = this.dialog.open(DeletePopupComponent, {
-      disableClose: true,
+      disableClose: false,
       data: {
         title: this.translateService.instant(
           'RegularReportsModule.AddRegularReportComponent.deletePopupTitle'

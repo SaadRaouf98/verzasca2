@@ -74,6 +74,7 @@ export class RelatedContainersScrollableTableComponent implements OnInit, OnChan
   @Output() requestId: EventEmitter<string> = new EventEmitter();
   @Output() updateTableOnDelete: EventEmitter<boolean> = new EventEmitter();
   activeCardId: string | null = null;
+  showAuthorizationContainer: boolean = false; // Track 403 error state
   constructor(
     private langugaeService: LanguageService,
     private toastr: CustomToastrService,
@@ -86,7 +87,7 @@ export class RelatedContainersScrollableTableComponent implements OnInit, OnChan
 
   ngOnInit(): void {
     this.lang = this.langugaeService.language;
-    this.activeCardId = this.data[0]?.id;
+    // this.activeCardId = this.data[0]?.id;
 
     if (this.data.length > 0) this.onCardClick(this.data[0]);
   }
@@ -100,13 +101,24 @@ export class RelatedContainersScrollableTableComponent implements OnInit, OnChan
     return this.statusTranslationMap[status] || '';
   }
   onCardClick(data: RequestDetails) {
+    // Skip if clicking the same card (but allow first load when activeCardId is null)
+    if (this.activeCardId !== null && this.activeCardId === data.id) {
+      return;
+    }
     this.activeCardId = data.id;
-    this.manageTransactionsService.requestsService
-      .getFullPreview(data.requestId)
-      .subscribe((res: any) => {
+    this.showAuthorizationContainer = false; // Reset authorization container flag
+
+    this.manageTransactionsService.requestsService.getFullPreview(data.requestId).subscribe({
+      next: (res: any) => {
         this.details = res;
         this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
-      });
+      },
+      error: (err: any) => {
+        if (err.status === 403) {
+          this.showAuthorizationContainer = true;
+        }
+      },
+    });
   }
   onViewElement(elementId: string): void {
     this.router.navigateByUrl(this.router.url.replace(this.elementId, elementId));
@@ -132,7 +144,7 @@ export class RelatedContainersScrollableTableComponent implements OnInit, OnChan
         const dialogRef = this.dialog.open(ConfirmationModalComponent, {
           minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px', // Responsive width
           autoFocus: false, // Avoid focusing to prevent mobile zoom issues
-          disableClose: true, // Force the user to make a choice (no outside click dismiss)
+          disableClose: false, // Force the user to make a choice (no outside click dismiss)
           data: {
             headerTranslationRef:
               translations[

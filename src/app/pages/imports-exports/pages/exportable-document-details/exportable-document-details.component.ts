@@ -157,7 +157,7 @@ export class ExportableDocumentDetailsComponent implements OnInit {
       width: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         attachmentDescription: this.exportableDocumentDetails?.attachmentDescription,
       },
@@ -385,7 +385,7 @@ export class ExportableDocumentDetailsComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
               })
               .afterClosed()
               .subscribe(() => URL.revokeObjectURL(imageUrl));
@@ -404,7 +404,7 @@ export class ExportableDocumentDetailsComponent implements OnInit {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   file: newFile,
                   attachmentId: file.id,
@@ -432,7 +432,7 @@ export class ExportableDocumentDetailsComponent implements OnInit {
           'RegularReportsModule.AddRegularReportComponent.deletePopupMessage'
         )} `,
       },
-      disableClose: true,
+      disableClose: false,
     });
 
     filtersDialogRef.afterClosed().subscribe((res) => {

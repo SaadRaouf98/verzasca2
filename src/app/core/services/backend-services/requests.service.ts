@@ -329,7 +329,8 @@ export class RequestsService {
     selectedProperties?: string[],
     useDefaultSource = false,
     includeFoundationIdParam = true,
-    skipFoundationInFilter = false
+    skipFoundationInFilter = false,
+    foundationFieldName = 'foundation.id'
   ): string {
     let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
@@ -395,7 +396,7 @@ export class RequestsService {
         url += ",'and',";
       }
 
-      url += `["foundations.id", "=", "${
+      url += `["${foundationFieldName}", "=", "${
         filtersData.foundation?.id || filtersData.foundationId || filtersData.foundation
       }"]`;
       isFirstFilter = false;
@@ -497,14 +498,19 @@ export class RequestsService {
       isFirstFilter = false;
     }
 
-    if (filtersData && Object.keys(filtersData).length) {
-      url += ']';
+    if (filtersData?.consultant || filtersData?.consultantId) {
+      if (!isFirstFilter) {
+        url += ",'and',";
+      }
+
+      url += `["Consultants.id", "=", "${
+        filtersData.consultant?.id || filtersData.consultantId || filtersData.consultant
+      }"]`;
+      isFirstFilter = false;
     }
 
-    if (filtersData?.consultant || filtersData?.consultantId) {
-      url += `&consultantId=${
-        filtersData.consultant?.id || filtersData.consultantId || filtersData.consultant
-      }`;
+    if (filtersData && Object.keys(filtersData).length) {
+      url += ']';
     }
 
     return url;
@@ -558,7 +564,8 @@ export class RequestsService {
       selectedProperties,
       true,
       false, // Don't include foundationId as parameter
-      false // Include foundation in Filter array as foundation.id
+      false, // Include foundation in Filter array
+      'foundations.id' // Use plural form for exports
     )}`;
     return this.apiService.get(url);
   }
@@ -577,7 +584,8 @@ export class RequestsService {
       selectedProperties,
       true,
       false, // Don't include foundationId as parameter
-      false // Include foundation in Filter array as foundation.id
+      false, // Include foundation in Filter array
+      'foundations.id' // Use plural form for exports
     )}`;
     const fileName = `${formatDateToYYYYMMDD(new Date())}.xlsx`;
     return this.apiService.getAndDownloadExcelFile(url, fileName);
@@ -595,7 +603,9 @@ export class RequestsService {
       sortData,
       selectedProperties,
       true,
-      false // Don't include foundationId as parameter
+      false, // Don't include foundationId as parameter
+      false, // Include foundation in Filter array
+      'foundation.id' // Use singular form for imports
     )}`;
     return this.apiService.get(url);
   }
@@ -715,7 +725,10 @@ export class RequestsService {
       filtersData,
       sortData,
       selectedProperties,
-      true
+      true,
+      true, // Include foundationId as parameter
+      false, // Include foundation in Filter array
+      'foundation.id' // Use singular form for imports
     )}`;
     const fileName = `${formatDateToYYYYMMDD(new Date())}.xlsx`;
     return this.apiService.getAndDownloadExcelFile(url, fileName);

@@ -1,19 +1,26 @@
+<div class="col-12 home-section-header d-flex justify-content-between mb-3">
+  <div class="d-flex align-items-center">
+    <svg width="1.2rem" height="1.2rem">
+      <use [attr.xlink:href]="'assets/icons/sprite.svg#home-news'"></use>
+    </svg>
+    <span class="body-bold mx-2"> {{ 'HomeModule.DashboardPage.latestNew' | translate }} </span>
+  </div>
+  <a class="link" routerLink="/home/posts"
+     [queryParams]="{id: featured?.id}">
+    {{ 'HomeModule.DashboardPage.showAll' | translate }}
+  </a>
+</div>
 <!-- home-news.component.html -->
 <div class="home-news home-section">
-  <!-- <div class="header">
-    <h2>{{ "HomeModule.DashboardPage.news" | translate }}</h2>
-
-  </div> -->
-
-  <div class="cards">
+  <div class="cards row">
     <!-- featured card on the right -->
-    <div class="large-card" *ngIf="featured">
+    <div class="col-lg-6 col-12 px-0 large-card" *ngIf="featured">
       <div class="news-card large">
         <img
           [src]="
             environment.apiUrl +
             '/api/v1/newsposts/images/' +
-            featured.imagePath +
+            featured?.imagePath +
             '?access_token=' +
             token
           "
@@ -22,26 +29,34 @@
           (error)="$event.target.src = 'assets/images/news-default-large.png'"
         />
         <div class="content">
-          <p class="body-bold mb-0">{{ featured.title }}</p>
-          <div *ngIf="featured.date" class="date d-flex align-items-center mt-2 mb-1">
-            <i class="hgi hgi-stroke hgi-calendar-03"></i>
-            <span class="body text-small mx-1"> {{ featured.date | date : 'dd MMM yyyy' }}</span>
+          <h1 routerLink="/home/posts"
+              [queryParams]="{id: featured?.id}"
+            class="body-bold mb-0 title-max-length head">
+            {{ featured?.title }}
+          </h1>
+          <div *ngIf="featured?.createdOn" class="date d-flex align-items-center mt-2 mb-1">
+            <i class="hgi hgi-stroke hgi-calendar-03 ms-1"></i>
+            <span class="body text-small mx-1 d-ltr"> {{ featured?.createdOn | date : 'dd MMM yyyy' }}</span>
           </div>
           <!-- full HTML content as excerpt -->
-          <p class="body mb-0" [innerHTML]="featured.content"></p>
-          <a class="body-bold text-small read-more link" [routerLink]="'./posts/'">{{
-            'HomeModule.DashboardPage.readMore' | translate
-          }}</a>
+          <div class="definition">
+            <p class="body mb-0 content-max-length" [innerHTML]="featured?.definition"></p>
+            <span class="body-bold text-small read-more link"
+                  routerLink="/home/posts"
+                  [queryParams]="{id: featured?.id}">{{
+                'HomeModule.DashboardPage.readMore' | translate
+              }}</span>
+          </div>
         </div>
       </div>
     </div>
     <!-- small cards on the left     -->
-    <div class="small-cards">
+    <div class="col-lg-6 col-12 px-0 small-cards">
       <ng-container *ngFor="let post of others">
-        <div class="news-card small">
+        <div class="news-card small"
+             routerLink="/home/posts"
+             [queryParams]="{id: post.id}">
           <img
-            width="147"
-            height="115"
             [src]="
               environment.apiUrl +
               '/api/v1/newsposts/images/' +
@@ -54,14 +69,14 @@
             (error)="$event.target.src = 'assets/images/news-default-small.png'"
           />
           <div class="text">
-            <p class="body-bold text-small mb-0">{{ post.title }}</p>
-            <div *ngIf="post.date" class="date d-flex align-items-center">
-              <i class="hgi hgi-stroke hgi-calendar-03"></i>
-              <span class="caption mx-1 mt-2 mb-1"> {{ post.date | date : 'dd MMM yyyy' }}</span>
+            <h2 class="body-bold text-small mb-0 title-max-length">{{ post.title }}</h2>
+            <div *ngIf="post.createdOn" class="my-1 date d-flex align-items-center">
+              <i class="hgi hgi-stroke hgi-calendar-03 ms-1"></i>
+              <span class="mx-1 mt-1 mb-1 d-ltr"> {{ post.createdOn | date : 'dd MMM yyyy' }}</span>
             </div>
-            <div class="body text-small" *ngIf="post.definition">
+            <p class="body text-small content-max-length" *ngIf="post.definition">
               {{ post.definition }}
-            </div>
+            </p>
           </div>
         </div>
       </ng-container>

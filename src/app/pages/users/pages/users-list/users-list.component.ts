@@ -180,7 +180,7 @@ export class UsersListComponent {
       maxHeight: '95vh',
       panelClass: ['action-modal', 'float-footer'],
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         id: document.id,
       },

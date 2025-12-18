@@ -9,22 +9,30 @@
       <nav class="primary-navigation h-100 w-100 d-flex flex-column justify-content-between">
         <div class="menu-arrow-action cursor-pointer" (click)="toggleSidenav()">
           <svg *ngIf="isLightTheme" width="1.5rem" height="1.5rem">
-            <use [attr.xlink:href]="
-            isCollapsed? 'assets/icons/sprite.svg#nav-arrow-light-collapsed':
-            'assets/icons/sprite.svg#nav-arrow-light'"></use>
+            <use
+              [attr.xlink:href]="
+                isCollapsed
+                  ? 'assets/icons/sprite.svg#nav-arrow-light-collapsed'
+                  : 'assets/icons/sprite.svg#nav-arrow-light'
+              "
+            ></use>
           </svg>
 
           <svg *ngIf="!isLightTheme" width="1.5rem" height="1.5rem">
-            <use [attr.xlink:href]="
-            isCollapsed? 'assets/icons/sprite.svg#nav-arrow-dark-collapsed' :
-            'assets/icons/sprite.svg#nav-arrow-dark'"></use>
+            <use
+              [attr.xlink:href]="
+                isCollapsed
+                  ? 'assets/icons/sprite.svg#nav-arrow-dark-collapsed'
+                  : 'assets/icons/sprite.svg#nav-arrow-dark'
+              "
+            ></use>
           </svg>
         </div>
 
-        <div
-          [routerLink]="'/home'"
-          class="top-header-logo custom-mb-60 cursor-pointer custom-mt-16"
-        >
+        <div [routerLink]="'/home'"
+             style="{{isCollapsed? 'top: 16px; inset-inline-start: 22px;' :
+              'top: 16px; inset-inline-start: 8px;'}}"
+             class="top-header-logo cursor-pointer position-fixed">
           <img
             [width]="isCollapsed ? 46 : 176"
             [src]="
@@ -52,38 +60,38 @@
                   <use [attr.xlink:href]="'assets/icons/add-square.svg'"></use>
                 </svg>
                 <span *ngIf="!isCollapsed" class="body body-bold">{{
-                  'shared.addNewBtn' | translate
-                }}</span>
+                    'shared.addNewBtn' | translate
+                  }}</span>
                 <svg *ngIf="!isCollapsed" width="1.25rem" height="1.25rem">
                   <use [attr.xlink:href]="'assets/icons/u_angle-down.svg'"></use>
                 </svg>
               </button>
               <mat-menu
                 #menu="matMenu"
-                panelClass="menu-same-width custom-shadow"
-                class="menu-same-width custom-shadow"
+                class="custom-shadow mt-2 p-0 custom-menu"
+                style="min-width: 12.75rem !important; "
               >
-                <!-- <button mat-menu-item class="text-small p-0" (click)="selectedOption = 'option1'">
-                  <mat-radio-button [checked]="selectedOption === 'option1'" class="mr-2"
-                    disableRipple></mat-radio-button>
-                  معاملة
-                </button> -->
-                <button mat-menu-item class="text-small p-0" (click)="navigateTo('export')">
-                  <mat-radio-button
-                    [checked]="selectedOption === 'export'"
-                    class="mr-2"
-                    disableRipple
-                  ></mat-radio-button>
-                  صادر
-                </button>
-                <button mat-menu-item class="text-small p-0" (click)="navigateTo('import')">
-                  <mat-radio-button
-                    [checked]="selectedOption === 'import'"
-                    class="mr-2"
-                    disableRipple
-                  ></mat-radio-button>
-                  وارد
-                </button>
+                <div class="p-2" style="min-width: 11rem !important;">
+                    <ng-container *ngFor="let dropItem of dropItems; let last = last">
+                      <div
+                        *ngxPermissionsOnly="dropItem.permissions"
+                        mat-menu-item
+                        class="px-0 w-100 menu-item"
+                        [style.border-bottom]="!last ? '1px solid #D9D9D9!important' : null"
+                        [routerLink]="dropItem.url"
+                      >
+                        <div class="d-flex justify-content-start align-items-center w-100 mt-1">
+                          <svg width="1.3rem" height="1.3rem">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#' + dropItem.icon"></use>
+                          </svg>
+
+                          <span class="body mb-1 mx-2">
+                            {{ dropItem.name | translate }}
+                          </span>
+                        </div>
+                      </div>
+                    </ng-container>
+                </div>
               </mat-menu>
             </span>
             <ng-container *ngFor="let item of navItems; trackBy: trackByRoute">
@@ -131,7 +139,7 @@
   <!-- [class.sp_margin]="!isCollapsed" -->
   <mat-sidenav-content>
     <app-header [inputSideNav]="sidenav" [isLoggedIn]="true"></app-header>
-    <section class="custom-pl-51 custom-pr-51 custom-pt-20">
+    <section class="custom-pl-51 custom-pr-51 custom-pt-12">
       <router-outlet></router-outlet>
     </section>
 

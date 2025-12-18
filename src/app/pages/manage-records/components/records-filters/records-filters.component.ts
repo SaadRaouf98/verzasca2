@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChange,
 } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Classification } from '@core/models/classification.model';
 import { Priority } from '@core/models/priority.model';
@@ -37,6 +37,8 @@ export class RecordsFiltersComponent implements OnInit, OnChanges {
 
   @Output()
   filtersChange: EventEmitter<RecordsFiltersForm2> = new EventEmitter();
+  @Output()
+  resetRequested: EventEmitter<void> = new EventEmitter();
   private subscriptions: Subscription[] = [];
   filtersForm!: FormGroup;
   organizationUnitsList: {
@@ -74,6 +76,15 @@ export class RecordsFiltersComponent implements OnInit, OnChanges {
       this.viewMode = this.data.viewMode;
     }
   }
+  get priorityId(): AbstractControl {
+    return this.filtersForm.controls['priorityId'];
+  }
+  get classificationId(): AbstractControl {
+    return this.filtersForm.controls['classificationId'];
+  }
+  get isInitiated(): AbstractControl {
+    return this.filtersForm.controls['isInitiated'];
+  }
 
   ngOnInit(): void {
     this.setFilters();
@@ -90,6 +101,10 @@ export class RecordsFiltersComponent implements OnInit, OnChanges {
     this.prioritiesList = this.data.prioritiesList;
     this.organizationUnitsList = this.data.organizationUnitsList;
     this.classificationsList = this.data.classificationsList;
+  }
+
+  validForm() {
+    return !this.priorityId.value && !this.classificationId.value && !this.isInitiated.value;
   }
 
   ngOnChanges(changes: {
@@ -188,7 +203,27 @@ export class RecordsFiltersComponent implements OnInit, OnChanges {
     });
     this.manageSharedService.searchFormValue = null;
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    // Emit empty filters to notify parent that filters have been reset
+    this.filtersChange.emit({});
+    // Emit reset event for app-filters component to handle
+    this.resetRequested.emit();
   }
+
+  get hasActiveFilters(): boolean {
+    const formValue = this.filtersForm?.value;
+    if (!formValue) return false;
+
+    return Object.keys(formValue).some((key) => {
+      const value = formValue[key];
+      return (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        (!Array.isArray(value) || value.length > 0)
+      );
+    });
+  }
+
   detectFiltersChanges(): void {
     this.filtersForm.valueChanges
       .pipe(

@@ -7,6 +7,11 @@ import { RecordFileViewerComponent } from './pages/record-file-viewer/record-fil
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'active',
+    pathMatch: 'full',
+  },
+  {
+    path: 'all',
     component: RecordsListComponent,
   },
    {
@@ -14,7 +19,11 @@ const routes: Routes = [
     component: RecordsListComponent,
   },
   {
-    path: ':id',
+    path: 'all/:id',
+    component: RecordDetailsComponent,
+  },
+  {
+    path: 'active/:id',
     component: RecordDetailsComponent,
   },
   {

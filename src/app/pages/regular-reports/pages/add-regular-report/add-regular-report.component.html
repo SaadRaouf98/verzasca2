@@ -9,7 +9,7 @@
           <span class="body text-small gray-400">{{ 'shared.reports' | translate }}</span>
           <span class="body text-small gray-400 mx-2">/</span>
           <span class="body-bold">
-            {{ reportID ? ('shared.editReport' | translate) : ('shared.addReport' | translate) }}
+            {{ reportID ? ('shared.editReport' | translate) : ('shared.addNewReport' | translate) }}
           </span>
         </div>
       </div>
@@ -18,12 +18,12 @@
 </div>
 
 <div class="card">
-  <h2 *ngIf="reportPath && reportPath.length > 0">
+  <p class="body-bold mb-3" *ngIf="reportPath && reportPath.length > 0">
     <img src="assets/icons/report_main_folder.svg" class="report_main_folder folder" />
     <span>{{ reportPath.join(' < ') }}</span>
-  </h2>
+  </p>
   <form autocomplete="off" [formGroup]="form">
-    <div class="row">
+    <div class="row gx-3">
       <div class="col-12 mb-3" *ngIf="breadcrumbItems && breadcrumbItems.length > 0">
         <div class="d-flex align-items-center">
           <svg width="1.15rem" height="1.15rem" class="ms-2">
@@ -88,12 +88,12 @@
         </div>
       </div>
       <!-- End Report Period -->
-      <div class="col-12 mb-3  mt-3">
-        <p class="body-bold mb-3">
+      <div class="col-12 d-flex mb-3 mt-3">
+        <p class="body-bold mb-0">
           {{ 'RegularReportsModule.AddRegularReportComponent.folderStatus' | translate }}
         </p>
-      
- <mat-slide-toggle  name="isActive" formControlName="isActive" class="custom-slide-toggle">
+
+        <mat-slide-toggle name="isActive" formControlName="isActive" class="custom-slide-toggle">
           <ng-container *ngIf="form.get('isActive')?.value; then Yes; else No"></ng-container>
 
           <ng-template #Yes>
@@ -103,18 +103,15 @@
             {{ 'RegularReportsModule.RegularReportsListComponent.inactive' | translate }}
           </ng-template>
         </mat-slide-toggle>
-     
-       
       </div>
 
-      <div class="col-12 mb-3 mt-3">
-        <p class="body-bold">{{ 'shared.addAttachments' | translate }}</p>
+      <div class="col-12 mb-3 mt-2">
+        <p class="body-bold mb-0">{{ 'shared.addAttachments' | translate }}</p>
       </div>
-      <div class="col-12 col-md-6 mb-3">
-        <p class="body mb-2">
-          {{ 'RegularReportsModule.AddRegularReportComponent.thumbnailImage' | translate }}
-          <span class="text-danger text-small">*</span>
-        </p>
+      <div
+        class="col-12 col-md-6"
+        [ngClass]="{ 'disable-attach': thumbnailpathValues && thumbnailpathValues.length > 0 }"
+      >
         <!-- [initialFiles]="existingExportFiles" -->
         <app-upload-attachment
           #uploadAttachmentThumbnail
@@ -127,6 +124,7 @@
           (fileRemoved)="onAttachmentRemoved($event, false)"
           [showViewOption]="true"
           (viewAttachment)="onViewAttachment($event, true)"
+          [backgroundColor]="'#fff'"
         ></app-upload-attachment>
 
         <div
@@ -141,15 +139,11 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6 mb-3">
-        <p class="body mb-2">
-          {{ 'RegularReportsModule.AddRegularReportComponent.reportFile' | translate }}
-          <span class="text-danger text-small">*</span>
-        </p>
+      <div class="col-12 col-md-6" [ngClass]="{ 'disable-attach': values && values.length > 0 }">
         <app-upload-attachment
           #uploadAttachment
           [customFileTypes]="['.pdf']"
-          [multiple]="true"
+          [multiple]="false"
           [showBtn]="false"
           [split]="false"
           [initialFiles]="values"
@@ -157,6 +151,7 @@
           (fileRemoved)="onAttachmentRemoved($event, true)"
           [showViewOption]="true"
           (viewAttachment)="onViewAttachment($event, false)"
+          [backgroundColor]="'#fff'"
         ></app-upload-attachment>
 
         <div

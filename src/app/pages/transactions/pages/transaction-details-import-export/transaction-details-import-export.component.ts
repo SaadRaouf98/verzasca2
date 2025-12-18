@@ -79,6 +79,7 @@ export class TransactionDetailsImportExportComponent implements OnInit, OnChange
   @Output() requestId: EventEmitter<string> = new EventEmitter();
   @Output() updateTableOnDelete: EventEmitter<boolean> = new EventEmitter();
   activeCardId: string | null = null;
+  showAuthorizationContainer: boolean = false; // Track 403 error state
   constructor(
     private sanitizer: DomSanitizer,
     private toastr: CustomToastrService,
@@ -89,9 +90,13 @@ export class TransactionDetailsImportExportComponent implements OnInit, OnChange
 
   ngOnInit(): void {
     this.lang = this.langugaeService.language;
-    this.activeCardId = this.data[0]?.id;
+    // this.activeCardId = this.data[0]?.id;
 
-    if (this.data.length > 0) this.onCardClick(this.data[0]);
+    if (this.data.length > 0) {
+      // Set activeCardId to trigger data loading on first open
+      this.activeCardId = null;
+      this.onCardClick(this.data[0]);
+    }
   }
 
   ngOnChanges(changes: { data: SimpleChange }) {
@@ -100,18 +105,28 @@ export class TransactionDetailsImportExportComponent implements OnInit, OnChange
   }
   currentData: any;
   onCardClick(data: RequestDetails) {
+    // Skip if clicking the same card (but allow first load when activeCardId is null)
+    if (this.activeCardId !== null && this.activeCardId === data.id) {
+      return;
+    }
     this.activeCardId = data.id;
     this.currentData = data;
     this.isExportDocument = data.isExportDocument;
+    this.showAuthorizationContainer = false; // Reset authorization container flag
     this.isExportDocument ? this.loadFile(data.id) : this.loadImportData();
   }
   loadImportData() {
-    this.manageTransactionsService.requestsService
-      .getPreview(this.activeCardId)
-      .subscribe((res: any) => {
+    this.manageTransactionsService.requestsService.getPreview(this.activeCardId).subscribe({
+      next: (res: any) => {
         this.details = res;
         this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
-      });
+      },
+      error: (err: any) => {
+        if (err.status === 403) {
+          this.showAuthorizationContainer = true;
+        }
+      },
+    });
   }
 
   loadFile(id: string): void {
@@ -127,7 +142,6 @@ export class TransactionDetailsImportExportComponent implements OnInit, OnChange
     observ$.subscribe({
       next: (blobFile) => {
         this.exportableDocument.fileBlob = blobFile;
-
         this.exportableDocument.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
           URL.createObjectURL(blobFile)
         );
@@ -135,6 +149,8 @@ export class TransactionDetailsImportExportComponent implements OnInit, OnChange
       error: (err) => {
         if (err.status === 404) {
           this.toastr.error('عفوا هذا الملف غير موجود');
+        } else if (err.status === 403) {
+          this.showAuthorizationContainer = true;
         }
       },
     });

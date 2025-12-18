@@ -1,158 +1,213 @@
-<section>
+<section class="records-list-container grid">
   <div class="row">
-    <div class="col-12 col-md-6 d-flex align-items-center | heading">
+    <div class="col-12 col-md-6 d-flex align-items-center">
       <!-- <a class="cursor-pointer" routerLink="../">
         <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
           [class.rotate-arrow]="lang === 'en'" />
       </a> -->
-      <p class="body-bold">
-        {{ 'LayoutModule.ContainerComponent.notes' | translate }}
+      <p class="mb-0 d-flex align-items-center">
+        <svg width="1.25rem" height="1.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-notes'"></use>
+        </svg>
+        <span class="body-bold mx-1">
+          {{ 'LayoutModule.ContainerComponent.notes' | translate }}
+        </span>
       </p>
     </div>
   </div>
 
-  <!--start filters-->
-  <!-- [selectedPriority]="filtersForm.value.priority" -->
-  <app-filters
-    [hasFiltersApplied]="isTableFiltered"
-    [prioritiesList]="prioritiesList"
-    (openDialog)="onOpenSearch($event)"
-    (filtersChange)="onFiltersChange($event)"
-  ></app-filters>
-  <!--End filters
-      -->
-  <div class="mt-3">
+  <div class="filters-container">
     <mat-tab-group
       animationDuration="400ms"
       class="autoWidth"
       (selectedTabChange)="onTabClicked($event)"
-      mat-align-tabs="start"
+      [selectedIndex]="activeTabIndex"
+      mat-align-tabs="center"
     >
-      <mat-tab
-        label=" {{ 'ApplicationSettingsModule.AppNotificationsComponent.notes' | translate }}"
-      >
-        <div class="row sp_bg" *ngIf="notesSource?.length > 0">
-          <div class="col-12 col-md-3 scroll-cards">
-            <ng-container *ngFor="let element of notesSource">
-              <div
-                class="transaction-card cursor-pointer"
-                (click)="loadNoteFile(element)"
-                [class.active]="activeCardId === element.id"
-              >
-                <img
-                  *ngIf="element.isRestricted"
-                  class="isRestricted"
-                  src="assets/icons/restricted.svg"
-                />
-                <div class="d-flex align-items-center">
-                  <span class="body gray-700 text-small"
-                    >{{ 'ManageNotesModule.NotesListComponent.noteNumber' | translate }} :
-                  </span>
-                  <span class="body-bold">{{ element.exportNumber }}</span>
-                </div>
-                <hr class="line" />
-                <span class="body-bold">{{ element.title }}</span>
-
-                <hr class="line" />
-
-                <div class="consultant-container">
-                  <span class="body gray-700 text-small mb-2 d-flex" *ngIf="!element.consultantType"
-                    >{{ 'shared.consultants' | translate }} :
-                    {{
-                      element.consultants.length == 0 ? ('shared.noConsultants' | translate) : ''
-                    }}
-                  </span>
-                  <span
-                    class="body gray-700 text-small mb-2 d-flex consultantTyped"
-                    *ngIf="element.consultantType"
-                  >
-                    {{ element.consultantType | translate }}
-                  </span>
-
-                  <span
-                    class="consultant"
-                    *ngFor="let consultant of element.consultants"
-                    (mouseenter)="showConsultant(consultant.type, element)"
-                    (mouseleave)="element.consultantType = ''"
-                  >
-                    <span>
-                      <span class="consultant_img_container">
-                        <img *ngIf="consultant.type === 1" src="assets/icons/main_consultant.svg" />
-                        <img *ngIf="consultant.type !== 1" src="assets/icons/sub_consultant.svg" />
-                      </span>
-                    </span>
-
-                    {{ consultant?.name }}
-                    <hr class="line" *ngIf="element.consultants.length > 0" />
-                  </span>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-          <div class="col-md-9 col-12">
-            <div class="transaction-card pdf_card" *ngIf="noteFile && noteFile.pdfSrc">
-              <iframe [src]="noteFile.pdfSrc" style="width: 100%; height: 100vh"></iframe>
-            </div>
-          </div>
-        </div>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="mx-2" [ngClass]="activeTabIndex === 0 ? 'body-bold' : 'body'">{{
+            'ApplicationSettingsModule.AppNotificationsComponent.notes' | translate
+          }}</span>
+        </ng-template>
       </mat-tab>
 
-      <mat-tab
-        label="{{ 'ApplicationSettingsModule.AppNotificationsComponent.letters' | translate }}"
-      >
-        <div class="row sp_bg" *ngIf="notesSource?.length > 0">
-          <div class="col-12 col-md-3 scroll-cards">
-            <ng-container *ngFor="let element of notesSource">
-              <div
-                class="transaction-card cursor-pointer"
-                (click)="loadNoteFile(element)"
-                [class.active]="activeCardId === element.id"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="body gray-700 text-small"
-                    >{{ 'ManageNotesModule.NotesListComponent.letterNumber' | translate }} :
-                  </span>
-                  <span class="body-bold">{{ element.exportNumber }}</span>
-                </div>
-                <hr class="line" />
-                <span class="body-bold">{{ element.title }}</span>
-
-                <hr class="line" />
-
-                <div>
-                  <span class="body gray-700 text-small"
-                    >{{ 'shared.consultants' | translate }} :
-                    {{
-                      element.consultants.length == 0 ? ('shared.noConsultants' | translate) : ''
-                    }}
-                  </span>
-                  <hr class="line" *ngIf="element.consultants.length > 0" />
-                  <span class="consultant" *ngFor="let consultant of element.consultants">
-                    <img *ngIf="consultant.isMain" src="assets/icons/main_consultant.svg" />
-                    <img *ngIf="!consultant.isMain" src="assets/icons/sub_consultant.svg" />
-                    {{ consultant?.name }}
-                  </span>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-          <div class="col-md-9 col-12">
-            <div class="transaction-card" *ngIf="noteFile && noteFile.pdfSrc">
-              <iframe [src]="noteFile.pdfSrc" style="width: 100%; height: 100vh"></iframe>
-            </div>
-          </div>
-        </div>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="mx-2" [ngClass]="activeTabIndex === 1 ? 'body-bold' : 'body'">{{
+            'ApplicationSettingsModule.AppNotificationsComponent.letters' | translate
+          }}</span>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </div>
 
-  <div
-    class="d-flex justify-content-center align-items-center flex-column"
-    *ngIf="!isLoading && notesSource?.length == 0"
-  >
-    <img class="w-25 mb-3" src="../assets/images/Illustration_found.svg" alt="under construction" />
-    <div class="body-bold noData">
-      {{ 'shared.noData' | translate }}
+  <div class="content_wrapper mt-3">
+    <!--start filters-->
+    <!-- [selectedPriority]="filtersForm.value.priority" -->
+    <app-filters
+      #filtersComponent
+      [hasFiltersApplied]="isTableFiltered"
+      [prioritiesList]="prioritiesList"
+      (openDialog)="onOpenSearch($event)"
+      (filtersChange)="onFiltersChange($event)"
+    ></app-filters>
+    <!--End filters
+      -->
+
+    <ng-container *ngIf="activeTabIndex == 0">
+      <div class="row mt-3" *ngIf="notesSource?.length > 0">
+        <div class="col-12 col-lg-3 col-md-4 scroll-cards">
+          <ng-container *ngFor="let element of notesSource">
+            <div
+              class="transaction-card cursor-pointer"
+              (click)="loadNoteFile(element)"
+              [class.active]="activeCardId === element.id"
+            >
+              <img
+                *ngIf="element.isRestricted"
+                class="isRestricted"
+                src="assets/icons/restricted.svg"
+              />
+              <div class="d-flex align-items-center">
+                <span class="body gray-700 text-small"
+                  >{{ 'ManageNotesModule.NotesListComponent.noteNumber' | translate }} :
+                </span>
+                <span class="body-bold gold"> {{ element.exportNumber || '-' }}</span>
+              </div>
+              <hr class="line" />
+              <span class="body-bold"> {{ element.title }}</span>
+
+              <hr class="line" />
+
+              <div class="consultant-container">
+                <span class="body gray-700 text-small mb-2 d-flex"
+                  >{{ 'shared.consultants' | translate }} :
+                  {{ element.consultants.length == 0 ? ('shared.noConsultants' | translate) : '' }}
+                </span>
+
+                <span
+                  class="consultant position-relative"
+                  *ngFor="let consultant of element.consultants; let i = index"
+                >
+                  <span class="d-flex align-items-center">
+                    <img *ngIf="consultant.type === 1" src="assets/icons/main_consultant.svg" />
+                    <img *ngIf="consultant.type !== 1" src="assets/icons/sub_consultant.svg" />
+                  </span>
+
+                  <span
+                    class="body"
+                    (mouseenter)="showConsultant(consultant.type, element, i)"
+                    (mouseleave)="element.hoveredConsultantIndex = null"
+                  >
+                    : {{ consultant?.name }}</span
+                  >
+                  <span
+                    class="body gray-700 text-small mb-2 d-flex consultantTyped"
+                    *ngIf="element.hoveredConsultantIndex === i"
+                  >
+                    {{ element.consultantType | translate }}
+                  </span>
+                  <hr class="line" *ngIf="element.consultants.length > 0" />
+                </span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-md-8 col-lg-9 col-12">
+          <div class="transaction-card pdf_card" *ngIf="noteFile && noteFile.pdfSrc">
+            <iframe [src]="noteFile.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="activeTabIndex == 1">
+      <div class="row mt-3" *ngIf="notesSource?.length > 0">
+        <div class="col-12 col-lg-3 col-md-4 scroll-cards">
+          <ng-container *ngFor="let element of notesSource">
+            <div
+              class="transaction-card cursor-pointer"
+              (click)="loadNoteFile(element)"
+              [class.active]="activeCardId === element.id"
+            >
+              <div class="d-flex align-items-center">
+                <span class="body gray-700 text-small"
+                  >{{ 'ManageNotesModule.NotesListComponent.letterNumber' | translate }} :
+                </span>
+                <span class="body-bold">{{ element.exportNumber }}</span>
+              </div>
+              <hr class="line" />
+              <span class="body-bold">{{ element.title }}</span>
+
+              <hr class="line" />
+
+              <div class="consultant-container">
+                <span class="body gray-700 text-small mb-2 d-flex"
+                  >{{ 'shared.consultants' | translate }} :
+                  {{ element.consultants.length == 0 ? ('shared.noConsultants' | translate) : '' }}
+                </span>
+
+                <span
+                  class="consultant position-relative"
+                  *ngFor="let consultant of element.consultants; let i = index"
+                >
+                  <span class="d-flex align-items-center">
+                    <img *ngIf="consultant.type === 1" src="assets/icons/main_consultant.svg" />
+                    <img *ngIf="consultant.type !== 1" src="assets/icons/sub_consultant.svg" />
+                  </span>
+
+                  <span
+                    class="body"
+                    (mouseenter)="showConsultant(consultant.type, element, i)"
+                    (mouseleave)="element.hoveredConsultantIndex = null"
+                  >
+                    : {{ consultant?.name }}</span
+                  >
+                  <span
+                    class="body gray-700 text-small mb-2 d-flex consultantTyped"
+                    *ngIf="element.hoveredConsultantIndex === i"
+                  >
+                    {{ element.consultantType | translate }}
+                  </span>
+                  <hr class="line" *ngIf="element.consultants.length > 0" />
+                </span>
+              </div>
+
+              <!--               
+              <div>
+                <span class="body gray-700 text-small"
+                  >{{ 'shared.consultants' | translate }} :
+                  {{ element.consultants.length == 0 ? ('shared.noConsultants' | translate) : '' }}
+                </span>
+                <hr class="line" *ngIf="element.consultants.length > 0" />
+                <span class="consultant" *ngFor="let consultant of element.consultants">
+                  <img *ngIf="consultant.isMain" src="assets/icons/main_consultant.svg" />
+                  <img *ngIf="!consultant.isMain" src="assets/icons/sub_consultant.svg" />
+                  {{ consultant?.name }}
+                </span>
+              </div> -->
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-md-8 col-lg-9 col-12">
+          <div class="transaction-card" *ngIf="noteFile && noteFile.pdfSrc">
+            <iframe [src]="noteFile.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div
+      class="d-flex justify-content-center align-items-center flex-column notesNoData"
+      *ngIf="!isLoading && notesSource?.length == 0"
+    >
+      <img
+        class="w-25 m-0 mb-3"
+        src="../assets/images/Illustration_found.svg"
+        alt="under construction"
+      />
+      <div class="h1-bold noData">
+        {{ 'shared.noData' | translate }}
+      </div>
     </div>
   </div>
 </section>

@@ -55,6 +55,7 @@ import { ComponentType } from 'ngx-toastr';
 export class ImportsExportsListComponent implements OnInit, OnDestroy {
   filtersData: RequestsFiltersForm = {} as RequestsFiltersForm;
   isTableFiltered: boolean = false;
+  selectedTabIndex: number = 0;
 
   @ViewChild('ExportListComponent') ExportListComponent: ExportsListComponent;
   @ViewChild('ImportsListComponent') ImportsListComponent: ImportsListComponent;
@@ -98,6 +99,8 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
       .subscribe((params: any) => {
         this.isExportDocument = params.isExportDocument === 'true';
         this.filtersData.isExportDocument = this.isExportDocument;
+        // Sync selectedTabIndex with the active tab
+        this.selectedTabIndex = this.isExportDocument ? 1 : 0;
       })
       .unsubscribe();
     this.getPriorityList();
@@ -135,6 +138,7 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
   }
 
   onTabClicked(event: MatTabChangeEvent): void {
+    this.selectedTabIndex = event.index;
     this.ManageSharedService.searchFormValue = null;
     this.onResetFilters();
     // Reset the filters component to clear form values
@@ -320,10 +324,9 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
   }
 
   onFiltersChange(filters: RequestsFiltersForm): void {
-    // Dialog filters from FiltersComponent
-    this.filtersData = filters || {};
-
-    console.log('Dialog filters received:', this.filtersData);
+    // Dialog filters from FiltersComponent - merge with existing table filters
+    const tableFilters = this.filtersData || {};
+    this.filtersData = { ...tableFilters, ...filters };
 
     // Check if filters are applied
     const hasFilters =
@@ -332,16 +335,11 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
         const value = this.filtersData[key];
         const hasValue =
           key !== 'isExportDocument' && value !== null && value !== undefined && value !== '';
-        console.log(`Checking key "${key}": value="${value}", hasValue=${hasValue}`);
         return hasValue;
       });
 
-    console.log('hasFilters:', hasFilters);
-
     // Enable/disable reset button
     this.isTableFiltered = hasFilters;
-
-    console.log('isTableFiltered set to:', this.isTableFiltered);
 
     // Propagate dialog filters to child component
     if (this.activeTab === 0 && this.ImportsListComponent) {
@@ -359,10 +357,9 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
   }
 
   onTableFiltersChange(filters: RequestsFiltersForm): void {
-    // Table filters from child component
-    this.filtersData = filters || {};
-
-    console.log('Table filters received:', this.filtersData);
+    // Table filters from child component - merge with existing dialog filters
+    const dialogFilters = this.filtersData || {};
+    this.filtersData = { ...dialogFilters, ...filters };
 
     // Check if filters are applied
     const hasFilters =
@@ -376,8 +373,6 @@ export class ImportsExportsListComponent implements OnInit, OnDestroy {
 
     // Enable/disable reset button
     this.isTableFiltered = hasFilters;
-
-    console.log('isTableFiltered set to:', this.isTableFiltered);
 
     // Update URL
     this.queryUrlFiltersPaginationSort.updateUrlQueryParams(this.filtersData, [

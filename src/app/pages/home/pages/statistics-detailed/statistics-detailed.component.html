@@ -117,12 +117,12 @@
           <div class="col-md-4 col-12 mb-3" *ngFor="let item of transactionsPieData">
             <div class="summary-card">
               <div>
-                <p class="h2-bold">{{ item.val }}</p>
-                <p class="body-bold gray-700">
+                <p class="h2-bold mb-0">{{ item.val }}</p>
+                <p class="body-bold gray-700 mb-0">
                   {{ item.name }}
                 </p>
               </div>
-              <img [src]="item.imgSrc" class="" />
+              <img width="27" height="27" [src]="item.imgSrc" class="" />
             </div>
           </div>
         </ng-container>

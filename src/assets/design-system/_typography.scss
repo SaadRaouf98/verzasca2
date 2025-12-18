@@ -73,7 +73,7 @@ $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: bolder;
 
-$line-height-tight: 100%;
+$line-height-tight: normal;
 $line-height-base: 120%;
 $line-height-normal: 1.5;
 
@@ -194,22 +194,22 @@ $line-height-normal: 1.5;
 // Laptop media query: decrease font sizes by 2px
 @media (min-width: 1024px) and (max-width: 1500px) {
   .h1 {
-    font-size: calc(#{$font-size-xl} - 2px);
+    font-size: calc(#{$font-size-xl} - 2px) !important;
   }
   .h1-bold {
-    font-size: calc(#{$font-size-xl} - 2px);
+    font-size: calc(#{$font-size-xl} - 2px) !important;
   }
   .h2 {
-    font-size: calc(#{$font-size-lg} - 2px);
+    font-size: calc(#{$font-size-lg} - 2px) !important;
   }
   .h2-bold {
-    font-size: calc(#{$font-size-lg} - 2px);
+    font-size: calc(#{$font-size-lg} - 2px) !important;
   }
   .h3 {
-    font-size: calc(#{$font-size-md} - 2px);
+    font-size: calc(#{$font-size-md} - 2px) !important;
   }
   .body-bold {
-    font-size: calc(#{$font-size-md} - 2px);
+    font-size: calc(#{$font-size-md} - 2px) !important;
   }
   .body {
     font-size: calc(#{$font-size-base} - 2px) !important;
@@ -218,24 +218,24 @@ $line-height-normal: 1.5;
     font-size: calc(#{$font-size-base} - 2px) !important;
   }
   .caption {
-    font-size: calc(#{$font-size-xs} - 2px);
+    font-size: calc(#{$font-size-xs} - 2px) !important;
   }
   .caption-bold {
-    font-size: calc(#{$font-size-xs} - 2px);
+    font-size: calc(#{$font-size-xs} - 2px) !important;
   }
   .text-xlarge {
-    font-size: calc(#{$font-size-xl} - 2px);
+    font-size: calc(#{$font-size-xl} - 2px) !important;
   }
   .text-large {
-    font-size: calc(#{$font-size-lg} - 2px);
+    font-size: calc(#{$font-size-lg} - 2px) !important;
   }
   .text-medium {
-    font-size: calc(#{$font-size-md} - 2px);
+    font-size: calc(#{$font-size-md} - 2px) !important;
   }
   .text-regular {
-    font-size: calc(#{$font-size-base} - 2px);
+    font-size: calc(#{$font-size-base} - 2px) !important;
   }
   .text-small {
-    font-size: calc(#{$font-size-sm} - 2px) !important;
+    font-size: calc(#{$font-size-sm} - 0.5px) !important;
   }
 }

@@ -75,7 +75,7 @@
   </div>
   <section *ngIf="!isLoading; else elseBlock">
     <div class="grid">
-      <div class="row">
+      <div class="row gx-3">
         <div class="col-12 col-md-9">
           <mat-tab-group
             animationDuration="400ms"
@@ -174,6 +174,7 @@
         <div class="col-12 col-md-3">
           <mat-accordion>
             <mat-expansion-panel
+              *ngIf="false"
               [expanded]="true"
               (opened)="panelProcedureState = true"
               (closed)="panelProcedureState = false"
@@ -256,7 +257,7 @@
                       class="col-12 d-flex mb-3"
                       style="gap: 15px; justify-content: space-between; align-items: center"
                     >
-                      <p class="body-bold custom-file-name">
+                      <p class="body-bold text-small d-flex align-items-center mb-0 w-80">
                         <img
                           _ngcontent-ng-c3762408586=""
                           alt="custom image"
@@ -267,17 +268,15 @@
                           {{ attach.name || '-' }}
                         </span>
                       </p>
-
-                      <ds-button
+                      <svg
+                        class="cursor-pointer"
+                        width="1rem"
+                        height="1rem"
                         (click)="onViewAttachment(attach)"
-                        icon
-                        size="50 px"
                         matTooltip="{{ 'shared.viewDetails' | translate }}"
                       >
-                        <svg width="1rem" height="1rem">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
-                        </svg>
-                      </ds-button>
+                        <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                      </svg>
                     </div>
                   </div>
                 </ng-template>
@@ -286,7 +285,8 @@
           </mat-accordion>
           <div class="d-flex justify-content-between mb-3">
             <button
-              class="button button-primary button-lg full-width mt-3"
+              class="button button-primary button-lg full-width"
+              [ngClass]="exportableDocumentDetails?.attachments.length ? 'mt-3' : ''"
               (click)="addAttachDialog()"
             >
               {{ 'ImportsExportsModule.RequestDetailsComponent.addAttach' | translate }}

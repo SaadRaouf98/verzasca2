@@ -123,7 +123,7 @@ export class DetailsComponent {
                 height: '95vh',
                 panelClass: ['action-modal', 'float-footer'],
                 autoFocus: false,
-                disableClose: true,
+                disableClose: false,
                 data: {
                   fileBlob: res,
                   fileType: attachment.fileType, //.pdf
@@ -148,7 +148,7 @@ export class DetailsComponent {
           height: '95vh',
           panelClass: ['action-modal', 'float-footer'],
           autoFocus: false,
-          disableClose: true,
+          disableClose: false,
           data: {
             fileBlob: attachment.fileBlob,
             fileType: attachment.fileType, //.doc

@@ -1,7 +1,7 @@
 <div class="grid">
   <div class="row mb-3">
     <div class="col-12">
-      <div class="info">
+      <div class="info mt-3">
         <div class="row">
           <div class="col-12">
             <span class="body">
@@ -49,16 +49,14 @@
           </div>
           <div class="col-12 col-md-4">
             <span class="body">
-              {{ 'shared.benefitType' | translate }}
+              {{ 'TransactionsModule.TransactionsListComponent.transactionStatus' | translate }}
               :
             </span>
 
             <span class="body-bold">
               {{
-                requestContainerDetails?.benefitType
-                  ? lang === 'ar'
-                    ? requestContainerDetails.benefitType?.title
-                    : requestContainerDetails.benefitType?.titleEn
+                requestContainerDetails?.containerStatus
+                  ? (statusTranslationMap[requestContainerDetails?.containerStatus] | translate)
                   : '-'
               }}
             </span>
@@ -202,11 +200,17 @@
       </ng-container>
     </div>
     <div class="col-md-7 col-12">
-      <div class="transaction-card" *ngIf="pageType === 'import' && details?.isExportDocument">
+      <div class="transaction-card" *ngIf="showAuthorizationContainer">
+        <app-authorization-container></app-authorization-container>
+      </div>
+      <div
+        class="transaction-card"
+        *ngIf="pageType === 'import' && details?.isExportDocument && !showAuthorizationContainer"
+      >
         <div class="row">
           <div class="col-12">
             <!-- <app-pdf-viewer [previewType]="'iframe'" [src]="exportableDocument.pdfSrc"></app-pdf-viewer> -->
-            <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+            <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 90vh"></iframe>
           </div>
           <div class="col-12 mt-3">
             <button
@@ -222,7 +226,10 @@
         </div>
       </div>
 
-      <div class="transaction-card" *ngIf="details && !details?.isExportDocument">
+      <div
+        class="transaction-card"
+        *ngIf="details && !details?.isExportDocument && !showAuthorizationContainer"
+      >
         <ng-container *ngIf="pageType === 'transaction'">
           <span class="body-bold">
             {{ 'ImportsExportsModule.RequestDetailsComponent.basicInfo' | translate }}</span
@@ -477,7 +484,7 @@
       </div>
     </div>
     <div
-      class="d-flex justify-content-center p-2 align-items-center flex-column"
+      class="d-flex justify-content-center p-2 align-items-center flex-column request-no-data"
       *ngIf="data?.length == 0"
     >
       <img

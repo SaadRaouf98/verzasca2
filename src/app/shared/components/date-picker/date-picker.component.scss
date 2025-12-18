@@ -1,9 +1,7 @@
-@use "src/assets/design-system/colors" as *;
+@use 'src/assets/design-system/colors' as *;
 :host
   ::ng-deep
-  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-    .mdc-text-field--textarea
-  )
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea)
   .mat-mdc-form-field-infix {
   padding: 0;
   border-radius: 0.5rem;
@@ -14,10 +12,19 @@
   margin-right: 2px;
 }
 
-::ng-deep
-  .mdc-text-field--filled.mdc-text-field--no-label
-  .mdc-text-field__input {
+::ng-deep .mdc-text-field--filled.mdc-text-field--no-label .mdc-text-field__input {
   padding: 0 0.75rem;
+  font-weight: 400; // Default normal weight
+
+  // Bold only when input has a value (not just placeholder)
+  &:not(:placeholder-shown) {
+    font-weight: bold;
+  }
+
+  // Keep placeholder text at normal weight
+  &::placeholder {
+    font-weight: 400;
+  }
 }
 ::ng-deep .mat-datepicker-content-container,
 ::ng-deep .mat-datepicker-content .mat-calendar {

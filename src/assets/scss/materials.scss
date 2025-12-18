@@ -416,6 +416,7 @@ mat-tab-header {
   .mdc-tab {
     &.mdc-tab--active,
     &:hover {
+      font-weight: bold !important;
       background-color: #fff;
       border-radius: 5px;
       box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
@@ -427,7 +428,6 @@ mat-tab-header {
 }
 
 .mdc-tab__text-label {
-  font-weight: bold !important;
   font-size: 15px;
   @media (min-width: 1332px) {
     & {

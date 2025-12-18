@@ -84,6 +84,7 @@ export class ExportImportDetailsComponent implements OnInit, OnChanges {
   @Output() requestId: EventEmitter<string> = new EventEmitter();
   @Output() updateTableOnDelete: EventEmitter<boolean> = new EventEmitter();
   activeCardId: string | null = null;
+  showAuthorizationContainer: boolean = false; // Track 403 error state
   constructor(
     private sanitizer: DomSanitizer,
     private toastr: CustomToastrService,
@@ -119,17 +120,31 @@ export class ExportImportDetailsComponent implements OnInit, OnChanges {
   }
   currentData: any;
   onCardClick(data: RequestDetails) {
+    // Skip if clicking the same card (but allow first load when activeCardId is null)
+    if (this.activeCardId !== null && this.activeCardId === data.id) {
+      return;
+    }
+
     this.activeCardId = data.id;
     this.currentData = data;
     this.isExportDocument = data.isExportDocument;
+    this.showAuthorizationContainer = false; // Reset authorization container flag
 
     if (data.isExportDocument) {
       this.details = data;
       this.loadFile(data.id);
     } else {
-      this.manageTransactionsService.requestsService.getPreview(data.id).subscribe((res: any) => {
-        this.details = res;
-        this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+      this.manageTransactionsService.requestsService.getPreview(data.id).subscribe({
+        next: (res: any) => {
+          this.details = res;
+          this.details.consultants.sort((a, b) => Number(b.isMain) - Number(a.isMain));
+        },
+        error: (err: any) => {
+          if (err.status === 403) {
+            // Show authorization container instead of popup
+            this.showAuthorizationContainer = true;
+          }
+        },
       });
     }
   }
@@ -154,7 +169,6 @@ export class ExportImportDetailsComponent implements OnInit, OnChanges {
     observ$.subscribe({
       next: (blobFile) => {
         this.exportableDocument.fileBlob = blobFile;
-
         this.exportableDocument.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
           URL.createObjectURL(blobFile)
         );
@@ -162,6 +176,9 @@ export class ExportImportDetailsComponent implements OnInit, OnChanges {
       error: (err) => {
         if (err.status === 404) {
           this.toastr.error('عفوا هذا الملف غير موجود');
+        } else if (err.status === 403) {
+          // Show authorization container instead of popup
+          this.showAuthorizationContainer = true;
         }
       },
     });

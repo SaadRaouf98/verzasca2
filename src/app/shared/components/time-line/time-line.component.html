@@ -2,10 +2,7 @@
   <div class="grid">
     <div class="row">
       <div class="col">
-        <div
-          class="timeline-steps"
-          [class.justify-content-center]="data.length <= 7"
-        >
+        <div class="timeline-steps" [class.justify-content-center]="data.length <= 7">
           <div class="timeline-scroll-wrapper">
             <div
               class="svg-arrows cursor-pointer"
@@ -13,11 +10,7 @@
               (click)="scrollTimeline(200)"
             >
               <svg class="" width="1rem" height="1rem">
-                <use
-                  [attr.xlink:href]="
-                    'assets/icons/sprite.svg#scroll-arrow-right'
-                  "
-                ></use>
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#scroll-arrow-right'"></use>
               </svg>
             </div>
 
@@ -41,20 +34,15 @@
                       ></use>
                     </svg>
                     <div class="flex-column d-flex mx-2">
-                      <p class="caption-bold mb-2">
-                        {{ item.date | date : "dd/MM/yyyy - hh:mm a" }}
+                      <p class="caption-bold mb-2 d-ltr">
+                        {{ item.date | date : 'dd/MM/yyyy - hh:mm a' }}
                       </p>
                       <p class="caption-bold mb-0">{{ item.title }}</p>
                     </div>
                   </div>
                 </div>
                 <!-- Only show the line if it's NOT the last item -->
-                <svg
-                  *ngIf="i < data.length - 1"
-                  width="42px"
-                  height="2px"
-                  class=""
-                >
+                <svg *ngIf="i < data.length - 1" width="42px" height="2px" class="">
                   <use
                     [attr.xlink:href]="
                       i === data.length - 2
@@ -71,11 +59,7 @@
               (click)="scrollTimeline(-200)"
             >
               <svg width="1rem" height="1rem" class="rotate mx-2">
-                <use
-                  [attr.xlink:href]="
-                    'assets/icons/sprite.svg#scroll-arrow-right'
-                  "
-                ></use>
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#scroll-arrow-right'"></use>
               </svg>
             </div>
           </div>

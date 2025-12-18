@@ -27,6 +27,7 @@ import { TransactionInfoPanelComponent } from './pages/transaction-details-panel
 import { TransactionDetailsImportExportComponent } from './pages/transaction-details-import-export/transaction-details-import-export.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { AuthorizationPopupComponent } from '@shared/new-components/authorization-popp/authorization-popup.component';
+import { AuthorizationContainerComponent } from '@shared/new-components/authorization-container/authorization-container.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { AuthorizationPopupComponent } from '@shared/new-components/authorizatio
     TransactionInfoPanelComponent,
     InputComponent,
     AuthorizationPopupComponent,
+    AuthorizationContainerComponent,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, // Ensure the locale matches the desired format

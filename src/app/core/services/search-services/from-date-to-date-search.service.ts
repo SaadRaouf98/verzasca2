@@ -47,16 +47,12 @@ export class FromDateToDateSearchService {
     // Handle fromDate
     if (date.fromDate && typeof date.fromDate === 'object') {
       this.umAlQuraCalendarService
-        .getHijriDate(
-          `${date.fromDate.year}/${date.fromDate.month}/${date.fromDate.day}`
-        )
+        .getHijriDate(`${date.fromDate.year}/${date.fromDate.month}/${date.fromDate.day}`, true)
         .subscribe({
           next: (res) => {
             filtersForm.patchValue({
               fromDate: `${date.fromDate.year}-${date.fromDate.month}-${date.fromDate.day}`,
-              hijriFromDate: `${res.split('/')[0]}-${res.split('/')[1]}-${
-                res.split('/')[2]
-              }`,
+              hijriFromDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
             });
           },
           error: (err) => {},
@@ -66,16 +62,12 @@ export class FromDateToDateSearchService {
     // Handle toDate
     if (date.toDate && typeof date.toDate === 'object') {
       this.umAlQuraCalendarService
-        .getHijriDate(
-          `${date.toDate.year}/${date.toDate.month}/${date.toDate.day}`
-        )
+        .getHijriDate(`${date.toDate.year}/${date.toDate.month}/${date.toDate.day}`, true)
         .subscribe({
           next: (res) => {
             filtersForm.patchValue({
               toDate: `${date.toDate.year}-${date.toDate.month}-${date.toDate.day}`,
-              hijriToDate: `${res.split('/')[0]}-${res.split('/')[1]}-${
-                res.split('/')[2]
-              }`,
+              hijriToDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
             });
           },
         });
@@ -107,16 +99,12 @@ export class FromDateToDateSearchService {
     // Handle fromDate
     if (date.fromDate && typeof date.fromDate === 'object') {
       this.umAlQuraCalendarService
-        .getGregorianDate(
-          `${date.fromDate.year}/${date.fromDate.month}/${date.fromDate.day}`
-        )
+        .getGregorianDate(`${date.fromDate.year}/${date.fromDate.month}/${date.fromDate.day}`, true)
         .subscribe({
           next: (res) => {
             filtersForm.patchValue({
               hijriFromDate: `${date.fromDate.year}-${date.fromDate.month}-${date.fromDate.day}`,
-              fromDate: `${res.split('/')[0]}-${res.split('/')[1]}-${
-                res.split('/')[2]
-              }`,
+              fromDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
             });
           },
         });
@@ -125,16 +113,12 @@ export class FromDateToDateSearchService {
     // Handle toDate
     if (date.toDate && typeof date.toDate === 'object') {
       this.umAlQuraCalendarService
-        .getGregorianDate(
-          `${date.toDate.year}/${date.toDate.month}/${date.toDate.day}`
-        )
+        .getGregorianDate(`${date.toDate.year}/${date.toDate.month}/${date.toDate.day}`, true)
         .subscribe({
           next: (res) => {
             filtersForm.patchValue({
               hijriToDate: `${date.toDate.year}-${date.toDate.month}-${date.toDate.day}`,
-              toDate: `${res.split('/')[0]}-${res.split('/')[1]}-${
-                res.split('/')[2]
-              }`,
+              toDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
             });
           },
         });
@@ -174,4 +158,3 @@ export class FromDateToDateSearchService {
     });
   }
 }
-

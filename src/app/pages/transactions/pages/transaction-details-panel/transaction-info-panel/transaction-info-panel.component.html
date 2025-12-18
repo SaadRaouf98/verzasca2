@@ -1,7 +1,7 @@
 <div class="grid">
   <div class="row">
     <div class="col-12">
-      <div class="info">
+      <div class="info mt-3">
         <div class="row">
           <div class="col-12">
             <span class="body">
@@ -49,16 +49,14 @@
           </div>
           <div class="col-12 col-md-4">
             <span class="body">
-              {{ 'shared.benefitType' | translate }}
+              {{ 'TransactionsModule.TransactionsListComponent.transactionStatus' | translate }}
               :
             </span>
 
             <span class="body-bold">
               {{
-                requestContainerDetails?.benefitType
-                  ? lang === 'ar'
-                    ? requestContainerDetails.benefitType.title
-                    : requestContainerDetails.benefitType.titleEn
+                requestContainerDetails?.containerStatus
+                  ? (statusTranslationMap[requestContainerDetails?.containerStatus] | translate)
                   : '-'
               }}
             </span>

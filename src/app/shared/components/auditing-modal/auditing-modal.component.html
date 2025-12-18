@@ -4,11 +4,11 @@
 
     <!-- For the progress type indicators -->
     <ng-container *ngIf="data.currentProgress === RequestProgressType.Statement">
-      {{ 'actions.auditing.statementRequest' | translate }}
+      ( {{ 'actions.auditing.statementRequest' | translate }})
     </ng-container>
 
     <ng-container *ngIf="data.currentProgress === RequestProgressType.Recommendation">
-      {{ 'actions.auditing.studyProposal' | translate }}
+      ( {{ 'actions.auditing.studyProposal' | translate }} )
     </ng-container>
   </span>
   <svg width="1.25rem" height="1.25rem" class="cursor-pointer" (click)="onCancel()">
@@ -20,6 +20,54 @@
 
 <div class="custom-modal-body" mat-dialog-contents>
   <form autocomplete="off" [formGroup]="form">
+    <div class="download-container mb-2">
+      <div class="d-flex align-items-center">
+        <svg width="1.5rem" height="1.5rem" class="ms-2">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+        </svg>
+        <span class="body-bold"> {{ this.data.studyingFile?.name }}</span>
+      </div>
+
+      <svg
+        class="cursor-pointer"
+        width="1.5rem"
+        height="1.5rem"
+        (click)="onDownloadOriginalUploadedFile()"
+        matTooltip="{{ 'shared.download' | translate }}"
+      >
+        <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
+      </svg>
+    </div>
+
+    <div class="row">
+      <div class="col-12 mb-3">
+        <p class="body-bold text-small mb-2">
+          {{ 'shared.notes' | translate }}
+        </p>
+
+        <textarea
+          class="form-control w-100"
+          rows="3"
+          placeholder="{{ 'shared.note' | translate }}"
+          formControlName="comment"
+          id="comment"
+        ></textarea>
+      </div>
+      <div class="col-12">
+        <p class="body-bold text-small mb-2">
+          {{ 'attachment.desc' | translate }}
+        </p>
+        <app-upload-attachment
+          #uploadAttachment
+          [customFileTypes]="['.doc', '.docx']"
+          [multiple]="false"
+          [showBtn]="false"
+          (fileUploaded)="onFileDropped($event)"
+        ></app-upload-attachment>
+      </div>
+    </div>
+
+    <!-- 
     <mat-tab-group
       class="modal-tabs"
       [preserveContent]="true"
@@ -29,7 +77,6 @@
     >
       <mat-tab formGroupName="uploadFileTab">
         <ng-template mat-tab-label>
-          <!-- For tab labels -->
           <div class="custom-tab-label" [class.no-border]="isUploadTabValid()">
             <svg *ngIf="isUploadTabValid()" width="1rem" height="1rem" class="ms-1">
               <use [attr.xlink:href]="'assets/icons/sprite.svg#green-circle'"></use>
@@ -88,7 +135,6 @@
       </mat-tab>
       <mat-tab formGroupName="editorTab">
         <ng-template mat-tab-label>
-          <!-- For tab labels -->
           <div class="custom-tab-label" [class.no-border]="isEditorTabValid()">
             <svg *ngIf="isEditorTabValid()" width="1rem" height="1rem" class="ms-1">
               <use [attr.xlink:href]="'assets/icons/sprite.svg#green-circle'"></use>
@@ -122,9 +168,9 @@
           </div>
         </div>
       </mat-tab>
-    </mat-tab-group>
+    </mat-tab-group> -->
     <!-- Navigation Buttons -->
-    <div class="d-flex mt-3">
+    <!-- <div class="d-flex mt-3">
       <span
         [class]="selectedTabIndex === 0 ? 'grey-700' : 'cursor-pointer'"
         (click)="selectedTabIndex > 0 && goToPreviousTab()"
@@ -162,7 +208,7 @@
           'shared.next' | translate
         }}</span>
       </span>
-    </div>
+    </div> -->
   </form>
 </div>
 

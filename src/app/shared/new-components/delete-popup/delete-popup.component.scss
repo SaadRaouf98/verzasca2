@@ -7,9 +7,8 @@
 .popup-container {
   border-radius: 1rem;
   background: #fff;
-  box-shadow: 0 20px 24px -4px rgba(10, 13, 18, 0.1),
-    0 8px 8px -4px rgba(10, 13, 18, 0.04);
-  padding: 1.25rem;
+  box-shadow: 0 20px 24px -4px rgba(10, 13, 18, 0.1), 0 8px 8px -4px rgba(10, 13, 18, 0.04);
+  padding: 12px;
 }
 .delete-icon {
   border-radius: 1.75rem;
@@ -28,10 +27,10 @@
   background-color: #d32f2f !important;
   border-color: #d32f2f !important;
 }
-::ng-deep html[lang="ar"] .mat-mdc-dialog-content {
+::ng-deep html[lang='ar'] .mat-mdc-dialog-content {
   padding: 0 !important;
 }
-::ng-deep html[lang="ar"] .mdc-dialog__title {
+::ng-deep html[lang='ar'] .mdc-dialog__title {
   padding: 0 !important;
 }
 ::ng-deep .mdc-dialog__title::before {

@@ -580,7 +580,7 @@ export class WorkflowEngineComponent {
     return this.dialog.open(SelectActionsModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         allActions: allActions,
         selectedActions,
@@ -630,7 +630,7 @@ export class WorkflowEngineComponent {
     const dialogRef = this.dialog.open(EditDeleteLinkModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
     });
 
     dialogRef.afterClosed().subscribe(

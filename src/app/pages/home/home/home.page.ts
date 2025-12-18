@@ -1,12 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LanguageService } from '@core/services/language.service';
-import { TranslateService } from '@ngx-translate/core';
 import { ManageHomeService } from '../services/manage-home.service';
 import { Router } from '@angular/router';
 import { PermissionsObj } from '@core/constants/permissions.constant';
 import { EventsTimelineModalComponent } from '../components/events-timeline-modal/events-timeline-modal.component';
-import { isSmallDeviceWidthForPopup } from '@shared/helpers/helpers';
 import { arabicDays, arabicMonths } from '@core/constants/days-months.constant';
 import { VisibleNewsPost } from '@core/models/news-posts.model';
 import { environment } from '@env/environment';
@@ -17,20 +15,14 @@ import { StatisticsOpenStatus } from '../enums/statistics-open-status-enum';
 import { BaseChartDirective } from 'ng2-charts';
 import {
   ChartConfiguration,
-  ChartData,
-  ChartEvent,
-  ChartOptions,
   ChartType,
   ChartTypeRegistry,
 } from 'chart.js';
-import { MatButton } from '@angular/material/button';
-import { MatDivider } from '@angular/material/divider';
 import { RequestStatus } from '@core/enums/request-status.enum';
 import { TransactionsStatusStatistics } from '@core/models/transactions-statistics-status.model';
 import { DocumentsStatistics } from '@core/models/documents-statistics-summary';
 import { CommitteeRecordsStatistics } from '@core/models/committee-records-statistics.model';
 import { ChartDataset } from 'chart.js';
-import { MeetingGroup } from '@pages/home/components/home-next-events/home-next-events.component';
 
 @Component({
   selector: 'app-home',

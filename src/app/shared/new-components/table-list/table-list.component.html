@@ -94,9 +94,7 @@
                             (click)="onFilterSelect(columns[i], { id: '' })"
                           >
                             <mat-radio-button
-                              (click)="
-                                $event.stopPropagation(); onFilterSelect(columns[i], { id: '' })
-                              "
+                              (click)="onFilterSelect(columns[i], { id: '' })"
                               class="mr-2"
                               disableRipple
                             ></mat-radio-button>
@@ -119,7 +117,7 @@
                           >
                             <mat-radio-button
                               [checked]="selectedOption === item.id"
-                              (click)="$event.stopPropagation(); onFilterSelect(columns[i], item)"
+                              (click)="onFilterSelect(columns[i], item)"
                               class="mr-2"
                               disableRipple
                             ></mat-radio-button>
@@ -190,7 +188,7 @@
                 <!--            </a>-->
 
                 <span *ngSwitchCase="'textWithDetails'" [ngClass]="columnsConfig[i].type">
-                  <p class="body-bold mb-1">{{ element[column] }}</p>
+                  <p class="body-bold mb-0">{{ element[column] }}</p>
                   <span *ngIf="isSubTitleString(i)" class="body text-small gray-700">
                     {{ element[columnsConfig[i].subTitle] }}
                   </span>
@@ -205,6 +203,40 @@
                     >
                       {{ element[subtitle] }}
                     </span>
+                  </div>
+                </span>
+
+                <span
+                  class="d-flex align-items-center"
+                  *ngSwitchCase="'textWithDetailsIcon'"
+                  [ngClass]="columnsConfig[i].type"
+                >
+                  <div class="ms-3 p-2 bg-gray-50 border-radius-md">
+                    <svg width="1.2rem" height="1.2rem" class="m-0">
+                      <use
+                        width="1.2rem"
+                        height="1.2rem"
+                        [attr.xlink:href]="
+                          'assets/icons/sprite.svg#' + element[columnsConfig[i].icon]
+                        "
+                      ></use>
+                    </svg>
+                  </div>
+                  <div class="text-start">
+                    <p class="body-bold mb-1 d-flex align-items-center">
+                      {{ element[column] }}
+                    </p>
+                    <span *ngIf="isSubTitleString(i)" class="body text-small gray-700">
+                      {{ element[columnsConfig[i].subTitle] }}
+                    </span>
+                    <div *ngIf="isSubTitleArray(i)" class="d-flex custom-direction">
+                      <span
+                        *ngFor="let subtitle of columnsConfig[i].subTitle"
+                        class="body text-small gray-700 me-1"
+                      >
+                        {{ element[subtitle] }}
+                      </span>
+                    </div>
                   </div>
                 </span>
 
@@ -237,7 +269,7 @@
                 <span
                   *ngSwitchCase="'linkWithIcon'"
                   [ngClass]="columnsConfig[i].type"
-                  class="fc-black fw-medium d-flex align-items-center gap-2 linkWithIcon"
+                  class="body-bold d-flex align-items-center gap-2 linkWithIcon"
                 >
                   <ds-icon class="fs-20 fc-black" icon="{{ columnsConfig[i].icon }}"></ds-icon>
                   <span class="fs-13 fc-coral text-decoration-underline">{{
@@ -276,6 +308,7 @@
                 <mat-checkbox
                   *ngSwitchCase="'checkbox'"
                   (change)="onChange($event, element)"
+                  (click)="$event.stopPropagation()"
                   [checked]="checkIsSelected(element.id)"
                   class="checkbox"
                   disabled="{{ columnsConfig[i].disabled }}"
@@ -935,7 +968,7 @@
                 <span
                   *ngSwitchCase="'proposalEnum'"
                   [ngClass]="columnsConfig[i].type"
-                  class="fc-black fw-medium"
+                  class="body-bold"
                 >
                   <span *ngIf="element.exportType === ExportedDocumentType.Letter">
                     {{ 'TransactionsModule.ExportDocumentComponent.letter' | translate }}
@@ -946,12 +979,22 @@
                   <span *ngIf="element.exportType === ExportedDocumentType.Record">
                     {{ 'TransactionsModule.ExportDocumentComponent.record' | translate }}
                   </span>
+                  <span
+                    *ngIf="
+                      !element.exportType ||
+                      (element.exportType !== ExportedDocumentType.Letter &&
+                        element.exportType !== ExportedDocumentType.Note &&
+                        element.exportType !== ExportedDocumentType.Record)
+                    "
+                  >
+                    -
+                  </span>
                 </span>
 
                 <span
                   *ngSwitchCase="'ExportedDocumentTypeEnum'"
                   [ngClass]="columnsConfig[i].type"
-                  class="fc-black fw-medium"
+                  class="body-bold"
                 >
                   <span *ngIf="element.documentType === ExportedDocumentType.Letter">
                     {{ 'TransactionsModule.ExportDocumentComponent.letter' | translate }}
@@ -971,7 +1014,7 @@
                 <span
                   *ngSwitchCase="'RequestContainerStatus'"
                   [ngClass]="columnsConfig[i].type"
-                  class="fc-black fw-medium"
+                  class="body-bold"
                 >
                   <ng-container *ngIf="element.containerStatus === RequestContainerStatus.Open">
                     {{ 'TransactionsModule.TransactionsListComponent.open' | translate }}
@@ -1009,10 +1052,22 @@
                   [ngClass]="columnsConfig[i].type"
                   class="d-flex align-items-center gap-2 justify-content-center"
                 >
-                  <svg *ngIf="element.isExportDocument === true" width="1.5rem" height="1.5rem">
+                  <svg
+                    *ngIf="element.isExportDocument === true"
+                    width="1.5rem"
+                    height="1.5rem"
+                    [matTooltip]="'shared.exported' | translate"
+                    matTooltipPosition="above"
+                  >
                     <use [attr.xlink:href]="'assets/icons/sprite.svg#redEnvelope'"></use>
                   </svg>
-                  <svg *ngIf="!element.isExportDocument" width="1.25rem" height="1.25rem">
+                  <svg
+                    *ngIf="!element.isExportDocument"
+                    width="1.25rem"
+                    height="1.25rem"
+                    [matTooltip]="RequestStatusTranslationMap[element.status] | translate"
+                    matTooltipPosition="above"
+                  >
                     <use
                       [attr.xlink:href]="'assets/icons/sprite.svg#status-' + element.status"
                     ></use>
@@ -1196,143 +1251,173 @@
                       </ds-button>
                     </ng-container>
                   </div>
-                  <div
-                    class="d-flex justify-content-center gap-2 actionIcons"
-                    *ngIf="
-                      !element.isRestricted || hasOpenLinkAction(columnsConfig[i]?.actions);
-                      else restrictedActions
-                    "
-                  >
+                  <div class="d-flex justify-content-center gap-2 actionIcons">
                     <ng-container *ngIf="columnsConfig[i]?.actions?.length <= 6">
-                      <ng-container *ngFor="let action of columnsConfig[i]?.actions">
-                        <ds-button
-                          (click)="$event.stopPropagation(); allocate(element)"
-                          *ngIf="action.viewMode === Actions.ALLOCATE"
-                          shape="outline"
-                          size="small"
-                        >
-                          <span class="fs-12 fc-{{ action?.actionFontColor }}">
-                            {{ action?.actionName | translate }}
-                          </span>
-                        </ds-button>
-
-                        <ds-button
-                          (click)="$event.stopPropagation(); action?.onClick(element)"
-                          *ngIf="action === Actions.ALLOCATE"
-                          icon
-                          size="small"
-                        >
-                          <ds-icon class="fs-15" icon="pen"></ds-icon>
-                        </ds-button>
-
-                        <ng-container
-                          *ngIf="action.viewMode != Actions.VIEW || action.viewMode != Actions.COPY"
-                        >
+                      <ng-container
+                        *ngIf="
+                          !element.isRestricted || hasOpenLinkAction(columnsConfig[i]?.actions);
+                          else restrictedActions
+                        "
+                      >
+                        <ng-container *ngFor="let action of columnsConfig[i]?.actions">
                           <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="
-                              action?.action === Actions.VIEW &&
-                              (!action?.isHidden || element[action.isHidden])
-                            "
-                            icon
+                            (click)="$event.stopPropagation(); allocate(element)"
+                            *ngIf="action.viewMode === Actions.ALLOCATE"
+                            shape="outline"
                             size="small"
                           >
-                            <svg width="1rem" height="1rem">
-                              <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
-                            </svg>
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="
-                              action?.action === 'customImage' &&
-                              (!action?.isHidden || element[action.isHidden])
-                            "
-                            icon
-                            size="small"
-                          >
-                            <img [src]="action?.imgSrc" alt="custom image" class="cursor-pointer" />
+                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                              {{ action?.actionName | translate }}
+                            </span>
                           </ds-button>
 
-                          <!-- (click)="$event.stopPropagation(); action?.onClick(element)" -->
+                          <ds-button
+                            (click)="$event.stopPropagation(); action?.onClick(element)"
+                            *ngIf="action === Actions.ALLOCATE"
+                            icon
+                            size="small"
+                          >
+                            <ds-icon class="fs-15" icon="pen"></ds-icon>
+                          </ds-button>
 
-                          <div
-                            (click)="
-                              $event.stopPropagation();
-                              toggleRowExpansion(element);
-                              cdr.markForCheck()
-                            "
+                          <ng-container
                             *ngIf="
-                              action?.action === 'expandRow' &&
-                              (!action?.isHidden || element[action.isHidden])
-                            "
-                            icon
-                            size="small"
-                            class="table-arrow"
-                            [style.transform]="
-                              isRowExpanded(element) ? 'rotate(180deg)' : 'rotate(0deg)'
+                              action.viewMode != Actions.VIEW || action.viewMode != Actions.COPY
                             "
                           >
-                            <svg width="10" height="5">
-                              <use [attr.xlink:href]="'assets/icons/sprite.svg#table-arrow'"></use>
-                            </svg>
-                          </div>
-
-                          <button
-                            class="action_customhover"
-                            [class.focused]="SelectedID == element.id"
-                            (mouseenter)="
-                              customHoverShow.emit({ event: $event, element, i, column })
-                            "
-                            (mouseleave)="customHoverHide.emit()"
-                            *ngIf="action?.action === Actions.CUSTOMHOVER && !action?.isHidden"
-                            icon
-                            size="small"
-                          >
-                            <img
-                              *ngIf="!element.isRestricted"
-                              [src]="
-                                SelectedID != element.id
-                                  ? 'assets/icons/question-mark.svg'
-                                  : 'assets/icons/question-mark-on-hover.svg'
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="
+                                action?.action === Actions.VIEW &&
+                                (!action?.isHidden || element[action.isHidden])
                               "
-                              alt="View details"
-                              class="cursor-pointer"
-                            />
-                          </button>
+                              icon
+                              size="small"
+                            >
+                              <svg width="1rem" height="1rem">
+                                <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                              </svg>
+                            </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="
+                                action?.action === 'customImage' &&
+                                (!action?.isHidden || element[action.isHidden])
+                              "
+                              icon
+                              size="small"
+                            >
+                              <img
+                                [src]="action?.imgSrc"
+                                alt="custom image"
+                                class="cursor-pointer"
+                              />
+                            </ds-button>
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.COPY && !action?.isHidden"
-                            icon
-                            size="small"
-                          >
-                            <ds-icon class="fs-15" icon="files-copy"></ds-icon>
-                          </ds-button>
+                            <!-- (click)="$event.stopPropagation(); action?.onClick(element)" -->
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.EDIT && !action?.isHidden"
-                            icon
-                            size="small"
-                          >
-                            <svg width="1rem" height="1rem">
-                              <use [attr.xlink:href]="'assets/icons/sprite.svg#edit'"></use>
-                            </svg>
-                            <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.ADDATTACHMENT && !action?.isHidden"
-                            icon
-                            size="small"
-                          >
-                            <svg width="1rem" height="1rem">
-                              <use [attr.xlink:href]="'assets/icons/add-attachment.svg'"></use>
-                            </svg>
-                            <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
-                          </ds-button>
+                            <div
+                              (click)="
+                                $event.stopPropagation();
+                                toggleRowExpansion(element);
+                                cdr.markForCheck()
+                              "
+                              *ngIf="
+                                action?.action === 'expandRow' &&
+                                (!action?.isHidden || element[action.isHidden])
+                              "
+                              icon
+                              size="small"
+                              class="table-arrow"
+                            >
+                              <svg width="20" height="20" *ngIf="!isRowExpanded(element)">
+                                <use
+                                  [attr.xlink:href]="'assets/icons/sprite.svg#table-arrow'"
+                                ></use>
+                              </svg>
+                              <svg
+                                class="scale-1"
+                                width="20"
+                                height="20"
+                                *ngIf="isRowExpanded(element)"
+                              >
+                                <use
+                                  [attr.xlink:href]="'assets/icons/sprite.svg#table-arrow-gold'"
+                                ></use>
+                              </svg>
+                            </div>
 
-                          <!-- <ng-container *ngIf="element?.classification?.level == ClassificationLevel.Restricted">
+                            <button
+                              class="action_customhover"
+                              [class.focused]="SelectedID == element.id"
+                              (mouseenter)="
+                                SelectedID = element.id;
+                                customHoverShow.emit({ event: $event, element, i, column })
+                              "
+                              (mouseleave)="SelectedID = null; customHoverHide.emit()"
+                              *ngIf="action?.action === Actions.CUSTOMHOVER && !action?.isHidden"
+                              icon
+                              size="small"
+                            >
+                              <!-- <img
+                                *ngIf="!element.isRestricted"
+                                [src]="
+                                  SelectedID != element.id
+                                    ? 'assets/icons/question-mark.svg'
+                                    : 'assets/icons/question-mark-on-hover.svg'
+                                "
+                                alt="View details"
+                                class="cursor-pointer"
+                              /> -->
+                              <svg
+                                width="1rem"
+                                height="1rem"
+                                *ngIf="!element.isRestricted"
+                                class="scale-1"
+                              >
+                                <use
+                                  [attr.xlink:href]="
+                                    SelectedID != element.id
+                                      ? 'assets/icons/sprite.svg#transaction-info'
+                                      : 'assets/icons/sprite.svg#transaction-info-filled'
+                                  "
+                                ></use>
+                              </svg>
+                            </button>
+
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.COPY && !action?.isHidden"
+                              icon
+                              size="small"
+                            >
+                              <ds-icon class="fs-15" icon="files-copy"></ds-icon>
+                            </ds-button>
+
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.EDIT && !action?.isHidden"
+                              icon
+                              size="small"
+                            >
+                              <svg width="1rem" height="1rem">
+                                <use [attr.xlink:href]="'assets/icons/sprite.svg#edit'"></use>
+                              </svg>
+                              <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
+                            </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.ADDATTACHMENT && !action?.isHidden"
+                              icon
+                              size="small"
+                            >
+                              <svg width="1rem" height="1rem">
+                                <use [attr.xlink:href]="'assets/icons/add-attachment.svg'"></use>
+                              </svg>
+                              <!-- <ds-icon class="fs-15" icon="pen"></ds-icon> -->
+                            </ds-button>
+
+                            <!-- <ng-container *ngIf="element?.classification?.level == ClassificationLevel.Restricted">
                 <div *ngxPermissionsOnly="[PermissionsObj.UpdateRequestContainerAccessibility]"
                   class="d-flex align-items-center | edit-container" (click)="onOpenAccessibility(element)">
                   <span class="cursor-pointer" matTooltip="{{
@@ -1343,214 +1428,245 @@
                   </span>
                 </div>
               </ng-container> -->
-                          <!-- } -->
+                            <!-- } -->
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.DELETE && !action?.isHidden"
-                            icon
-                            size="small"
-                          >
-                            <svg
-                              width="1rem"
-                              height="1rem"
-                              *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
-                            >
-                              <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
-                            </svg>
-                          </ds-button>
-
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="
-                              action?.action === Actions.DELETEPENDING &&
-                              !action?.isHidden &&
-                              element?.contractStatus?.id == 1
-                            "
-                            icon
-                            size="small"
-                          >
-                            <svg
-                              width="1rem"
-                              height="1rem"
-                              *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
-                            >
-                              <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
-                            </svg>
-                          </ds-button>
-
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.CHART"
-                            color="transparent"
-                            size="small"
-                          >
-                            <ds-icon class="fc-coral fs-15" icon="chart-o"></ds-icon>
-                          </ds-button>
-
-                          <ng-container
-                            *ngIf="element.hasOwnProperty('canTakeAction'); else noCanTakeAction"
-                          >
                             <ds-button
                               (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.DELETE && !action?.isHidden"
+                              icon
                               size="small"
+                            >
+                              <svg
+                                width="1rem"
+                                height="1rem"
+                                *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
+                              >
+                                <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
+                              </svg>
+                            </ds-button>
+
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
                               *ngIf="
-                                action?.action === Actions.APPROVE && element.canTakeAction == true
+                                action?.action === Actions.DELETEPENDING &&
+                                !action?.isHidden &&
+                                element?.contractStatus?.id == 1
                               "
-                            >
-                              <span class="fs-12">
-                                {{ 'global.approve' | translate }}
-                              </span>
-                            </ds-button>
-                            <ds-button
-                              shape="outline"
-                              color="dark-gray"
-                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              icon
                               size="small"
-                              *ngIf="
-                                action?.action === Actions.REJECT && element.canTakeAction == true
-                              "
-                              shape="outline"
                             >
-                              <span class="fs-12">
-                                {{ 'global.reject' | translate }}
-                              </span>
+                              <svg
+                                width="1rem"
+                                height="1rem"
+                                *ngIf="!columnsConfig[i]?.actions[0]?.hideRestrictedIcon"
+                              >
+                                <use [attr.xlink:href]="'assets/icons/red-trash.svg'"></use>
+                              </svg>
                             </ds-button>
-                          </ng-container>
-                          <ng-template #noCanTakeAction>
+
                             <ds-button
                               (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.CHART"
+                              color="transparent"
                               size="small"
-                              *ngIf="action?.action === Actions.APPROVE"
                             >
-                              <span class="fs-12">
-                                {{ 'global.approve' | translate }}
-                              </span>
+                              <ds-icon class="fc-coral fs-15" icon="chart-o"></ds-icon>
+                            </ds-button>
+
+                            <ng-container
+                              *ngIf="element.hasOwnProperty('canTakeAction'); else noCanTakeAction"
+                            >
+                              <ds-button
+                                (click)="$event.stopPropagation(); action?.onClick(element)"
+                                size="small"
+                                *ngIf="
+                                  action?.action === Actions.APPROVE &&
+                                  element.canTakeAction == true
+                                "
+                              >
+                                <span class="fs-12">
+                                  {{ 'global.approve' | translate }}
+                                </span>
+                              </ds-button>
+                              <ds-button
+                                shape="outline"
+                                color="dark-gray"
+                                (click)="$event.stopPropagation(); action?.onClick(element)"
+                                size="small"
+                                *ngIf="
+                                  action?.action === Actions.REJECT && element.canTakeAction == true
+                                "
+                                shape="outline"
+                              >
+                                <span class="fs-12">
+                                  {{ 'global.reject' | translate }}
+                                </span>
+                              </ds-button>
+                            </ng-container>
+                            <ng-template #noCanTakeAction>
+                              <ds-button
+                                (click)="$event.stopPropagation(); action?.onClick(element)"
+                                size="small"
+                                *ngIf="action?.action === Actions.APPROVE"
+                              >
+                                <span class="fs-12">
+                                  {{ 'global.approve' | translate }}
+                                </span>
+                              </ds-button>
+                              <ds-button
+                                shape="outline"
+                                color="dark-gray"
+                                (click)="$event.stopPropagation(); action?.onClick(element)"
+                                size="small"
+                                *ngIf="action?.action === Actions.REJECT"
+                                shape="outline"
+                              >
+                                <span class="fs-12">
+                                  {{ 'global.reject' | translate }}
+                                </span>
+                              </ds-button>
+                            </ng-template>
+
+                            <ds-button
+                              *ngIf="action?.action === Actions.DETAILS"
+                              shape="text"
+                              size="small"
+                            >
+                              <span class="fs-12 underline"> View Details </span>
                             </ds-button>
                             <ds-button
-                              shape="outline"
-                              color="dark-gray"
                               (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.START && element?.isFinalize"
                               size="small"
-                              *ngIf="action?.action === Actions.REJECT"
-                              shape="outline"
                             >
                               <span class="fs-12">
-                                {{ 'global.reject' | translate }}
+                                {{ action?.actionName | translate }}
                               </span>
+                              <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
                             </ds-button>
-                          </ng-template>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.PREPARE"
+                              color="light-gray"
+                              size="small"
+                            >
+                              <span class="fs-12 fc-black">
+                                {{ action?.actionName | translate }}
+                              </span>
+                              <ds-icon
+                                class="fs-12 fc-black"
+                                icon="settings"
+                                slot="prefix"
+                              ></ds-icon>
+                            </ds-button>
 
-                          <ds-button
-                            *ngIf="action?.action === Actions.DETAILS"
-                            shape="text"
-                            size="small"
-                          >
-                            <span class="fs-12 underline"> View Details </span>
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.START && element?.isFinalize"
-                            size="small"
-                          >
-                            <span class="fs-12">
-                              {{ action?.actionName | translate }}
-                            </span>
-                            <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.PREPARE"
-                            color="light-gray"
-                            size="small"
-                          >
-                            <span class="fs-12 fc-black">
-                              {{ action?.actionName | translate }}
-                            </span>
-                            <ds-icon class="fs-12 fc-black" icon="settings" slot="prefix"></ds-icon>
-                          </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.START && element?.isFinalize"
+                              size="small"
+                            >
+                              <span class="fs-12">
+                                {{ action?.actionName | translate }}
+                              </span>
+                              <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
+                            </ds-button>
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.START && element?.isFinalize"
-                            size="small"
-                          >
-                            <span class="fs-12">
-                              {{ action?.actionName | translate }}
-                            </span>
-                            <ds-icon class="fs-16" icon="media-play" slot="prefix"></ds-icon>
-                          </ds-button>
-
-                          <!-- <ds-button [color]="action?.actionColor" size="small"
+                            <!-- <ds-button [color]="action?.actionColor" size="small"
                                                     *ngIf="action?.action === 'customAction'"
                                                       (click)="$event.stopPropagation();action?.onClick(element)" shape="{{action?.actionShape}}" [class]="action?.actionColor"
                                                       ></ds-button> -->
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.CUSTOMACTION"
-                            [class]="action?.actionColor"
-                            [color]="action?.actionColor"
-                            shape="{{ action?.actionShape }}"
-                            size="small"
-                          >
-                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
-                              {{ action?.actionName | translate }}
-                            </span>
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="
-                              action?.action === Actions.CUSTOMACTIONMANAGE &&
-                              (element.contractStatus.id == 7 || element.contractStatus.id == 1)
-                            "
-                            [class]="action?.actionColor"
-                            [color]="action?.actionColor"
-                            shape="{{ action?.actionShape }}"
-                            size="small"
-                          >
-                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
-                              {{ action?.actionName | translate }}
-                            </span>
-                          </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.CUSTOMACTION"
+                              [class]="action?.actionColor"
+                              [color]="action?.actionColor"
+                              shape="{{ action?.actionShape }}"
+                              size="small"
+                            >
+                              <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                                {{ action?.actionName | translate }}
+                              </span>
+                            </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="
+                                action?.action === Actions.CUSTOMACTIONMANAGE &&
+                                (element.contractStatus.id == 7 || element.contractStatus.id == 1)
+                              "
+                              [class]="action?.actionColor"
+                              [color]="action?.actionColor"
+                              shape="{{ action?.actionShape }}"
+                              size="small"
+                            >
+                              <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                                {{ action?.actionName | translate }}
+                              </span>
+                            </ds-button>
 
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="
-                              action?.action === Actions.CUSTOMACTIONEXTEND &&
-                              element.contractStatus.id == 7
-                            "
-                            [class]="action?.actionColor"
-                            [color]="action?.actionColor"
-                            shape="{{ action?.actionShape }}"
-                            size="small"
-                          >
-                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
-                              {{ action?.actionName | translate }}
-                            </span>
-                          </ds-button>
-                          <ds-button
-                            (click)="$event.stopPropagation(); action?.onClick(element)"
-                            *ngIf="action?.action === Actions.CUSTOMACTIONDETAILS"
-                            [class]="action?.actionColor"
-                            [color]="action?.actionColor"
-                            shape="{{ action?.actionShape }}"
-                            size="small"
-                          >
-                            <span class="fs-12 fc-{{ action?.actionFontColor }}">
-                              {{ action?.actionName | translate }}
-                            </span>
-                          </ds-button>
-                          <ds-status
-                            *ngIf="action?.action === Actions.STATUS"
-                            [status]="action?.Status.status"
-                            class="fs-12 statusAction w-100"
-                          >
-                            <span class="fc-black">
-                              {{ action?.Status.title | translate }}
-                            </span>
-                          </ds-status>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="
+                                action?.action === Actions.CUSTOMACTIONEXTEND &&
+                                element.contractStatus.id == 7
+                              "
+                              [class]="action?.actionColor"
+                              [color]="action?.actionColor"
+                              shape="{{ action?.actionShape }}"
+                              size="small"
+                            >
+                              <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                                {{ action?.actionName | translate }}
+                              </span>
+                            </ds-button>
+                            <ds-button
+                              (click)="$event.stopPropagation(); action?.onClick(element)"
+                              *ngIf="action?.action === Actions.CUSTOMACTIONDETAILS"
+                              [class]="action?.actionColor"
+                              [color]="action?.actionColor"
+                              shape="{{ action?.actionShape }}"
+                              size="small"
+                            >
+                              <span class="fs-12 fc-{{ action?.actionFontColor }}">
+                                {{ action?.actionName | translate }}
+                              </span>
+                            </ds-button>
+                            <ds-status
+                              *ngIf="action?.action === Actions.STATUS"
+                              [status]="action?.Status.status"
+                              class="fs-12 statusAction w-100"
+                            >
+                              <span class="fc-black">
+                                {{ action?.Status.title | translate }}
+                              </span>
+                            </ds-status>
+                          </ng-container>
                         </ng-container>
+                      </ng-container>
+                      <ng-container *ngFor="let action of columnsConfig[i]?.actions">
+                        <ds-button
+                          class="accessibility-icon"
+                          (click)="$event.stopPropagation(); action?.onClick(element)"
+                          *ngIf="
+                            action?.action === Actions.ACCESSIBILITY &&
+                            element.classification &&
+                            (element.classification?.level ||
+                              element.classification?.classificationLevel) ==
+                              action.classificationLevel
+                          "
+                          icon
+                          size="small"
+                          matTooltip=" {{
+                            'TransactionsModule.AddTransactionComponent.accessibility' | translate
+                          }}"
+                          matTooltipPosition="below"
+                        >
+                          <ng-container *ngxPermissionsOnly="[PermissionsObj[action.Permission]]">
+                            <svg width="1rem" height="1rem">
+                              <use [attr.xlink:href]="'assets/icons/accessibility.svg'"></use>
+                            </svg>
+                          </ng-container>
+                        </ds-button>
                       </ng-container>
                     </ng-container>
 
@@ -1578,7 +1694,6 @@
                       </mat-menu>
                     </ng-container>
                   </div>
-
                   <ng-template #restrictedActions>
                     <div class="d-flex justify-content-center actionIcons">
                       <svg
@@ -1589,32 +1704,6 @@
                       >
                         <use [attr.xlink:href]="'assets/icons/sprite.svg#restricted'"></use>
                       </svg>
-                      <ng-container *ngFor="let action of columnsConfig[i]?.actions">
-                        <ds-button
-                          class="accessibility-icon"
-                          (click)="$event.stopPropagation(); action?.onClick(element)"
-                          *ngIf="
-                            action?.action === Actions.ACCESSIBILITY &&
-                            element.classification &&
-                            element.classification?.level == action.classificationLevel
-                          "
-                          icon
-                          size="small"
-                          matTooltip=" {{
-                            'TransactionsModule.AddTransactionComponent.accessibility' | translate
-                          }}"
-                          matTooltipPosition="below"
-                        >
-                          <ng-container *ngxPermissionsOnly="[PermissionsObj[action.Permission]]">
-                            <svg width="1rem" height="1rem">
-                              <use [attr.xlink:href]="'assets/icons/accessibility.svg'"></use>
-                            </svg>
-                            <!-- {{action?.action.ClassificationLevel}} -->
-                          </ng-container>
-                          <!-- {{action.Permission}} -->
-                          <!-- {{PermissionsObj[action.permission]}} -->
-                        </ds-button>
-                      </ng-container>
                     </div>
                   </ng-template>
                 </ng-container>
@@ -1681,43 +1770,57 @@
                   *ngSwitchCase="'chart'"
                   [ngClass]="element.statusClass"
                   class="text-nowrap percent-gauge-chart-container"
-                  matTooltip=" {{
-                    columnsConfig[i].arKey
-                      ? translateService.currentLang == 'ar'
-                        ? mapText(columnsConfig[i].arKey, element[column])
-                        : mapText(columnsConfig[i].enKey, element[column])
-                      : element[column]
-                      ? element[column]
-                      : '-'
-                  }}"
                   matTooltipPosition="below"
                 >
-                  <percent-gauge-chart
-                    [status]="element.containerStatus"
-                    (statusChange)="onStatusChange($event, element)"
-                    [color]="mapText(columnsConfig[i].color, element[column])"
-                    [value]="mapText(columnsConfig[i].arKey, element[column])"
-                  ></percent-gauge-chart>
-                  {{
-                    element.statusClass == 'hasTime'
-                      ? ' أيام متبقية'
-                      : element.statusClass == 'complete'
-                      ? 'تم الانتهاء '
-                      : 'أيام تاخير'
-                  }}
+                  <!-- [matTooltip]="
+                    element[column].days != 0
+                      ? ' ' +
+                        (columnsConfig[i].arKey
+                          ? translateService.currentLang == 'ar'
+                            ? mapText(columnsConfig[i].arKey, element[column])
+                            : mapText(columnsConfig[i].enKey, element[column])
+                          : element[column]
+                          ? element[column]
+                          : '-')
+                      : ''
+                  " -->
+                  <ng-container *ngIf="element[column].days == 0; else hasValue"> - </ng-container>
+                  <ng-template #hasValue>
+                    <percent-gauge-chart
+                      [status]="element.containerStatus"
+                      (statusChange)="onStatusChange($event, element)"
+                      [color]="mapText(columnsConfig[i].color, element[column])"
+                      [value]="mapText(columnsConfig[i].arKey, element[column])"
+                    ></percent-gauge-chart>
+                    {{
+                      element.statusClass == 'hasTime'
+                        ? ' أيام متبقية'
+                        : element.statusClass == 'complete'
+                        ? 'تم الانتهاء '
+                        : 'أيام تاخير'
+                    }}
+                  </ng-template>
                 </span>
                 <span
                   *ngSwitchDefault
                   [ngClass]="columnsConfig[i].type"
                   class="text-nowrap"
                   [matTooltip]="
-                    getFullText(
+                    isTextTruncated(
                       columnsConfig[i].arKey
                         ? translateService.currentLang == 'ar'
                           ? mapText(columnsConfig[i].arKey, element[column])
                           : mapText(columnsConfig[i].enKey, element[column])
                         : element[column]
                     )
+                      ? getFullText(
+                          columnsConfig[i].arKey
+                            ? translateService.currentLang == 'ar'
+                              ? mapText(columnsConfig[i].arKey, element[column])
+                              : mapText(columnsConfig[i].enKey, element[column])
+                            : element[column]
+                        )
+                      : ''
                   "
                   matTooltipPosition="above"
                 >
@@ -1745,94 +1848,117 @@
             class="example-element-detail"
             [@detailExpand]="isRowExpanded(element) ? 'expanded' : 'collapsed'"
           >
-            <div class="row expanded-box">
+            <div class="row gx-3 expanded-box">
               <ng-container *ngFor="let member of element.members; let i = index">
-                <div class="col-md-3 col-6">
-                  <ng-container *ngIf="member.action; else NoActionBlock">
-                    <div
-                      class="d-flex align-items-center justify-content-center mb-1"
-                      *ngIf="member.action.type === ExportableDocumentActionType.Sign"
-                    >
-                      <svg width="1.25rem" height="1.25rem" class="m-0">
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
-                      </svg>
-                      <p class="approved caption mx-1 mb-0">
-                        {{ 'shared.isSigned' | translate }}
-                      </p>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center justify-content-center mb-1"
-                      *ngIf="member.action.type === ExportableDocumentActionType.Conservatism"
-                    >
-                      <svg width="1.25rem" height="1.25rem" class="m-0">
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
-                      </svg>
-                      <p class="rejected caption mx-1 mb-0">
-                        {{ 'shared.conservatism' | translate }}
-                      </p>
-                    </div>
-
-                    <div
-                      class="d-flex align-items-center justify-content-center mb-1"
-                      *ngIf="member.action.type === ExportableDocumentActionType.OpinionRefrain"
-                    >
-                      <svg width="1.25rem" height="1.25rem" class="m-0">
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
-                      </svg>
-                      <p class="noAnswer caption mx-1 mb-0">
-                        {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
-                      </p>
-                    </div>
-
-                    <div class="d-flex align-items-center justify-content-center">
-                      <svg
-                        width="1rem"
-                        height="1rem"
-                        *ngIf="member.action.comment"
-                        class="mx-1 mt-0"
-                        (click)="showComment(member.action.comment)"
-                      >
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#member-comment'"></use>
-                      </svg>
-                      <p class="caption-bold mb-0">{{ member.name }}</p>
-                    </div>
-                  </ng-container>
-
-                  <ng-template #NoActionBlock>
-                    <ng-container *ngIf="element && element.isExported; else NoOpinionExpressed">
-                      <div class="d-flex align-items-center justify-content-center mb-1">
-                        <svg width="1.25rem" height="1.25rem" class="m-0">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
-                        </svg>
-                        <p *ngIf="member.isOnVacation" class="noAnswer caption mx-1 mb-0">
-                          {{ 'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate }}
-                        </p>
-                        <p *ngIf="!member.isOnVacation" class="noAnswer caption mx-1 mb-0">
-                          {{
-                            'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet' | translate
-                          }}
-                        </p>
+                <div class="col-6">
+                  <div class="row">
+                    <ng-container *ngIf="member.action; else NoActionBlock">
+                      <div class="col-6 d-flex align-items-center">
+                        <p class="body-bold text-small mb-0">{{ member.name }}</p>
                       </div>
-                      <p class="caption-bold mb-0">{{ member.name }}</p>
+                      <div class="col-6 d-flex align-items-center">
+                        <div
+                          class="d-flex align-items-center"
+                          *ngIf="member.action.type === ExportableDocumentActionType.Sign"
+                        >
+                          <svg width="1.25rem" height="1.25rem" class="m-0">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#approved'"></use>
+                          </svg>
+                          <p class="approved body text-small mx-1 mb-0">
+                            {{ 'shared.isSigned' | translate }}
+                          </p>
+                        </div>
+
+                        <div
+                          class="d-flex align-items-center"
+                          *ngIf="member.action.type === ExportableDocumentActionType.Conservatism"
+                        >
+                          <svg width="1.25rem" height="1.25rem" class="m-0">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#rejected'"></use>
+                          </svg>
+                          <p class="rejected body text-small mx-1 mb-0">
+                            {{ 'shared.conservatism' | translate }}
+                          </p>
+                        </div>
+
+                        <div
+                          class="d-flex align-items-center"
+                          *ngIf="member.action.type === ExportableDocumentActionType.OpinionRefrain"
+                        >
+                          <svg width="1.25rem" height="1.25rem" class="m-0">
+                            <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                          </svg>
+                          <p class="noAnswer body text-small mx-1 mb-0">
+                            {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                          </p>
+                        </div>
+
+                        <svg
+                          width="1rem"
+                          height="1rem"
+                          *ngIf="member.action.comment"
+                          class="mx-1 mt-0 scale-1"
+                          (click)="showComment(member.action.comment)"
+                        >
+                          <use
+                            [attr.xlink:href]="'assets/icons/sprite.svg#member-comment-dark'"
+                          ></use>
+                        </svg>
+                      </div>
                     </ng-container>
-                    <ng-template #NoOpinionExpressed>
-                      <div class="d-flex align-items-center justify-content-center mb-1">
-                        <svg width="1.25rem" height="1.25rem" class="m-0">
-                          <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
-                        </svg>
-                        <p class="noAnswer caption mx-1 mb-0">
-                          {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
-                        </p>
-                      </div>
-                      <p class="caption-bold mb-0">{{ member.name }}</p>
-                    </ng-template>
-                  </ng-template>
-                </div>
 
-                <div class="w-100" *ngIf="(i + 1) % 4 === 0 && i + 1 < element.members.length">
-                  <hr class="member-line" />
+                    <ng-template #NoActionBlock>
+                      <ng-container *ngIf="element && element.isExported; else NoOpinionExpressed">
+                        <div class="col-6 d-flex align-items-center">
+                          <p class="body-bold text-small mb-0">{{ member.name }}</p>
+                        </div>
+                        <div class="col-6 d-flex align-items-center">
+                          <div class="d-flex align-items-center">
+                            <svg width="1.25rem" height="1.25rem" class="m-0">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                            </svg>
+                            <p
+                              *ngIf="member.isOnVacation"
+                              class="noAnswer body text-small mx-1 mb-0"
+                            >
+                              {{
+                                'ManageRecordsModule.RecordDetailsComponent.onHoliday' | translate
+                              }}
+                            </p>
+                            <p
+                              *ngIf="!member.isOnVacation"
+                              class="noAnswer body text-small mx-1 mb-0"
+                            >
+                              {{
+                                'ManageRecordsModule.RecordDetailsComponent.didnotAcceptYet'
+                                  | translate
+                              }}
+                            </p>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-template #NoOpinionExpressed>
+                        <div class="col-6 d-flex align-items-center">
+                          <p class="body-bold text-small mb-0">{{ member.name }}</p>
+                        </div>
+                        <div class="col-6 d-flex align-items-center">
+                          <div class="d-flex align-items-center">
+                            <svg width="1.25rem" height="1.25rem" class="m-0">
+                              <use [attr.xlink:href]="'assets/icons/sprite.svg#noAnswer'"></use>
+                            </svg>
+                            <p class="noAnswer body text-small mx-1 mb-0">
+                              {{ 'ManageRecordsModule.RecordsListComponent.noOpinion' | translate }}
+                            </p>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ng-template>
+                  </div>
                 </div>
+                <hr
+                  class="member-seperator"
+                  *ngIf="(i + 1) % 2 === 0 && element.members.length > 2"
+                />
               </ng-container>
             </div>
           </div>

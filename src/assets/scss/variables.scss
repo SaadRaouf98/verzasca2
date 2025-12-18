@@ -1,17 +1,32 @@
 $english-font-family-primary: "Poppins", "Lato", sans-serif;
 
 $primary-color: #341f09;
+$primary-hover: lighten($primary-color, 60%);
 $black-color: #000;
 $white-color: #fff;
 $light-black-color: #101828;
 $light-grey-color: #6b7280;
 $gray-900-color: #111827;
 $gray-500-color: #667085;
+$gray-50-color: #F5F5F5;
 $dark-grey-color: #101828;
 $slate-700-color: #334155;
 $slate-900-color: #0f172a;
 $main-darker-color: #37a0a0;
 $secondary-darker-color: #858d95;
+$secondary-50-color: #F6F3EF;
+// Secondary
+$secondary-50: #f6f3ef;
+$secondary-100: #ece7df;
+$secondary-200: #dad0be;
+$secondary-300: #c7b89e;
+$secondary-400: #b5a07d;
+$secondary-500: #a38a5f;
+$secondary-600: #826d4a;
+$secondary-700: #615238;
+$secondary-800: #413725;
+$secondary-900: #413725;
+$secondary-950: #100e09;
 // Greyscale
 $color-greyscale-surface-subtle: #c4c4c4;
 $color-greyscale-surface-default: #9e9e9e;

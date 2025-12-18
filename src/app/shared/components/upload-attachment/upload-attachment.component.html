@@ -12,7 +12,7 @@
 
   <!-- منطقة الإسقاط -->
   <div class="row">
-    <div [ngClass]="split ? 'col-12 col-md-6' : ''" class="mb-2">
+    <div [ngClass]="split ? 'col-12 col-md-6' : ''" class="">
       <div
         id="dropZoon"
         class="drop-zoon"
@@ -47,17 +47,19 @@
         />
       </div>
     </div>
-    <div class="mt-3" [ngClass]="split ? 'col-12 col-md-6' : ''">
+    <div class="" [ngClass]="split ? 'col-12 col-md-6 ' : 'mt-3'">
       <ng-container *ngIf="values?.length > 0">
         <div class="d-flex flex-wrap gap-2 mt-3 w-100">
           <ng-container class="" *ngFor="let file of values; let i = index">
             <div class="d-flex align-items-center file-container w-100">
               <svg width="1.5rem" height="1.5rem" class="ms-3">
-                <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+                <use [attr.xlink:href]="'assets/icons/sprite.svg#' + getFileIcon(file)"></use>
               </svg>
               <div class="w-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="body-bold text-small">{{ file.name }}</span>
+                  <span class="body-bold text-small" style="width: 90%; text-align: right">{{
+                    file.name
+                  }}</span>
                   <div class="d-flex align-items-center">
                     <svg
                       width="1.25rem"
@@ -92,11 +94,13 @@
             >
               <div class="d-flex align-items-center w-100">
                 <svg width="1.5rem" height="1.5rem" class="ms-3">
-                  <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf'"></use>
+                  <use
+                    [attr.xlink:href]="'assets/icons/sprite.svg#' + getFileIcon(file.file)"
+                  ></use>
                 </svg>
                 <div class="w-100">
                   <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="body-bold text-small">{{
+                    <span class="body-bold text-small" style="width: 90%; text-align: right">{{
                       file.file.name || file.file?.originalName
                     }}</span>
                     <div class="d-flex align-items-center">

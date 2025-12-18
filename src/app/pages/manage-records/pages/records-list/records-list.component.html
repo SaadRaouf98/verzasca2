@@ -1,33 +1,19 @@
 <section class="records-list-container">
   <div class="row justify-content-between mb-1">
     <div class="col-12 col-lg-12 d-flex align-items-center">
-      <p class="body-bold mb-0" style="color: #111827">
-        {{
-          viewMode == 'allRecords'
-            ? ('shared.allRecords' | translate)
-            : ('shared.activeRecords' | translate)
-        }}
+      <p class="mb-0 d-flex align-items-center">
+        <svg width="1.25rem" height="1.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-records'"></use>
+        </svg>
+        <span class="body-bold mx-2">
+          {{
+            viewMode == 'allRecords'
+              ? ('shared.allRecords' | translate)
+              : ('shared.activeRecords' | translate)
+          }}</span
+        >
       </p>
     </div>
-
-    <!-- <div
-      class="col-12 col-lg-8 d-flex align-items-center justify-content-end"
-      id="main-btns-container"
-    > -->
-
-    <!-- <div
-        class="btn-card | export-card f"
-        (click)="onExportExcel()"
-        matTooltip="استخراج البيانات"
-      >
-        <img
-          width="26"
-          height="26"
-          src="assets/icons/excel.svg"
-          alt="ms-excel"
-        />
-      </div> -->
-    <!-- </div> -->
   </div>
 
   <div class="filters-container">
@@ -54,6 +40,7 @@
     <div class="row">
       <div class="col-md-10 col-12">
         <app-filters
+          #filtersComponent
           class="w-100"
           [hasFiltersApplied]="isTableFiltered"
           [prioritiesList]="prioritiesList"
@@ -62,7 +49,7 @@
         ></app-filters>
       </div>
 
-      <div class="col-md-2 col-12">
+      <div class="col-md-2 col-12" *ngIf="viewMode == 'allRecords'">
         <div class="d-flex h-100 align-items-center justify-content-end">
           <span
             class="body-bold text-small blue-text cursor-pointer d-flex align-items-center"
@@ -85,33 +72,37 @@
     <div *ngIf="viewMode == 'activeRecords'">
       <div class="row mt-3" style="margin: 0 -0.35rem">
         <div
-          class="col-md-4 col-12 mb-2"
+          class="col-xxl-4 col-xl-6 col-md-6 col-12 col-12 mb-2"
           style="padding: 0 0.35rem"
           *ngFor="let element of recordsSource"
         >
-          <div class="record-card">
-            <div class="d-flex align-items-center justify-content-between">
+          <div class="record-card" (click)="onViewRecordDetails(element)">
+            <div class="d-flex align-items-center justify-content-between py-1">
               <div class="d-flex align-items-center">
                 <svg width="1rem" height="1rem" class="ms-2">
                   <use [attr.xlink:href]="'assets/icons/sprite.svg#pdf-small'"></use>
                 </svg>
-                <span class="body-bold text-small" [matTooltip]="element.title">
-                  {{ element.title | truncate : 75 }}</span
+                <span
+                  class="body-bold text-small"
+                  [matTooltip]="element.title.length > 70 ? element.title : null"
+                >
+                  {{ element.title | truncate : 70 }}</span
                 >
               </div>
-              <svg
-                width="1rem"
-                height="1rem"
-                class="cursor-pointer"
-                *ngIf="!element.isRestricted"
-                (click)="onViewRecordDetails(element)"
-                matTooltip="{{ 'shared.viewDetails' | translate }}"
-              >
-                <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
-              </svg>
+              <span class="hover-eff btn p-2">
+                <svg
+                  width="1rem"
+                  height="1rem"
+                  class="cursor-pointer"
+                  *ngIf="!element.isRestricted"
+                  matTooltip="{{ 'shared.viewDetails' | translate }}"
+                >
+                  <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
+                </svg>
+              </span>
             </div>
-            <hr class="line" />
-            <div class="row">
+            <hr class="my-2" />
+            <div class="row py-1">
               <div class="col-12 col-md-6 d-flex">
                 <span class="body gray-500 text-small">
                   {{ 'ManageRecordsModule.RecordsListComponent.recordNumber' | translate }}
@@ -129,11 +120,23 @@
                 </span>
               </div>
             </div>
-            <hr class="line" />
+            <hr class="my-2" />
+            <div class="d-flex align-items-center mb-2">
+              <svg width="20" height="20" class="ms-2 text-black">
+                <use
+                  width="20"
+                  height="20"
+                  [attr.xlink:href]="'assets/icons/sprite.svg#show-signs-black'"
+                ></use>
+              </svg>
+              <span class="body-bold text-small">
+                {{ 'shared.signs' | translate }}
+              </span>
+            </div>
             <ng-container *ngFor="let member of element?.members; let last = last">
               <div class="row d-flex align-items-center">
                 <div class="col-md-6 col-12">
-                  <span class="body-bold text-small" [matTooltip]="member?.name">{{
+                  <span class="body text-small" [matTooltip]="member?.name">{{
                     member?.name | truncate : 40
                   }}</span>
                 </div>
@@ -172,7 +175,7 @@
                   </div>
                 </div>
               </div>
-              <hr class="line" *ngIf="!last" />
+              <hr class="line mt-2" *ngIf="!last" />
             </ng-container>
           </div>
         </div>

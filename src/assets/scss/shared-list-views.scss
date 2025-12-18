@@ -220,7 +220,7 @@ ul.detail-element {
 .transaction-card {
   border-radius: 0.75rem;
   background: #fff;
-  padding: 1rem;
+  padding: 0.75rem;
   margin-bottom: 0.75rem;
   border: 1px solid transparent;
   position: relative;
@@ -234,10 +234,14 @@ ul.detail-element {
 .consultantTyped {
   padding: 4px;
   background-color: #324054;
-  border-radius: 8px;
   color: #fff !important;
   width: auto;
   max-width: fit-content;
+  border-radius: 4px;
+  z-index: 999;
+  position: absolute;
+  left: 0;
+  // bottom: 30px;
 }
 
 .consultant {
@@ -254,7 +258,7 @@ ul.detail-element {
   img {
     display: inline-block;
     margin: 0;
-    margin-inline-end: 12px;
+    margin-inline-end: 6px;
   }
 
   .consultant_img_container {
@@ -289,11 +293,6 @@ ul.detail-element {
 }
 
 // =============== Scrolling Cards ===============
-.scroll-cards {
-  max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 // =============== Custom Paginator ===============
 .custom-paginator {

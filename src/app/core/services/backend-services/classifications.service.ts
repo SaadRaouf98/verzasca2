@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { Entity, AllEntities } from '@core/models/entity.model';
 import { SortDirection } from '@angular/material/sort';
 import {
@@ -25,11 +26,7 @@ export class ClassificationsService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
     if (filtersData && Object.keys(filtersData).length) {
       url += '&Filter=[';
@@ -62,7 +59,8 @@ export class ClassificationsService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData?: { searchKeyword?: string; isActive?: boolean },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllClassifications> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -70,6 +68,12 @@ export class ClassificationsService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 
@@ -77,8 +81,14 @@ export class ClassificationsService {
     let url = `${this.apiUrl}/${id}`;
     return this.apiService.get(url);
   }
-  getClassificationUsersById(id: string): Observable<any> {
+  getClassificationUsersById(id: string, skipLoader: boolean = false): Observable<any> {
     let url = `${this.apiUrl}/${id}/users`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
   addClassification(data: ClassificationCommand): Observable<any> {

@@ -5,54 +5,21 @@
         <img src="assets/icons/right-arrow.png" alt="Navigation back." class="arrow-icon"
           [class.rotate-arrow]="lang === 'en'" />
       </a> -->
-      <p class="body-bold mb-0">
-        {{ 'shared.importsExports' | translate }}
+      <p class="mb-0 d-flex align-items-center">
+        <svg width="1.25rem" height="1.25rem">
+          <use [attr.xlink:href]="'assets/icons/sprite.svg#nav-import-export'"></use>
+        </svg>
+        <span class="body-bold mx-2"> {{ 'shared.importsExports' | translate }} </span>
       </p>
     </div>
-
+    <!-- 
     <div
       class="col-12 col-lg-8 d-flex align-items-center justify-content-end"
       id="main-btns-container"
     >
-      <ng-container *ngxPermissionsOnly="[PermissionsObj.ViewDeliveryReceipt]">
-        <div
-          *ngIf="filtersData.isExportDocument"
-          (click)="onNavToDeliveryReceipts()"
-          class="export-card"
-        >
-          <span class="d-flex cursor-pointer" matTooltip="تعديل تواريخ بيانات التسليم">
-            <mat-icon>apps</mat-icon>
-          </span>
-        </div>
-      </ng-container>
+     
 
-      <ng-container *ngxPermissionsOnly="[PermissionsObj.CreateDeliveryReceipt]">
-        <div
-          *ngIf="filtersData.isExportDocument"
-          (click)="onPrintDeliveryReceipts()"
-          class="export-card"
-        >
-          <span
-            class="d-flex cursor-pointer"
-            matTooltip="{{
-              'ImportsExportsModule.ImportsExportsListComponent.printDeliveryReceipts' | translate
-            }}"
-          >
-            <mat-icon>file_copy</mat-icon>
-          </span>
-        </div>
-      </ng-container>
-
-      <div
-        *ngxPermissionsOnly="[PermissionsObj.ExportRequestsToExcel]"
-        class="btn-card | export-card f"
-        (click)="onExportExcel()"
-        matTooltip="استخراج البيانات"
-      >
-        <img width="26" height="26" src="assets/icons/excel.svg" alt="ms-excel" />
-      </div>
-
-      <!-- <div *ngxPermissionsOnly="[PermissionsObj.CreateRequest]" class="btn-card" (click)="onNavToAddingImport()">
+       <div *ngxPermissionsOnly="[PermissionsObj.CreateRequest]" class="btn-card" (click)="onNavToAddingImport()">
         <img src="assets/icons/green-envelope.png" />
         <span> {{ "shared.addImport" | translate }}</span>
       </div>
@@ -60,8 +27,8 @@
       <div *ngxPermissionsOnly="[PermissionsObj.CreateRequest]" class="btn-card" (click)="onNavToAddingExport()">
         <img src="assets/icons/red-envelope.png" />
         <span> {{ "shared.addExport" | translate }}</span>
-      </div> -->
-    </div>
+      </div> 
+    </div> -->
   </div>
   <!-- [selectedPriority]="filtersData.priority" -->
   <div class="filters-container">
@@ -72,24 +39,94 @@
       [selectedIndex]="activeTab"
       mat-align-tabs="center"
     >
-      <mat-tab
-        label="{{ 'ImportsExportsModule.ImportsExportsListComponent.import' | translate }}"
-      ></mat-tab>
-      <mat-tab
-        label=" {{ 'ImportsExportsModule.ImportsExportsListComponent.export' | translate }}"
-      ></mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <svg width="1.2rem" height="1.2rem" class="min-w-fit">
+            <use
+              [attr.xlink:href]="
+                activeTab === 0
+                  ? 'assets/icons/sprite.svg#import-active'
+                  : 'assets/icons/sprite.svg#import-inactive'
+              "
+            ></use>
+          </svg>
+          <span class="mx-2" [ngClass]="activeTab === 0 ? 'body-bold' : 'body'">{{
+            'ImportsExportsModule.ImportsExportsListComponent.import' | translate
+          }}</span>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <svg width="1.2rem" height="1.2rem" class="min-w-fit">
+            <use
+              [attr.xlink:href]="
+                activeTab === 1
+                  ? 'assets/icons/sprite.svg#export-active'
+                  : 'assets/icons/sprite.svg#export-inactive'
+              "
+            ></use>
+          </svg>
+          <span class="mx-2" [ngClass]="activeTab === 1 ? 'body-bold' : 'body'">{{
+            'ImportsExportsModule.ImportsExportsListComponent.export' | translate
+          }}</span>
+        </ng-template>
+      </mat-tab>
     </mat-tab-group>
   </div>
   <div class="content_wrapper mt-3">
-    <div class="mb-3">
-      <app-filters
-        #filtersComponent
-        [hasFiltersApplied]="isTableFiltered"
-        [prioritiesList]="prioritiesList"
-        (openDialog)="onOpenSearch($event)"
-        (filtersChange)="onFiltersChange($event)"
-        (resetFilters)="onResetFilters()"
-      ></app-filters>
+    <div class="mb-3 row">
+      <div class="col-md-9">
+        <app-filters
+          #filtersComponent
+          [hasFiltersApplied]="isTableFiltered"
+          [prioritiesList]="prioritiesList"
+          (openDialog)="onOpenSearch($event)"
+          (filtersChange)="onFiltersChange($event)"
+          (resetFilters)="onResetFilters()"
+        ></app-filters>
+      </div>
+
+      <div class="col-md-3 d-flex align-items-center justify-content-end">
+        <div
+          *ngxPermissionsOnly="[PermissionsObj.ExportRequestsToExcel]"
+          class="export-icon"
+          (click)="onExportExcel()"
+        >
+          <svg width="1.25rem" height="1.25rem" matTooltip="استخراج البيانات">
+            <use [attr.xlink:href]="'assets/icons/sprite.svg#export-excel'"></use>
+          </svg>
+        </div>
+
+        <ng-container *ngxPermissionsOnly="[PermissionsObj.CreateDeliveryReceipt]">
+          <div
+            *ngIf="filtersData.isExportDocument"
+            (click)="onPrintDeliveryReceipts()"
+            class="export-icon"
+          >
+            <svg
+              width="1.25rem"
+              height="1.25rem"
+              matTooltip="{{
+                'ImportsExportsModule.ImportsExportsListComponent.printDeliveryReceipts' | translate
+              }}"
+            >
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#export-printer'"></use>
+            </svg>
+          </div>
+        </ng-container>
+
+        <ng-container *ngxPermissionsOnly="[PermissionsObj.ViewDeliveryReceipt]">
+          <div
+            *ngIf="filtersData.isExportDocument"
+            (click)="onNavToDeliveryReceipts()"
+            class="export-icon"
+          >
+            <svg width="1.25rem" height="1.25rem" matTooltip="تعديل تواريخ بيانات التسليم">
+              <use [attr.xlink:href]="'assets/icons/sprite.svg#export-date-edit'"></use>
+            </svg>
+          </div>
+        </ng-container>
+      </div>
     </div>
     <ng-container *ngIf="activeTab == 0">
       <app-imports-list

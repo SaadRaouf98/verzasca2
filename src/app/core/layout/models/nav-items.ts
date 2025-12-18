@@ -37,7 +37,7 @@ export const NAV_ITEMS: NavItem[] = [
     labelKey: 'shared.transactions',
     route: '/transactions',
     icon: 'nav-operations',
-    iconFill: 'nav-operations',
+    iconFill: 'nav-operations-fill',
     queryParamsMerge: true,
     width: '1.25rem',
     height: '1.25rem',
@@ -55,7 +55,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     labelKey: 'shared.records',
     // route: '/manage-records',
-    route: '/manage-records/active',
+    route: '/manage-records',
     icon: 'nav-records',
     iconFill: 'nav-records-fill',
     countProp: 'ActiveRecords',
@@ -75,7 +75,7 @@ export const NAV_ITEMS: NavItem[] = [
       },
       {
         labelKey: 'shared.allRecords',
-        route: '/manage-records',
+        route: '/manage-records/all',
         icon: 'nav-records',
         iconFill: 'nav-records-fill',
         width: '1.25rem',

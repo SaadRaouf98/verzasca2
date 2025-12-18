@@ -15,31 +15,31 @@ export class FilterBuilderService {
   buildFilterFromModel(
     model: Record<string, any>,
     operationMap?: Record<string, FilterOperation>
-  ): any[] | null {
+  ): string | null {
     if (!model) return null;
 
     const filters: any[] = [];
 
     /* -------------------------------------------------------
-     * 1️⃣ Extract DATE RANGE filters BEFORE flatten
+     * 1️⃣ Extract DATE filters (range + single date) BEFORE flatten
      * ----------------------------------------------------- */
-    const dateRangeFilters = this.extractDateRanges(model);
-    if (dateRangeFilters.length) {
-      filters.push(...dateRangeFilters);
+    const dateFilters = this.extractDateFilters(model);
+    if (dateFilters.length) {
+      filters.push(...dateFilters);
     }
 
     /* -------------------------------------------------------
-     * 2️⃣ Remove date range fields from model
+     * 2️⃣ Remove date objects from model before flatten
      * ----------------------------------------------------- */
     const cleanModel: Record<string, any> = { ...model };
+
     for (const key of Object.keys(cleanModel)) {
       const value = cleanModel[key];
       if (
         value &&
         typeof value === 'object' &&
         !Array.isArray(value) &&
-        'from' in value &&
-        'to' in value
+        (('from' in value && 'to' in value) || 'date' in value)
       ) {
         delete cleanModel[key];
       }
@@ -80,7 +80,7 @@ export class FilterBuilderService {
       }
     }
 
-    return filters.length > 0 ? filters : null;
+    return filters.length > 0 ? JSON.stringify(filters) : null;
   }
 
   /**
@@ -114,24 +114,29 @@ export class FilterBuilderService {
    * ===================================================== */
 
   /**
-   * Extracts date range filters from the original model.
+   * Extracts date filters (range & single date) from the original model.
    */
-  private extractDateRanges(model: Record<string, any>): any[] {
+  private extractDateFilters(model: Record<string, any>): any[] {
     const filters: any[] = [];
 
     for (const [key, value] of Object.entries(model)) {
-      if (
-        value &&
-        typeof value === 'object' &&
-        !Array.isArray(value) &&
-        'from' in value &&
-        'to' in value
-      ) {
-        filters.push(
+      if (!value || typeof value !== 'object' || Array.isArray(value)) continue;
+
+      /* -------- Date Range -------- */
+      if ('from' in value && 'to' in value) {
+        if (filters.length > 0) filters.push('and');
+
+        filters.push([
           [key, '>=', value.from],
           'and',
-          [key, '<=', value.to]
-        );
+          [key, '<=', value.to],
+        ]);
+      }
+
+      /* -------- Single Date -------- */
+      else if ('date' in value) {
+        if (filters.length > 0) filters.push('and');
+        filters.push([key, '=', value.date]);
       }
     }
 

@@ -3,10 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { LanguageService } from '@core/services/language.service';
-import {
-  isSmallDeviceWidthForPopup,
-  isSmallDeviceWidthForTable,
-} from '@shared/helpers/helpers';
+import { isSmallDeviceWidthForPopup, isSmallDeviceWidthForTable } from '@shared/helpers/helpers';
 import { SortDirection } from '@angular/material/sort';
 import { Observable, debounceTime, map, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -119,16 +116,15 @@ export class DeliveryReceiptsListComponent {
   }
 
   initializeDropDownLists(): void {
-    this.usersList$ =
-      this.manageImportsExportsService.usersService.getUsersList(
-        {
-          pageSize: 20,
-          pageIndex: 0,
-        },
-        undefined,
-        undefined,
-        ['id', 'name']
-      );
+    this.usersList$ = this.manageImportsExportsService.usersService.getUsersList(
+      {
+        pageSize: 20,
+        pageIndex: 0,
+      },
+      undefined,
+      undefined,
+      ['id', 'name']
+    );
   }
 
   detectFiltersChanges(): void {
@@ -142,9 +138,7 @@ export class DeliveryReceiptsListComponent {
             ? moment(value.fromDate).format('yyyy-MM-DD')
             : '';
 
-          const formattedToDate = value.toDate
-            ? moment(value.toDate).format('yyyy-MM-DD')
-            : '';
+          const formattedToDate = value.toDate ? moment(value.toDate).format('yyyy-MM-DD') : '';
 
           this.filtersData = {
             creatorId: value.creator?.id || '',
@@ -167,22 +161,18 @@ export class DeliveryReceiptsListComponent {
   }
 
   searchOnUsers(event: { term: string; items: any[] }): void {
-    this.usersList$ =
-      this.manageImportsExportsService.usersService.getUsersList(
-        {
-          pageSize: 10,
-          pageIndex: 0,
-        },
-        {
-          searchKeyword: event.term,
-        }
-      );
+    this.usersList$ = this.manageImportsExportsService.usersService.getUsersList(
+      {
+        pageSize: 10,
+        pageIndex: 0,
+      },
+      {
+        searchKeyword: event.term,
+      }
+    );
   }
 
-  onSortColumn(sortInformation: {
-    active: string;
-    direction: SortDirection;
-  }): void {
+  onSortColumn(sortInformation: { active: string; direction: SortDirection }): void {
     this.sortData = {
       sortBy: sortInformation.active,
       sortType: sortInformation.direction,
@@ -190,10 +180,7 @@ export class DeliveryReceiptsListComponent {
     this.initializeTable().subscribe();
   }
 
-  onPaginationChange(pageInformation: {
-    pageSize: number;
-    pageIndex: number;
-  }): void {
+  onPaginationChange(pageInformation: { pageSize: number; pageIndex: number }): void {
     this.pageSize = pageInformation.pageSize;
     this.pageIndex = pageInformation.pageIndex;
 
@@ -205,7 +192,7 @@ export class DeliveryReceiptsListComponent {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1200px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         receiptId: element.id,
         deliveryDate: element.deliveryDate,
@@ -214,16 +201,11 @@ export class DeliveryReceiptsListComponent {
 
     dialogRef
       .afterClosed()
-      .subscribe(
-        (dialogResult: { statusCode: ModalStatusCode; status: string }) => {
-          if (
-            dialogResult &&
-            dialogResult.statusCode === ModalStatusCode.Success
-          ) {
-            this.initializeTable().subscribe();
-          }
+      .subscribe((dialogResult: { statusCode: ModalStatusCode; status: string }) => {
+        if (dialogResult && dialogResult.statusCode === ModalStatusCode.Success) {
+          this.initializeTable().subscribe();
         }
-      );
+      });
   }
 
   view_hide_element(element: DeliveryReceiptTableRow): void {
@@ -248,14 +230,7 @@ export class DeliveryReceiptsListComponent {
     if (isSmallDeviceWidthForTable()) {
       return ['autoNumber', 'actions'];
     } else {
-      return [
-        'autoNumber',
-        'date',
-        'creator.name',
-        'itemsCount',
-        'deliveryDate',
-        'actions',
-      ];
+      return ['autoNumber', 'date', 'creator.name', 'itemsCount', 'deliveryDate', 'actions'];
     }
   }
 
@@ -301,4 +276,3 @@ export class DeliveryReceiptsListComponent {
     });
   }
 }
-

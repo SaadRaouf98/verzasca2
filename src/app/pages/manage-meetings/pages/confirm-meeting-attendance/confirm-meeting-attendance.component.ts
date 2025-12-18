@@ -141,7 +141,7 @@ export class ConfirmMeetingAttendanceComponent {
     this.dialog.open(ConfirmationModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         headerTranslationRef: this.translateService.instant(
           'ManageMeetingsModule.ManageMeetingsListComponent.confirmDeletion'

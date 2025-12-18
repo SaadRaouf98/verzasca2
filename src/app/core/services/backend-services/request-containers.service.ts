@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
+import { HttpHeaders } from '@angular/common/http';
 import { SortDirection } from '@angular/material/sort';
 
 import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
@@ -153,7 +154,8 @@ export class RequestContainersService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData?: RequestContainersFiltersForm2,
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader: boolean = false
   ): Observable<AllTransactions> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -161,6 +163,12 @@ export class RequestContainersService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
   getTransactionsListInImport(
@@ -169,7 +177,8 @@ export class RequestContainersService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): Observable<AllTransactions> {
-    let url = `${this.apiUrl}/link?${this.buildUrlQueryParams(
+    // /link    -> removed to get full data to show it in add import when select transation
+    let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
       filtersData,
       sortData,
@@ -229,7 +238,8 @@ export class RequestContainersService {
       searchText?: string;
       hasAccess?: boolean | null;
     },
-    requestId?: string
+    requestId?: string,
+    skipLoader: boolean = false
   ): Observable<AllAllowedUsers> {
     let query =
       filtersData?.hasAccess != null ? [`["hasAccess","=",${filtersData?.hasAccess}]`] : [];
@@ -237,6 +247,12 @@ export class RequestContainersService {
     let url = `${this.apiUrl}/${requestId}/accessibility?${
       query.length > 0 ? `Filter=[${query.join(', "and" ,')}]` : ''
     } `;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 

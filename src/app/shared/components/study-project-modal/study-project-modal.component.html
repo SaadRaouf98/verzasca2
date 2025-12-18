@@ -277,7 +277,10 @@
             <textarea
               class="form-control w-100"
               rows="3"
-              [placeholder]="'SharedModule.StudyProjectModalComponent.explains' | translate"
+              [placeholder]="
+                'SharedModule.StudyProjectModalComponent.explainProcessTypeJustPlaceholder'
+                  | translate
+              "
               formControlName="committeeChangeReason"
               id="comment"
               (keyup)="x()"
@@ -411,7 +414,7 @@
             <textarea
               class="form-control w-100"
               rows="3"
-              [placeholder]="'shared.yourNotes' | translate"
+              [placeholder]="'shared.extraNotesPlaceholder' | translate"
               formControlName="comment"
               id="comment"
               (keyup)="x()"
@@ -646,7 +649,7 @@
                 </div>
               </div>
               <!-- //////////////////// -->
-              <ng-container *ngIf="!data.formFields.requestExportRecommendation">
+              <ng-container *ngIf="showUpload">
                 <app-upload-attachment
                   #uploadAttachment2
                   [multiple]="true"

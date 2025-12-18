@@ -13,6 +13,7 @@ import { StatisticsService } from '@core/services/backend-services/statistics.se
 import { Observable, debounceTime, fromEvent } from 'rxjs';
 import { NAV_ITEMS, NavItem } from '@core/layout/models/nav-items';
 import { DOCUMENT } from '@angular/common';
+import { AddMenuTypeLookups } from '@shared/lookups';
 
 @Component({
   selector: 'app-container',
@@ -24,8 +25,9 @@ export class ContainerComponent implements OnInit, OnDestroy {
   opened: boolean = true;
   sideNavMode: 'side' | 'over' = 'side';
   PermissionsObj = PermissionsObj;
-  selectedOption:'export' | 'import';
+  selectedOption: 'export' | 'import';
   windowresizeObserv$ = new Observable();
+  dropItems = AddMenuTypeLookups.getLookup()
   navItems: NavItem[] = NAV_ITEMS;
   StatisticsSummary: StatisticsSummary = {
     PendingRequests: 0,
@@ -43,7 +45,7 @@ export class ContainerComponent implements OnInit, OnDestroy {
     this.isCollapsed = !this.isCollapsed;
     localStorage.setItem(
       'MENU_CONFIG',
-      JSON.stringify({ isMenuCollapsed: this.isCollapsed })
+      JSON.stringify({ isMenuCollapsed: this.isCollapsed }),
     );
   }
 
@@ -51,11 +53,14 @@ export class ContainerComponent implements OnInit, OnDestroy {
     private statisticsService: StatisticsService,
     private notificationsHubService: NotificationsHubService,
     private router: Router,
-    @Inject(DOCUMENT) private document: Document // <-- Inject DOCUMENT
+    @Inject(DOCUMENT) private document: Document, // <-- Inject DOCUMENT
   ) {
     this.isLightTheme = this.document.body.classList.contains('light-theme');
   }
-  changeThemeColor() {}
+
+  changeThemeColor() {
+  }
+
   ngOnInit(): void {
     this.getStatisticsSummary();
     this.initRealTime();
@@ -74,15 +79,16 @@ export class ContainerComponent implements OnInit, OnDestroy {
       attributeFilter: ['class'],
     });
   }
-  navigateTo(val){
-    
-      this.selectedOption = val;
-    if(val == 'export' ){    
-      this.router.navigateByUrl('imports-exports/export')
-    }else{
-      this.router.navigateByUrl('imports-exports/add')
+
+  navigateTo(val) {
+    this.selectedOption = val;
+    if (val == 'export') {
+      this.router.navigateByUrl('imports-exports/export');
+    } else {
+      this.router.navigateByUrl('imports-exports/add');
     }
   }
+
   getConfigFromStorage() {
     let config = JSON.parse(localStorage.getItem('MENU_CONFIG') as any);
     this.isCollapsed = config ? config['isMenuCollapsed'] : false;
@@ -131,13 +137,13 @@ export class ContainerComponent implements OnInit, OnDestroy {
         if (CurrentMeetings) {
           this.StatisticsSummary.CurrentMeetings = CurrentMeetings;
         }
-      }
+      },
     );
   }
 
   private detectWindowSizeChanging(): void {
     this.windowresizeObserv$ = fromEvent(window, 'resize').pipe(
-      debounceTime(20)
+      debounceTime(20),
     );
 
     this.windowresizeObserv$.subscribe(() => {

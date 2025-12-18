@@ -94,7 +94,7 @@ export class PoliciesAdminListComponent implements OnInit {
 
   onDeleteElement(element: Classification): void {
     const filtersDialogRef = this.dialog.open(DeletePopupComponent, {
-      disableClose: true,
+      disableClose: false,
       data: {
         title: this.translateService.instant(
           'RegularReportsModule.AddRegularReportComponent.deletePopupTitle'

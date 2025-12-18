@@ -1,10 +1,10 @@
 @use 'src/assets/design-system/colors' as *;
 .policy-container {
+  ::ng-deep .mat-mdc-tab-ripple {
+    display: none;
+  }
   border-radius: 0.75rem;
   background: $gray-50;
-  .row {
-    gap: 10px;
-  }
   .selectedCategoryCard {
     border-radius: 6px;
     background: #fff;
@@ -26,7 +26,7 @@
     }
     ::ng-deep mat-tab-header .mat-mdc-tab-labels {
       padding: 0 !important;
-      border: none !important;
+      border-bottom: 1px solid $gray-200 !important;
       margin-bottom: 0.75rem !important;
       background: transparent !important;
       color: $gray-700;
@@ -34,19 +34,22 @@
     ::ng-deep .mat-mdc-tab.mdc-tab {
       color: $gray-700 !important;
       background: transparent !important;
-      border-bottom: 1px solid $gray-200 !important;
+      //border-bottom: 1px solid $gray-200 !important;
       border-radius: 0 !important;
       font-size: 1rem !important;
       font-style: normal !important;
       font-weight: 400 !important;
       line-height: normal !important;
       max-width: 15rem;
+      height: fit-content;
     }
     ::ng-deep mat-tab-header .mdc-tab:hover {
       box-shadow: none !important;
       background: transparent !important;
       color: $rose-200 !important;
       border-bottom: 2px solid $rose-200 !important;
+      padding-bottom: 0.75rem;
+      height: fit-content;
       ::ng-deep .mdc-tab__text-label {
         color: $rose-200 !important;
       }
@@ -61,6 +64,8 @@
       box-shadow: none !important;
       border-bottom: 2px solid $rose-500 !important;
       border-radius: 0 !important;
+      padding-bottom: 12px;
+      height: fit-content;
       ::ng-deep .mdc-tab__text-label {
         color: $rose-500 !important;
       }
@@ -68,5 +73,8 @@
     ::ng-deep .mat-mdc-tab .mdc-tab__ripple::before {
       display: none !important;
     }
+  }
+  ::ng-deep .modal-tabs mat-tab-header {
+    margin-bottom: 0 !important;
   }
 }

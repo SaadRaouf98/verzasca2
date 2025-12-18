@@ -94,19 +94,13 @@ export class PendingRequestListComponent implements OnInit {
       currentSteps: this.managePendingTransactionsService.requestsService.getCurrentStepsList(),
       users: this.usersSearchService.usersList$,
       foundations: this.foundationsSearchService.foundationsList$,
+      pendingRequests: this.managePendingTransactionsService.requestsService.getPendingRequestsList(
+        { pageIndex: this.pageNumber, pageSize: this.pageSize },
+        {}
+      ),
     })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((results) => {
-        // this.prioritiesList = [
-        //   {
-        //     id: '',
-        //     title: this.translate.instant('shared.all'),
-        //     titleEn: 'All',
-        //     description: '',
-        //     descriptionEn: '',
-        //   },
-        //   ...results.priorities.data,
-        // ];
         this.prioritiesList = results.priorities.data;
         this.requestTypesList = results.requestTypes.data;
         this.nextStepsList = results.currentSteps;
@@ -115,7 +109,11 @@ export class PendingRequestListComponent implements OnInit {
         this.status = RequestStatusArray;
         this.initializeColumnConfig();
         this.initializeColumns();
-        this.loadData();
+
+        // Set items and totalElements from the combined request
+        this.items = results.pendingRequests.data;
+        this.totalElements = results.pendingRequests.totalCount;
+        this.isLoading = false;
       });
   }
 
@@ -306,14 +304,15 @@ export class PendingRequestListComponent implements OnInit {
 
     // Only include properties that have truthy values
     if (filters.foundation || filters.foundationId)
-      mapped.foundationId = filters.foundation || filters.foundationId;
+      mapped.foundationId = filters.foundation?.id || filters.foundation || filters.foundationId;
     if (filters.status) mapped.statusId = filters.status;
     if (filters.priority || filters.priorityId)
-      mapped.priorityId = filters.priority || filters.priorityId;
+      mapped.priorityId = filters.priority?.id || filters.priority || filters.priorityId;
     if (filters.requestType || filters.requestTypeId)
-      mapped.requestTypeId = filters.requestType || filters.requestTypeId;
+      mapped.requestTypeId =
+        filters.requestType?.id || filters.requestType || filters.requestTypeId;
     if (filters.consultantId || filters.consultant)
-      mapped.consultantId = filters.consultantId || filters.consultant;
+      mapped.consultantId = filters.consultantId || filters.consultant?.id || filters.consultant;
     if (filters.nextStep) mapped.nextStepTitle = filters.nextStep;
     if (filters.searchKeyword) mapped.searchKeyword = filters.searchKeyword;
     if (filters.proposal) mapped.exportTypeId = filters.proposal;

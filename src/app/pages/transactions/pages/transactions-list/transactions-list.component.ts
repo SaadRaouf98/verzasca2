@@ -17,7 +17,17 @@ import { TranslateService } from '@ngx-translate/core';
 import { CustomToastrService } from '@core/services/custom-toastr.service';
 import { ConfirmationModalComponent } from '@shared/components/confirmation-modal/confirmation-modal.component';
 import { isSmallDeviceWidthForPopup, isSmallDeviceWidthForTable } from '@shared/helpers/helpers';
-import { forkJoin, Observable, Subscription, tap } from 'rxjs';
+import {
+  forkJoin,
+  Observable,
+  Subscription,
+  tap,
+  debounceTime,
+  takeUntil,
+  Subject,
+  catchError,
+  finalize,
+} from 'rxjs';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import {
@@ -47,6 +57,7 @@ import { ManageImportsExportsService } from '@pages/imports-exports/services/man
 import { RouteConstants } from '@core/enums/routes.enum';
 import { TableListComponent } from '@shared/new-components/table-list/table-list.component';
 import { TransactionsFiltersComponent } from '@pages/transactions/components/transactions-filters/transactions-filters.component';
+import { FiltersComponent } from '@features/components/pending-request/pending-request-list/filters/filters.component';
 import { FoundationsSearchService } from '@core/services/search-services/foundations-search.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { color } from 'html2canvas/dist/types/css/types/color';
@@ -71,6 +82,7 @@ export class TransactionsListComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   @ViewChild('transactionPopup') transactionPopupRef: ElementRef | undefined;
+  @ViewChild(FiltersComponent) filtersComponent: FiltersComponent | undefined;
   private intendedPopupPosition: { top: number; left: number } | null = null;
   private popupAdjustmentTimeout: any = null;
   ngAfterViewInit() {
@@ -143,6 +155,7 @@ export class TransactionsListComponent
 
   allFilters: RequestContainersFiltersForm2 = {};
   tableFilters: RequestContainersFiltersForm2 = {};
+  private isResetting = false;
 
   PermissionsObj = PermissionsObj;
 
@@ -155,6 +168,9 @@ export class TransactionsListComponent
   private readonly DEFAULT_PAGE_NUMBER = 0;
   isTableFiltered: boolean = false;
   destroyRef = inject(DestroyRef);
+  private loadDataSubject = new Subject<{ filters: any; pageNumber: number; pageSize: number }>();
+  private pendingDataRequest$ = new Subject<void>();
+  private currentRequestId = 0;
 
   columnsConfig: any[] = [];
   columns: string[] = [];
@@ -212,11 +228,15 @@ export class TransactionsListComponent
     this.initializeTable().subscribe();
 
     this.getPriorities();
-    this.manageSharedService.searchFormValue
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((filters: any) => {
-        this.filtersData = filters;
-        this.onFiltersChange(filters);
+
+    // Setup debounced load data subject
+    this.loadDataSubject
+      .pipe(
+        debounceTime(300), // Wait 300ms after last emission
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((data) => {
+        this.performLoadData(data.filters, data.pageNumber, data.pageSize);
       });
   }
 
@@ -286,7 +306,7 @@ export class TransactionsListComponent
       { propertyName: 'pageSize', propertyValue: pageInformation.pageSize },
       { propertyName: 'pageIndex', propertyValue: pageInformation.pageIndex },
     ]);
-    this.initializeTable().subscribe();
+    this.loadData();
   }
 
   override onSortColumn(sortInformation: { active: string; direction: SortDirection }): void {
@@ -314,21 +334,153 @@ export class TransactionsListComponent
       );
   }
 
+  private loadData() {
+    // Capture current state at the time of call, not after debounce delay
+    const currentFilters = { ...this.allFilters };
+    const currentPageNumber = this.pageIndex;
+    const currentPageSize = this.pageSize;
+
+    this.loadDataSubject.next({
+      filters: currentFilters,
+      pageNumber: currentPageNumber,
+      pageSize: currentPageSize,
+    });
+  }
+
+  private performLoadData(filters: any, pageNumber: number, pageSize: number) {
+    // Reset totalElements and items when starting a new data load to avoid showing stale data
+    this.totalElements = 0;
+    this.transactionsSource = [];
+    this.isLoading = true;
+
+    // Increment request ID to track which response is current
+    this.currentRequestId++;
+    const requestId = this.currentRequestId;
+
+    // Cancel any pending requests
+    this.pendingDataRequest$.next();
+
+    this.manageTransactionsService.requestContainersService
+      .getTransactionsList({ pageIndex: pageNumber, pageSize: pageSize }, filters, this.sortData)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        takeUntil(this.pendingDataRequest$),
+        tap((res) => {
+          // Only update if this is still the current request
+          if (requestId === this.currentRequestId) {
+            this.transactionsSource = res.data;
+            this.totalElements = res.totalCount;
+          }
+        }),
+        catchError((err) => {
+          this.isError = true;
+          return [];
+        }),
+        finalize(() => {
+          // Only set loading to false if this is the current request
+          if (requestId === this.currentRequestId) {
+            this.isLoading = false;
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  onResetFilters() {
+    if (this.isResetting) return;
+    this.isTableFiltered = false;
+    this.allFilters = {};
+    this.filtersData = {};
+    this.tableFilters = {};
+    this.pageIndex = this.DEFAULT_PAGE_NUMBER;
+    this.loadData();
+  }
+
+  resetAllFiltersFromDialog() {
+    // Emit empty filters through onFiltersChange to properly trigger reset
+    // This will set isTableFiltered = false through the onFiltersChange logic
+    this.onFiltersChange({} as RequestContainersFiltersForm2);
+    // Also reset the app-filters component's internal state
+    if (this.filtersComponent) {
+      this.filtersComponent.resetAllFilters();
+    }
+  }
+
   onFiltersChange(filtersData: RequestContainersFiltersForm2): void {
-    // Check if filters are being reset (all values are empty/null)
-    const isReset = Object.keys(filtersData).length === 0;
-    if (isReset) {
-      this.isTableFiltered = false;
-      this.tableFilters = {};
-    } else {
-      this.isTableFiltered = true;
+    if (this.isResetting) return;
+
+    // Handle null or undefined filtersData
+    if (!filtersData) {
+      filtersData = {};
     }
 
-    this.filtersData = { ...filtersData };
-    this.allFilters = { ...this.filtersData, ...this.tableFilters };
-    this.pageIndex = 0;
+    // Handle null or undefined allFilters
+    if (!this.allFilters) {
+      this.allFilters = {};
+    }
 
-    this.initializeTable().subscribe();
+    // Extract current table filters from allFilters (everything except component filters)
+    const {
+      autoNumber,
+      foundation,
+      sector,
+      title,
+      requestContainerId,
+      requests,
+      exportableDocuments,
+      requestStepContents,
+      operator,
+      ...currentTableFilters
+    } = this.allFilters as any;
+    const componentOnlyFilters = {
+      autoNumber,
+      foundation,
+      sector,
+      title,
+      requestContainerId,
+      requests,
+      exportableDocuments,
+      requestStepContents,
+      operator,
+    };
+
+    const isReset = Object.keys(filtersData).length === 0;
+
+    if (isReset) {
+      this.isResetting = true;
+      this.isTableFiltered = false;
+      this.filtersData = {};
+      this.allFilters = {};
+      this.tableFilters = {};
+      this.pageIndex = this.DEFAULT_PAGE_NUMBER;
+    } else {
+      // Normal filter update
+      this.isTableFiltered = true;
+      this.filtersData = filtersData;
+      const {
+        autoNumber: a,
+        foundation: f,
+        sector: s,
+        title: t,
+        requestContainerId: r,
+        requests: req,
+        exportableDocuments: e,
+        requestStepContents: rst,
+        operator: op,
+        ...tableFilters
+      } = this.allFilters as any;
+
+      this.allFilters = {
+        ...tableFilters,
+        ...filtersData,
+      };
+    }
+    this.loadData();
+    if (isReset) {
+      setTimeout(() => {
+        this.isResetting = false;
+      }, 500);
+    }
   }
 
   onViewElement(elementId: string): void {
@@ -351,11 +503,11 @@ export class TransactionsListComponent
     this.dialog.open(UpdateAccessibilityModalComponent, {
       minWidth: '62.5rem',
       maxWidth: '62.5rem',
-      maxHeight: '95vh',
-      height: '95vh',
-      panelClass: ['action-modal', 'float-footer'],
+      // maxHeight: '95vh',
+      // height: '95vh',
+      panelClass: ['action-modal'],
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestContainerId: element.id,
         users: element.users,
@@ -367,7 +519,7 @@ export class TransactionsListComponent
     this.dialog.open(ConfirmationModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         headerTranslationRef: this.translateService.instant(
           'TransactionsModule.TransactionsListComponent.confirmDeletion'
@@ -424,6 +576,9 @@ export class TransactionsListComponent
       dialogComponent.filtersChange.subscribe((dialogFilters: RequestContainersFiltersForm2) => {
         this.onFiltersChange(dialogFilters);
       });
+      dialogComponent.resetRequested.subscribe(() => {
+        this.resetAllFiltersFromDialog();
+      });
     });
     setTimeout(() => {
       const dialogContainer = document.querySelector('.mat-mdc-dialog-container') as HTMLElement;
@@ -477,7 +632,7 @@ export class TransactionsListComponent
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {},
     });
 
@@ -710,31 +865,79 @@ export class TransactionsListComponent
     ];
   }
   onTableFilterChanged(filters: any) {
-    // Map table field names to form field names while preserving existing table filters
-    this.tableFilters = {
-      ...this.tableFilters,
-      ...filters,
-      // Map table field names to form field names
-      ...(filters.priorityId && { priority: filters.priorityId }),
-      ...(filters.foundationId && { foundation: filters.foundationId }),
+    // Extract current table filters from allFilters (everything except component filters)
+    const {
+      autoNumber,
+      foundation,
+      sector,
+      title,
+      requestContainerId,
+      requests,
+      exportableDocuments,
+      requestStepContents,
+      operator,
+      ...currentTableFilters
+    } = this.allFilters as any;
+    const componentOnlyFilters = {
+      autoNumber,
+      foundation,
+      sector,
+      title,
+      requestContainerId,
+      requests,
+      exportableDocuments,
+      requestStepContents,
+      operator,
     };
-    this.isTableFiltered = true;
 
-    this.allFilters = {
-      ...this.filtersData,
-      ...this.tableFilters,
-    } as RequestContainersFiltersForm2;
+    const isTableReset = Object.keys(filters).length === 0;
 
-    this.initializeTable().subscribe();
+    // Detect if filters were REMOVED by comparing current table filters with incoming filters
+    const previousTableFilterKeys = Object.keys(currentTableFilters);
+    const currentIncomingFilterKeys = Object.keys(filters);
+    const filtersWereRemoved = previousTableFilterKeys.length > currentIncomingFilterKeys.length;
+
+    if (isTableReset || filtersWereRemoved) {
+      // When Select All is clicked or filters are removed
+      // Remove any properties that are undefined or null from component filters
+      Object.keys(componentOnlyFilters).forEach((key) => {
+        if (componentOnlyFilters[key] === undefined || componentOnlyFilters[key] === null) {
+          delete componentOnlyFilters[key];
+        }
+      });
+
+      // Merge component filters with the remaining table filters and map table field names
+      this.tableFilters = filters;
+      this.allFilters = {
+        ...componentOnlyFilters,
+        ...this.tableFilters,
+        // Map table field names to form field names
+        ...(filters.priorityId && { priority: filters.priorityId }),
+        ...(filters.foundationId && { foundation: filters.foundationId }),
+      } as RequestContainersFiltersForm2;
+      this.isTableFiltered = Object.keys(filters).length > 0;
+    } else {
+      // New filters are being added
+      this.isTableFiltered = true;
+      this.tableFilters = {
+        ...this.tableFilters,
+        ...filters,
+        // Map table field names to form field names
+        ...(filters.priorityId && { priority: filters.priorityId }),
+        ...(filters.foundationId && { foundation: filters.foundationId }),
+      };
+      this.allFilters = { ...this.allFilters, ...this.tableFilters };
+    }
+
+    this.pageIndex = this.DEFAULT_PAGE_NUMBER; // Reset to first page when filters change
+    this.loadData();
   }
   pageChanged(event: any) {
-    if (this.pageIndex === event.pageIndex && this.pageSize === event.pageSize) {
-      return;
+    if (this.pageIndex !== event.pageIndex || this.pageSize !== event.pageSize) {
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+      this.loadData();
     }
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-
-    this.initializeTable().subscribe();
   }
 
   showTransactionElement: boolean = false;
@@ -747,8 +950,8 @@ export class TransactionsListComponent
       clearTimeout(this.hidePopupTimeout);
     }
     let top: number, left: number;
-    const popupWidth = 400; // Estimate or set a max width for the popup
-    const popupHeight = 350; // Estimate or set a max height for the popup
+    const popupWidth = 450; // Estimate or set a max width for the popup
+    const popupHeight = 250; // Estimate or set a max height for the popup
     const padding = 8;
     if (event && event.target && (event.target as HTMLElement).getBoundingClientRect) {
       const iconRect = (event.target as HTMLElement).getBoundingClientRect();
@@ -832,12 +1035,17 @@ export class TransactionsListComponent
   }
   noPermission() {
     const filtersDialogRef = this.dialog.open(AuthorizationPopupComponent, {
+      minWidth: '36.25rem',
+      maxWidth: '36.25rem',
+      maxHeight: '44.3125rem',
+      panelClass: 'action-modal',
+      autoFocus: false,
+      disableClose: false,
       data: {
         title: this.translateService.instant('unauthorized.accessDenied'),
         message: `${this.translateService.instant('unauthorized.youDoNotHavePermission')} `,
         authorizationInside: false,
       },
-      disableClose: true,
     });
   }
   View(data: Transaction) {

@@ -62,7 +62,9 @@ export class FiltersComponent implements OnInit, OnChanges {
   @Output() resetFilters = new EventEmitter();
 
   get hasActiveFilters(): boolean {
-    return this.hasFiltersApplied || this._hasActiveFilters;
+    // Only return true if the user has actively applied filters in THIS component
+    // Don't count the hasFiltersApplied input prop, as it may include default filters
+    return this._hasActiveFilters;
   }
 
   set hasActiveFilters(value: boolean) {
@@ -81,6 +83,9 @@ export class FiltersComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initForm();
 
+    // Initialize hasActiveFilters based on current filter state
+    this.updateActiveFiltersStatus();
+
     this.filtersForm
       .get('searchKeyword')
       ?.valueChanges.pipe(
@@ -91,11 +96,23 @@ export class FiltersComponent implements OnInit, OnChanges {
       .subscribe(() => {
         if (this.isResetting) return;
 
+        this.updateActiveFiltersStatus();
         const searchKeyword = this.filtersForm.get('searchKeyword')?.value;
         if (!searchKeyword || searchKeyword.trim().length >= 2) {
-          this.hasActiveFilters = true;
           this.emitFiltersChange();
         }
+      });
+
+    this.filtersForm
+      .get('priority')
+      ?.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        if (this.isResetting) return;
+        this.updateActiveFiltersStatus();
       });
 
     this.manageSharedService.searchFormValue
@@ -104,6 +121,7 @@ export class FiltersComponent implements OnInit, OnChanges {
         if (this.isResetting) return;
 
         this.currentSearchFormValue = value || {};
+        this.updateActiveFiltersStatus();
 
         if (
           value &&
@@ -111,10 +129,27 @@ export class FiltersComponent implements OnInit, OnChanges {
             (key) => value[key] !== null && value[key] !== undefined && value[key] !== ''
           )
         ) {
-          this.hasActiveFilters = true;
           this.filtersChange.emit(value);
         }
       });
+  }
+
+  private updateActiveFiltersStatus(): void {
+    const hasFormFilters = this.hasFormValues;
+    const hasSearchFormValue =
+      this.currentSearchFormValue &&
+      Object.keys(this.currentSearchFormValue).some((key) => {
+        const value = this.currentSearchFormValue[key];
+        return value !== null && value !== undefined && value !== '';
+      });
+    const hasInputFilters =
+      this.localFilterData &&
+      Object.keys(this.localFilterData).some((key) => {
+        const value = this.localFilterData[key];
+        return value !== null && value !== undefined && value !== '';
+      });
+
+    this._hasActiveFilters = hasFormFilters || hasSearchFormValue || hasInputFilters;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -132,6 +167,11 @@ export class FiltersComponent implements OnInit, OnChanges {
       } else {
         this.filtersForm?.controls['priority']?.setValue(null);
       }
+    }
+
+    // Update active filters status when hasFiltersApplied input changes
+    if (changes['hasFiltersApplied'] || changes['filterData']) {
+      this.updateActiveFiltersStatus();
     }
   }
 
@@ -171,7 +211,7 @@ export class FiltersComponent implements OnInit, OnChanges {
     let left = svgRect.left + window.scrollX + svgRect.width / 2 - dialogWidth / 2;
 
     this.filtersDialogRef = this.dialog.open(FiltersDialogComponent, {
-      height: '558px',
+      // height: '558px',
       width: '23.625rem',
       hasBackdrop: false,
       position: { top: `${top}px`, left: `${left}px` },
@@ -281,13 +321,13 @@ export class FiltersComponent implements OnInit, OnChanges {
     if (formValue.searchKeyword && formValue.searchKeyword.trim())
       cleanedFilters.searchKeyword = formValue.searchKeyword.trim();
 
-    this.hasActiveFilters = true;
+    this.updateActiveFiltersStatus();
     this.filtersChange.emit(cleanedFilters as PendingRequestsFiltersForm);
   }
 
   onDialogFiltersChanged(dialogFilters: PendingRequestsFiltersForm) {
     const mergedFilters = { ...this.filtersForm.value, ...dialogFilters };
-    this.hasActiveFilters = true;
+    this.updateActiveFiltersStatus();
     this.filtersChange.emit(mergedFilters);
   }
 

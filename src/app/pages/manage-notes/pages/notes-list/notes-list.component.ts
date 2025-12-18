@@ -6,6 +6,7 @@ import {
   Injector,
   OnInit,
   Renderer2,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { b64toBlob, compareFn, removeSpecialCharacters } from '@shared/helpers/helpers';
@@ -21,6 +22,7 @@ import { ExportedDocumentType } from '@core/enums/exported-docuemnt-type.enum';
 import { FromDateToDateSearchService } from '@core/services/search-services/from-date-to-date-search.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NotesFiltersComponent } from '../notes-filters/notes-filters.component';
+import { FiltersComponent } from '@features/components/pending-request/pending-request-list/filters/filters.component';
 import { ManageImportsExportsService } from '@pages/imports-exports/services/manage-imports-exports.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PDFSource } from 'ng2-pdf-viewer';
@@ -32,7 +34,10 @@ import { CustomToastrService } from '@core/services/custom-toastr.service';
 @Component({
   selector: 'app-notes-list',
   templateUrl: './notes-list.component.html',
-  styleUrls: ['./notes-list.component.scss'],
+  styleUrls: [
+    './notes-list.component.scss',
+    '../../../manage-records/pages/records-list/records-list.component.scss',
+  ],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -42,7 +47,7 @@ import { CustomToastrService } from '@core/services/custom-toastr.service';
   ],
 })
 export class NotesListComponent implements OnInit {
-  private activeTabIndex: number = 0; // Default to Letter tab
+  activeTabIndex: number = 0; // Default to Letter tab
   notesSource: Note[] = [];
   priorityId: string;
   filtersData: NotesFiltersForm = {} as NotesFiltersForm;
@@ -85,6 +90,7 @@ export class NotesListComponent implements OnInit {
   };
   activeCardId: string;
   ExportedDocumentType = ExportedDocumentType;
+  @ViewChild(FiltersComponent) filtersComponent: FiltersComponent | undefined;
 
   placeholder: string = 'shared.day/month/year';
   destroyRef = inject(DestroyRef);
@@ -154,7 +160,7 @@ export class NotesListComponent implements OnInit {
   onTabClicked(event: MatTabChangeEvent): void {
     this.activeTabIndex = event.index;
     this.setDocumentTypeByTab();
-    this.onFiltersChange(this.filtersData);
+    this.onFiltersChange({} as NotesFiltersForm);
   }
 
   onPaginationChange(pageInformation: { pageSize: number; pageIndex: number }): void {
@@ -262,6 +268,9 @@ export class NotesListComponent implements OnInit {
       dialogComponent.filtersChange.subscribe((dialogFilters: NotesFiltersForm) => {
         this.onFiltersChange(dialogFilters);
       });
+      dialogComponent.resetRequested.subscribe(() => {
+        this.resetAllFiltersFromDialog();
+      });
     });
     this.filtersDialogRef.afterClosed().subscribe(() => {
       const dialogComponent = this.filtersDialogRef!.componentInstance;
@@ -316,6 +325,10 @@ export class NotesListComponent implements OnInit {
     });
   }
   onFiltersChange(filtersData: NotesFiltersForm) {
+    if (!filtersData) {
+      filtersData = {};
+    }
+
     const isReset = Object.keys(filtersData).length === 0;
     if (isReset) {
       this.isTableFiltered = false;
@@ -340,6 +353,13 @@ export class NotesListComponent implements OnInit {
     this.initializeTable().subscribe();
   }
 
+  resetAllFiltersFromDialog() {
+    this.onFiltersChange({} as NotesFiltersForm);
+    if (this.filtersComponent) {
+      this.filtersComponent.resetAllFilters();
+    }
+  }
+
   private setDocumentTypeByTab(): void {
     if (this.activeTabIndex === 0) {
       this.filtersData.documentType = this.ExportedDocumentType.Note.toString();
@@ -348,7 +368,8 @@ export class NotesListComponent implements OnInit {
     }
   }
   consulatntType: string = '';
-  showConsultant(type: number, element) {
+  showConsultant(type: number, element, index: number) {
+    element.hoveredConsultantIndex = index;
     element.consultantType =
       type === 1
         ? 'ConsultantsTypeList.MainConsultant'

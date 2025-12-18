@@ -111,17 +111,9 @@ mat-icon {
 }
 
 .single-approval-card {
-  margin-bottom: 0.5em;
-  padding: 1em;
-  border-radius: 11px;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
   font-size: 14px;
-
-  @media (min-width: 1332px) {
-    & {
-      margin-bottom: 1em;
-      font-size: 1rem;
-    }
-  }
 }
 
 .bg-sign {
@@ -320,7 +312,12 @@ mat-icon {
   background: transparent;
   border: none;
 }
-
+.records-list-container ::ng-deep .mat-mdc-tab-list {
+  border-radius: 0;
+}
+// .records-list-container > .row {
+//   margin-bottom: 0.7rem;
+// }
 ::ng-deep .mat-mdc-tab-body-content {
   overflow: hidden !important;
 }

@@ -22,13 +22,16 @@ export class NotificationsMenuComponent implements OnInit {
     private notificationsHubService: NotificationsHubService,
     private languageService: LanguageService,
     private router: Router
-  ) {}
+  ) {
+    this.notificationsHubService.onNotificationReceived.subscribe({
+      next: () => {
+        this.getNotifications()
+      }
+    })
+  }
   ngOnInit(): void {
     this.lang = this.languageService.language;
-
     this.getNotifications();
-
-    this.initRealTime();
   }
 
   getNotifications(): void {
@@ -56,14 +59,14 @@ export class NotificationsMenuComponent implements OnInit {
       });
   }
 
-  initRealTime(): void {
-    this.notificationsHubService.onNotificationReceived.subscribe({
-      next: (res) => {
-        this.notifiations.unshift(res as any);
-        this.noOfAllUnreadNotifications++;
-      },
-    });
-  }
+  // initRealTime(): void {
+  //   this.notificationsHubService.onNotificationReceived.subscribe({
+  //     next: (res) => {
+  //       this.notifiations.unshift(res as any);
+  //       this.noOfAllUnreadNotifications++;
+  //     },
+  //   });
+  // }
 
   onGoToDetails(notification: Notification): void {
     this.notificationsService
@@ -108,10 +111,6 @@ export class NotificationsMenuComponent implements OnInit {
         'request-details',
       ]);
     }
-  }
-
-  onNotificationsMenuMouseEntered() {
-    this.getNotifications();
   }
 
   removeIconBadge() {}

@@ -95,6 +95,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TableListComponent } from '@shared/new-components/table-list/table-list.component';
 import { BaseDialogComponent } from '@shared/base-components/base-dialog/base-dialog.component';
 import { DatePickerHijriComponent } from './components/date-picker-hijri/date-picker-hijri.component';
+import { AuthorizationContainerComponent } from '@shared/new-components/authorization-container/authorization-container.component';
 
 const externalModules = [
   CommonModule,
@@ -202,6 +203,7 @@ const COMPONENTS: any[] = [
     TableListComponent,
     BaseDialogComponent,
     DatePickerHijriComponent,
+    AuthorizationContainerComponent,
   ],
   exports: [
     ...externalModules,

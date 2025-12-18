@@ -1,7 +1,7 @@
 <div class="grid mt-3 home-section-bg">
   <div class="row">
-    <div class="col-12 d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center">
+    <div class="col-12 d-flex align-items-center justify-content-between mb-1">
+      <div class="d-flex align-items-center mb-3">
         <svg width="1.2rem" height="1.2rem">
           <use [attr.xlink:href]="'assets/icons/sprite.svg#policies'"></use>
         </svg>
@@ -19,37 +19,51 @@
         (selectedIndexChange)="onTabIndexChanged($event)"
       >
         <mat-tab *ngFor="let category of items; let i = index" [label]="category.title">
-          <div class="tab-content">
-            <div class="row w-100 mx-auto">
+          <div class="tab-content" style="padding: 0 8px">
+            <div class="row">
               <ng-container *ngFor="let item of selectedCategoryData">
-                <div class="selectedCategoryCard col-md-3 col-12">
-                  <img
-                    [src]="
-                      (getImageUrl(item.thumbnail?.path) | async) ||
-                      'assets/images/default-policy.png'
-                    "
-                    [alt]="item.title"
-                    class="mb-3"
-                  />
-                  <div class="d-flex align-items-center justify-content-between">
-                    <p class="body mb-0">{{ item.title }}</p>
-                    <div class="d-flex align-items-center">
-                      <svg
-                        class="cursor-pointer mx-2"
-                        width="1.5rem"
-                        height="1rem"
-                        (click)="onViewAttachments(item.file)"
-                      >
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#view'"></use>
-                      </svg>
-                      <svg
-                        class="cursor-pointer"
-                        width="1.5rem"
-                        height="1.5rem"
-                        (click)="getDocument(item.file)"
-                      >
-                        <use [attr.xlink:href]="'assets/icons/sprite.svg#download'"></use>
-                      </svg>
+                <div class="col-xxl-3 col-xl-4 col-md-6 col-12 p-1">
+                  <div class="card border-none border-radius-md">
+                    <div class="card-body p-0 border-radius-md">
+                      <div class="p-2 selectedCategoryCard">
+                        <img
+                          [src]="
+                            (getImageUrl(item.thumbnail?.path) | async) ||
+                            'assets/images/default-policy.png'
+                          "
+                          [alt]="item.title"
+                          class="mb-3 border-radius-md"
+                        />
+                        <div class="d-flex align-items-center justify-content-between">
+                          <h1 class="body mb-0 title-max-length" style="max-width: 75% !important">
+                            {{ item.title }}
+                          </h1>
+                          <div class="d-flex align-items-center">
+                            <span class="hover-eff btn">
+                              <svg
+                                width="22px"
+                                height="22px"
+                                (click)="onViewAttachments(item.file)"
+                              >
+                                <use
+                                  width="22px"
+                                  height="22px"
+                                  [attr.xlink:href]="'assets/icons/sprite.svg#view'"
+                                ></use>
+                              </svg>
+                            </span>
+                            <span class="btn hover-eff">
+                              <svg width="22px" height="22px" (click)="getDocument(item.file)">
+                                <use
+                                  width="22px"
+                                  height="22px"
+                                  [attr.xlink:href]="'assets/icons/sprite.svg#download'"
+                                ></use>
+                              </svg>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

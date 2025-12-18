@@ -6,6 +6,8 @@ import {
   Inject,
   LOCALE_ID,
   OnInit,
+  Optional,
+  Self,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
@@ -14,25 +16,40 @@ import { NgControl } from '@angular/forms';
   standalone: true,
 })
 export class CurrencySarInputDirective implements OnInit {
-  @Input() useDirective: boolean = true;
+  @Input() appCurrencySarInput: boolean = true;
 
   @Input() currencyCode: string = ''; // Default to SAR
   constructor(
     private el: ElementRef<HTMLInputElement>,
     @Inject(LOCALE_ID) private locale: string,
-    private control: NgControl
+    @Optional() @Self() private control: NgControl
   ) {}
 
   @HostListener('input', ['$event.target.value']) onInput(value: string) {
-    // Optional: restrict input to only numbers and special characters as the user types
+    // Remove all non-numeric and non-decimal characters
+    const cleanedValue = value.replace(/[^0-9.]/g, '');
 
-    const cleanedValue = value.replace(/[^0-9,.]/g, '');
-    this.el.nativeElement.value = cleanedValue;
-    //  this.formatInput(cleanedValue);
+    // Don't set the raw input value here - let blur handler format it
+    // Just ensure we don't have multiple decimals
+    const parts = cleanedValue.split('.');
+    if (parts.length > 2) {
+      // Multiple decimals - keep only the first one
+      const sanitized = parts[0] + '.' + parts.slice(1).join('');
+      this.el.nativeElement.value = sanitized;
+    } else {
+      this.el.nativeElement.value = cleanedValue;
+    }
   }
 
   @HostListener('focus', ['$event.target.value']) onFocus(value: string) {
-    // On focus, remove formatting for easier editing
+    // On focus, if value is default "0.00" (or similar), clear it for fresh input
+    const numValue = parseFloat(this.el.nativeElement.value.replace(/[^0-9.]/g, ''));
+    if (numValue === 0) {
+      this.el.nativeElement.value = '';
+      if (this.control && this.control.control) {
+        this.control.control.setValue(null, { emitEvent: false });
+      }
+    }
     this.isTouched = false;
   }
   //  @HostListener('change', ['$event'])
@@ -46,12 +63,17 @@ export class CurrencySarInputDirective implements OnInit {
 
   ngOnInit() {
     // Format the initial value on component load
-    this.formatInput(this.control.value);
+    if (this.control && this.control.value !== undefined && this.control.value !== null) {
+      this.formatInput(this.control.value);
+    }
   }
   isTouched: boolean = false;
   private formatInput(value: string | number | null) {
     if (value === null || value === '') {
       this.el.nativeElement.value = '';
+      if (this.control && this.control.control) {
+        this.control.control.setValue(null, { emitEvent: false });
+      }
       return;
     }
 
@@ -66,16 +88,18 @@ export class CurrencySarInputDirective implements OnInit {
     }
 
     if (!isNaN(numericValue)) {
-      // Format with proper locale and always show 2 decimal places
+      // Format with proper locale and always show 2 decimal places for display
       const formattedValue = new Intl.NumberFormat(this.locale, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }).format(numericValue);
 
-      // Update the form control's value with the formatted string
-      this.control.control?.setValue(formattedValue, { emitEvent: false });
+      // Update the form control's value with the NUMERIC value (not the formatted string)
+      if (this.control && this.control.control) {
+        this.control.control.setValue(numericValue, { emitEvent: false });
+      }
 
-      // Apply formatting directly
+      // Apply formatting only to the display (input element)
       this.el.nativeElement.value = formattedValue;
     }
   }

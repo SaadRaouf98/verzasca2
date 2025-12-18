@@ -68,6 +68,11 @@ export class NewsPostsService {
     return this.apiService.get(url);
   }
 
+  getNewsById(id: string): Observable<AllLatestNews> {
+    let url = `${this.apiUrl}/${id}/details`;
+    return this.apiService.get(url);
+  }
+
   getNewsPostById(id: string): Observable<LatestNewsDetails> {
     let url = `${this.apiUrl}/${id}`;
     return this.apiService.get(url);
@@ -87,7 +92,7 @@ export class NewsPostsService {
   setVisabilityStatus(id: string, isVisible: boolean): Observable<any> {
     return this.apiService.put(
       `${this.apiUrl}/visibility`,
-      { 
+      {
          "postId": id,
   "isVisible": isVisible
        }

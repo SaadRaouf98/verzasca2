@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
@@ -164,10 +165,21 @@ export class AddImportComponent implements OnInit {
     private datePipe: DatePipe
   ) {}
 
+  @HostListener('window:beforeunload', ['$event'])
+  onPageRefresh(event: BeforeUnloadEvent): string | void {
+    if (this.form && this.form.dirty) {
+      // Return a string to show the browser's confirmation dialog
+      event.preventDefault();
+      event.returnValue = true;
+      return this.translateService.instant('shared.unsavedChanges');
+    }
+  }
+
   ngOnInit(): void {
     this.initializeForm();
     this.lang = this.languageService.language;
     this.intializeDropDownLists();
+    console.log(this.requestContainerData);
     this.usersList$ = this.usersService.getUsersList(
       {
         pageSize: 1000,
@@ -212,7 +224,7 @@ export class AddImportComponent implements OnInit {
           });
         }
 
-        if (this.requestContainerData.concernedFoundations.length) {
+        if (this.requestContainerData.concernedFoundations?.length) {
           (this.concernedFoundationsList = this.requestContainerData.concernedFoundations),
             setTimeout(() => {
               this.form.patchValue({
@@ -256,7 +268,8 @@ export class AddImportComponent implements OnInit {
         parentId: null,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
 
     this.manageImportsExportsService.foundationsService
@@ -269,7 +282,8 @@ export class AddImportComponent implements OnInit {
           parentId: null,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       )
       .subscribe({
         next: (res) => {
@@ -286,7 +300,10 @@ export class AddImportComponent implements OnInit {
         },
         {
           type: OrganizationUnitType.Committee,
-        }
+        },
+        undefined,
+        undefined,
+        true
       )
       .subscribe({
         next: (res) => {
@@ -304,7 +321,8 @@ export class AddImportComponent implements OnInit {
           isActive: true,
         },
         undefined,
-        this.dropDownPropertiesClass
+        this.dropDownPropertiesClass,
+        true
       )
       .subscribe({
         next: (res) => {
@@ -320,7 +338,8 @@ export class AddImportComponent implements OnInit {
         },
         undefined,
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       )
       .subscribe({
         next: (res) => {
@@ -348,7 +367,8 @@ export class AddImportComponent implements OnInit {
             parentId: foundation,
           },
           undefined,
-          this.dropDownProperties
+          this.dropDownProperties,
+          true
         );
     } else {
       // When patching subFoundation, always patch the full object, not just the id
@@ -430,7 +450,7 @@ export class AddImportComponent implements OnInit {
   private validateUsersBasedOnClassification(): ValidatorFn {
     return (form: AbstractControl): ValidationErrors | null => {
       const usersVal = form.get('users')?.value;
-      if (this.showAccessUsers && (!usersVal || usersVal.length === 0)) {
+      if (this.showAccessUsers && (!usersVal || usersVal?.length === 0)) {
         return {
           usersRequired: true,
         };
@@ -443,7 +463,8 @@ export class AddImportComponent implements OnInit {
   onPatchFormPhysicalHijriDate(date: { hijriDate: NgbDateStruct }): void {
     if (date.hijriDate) {
       this.manageImportsExportsService.UmAlQuraCalendarService.getGregorianDate(
-        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`
+        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`,
+        true
       ).subscribe({
         next: (res) => {
           this.form.patchValue(
@@ -473,13 +494,19 @@ export class AddImportComponent implements OnInit {
   onPatchFormPhysicalGregorianDate(date: { gregorianDate: NgbDateStruct }): void {
     if (date.gregorianDate) {
       this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(
-        `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`
+        `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`,
+        true
       ).subscribe({
         next: (res) => {
+          // Format date string with proper zero-padding
+          const formattedGregorianDate = `${date.gregorianDate.year}-${String(
+            date.gregorianDate.month
+          ).padStart(2, '0')}-${String(date.gregorianDate.day).padStart(2, '0')}`;
+
           this.form.patchValue(
             {
               physicalHijriDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
-              physicalGregorianDate: `${date.gregorianDate.year}-${date.gregorianDate.month}-${date.gregorianDate.day}`,
+              physicalGregorianDate: formattedGregorianDate,
             },
             { emitEvent: false }
           );
@@ -502,7 +529,8 @@ export class AddImportComponent implements OnInit {
   onPatchFormAvailabilityHijriDate(date: { hijriDate: NgbDateStruct }): void {
     if (date.hijriDate) {
       this.manageImportsExportsService.UmAlQuraCalendarService.getGregorianDate(
-        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`
+        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`,
+        true
       ).subscribe({
         next: (res) => {
           this.form.patchValue(
@@ -533,15 +561,21 @@ export class AddImportComponent implements OnInit {
   onPatchFormAvailabilityGregorianDate(date: { gregorianDate: NgbDateStruct }): void {
     if (date.gregorianDate) {
       this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(
-        `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`
+        `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`,
+        true
       ).subscribe({
         next: (res) => {
+          // Format date string with proper zero-padding
+          const formattedGregorianDate = `${date.gregorianDate.year}-${String(
+            date.gregorianDate.month
+          ).padStart(2, '0')}-${String(date.gregorianDate.day).padStart(2, '0')}`;
+
           this.form.patchValue(
             {
               availabilityHijriDate: `${res.split('/')[0]}-${res.split('/')[1]}-${
                 res.split('/')[2]
               }`,
-              availabilityGregorianDate: `${date.gregorianDate.year}-${date.gregorianDate.month}-${date.gregorianDate.day}`,
+              availabilityGregorianDate: formattedGregorianDate,
             },
             { emitEvent: false }
           );
@@ -564,7 +598,8 @@ export class AddImportComponent implements OnInit {
   onPatchFormDeliveryHijriDate(date: { hijriDate: NgbDateStruct }): void {
     if (date.hijriDate) {
       this.manageImportsExportsService.UmAlQuraCalendarService.getGregorianDate(
-        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`
+        `${date.hijriDate.year}/${date.hijriDate.month}/${date.hijriDate.day}`,
+        true
       ).subscribe({
         next: (res) => {
           this.form.patchValue(
@@ -594,13 +629,19 @@ export class AddImportComponent implements OnInit {
 
   onPatchFormDeliveryGregorianDate(date: { gregorianDate: NgbDateStruct }): void {
     this.manageImportsExportsService.UmAlQuraCalendarService.getHijriDate(
-      `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`
+      `${date.gregorianDate.year}/${date.gregorianDate.month}/${date.gregorianDate.day}`,
+      true
     ).subscribe({
       next: (res) => {
+        // Format date string with proper zero-padding
+        const formattedGregorianDate = `${date.gregorianDate.year}-${String(
+          date.gregorianDate.month
+        ).padStart(2, '0')}-${String(date.gregorianDate.day).padStart(2, '0')}`;
+
         this.form.patchValue(
           {
             deliveryHijriDate: `${res.split('/')[0]}-${res.split('/')[1]}-${res.split('/')[2]}`,
-            deliveryGregorianDate: `${date.gregorianDate.year}-${date.gregorianDate.month}-${date.gregorianDate.day}`,
+            deliveryGregorianDate: formattedGregorianDate,
           },
           { emitEvent: false }
         );
@@ -629,7 +670,7 @@ export class AddImportComponent implements OnInit {
     // Instead of using res.classificationLevel, get the classification object from the list
     const classificationObj = this.classificationsList.find((c) => c.id === classificationId);
     this.manageImportsExportsService.classificationsService
-      .getClassificationUsersById(classificationId)
+      .getClassificationUsersById(classificationId, true)
       .subscribe((res) => {
         this.showAccessUsers =
           classificationObj?.classificationLevel === ClassificationLevel.Restricted ? true : false;
@@ -656,7 +697,8 @@ export class AddImportComponent implements OnInit {
           isTransaction: this.didUserChooseDocument ? false : true,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       );
   }
 
@@ -671,7 +713,8 @@ export class AddImportComponent implements OnInit {
         searchKeyword: event.term,
       },
       undefined,
-      this.dropDownProperties
+      this.dropDownProperties,
+      true
     );
   }
 
@@ -690,7 +733,8 @@ export class AddImportComponent implements OnInit {
             searchKeyword: event.term,
           },
           undefined,
-          this.dropDownProperties
+          this.dropDownProperties,
+          true
         );
     }
   }
@@ -707,7 +751,8 @@ export class AddImportComponent implements OnInit {
           searchKeyword: event.term,
         },
         undefined,
-        this.dropDownProperties
+        this.dropDownProperties,
+        true
       )
       .subscribe({
         next: (res) => {
@@ -732,12 +777,13 @@ export class AddImportComponent implements OnInit {
             isTransaction: this.didUserChooseDocument ? false : true,
           },
           undefined,
-          this.dropDownProperties
+          this.dropDownProperties,
+          true
         );
     }
   }
-
   onSubmit(): void {
+    console.log('Submitting form:', this.form.value);
     // if (this.form.invalid) {
     //   return;
     // }
@@ -777,7 +823,7 @@ export class AddImportComponent implements OnInit {
       maxWidth: '31.25rem',
       panelClass: 'action-modal',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         title: 'shared.processDone',
         content: this.translateService.instant('shared.importSerialNumberIs'),
@@ -831,7 +877,7 @@ export class AddImportComponent implements OnInit {
       if (typeof date === 'string') {
         try {
           const dateParts = date.split('-');
-          if (dateParts.length === 3) {
+          if (dateParts?.length === 3) {
             const year = dateParts[0];
             const month = String(dateParts[1]).padStart(2, '0');
             const day = String(dateParts[2]).padStart(2, '0');
@@ -879,7 +925,7 @@ export class AddImportComponent implements OnInit {
       committeeId: committeeId ? committeeId : null,
       attachmentDescription,
       usersIds:
-        this.showAccessUsers && users && users.length
+        this.showAccessUsers && users && users?.length
           ? users.map((ele) => (typeof ele === 'object' ? ele.id : ele))
           : [],
       attachmentIds: this.attachmentIds,

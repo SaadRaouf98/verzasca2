@@ -1,7 +1,7 @@
 <div class="grid">
   <app-exportal-basic-info [requestDetails]="requestContainerDetails"></app-exportal-basic-info>
   <div class="row mt-3">
-    <div class="col-md-5 col-12">
+    <div class="col-md-5 col-12 scroll-cards">
       <ng-container *ngFor="let element of data">
         <div
           class="transaction-card cursor-pointer"
@@ -52,11 +52,17 @@
       </ng-container>
     </div>
     <div class="col-md-7 col-12">
-      <div class="transaction-card" *ngIf="details?.isExportDocument && details">
+      <div class="transaction-card" *ngIf="showAuthorizationContainer">
+        <app-authorization-container></app-authorization-container>
+      </div>
+      <div
+        class="transaction-card"
+        *ngIf="details?.isExportDocument && details && !showAuthorizationContainer"
+      >
         <div class="row">
           <div class="col-12">
             <!-- <app-pdf-viewer [previewType]="'iframe'" [src]="exportableDocument.pdfSrc"></app-pdf-viewer> -->
-            <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 100vh"></iframe>
+            <iframe [src]="exportableDocument.pdfSrc" style="width: 100%; height: 90vh"></iframe>
           </div>
           <div class="col-12 mt-3">
             <button
@@ -71,7 +77,10 @@
           </div>
         </div>
       </div>
-      <div class="transaction-card" *ngIf="!details?.isExportDocument && details">
+      <div
+        class="transaction-card"
+        *ngIf="!details?.isExportDocument && details && !showAuthorizationContainer"
+      >
         <span class="body-bold mt-5 d-block">
           {{ 'ImportsExportsModule.RequestDetailsComponent.importData' | translate }}
         </span>
@@ -249,7 +258,7 @@
     </div>
 
     <div
-      class="d-flex justify-content-center p-2 align-items-center flex-column"
+      class="d-flex justify-content-center p-2 align-items-center flex-column request-no-data"
       *ngIf="data?.length == 0"
     >
       <img

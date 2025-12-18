@@ -45,7 +45,7 @@ export class ViewMembersComponent implements OnInit {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '1000px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         formMode: FormMode.Modify,
         header:
@@ -59,20 +59,15 @@ export class ViewMembersComponent implements OnInit {
 
     dialogRef
       .afterClosed()
-      .subscribe(
-        (dialogResult: { statusCode: ModalStatusCode; status: string }) => {
-          if (
-            dialogResult &&
-            dialogResult.statusCode === ModalStatusCode.Success
-          ) {
-            this.router.navigate([`./${employee.id}/departments`], {
-              relativeTo: this.activatedRoute,
-              queryParams: {
-                memberName: employee.name,
-              },
-            });
-          }
+      .subscribe((dialogResult: { statusCode: ModalStatusCode; status: string }) => {
+        if (dialogResult && dialogResult.statusCode === ModalStatusCode.Success) {
+          this.router.navigate([`./${employee.id}/departments`], {
+            relativeTo: this.activatedRoute,
+            queryParams: {
+              memberName: employee.name,
+            },
+          });
         }
-      );
+      });
   }
 }

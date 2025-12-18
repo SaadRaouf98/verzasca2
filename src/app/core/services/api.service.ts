@@ -43,22 +43,27 @@ export class ApiService {
    * Creates HTTP GET request to the server using the specified API URL
    *
    * @param {string} url API URL
-   * @param {boolean} isOcr Optional flag for OCR
-   * @param {HttpHeaders} customHeaders Optional custom headers to add
+   * @param query
    * @return {Observable<any>} The request observable
    * @memberof ApiService
    */
+
+  getNew(url: string, query: any): Observable<any> {
+    const fullUrl = this.baseUrl + url;
+    return this.http.get(fullUrl, { params: query });
+  }
+
   get(url: string, isOcr: boolean = false, customHeaders?: HttpHeaders): Observable<any> {
     const fullUrl = (isOcr ? this.solarBaseUrl : this.baseUrl) + url;
     let headers = this.headers;
     if (customHeaders) {
-      customHeaders.keys().forEach(key => {
+      customHeaders.keys().forEach((key) => {
         headers = headers.set(key, customHeaders.get(key)!);
       });
     }
 
     return this.http.get(fullUrl, {
-      headers: headers,
+      headers,
     });
   }
 
@@ -87,11 +92,7 @@ export class ApiService {
     return this.http.post(this.baseUrl + url, resource);
   }
 
-  putFormData(
-    url: string,
-    resource: any,
-    isOcr: boolean = false
-  ): Observable<any> {
+  putFormData(url: string, resource: any, isOcr: boolean = false): Observable<any> {
     const fullUrl = (isOcr ? this.solarBaseUrl : this.baseUrl) + url;
     return this.http.put(fullUrl, resource);
   }
@@ -167,11 +168,7 @@ export class ApiService {
    * @return {Observable<any>} The request observable
    * @memberof ApiService
    */
-  postAndDownloadFile(
-    url: string,
-    resource: any,
-    fileName: string
-  ): Observable<any> {
+  postAndDownloadFile(url: string, resource: any, fileName: string): Observable<any> {
     return this.http
       .post(this.baseUrl + url, JSON.stringify(resource), {
         headers: this.headers,

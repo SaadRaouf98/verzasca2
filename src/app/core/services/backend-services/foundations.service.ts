@@ -1,15 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {ApiService} from '../api.service';
-import {SortDirection} from '@angular/material/sort';
-import {buildUrlQueryPaginationSortSelectParams} from '@core/helpers/build-url-query-params';
-import {
-  AllFoundations,
-  Foundation,
-  FoundationDetails,
-} from '@core/models/foundation.model';
-import {Sector} from "@core/models/sector.model";
-import {SectorPayload} from "@pages/imports-exports/pages/add-transaction/add-transaction.component";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiService } from '../api.service';
+import { SortDirection } from '@angular/material/sort';
+import { HttpHeaders } from '@angular/common/http';
+import { buildUrlQueryPaginationSortSelectParams } from '@core/helpers/build-url-query-params';
+import { AllFoundations, Foundation, FoundationDetails } from '@core/models/foundation.model';
+import { Sector } from '@core/models/sector.model';
+import { SectorPayload } from '@pages/imports-exports/pages/add-transaction/add-transaction.component';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +14,7 @@ import {SectorPayload} from "@pages/imports-exports/pages/add-transaction/add-tr
 export class FoundationsService {
   readonly apiUrl = '/api/v1/foundations';
 
-  constructor(private apiService: ApiService) {
-  }
+  constructor(private apiService: ApiService) {}
 
   private buildUrlQueryParams(
     queryData: { pageSize: number; pageIndex: number },
@@ -26,11 +22,7 @@ export class FoundationsService {
     sortData?: { sortBy: string; sortType: SortDirection },
     selectedProperties?: string[]
   ): string {
-    let url = buildUrlQueryPaginationSortSelectParams(
-      queryData,
-      sortData,
-      selectedProperties
-    );
+    let url = buildUrlQueryPaginationSortSelectParams(queryData, sortData, selectedProperties);
 
     if (filtersData && Object.keys(filtersData).length) {
       url += '&Filter=[';
@@ -39,9 +31,7 @@ export class FoundationsService {
     let isFirstFilter = true;
 
     url += `["parentId", "=",  ${
-      filtersData.parentId
-        ? '"' + filtersData.parentId + '"'
-        : filtersData.parentId
+      filtersData.parentId ? '"' + filtersData.parentId + '"' : filtersData.parentId
     }]`;
     isFirstFilter = false;
 
@@ -65,7 +55,8 @@ export class FoundationsService {
     queryData: { pageSize: number; pageIndex: number },
     filtersData: { parentId: string | null; searchKeyword?: string },
     sortData?: { sortBy: string; sortType: SortDirection },
-    selectedProperties?: string[]
+    selectedProperties?: string[],
+    skipLoader?: boolean
   ): Observable<AllFoundations> {
     let url = `${this.apiUrl}?${this.buildUrlQueryParams(
       queryData,
@@ -73,11 +64,26 @@ export class FoundationsService {
       sortData,
       selectedProperties
     )}`;
+
+    if (skipLoader === true) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 
-  getSectorsByFoundationsId(foundationId: string): Observable<SectorPayload> {
+  getSectorsByFoundationsId(
+    foundationId: string,
+    skipLoader: boolean = false
+  ): Observable<SectorPayload> {
     let url = `${this.apiUrl}/${foundationId}/sector`;
+
+    if (skipLoader) {
+      const headers = new HttpHeaders().set('X-Skip-Loader', 'true');
+      return this.apiService.get(url, false, headers);
+    }
+
     return this.apiService.get(url);
   }
 

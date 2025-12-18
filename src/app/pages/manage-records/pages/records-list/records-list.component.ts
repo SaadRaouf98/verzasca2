@@ -68,6 +68,7 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
   @ViewChild('outerTabGroup', { read: ElementRef })
   outerTabGroupRef!: ElementRef;
   @ViewChild('tableList') tableListComponent: any; // Reference to table-list component
+  @ViewChild('filtersComponent') filtersComponent: any; // Reference to app-filters component
   viewAllElements: boolean = false;
   filtersData: RecordsFiltersForm2 = {} as RecordsFiltersForm2;
   public ExportableDocumentActionType = ExportableDocumentActionType;
@@ -313,6 +314,15 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
       dialogComponent.filtersChange.subscribe((dialogFilters: RecordsFiltersForm2) => {
         this.onFiltersChange(dialogFilters);
       });
+      // Subscribe to reset event to propagate to app-filters
+      dialogComponent.resetRequested.subscribe(() => {
+        // Emit empty filters through onFiltersChange to properly trigger reset
+        this.onFiltersChange({});
+        // Also reset the app-filters component's internal state
+        if (this.filtersComponent) {
+          this.filtersComponent.resetAllFilters();
+        }
+      });
     });
     setTimeout(() => {
       const dialogContainer = document.querySelector('.mat-mdc-dialog-container') as HTMLElement;
@@ -422,11 +432,13 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
   }
 
   onFiltersChange(filtersData: RecordsFiltersForm2): void {
-    const isReset = Object.keys(filtersData).length === 0;
+    const isReset = filtersData ? Object?.keys(filtersData)?.length === 0 : null;
     if (isReset) {
       this.isTableFiltered = false;
     } else {
-      this.isTableFiltered = true;
+      // Check if there are ANY filters applied (including form input from app-filters)
+      const hasFormFilters = Object.keys(filtersData).length > 0;
+      this.isTableFiltered = hasFormFilters;
     }
     // Map filters from component format to API format
     this.filtersData = this.mapFiltersToApiFormat(filtersData);
@@ -447,7 +459,7 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
     // Apply default isExported if not explicitly set
     if (this.filtersData.isExported === undefined || this.filtersData.isExported === null) {
       if (this.viewMode === 'activeRecords') {
-        this.filtersData.isExported = true;
+        this.filtersData.isExported = false;
       }
       // If viewMode is 'allRecords', leave isExported undefined (no filter)
     }
@@ -495,17 +507,23 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
   noPermission() {
     console.log(document);
     const filtersDialogRef = this.dialog.open(AuthorizationPopupComponent, {
+      minWidth: '36.25rem',
+      maxWidth: '36.25rem',
+      maxHeight: '44.3125rem',
+      panelClass: 'action-modal',
+      autoFocus: false,
+      disableClose: false,
       data: {
         title: this.translateService.instant('unauthorized.accessDenied'),
         message: `${this.translateService.instant('unauthorized.youDoNotHavePermission')} `,
         authorizationInside: false,
       },
-      disableClose: true,
     });
   }
   onViewRecordDetails(record: Record): void {
     if (!record.isRestricted) {
-      this.router.navigate(['manage-records', record.id]);
+      const currentUrl = this.router.url.split('?')[0];
+      this.router.navigate([`${currentUrl}/`, record.id]);
     }
   }
 
@@ -609,7 +627,7 @@ export class RecordsListComponent extends AbstractTable implements OnInit, OnDes
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '800px',
       maxWidth: '95vw',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         comment,
       },

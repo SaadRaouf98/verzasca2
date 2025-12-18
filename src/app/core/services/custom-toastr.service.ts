@@ -13,25 +13,30 @@ export class CustomToastrService {
   private translateService = inject(TranslateService);
   private activeToasts: OverlayRef[] = [];
 
-  success(message: string, title?: string, timeout: number = 5000): void {
+  success(message: string, title?: string, timeout: number = 2000): void {
     const finalTitle = title || this.translateService.instant('shared.success');
     this.showCustomToast(message, finalTitle, 'success', timeout);
   }
 
-  error(message: string, title?: string, timeout: number = 6000): void {
+  error(message: string, title?: string, timeout: number = 2000): void {
     const finalTitle = title || this.translateService.instant('shared.error');
     this.showCustomToast(message, finalTitle, 'error', timeout);
   }
 
-  warning(message: string, title?: string, timeout: number = 5000): void {
+  warning(message: string, title?: string, timeout: number = 2000): void {
     const finalTitle = title || this.translateService.instant('shared.warning');
     this.showCustomToast(message, finalTitle, 'warning', timeout);
+  }
+
+  info(message: string, title?: string, timeout: number = 2000): void {
+    const finalTitle = title || this.translateService.instant('shared.info');
+    this.showCustomToast(message, finalTitle, 'info', timeout);
   }
 
   private showCustomToast(
     message: string,
     title: string,
-    type: 'success' | 'error' | 'warning',
+    type: 'success' | 'error' | 'warning' | 'info',
     timeout: number
   ): void {
     // Create overlay reference

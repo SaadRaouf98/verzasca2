@@ -9,6 +9,7 @@ import { TransactionNumberPipe } from '@shared/pipes/transaction-number.pipe';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PermissionsObj } from '@core/constants/permissions.constant';
+import { statusTranslationMap } from '@core/enums/request-container-status.enum';
 
 @Component({
   selector: 'app-transaction-info-panel',
@@ -25,12 +26,10 @@ import { PermissionsObj } from '@core/constants/permissions.constant';
   templateUrl: './transaction-info-panel.component.html',
   styleUrls: ['./transaction-info-panel.component.scss'],
 })
-export class TransactionInfoPanelComponent implements OnInit{
+export class TransactionInfoPanelComponent implements OnInit {
   PermissionsObj = PermissionsObj;
-
+  statusTranslationMap = statusTranslationMap;
   @Input() requestContainerDetails!: Transaction;
   @Input() lang: string = localStorage.getItem('lang') || 'ar';
-ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
-

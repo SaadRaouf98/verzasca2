@@ -87,6 +87,7 @@ export class StatisticsDetailedComponent {
     color: '#fff',
   };
   pieChartType: keyof ChartTypeRegistry = 'pie';
+  screenWidth: number = 1200;
 
   /////////////////Systematic Imports//////////////////////////////////////////
   systematicImports: SystematicImports | null = null;
@@ -231,6 +232,7 @@ export class StatisticsDetailedComponent {
     private location: Location,
     private dialog: MatDialog
   ) {
+    this.screenWidth = window.innerWidth
     // Register a small Chart.js plugin that draws center text when
     // `options.plugins.centerText.enabled` is truthy. The plugin reads
     // options from `options.plugins.centerText`:
@@ -384,6 +386,11 @@ export class StatisticsDetailedComponent {
         // enable center text on this doughnut chart (per-chart options)
         this.systematicImportsDoughnutOptions = {
           responsive: true,
+          layout: {
+            padding: {
+              top: 0 // = 1rem تقريبًا
+            }
+          },
           plugins: {
             // keep existing legend options from chartOptions if present
             ...(this.chartOptions.plugins || {}),
@@ -391,7 +398,7 @@ export class StatisticsDetailedComponent {
               enabled: true,
               text: this.systematicImports.total,
               color: '#000',
-              font: { size: 35, family: 'IBM Plex Sans Arabic', weight: 'bold' },
+              font: { size: (this.screenWidth <=1200? 25 : 35), family: 'IBM Plex Sans Arabic', weight: 'bold' },
             },
           },
         } as ChartConfiguration['options'];
@@ -411,6 +418,11 @@ export class StatisticsDetailedComponent {
         // enable center text on this doughnut chart (per-chart options)
         this.priorityTransactionsOptions = {
           responsive: true,
+          layout: {
+            padding: {
+              top: 0 // = 1rem تقريبًا
+            }
+          },
           plugins: {
             // keep existing legend options from chartOptions if present
             ...(this.chartOptions.plugins || {}),
@@ -418,7 +430,7 @@ export class StatisticsDetailedComponent {
               enabled: true,
               text: this.priorityTransactions.total,
               color: '#000',
-              font: { size: 35, family: 'IBM Plex Sans Arabic', weight: 'bold' },
+              font: { size: (this.screenWidth <=1200? 25 : 35), family: 'IBM Plex Sans Arabic', weight: 'bold' },
             },
           },
         } as ChartConfiguration['options'];
@@ -1005,7 +1017,7 @@ export class StatisticsDetailedComponent {
       maxWidth: '95vw',
 
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {

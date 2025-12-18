@@ -10,6 +10,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +23,16 @@ import {
   Request,
   RequestsFiltersForm,
 } from '@core/models/request.model';
-import { forkJoin, Observable, Subscription, tap } from 'rxjs';
+import {
+  forkJoin,
+  Observable,
+  Subscription,
+  tap,
+  Subject,
+  catchError,
+  finalize,
+  takeUntil,
+} from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -86,6 +96,7 @@ export class ExportsListComponent implements OnInit {
     private queryUrlFiltersPaginationSort: QueryUrlFiltersPaginationSort,
     injector: Injector,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
     private manageSharedService: ManageSharedService
   ) {}
 
@@ -145,27 +156,53 @@ export class ExportsListComponent implements OnInit {
   isLoading = false;
   totalElements: number = 0;
   isError: boolean = false;
+  private pendingDataRequest$ = new Subject<void>();
+  private currentRequestId = 0;
   initializeTable() {
+    const payload = {
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      ...this.filtersData,
+    };
+    const { pageIndex, pageSize: size, ...filtersData } = payload;
+
+    // Reset totalElements and items when starting a new data load to avoid showing stale data
+    this.totalElements = 0;
+    this.requestsSource = [];
     this.isLoading = true;
 
+    // Increment request ID to track which response is current
+    this.currentRequestId++;
+    const requestId = this.currentRequestId;
+
+    // Cancel any pending requests
+    this.pendingDataRequest$.next();
+
     this.manageImportsExportsService.requestsService
-      .getExportsRequestsList(
-        { pageIndex: this.pageIndex, pageSize: this.pageSize },
-        this.filtersData
-      )
-      .subscribe({
-        next: (res: any) => {
-          this.requestsSource = res.data;
-          this.totalElements = res.totalCount;
-        },
-        error: (err) => {
+      .getExportsRequestsList({ pageIndex, pageSize: size }, filtersData)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        takeUntil(this.pendingDataRequest$),
+        tap((res) => {
+          // Only update if this is still the current request
+          if (requestId === this.currentRequestId) {
+            this.requestsSource = res.data;
+            this.totalElements = res.totalCount;
+          }
+        }),
+        catchError((err) => {
           this.isError = true;
           console.error(err);
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
+          return [];
+        }),
+        finalize(() => {
+          // Only set loading to false if this is the current request
+          if (requestId === this.currentRequestId) {
+            this.isLoading = false;
+          }
+        })
+      )
+      .subscribe();
   }
   columnsConfig: any[] = [];
   columns: string[] = [];
@@ -353,17 +390,15 @@ export class ExportsListComponent implements OnInit {
   }
 
   onFiltersChange(filtersData: RequestsFiltersForm): void {
-    console.log('filtersData in exports', filtersData);
     // Serialize previous and incoming filters to detect real change before reloading table
 
-    this.filtersData = filtersData;
+    // Merge with existing filters to preserve searchKeyword and other fields
+    this.filtersData = { ...this.filtersData, ...filtersData };
     this.pageIndex = 0; // reset pagination on filter change
+    this.totalElements = 0; // Reset total elements while loading new filtered data
 
     // Emit filter change to parent
-    this.filterChanged.emit(filtersData);
-
-    //  console.log("hasChanged",hasChanged);
-    //  console.log("this.filtersData",this.filtersData);
+    this.filterChanged.emit(this.filtersData);
     this.initializeTable();
   }
 
@@ -381,7 +416,6 @@ export class ExportsListComponent implements OnInit {
     this.selectedExportedDocumentsIds = [];
     this.pageSize = pageInformation.pageSize;
     this.pageIndex = pageInformation.pageIndex;
-    console.log('pageInformation');
     this.initializeTable();
   }
 
@@ -414,12 +448,17 @@ export class ExportsListComponent implements OnInit {
   noPermission() {
     console.log(document);
     const filtersDialogRef = this.dialog.open(AuthorizationPopupComponent, {
+      minWidth: '36.25rem',
+      maxWidth: '36.25rem',
+      maxHeight: '44.3125rem',
+      panelClass: 'action-modal',
+      autoFocus: false,
+      disableClose: false,
       data: {
         title: this.translateService.instant('unauthorized.accessDenied'),
         message: `${this.translateService.instant('unauthorized.youDoNotHavePermission')} `,
         authorizationInside: false,
       },
-      disableClose: true,
     });
   }
   onViewElement(element: Request): void {
@@ -448,11 +487,11 @@ export class ExportsListComponent implements OnInit {
     this.dialog.open(UpdateAccessibilityModalComponent, {
       minWidth: '62.5rem',
       maxWidth: '62.5rem',
-      height: '95vh',
-      maxHeight: '95vh',
-      panelClass: ['action-modal', 'float-footer'],
+      // height: '95vh',
+      // maxHeight: '95vh',
+      panelClass: ['action-modal'],
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         requestId: element.id,
         users: element.users,
@@ -465,7 +504,7 @@ export class ExportsListComponent implements OnInit {
     this.dialog.open(ConfirmationModalComponent, {
       minWidth: isSmallDeviceWidthForPopup() ? '95vw' : '600px',
       autoFocus: false,
-      disableClose: true,
+      disableClose: false,
       data: {
         headerTranslationRef: this.translateService.instant(
           'ImportsExportsModule.ImportsExportsListComponent.confirmExportDeletion'

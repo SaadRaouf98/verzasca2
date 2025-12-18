@@ -110,7 +110,7 @@ export class ImportsExportsFiltersComponent implements OnInit, OnChanges {
       this.filtersForm.patchValue(
         {
           documentType: null,
-          isExportDocument: false,
+          // isExportDocument: false,
         },
         {
           emitEvent: false,
@@ -158,6 +158,22 @@ export class ImportsExportsFiltersComponent implements OnInit, OnChanges {
     this.filtersForm.reset();
     this.manageSharedService.searchFormValue = null;
   }
+
+  get hasActiveFilters(): boolean {
+    const formValue = this.filtersForm?.value;
+    if (!formValue) return false;
+
+    return Object.keys(formValue).some((key) => {
+      const value = formValue[key];
+      return (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        (!Array.isArray(value) || value.length > 0)
+      );
+    });
+  }
+
   setFilters(): void {
     if (this.filtersData) {
       this.filtersForm.patchValue(this.filtersData);
@@ -225,7 +241,7 @@ export class ImportsExportsFiltersComponent implements OnInit, OnChanges {
             toDate: value.toDate,
             hijriFromDate: value.hijriFromDate,
             hijriToDate: value.hijriToDate,
-            isExportDocument: false,
+            // isExportDocument: false,
             //isExportDocument: value.isExportDocument,
           };
 
